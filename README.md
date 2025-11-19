@@ -75,4 +75,4 @@ make
 
 ## License
 
-[MIT License](https://www.google.com/search?q=LICENSE)
+[MIT License](LICENSE)
