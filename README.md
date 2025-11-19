@@ -1,7 +1,5 @@
 # Hydra-V
 
-**A High-Performance RISC-V Processor on FPGA**
-
 **Hydra-V** is an open-source RISC-V processor implementation targeting the Digilent **Nexys 4** FPGA. The project aims to evolve from a standard 5-stage pipeline into a Superscalar, Out-of-Order (OoO), and Multi-core architecture.
 
 Current status: **RV32IM Pipelined Core running CoreMark.**
