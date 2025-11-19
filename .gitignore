@@ -1,0 +1,48 @@
+# ==========================
+# RISC-V GCC Toolchain / Software
+# ==========================
+# Compiled Object files
+*.o
+*.obj
+
+# Executables and Binaries
+*.elf
+*.out
+*.bin
+
+# Memory Initialization Files
+*.hex
+# *.mem
+
+# Debugging and Maps
+*.map
+*.dump
+*.dis
+*.lst
+
+# Dependency files (if your Makefiles generate them)
+*.d
+
+# ==========================
+# FPGA / Vivado (Essential for keeping the repo light)
+# ==========================
+# Vivado logs and journals
+*.jou
+*.log
+*.str
+
+# Vivado temporary directories
+.Xil/
+usage_statistics_webtalk.xml
+usage_statistics_webtalk.html
+
+# Bitstreams (Optional: Comment this out if you WANT to save the bitstream)
+*.bit
+
+# ==========================
+# System & Editor Junk
+# ==========================
+.DS_Store
+.vscode/
+*.swp
+*~
