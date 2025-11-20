@@ -13,10 +13,9 @@ The project follows a staged evolution towards high-performance parallel process
   - Full Hazard Handling & Forwarding
   - RV32IM ISA Support
   - Verified with **CoreMark** Benchmark
-
-- [ ] **Phase 2: Memory Hierarchy**
-  - Move Branch Logic to M Stage
-  - Instruction & Data Caches
+- [ ] **Phase 2: Pipeline & Latency Optimization**
+  - Move Branch Logic to Memory (M) Stage to maximize Clock Frequency.
+  - Optimize Multiply/Divide logic to minimize stall cycles.
 - [ ] **Phase 3: Advanced Architecture**
   - Dynamic Branch Prediction (BHT/BTB)
   - Superscalar Execution (Dual-issue)
