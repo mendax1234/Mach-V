@@ -183,8 +183,8 @@ module RV #(
     // ALU signals
     wire [31:0] Src_A ;
     wire [31:0] Src_B ;
-    reg [31:0] Src_A_mux ;
-    reg [31:0] Src_B_mux ;
+    reg [31:0] RD1E_Forwarded ;
+    reg [31:0] RD2E_Forwarded ;
     //wire [3:0] ALUControl ;
     wire [31:0] ALUResultE;
     wire [2:0] ALUFlags ;
@@ -202,11 +202,11 @@ module RV #(
     wire Forward2D;
 
     // W & D Forwarding Mux
-    wire [31:0] RD1D_forward;
-    wire [31:0] RD2D_forward;
+    wire [31:0] RD1D_Forwarded;
+    wire [31:0] RD2D_Forwarded;
 
-    assign RD1D_forward = Forward1D ? WD : RD1D;
-    assign RD2D_forward = Forward2D ? WD : RD2D;
+    assign RD1D_Forwarded = Forward1D ? WD : RD1D;
+    assign RD2D_Forwarded = Forward2D ? WD : RD2D;
 
     // MCycle signals
     wire [31:0] MCycleResult_1;
@@ -352,29 +352,28 @@ module RV #(
     // MUX for HazardUnit
     always @(*) begin
         case (ForwardAE)
-            2'b00: Src_A_mux = RD1E; // No forwarding
-            2'b01: Src_A_mux = WD; // Forward from Writeback stage
-            2'b10: Src_A_mux = ComputeResultM; // Forward from Memory stage
-            default: Src_A_mux = RD1E; // default safe
+            2'b00: RD1E_Forwarded = RD1E; // No forwarding
+            2'b01: RD1E_Forwarded = WD; // Forward from Writeback stage
+            2'b10: RD1E_Forwarded = ComputeResultM; // Forward from Memory stage
+            default: RD1E_Forwarded = RD1E; // default safe
         endcase
 
         case (ForwardBE)
-            2'b00: Src_B_mux = RD2E; // No forwarding
-            2'b01: Src_B_mux = WD; // Forward from Writeback stage
-            2'b10: Src_B_mux = ComputeResultM; // Forward from Memory stage
-            default: Src_B_mux = RD2E; // default safe
+            2'b00: RD2E_Forwarded = RD2E; // No forwarding
+            2'b01: RD2E_Forwarded = WD; // Forward from Writeback stage
+            2'b10: RD2E_Forwarded = ComputeResultM; // Forward from Memory stage
+            default: RD2E_Forwarded = RD2E; // default safe
         endcase 
     end
 
-    // ALU inputs ** NEED TO CHANGE Src_A and logic
-    assign Src_A = (ALUSrcAE == 2'b00) ? Src_A_mux :  // rs1
+    assign Src_A = (ALUSrcAE == 2'b00) ? RD1E_Forwarded :  // rs1
         (ALUSrcAE == 2'b01) ? 32'b0 :  // zero (lui)
         (ALUSrcAE == 2'b11) ? PCE :  // PC (auipc, jalr, jal)
-        Src_A_mux;  // default safe
-    assign Src_B = (ALUSrcBE == 2'b00) ? Src_B_mux :  // rs2
+        RD1E_Forwarded;  // default safe
+    assign Src_B = (ALUSrcBE == 2'b00) ? RD2E_Forwarded :  // rs2
         (ALUSrcBE == 2'b01) ? 32'd4 :  // 4 (for jal and jalr to compute return address)
         (ALUSrcBE == 2'b11) ? ExtImmE:  // ExtImm (for DP Imm, load, store)
-        Src_B_mux;  // default
+        RD2E_Forwarded;  // default
 
     //needs to fix
     // compute result multiplexed by the MulDiv signal
@@ -384,7 +383,7 @@ module RV #(
     assign ComputeResultE = (MulDivE == 1) ? MCycleResult : ALUResultE;
 
     // Memory Interface
-    assign WriteDataE = Src_B_mux; //change in W
+    assign WriteDataE = RD2E_Forwarded; //change in W
 
     // Writeback mux
     assign WD = MemtoRegW ? ReadDataW : ComputeResultW;
@@ -393,7 +392,7 @@ module RV #(
     // 01: branch or jal, extimm and PCE
     // 11: jalr, extimm and RD1E
     // PC Update
-    assign PC_Base = (PCSrcE[1] == 1) ? Src_A_mux // JALR
+    assign PC_Base = (PCSrcE[1] == 1) ? RD1E_Forwarded // JALR
         : (PCSrcE[0] == 1) ? PCE            // JAL/ branch
         : PCF;                              // sequential
     assign PC_Offset = (PCSrcE[0] == 1) ? ExtImmE : 32'd4;
@@ -431,8 +430,8 @@ module RV #(
         .ALUControlD(ALUControlD),
         .ALUSrcAD(ALUSrcAD),
         .ALUSrcBD(ALUSrcBD),
-        .RD1D(RD1D_forward),
-        .RD2D(RD2D_forward),
+        .RD1D(RD1D_Forwarded),
+        .RD2D(RD2D_Forwarded),
         .ExtImmD(ExtImmD),
         .rs1D(rs1D),
         .rs2D(rs2D),
@@ -590,8 +589,8 @@ module RV #(
         .RESET   (RESET),
         .Start   (MCycleStartE),   // from Decoder
         .MCycleOp(MCycleOpE),      // from Decoder
-        .Operand1(Src_A_mux),           // rs1 value
-        .Operand2(Src_B_mux),           // rs2 value
+        .Operand1(RD1E_Forwarded),           // rs1 value
+        .Operand2(RD2E_Forwarded),           // rs2 value
         .Result1 (MCycleResult_1),  // LSW of mul or quotient
         .Result2 (MCycleResult_2),  // MSW of mul or remainder
         .Busy    (Busy)           // signal to stall PC while busy
