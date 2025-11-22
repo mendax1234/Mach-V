@@ -44,7 +44,7 @@ Hydra-V/
 ### Prerequisites
 
 - **Hardware:** Digilent Nexys 4 / Nexys 4 DDR (Artix-7 FPGA)
-- **Software:** Xilinx Vivado 2020+
+- **Software:** Xilinx Vivado 2025.2
 - **Toolchain:** RISC-V GNU Toolchain (`riscv32-unknown-elf-gcc`)
 
 ### Building Software
