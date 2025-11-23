@@ -46,9 +46,10 @@ module Decoder (
     // Note that the most significant 3 bits are Funct3 for all DP instrns. LSB is the same as Funct[5] for DPReg type and DPImm_shifts. For other DPImms, Funct[5] is 0.
     // It is the same as sub for branches, and add for all others not mentioned in the line above.
     output ComputeResultSel, // select to choose ALUResult or mul/div result as the computeResult (ALUResult)
+    output reg MCycleResultSel,  // 0 = Result1 (Low), 1 = Result2 (High)
     output reg MCycleStart,  // to issue the MCycle to start
     output reg [1:0] MCycleOp, // to select operation (mul, div, signed, or unsigned) to do in MCycle
-    output [2:0] SizeSel // Size selection for load/store
+    output [2:0] SizeSel  // Size selection for load/store
 );
     // Change wire to reg if assigned inside a procedural (always) block. However, where it is easy enough, use assign instead of always.
     // A 2-1 multiplexing can be done easily using an assign with a ternary operator
@@ -75,8 +76,8 @@ module Decoder (
     assign MemWrite = (Opcode == 7'b0100011);  // store
 
     // ALUSrcA
-    assign ALUSrcA = (Opcode == 7'b0010111 // auipc
-        || Opcode == 7'b1101111 // jal
+    assign ALUSrcA = (Opcode == 7'b0010111  // auipc
+        || Opcode == 7'b1101111  // jal
         || Opcode == 7'b1100111) ? 2'b11 :  // jalr
         (Opcode == 7'b0110111) ? 2'b01 :  // lui
         2'b00;  // remaining instructions will use rs1
@@ -87,7 +88,7 @@ module Decoder (
         || Opcode == 7'b0100011  // store
         || Opcode == 7'b0010111  // auipc
         || Opcode == 7'b0110111) ? 2'b11 :  // lui
-        (Opcode == 7'b1101111    // jal
+        (Opcode == 7'b1101111  // jal
         || Opcode == 7'b1100111) ? 2'b01 :  // jalr
         2'b00;  // DP Reg and Branch
 
@@ -102,10 +103,20 @@ module Decoder (
     always @(*) begin
         MCycleOp[1] = Funct3[2];  // divide or mul
         if (MCycleOp[1]) begin
-            MCycleOp[0] = Funct3[0]; // signed or unsigned for divisio
+            MCycleOp[0] = Funct3[0];  // signed or unsigned for divisio
         end else begin
-            MCycleOp[0] = Funct3[1]; // signed or unsigned for
+            MCycleOp[0] = Funct3[1];  // signed or unsigned for
         end
+    end
+
+    // Logic to select between Lower 32-bits (Result1) and Upper 32-bits (Result2)
+    always @(*) begin
+        case (Funct3)
+            3'b000:  MCycleResultSel = 1'b0;  // MUL (Low)
+            3'b100:  MCycleResultSel = 1'b0;  // DIV (Quotient)
+            3'b101:  MCycleResultSel = 1'b0;  // DIVU (Quotient)
+            default: MCycleResultSel = 1'b1;  // All others (High/Remainder)
+        endcase
     end
 
     always @(*) begin
@@ -119,7 +130,7 @@ module Decoder (
 
             7'b0010011: begin  // I-type (DPImm)
                 ImmSrc = 3'b011;  // I-type immediate
-                if (Funct3 == 3'b001 || Funct3 == 3'b101)   // slli, srli, srai
+                if (Funct3 == 3'b001 || Funct3 == 3'b101)  // slli, srli, srai
                     ALUControl = {Funct3, Funct7[5]};  // shift-immediates use imm[30]
                 else ALUControl = {Funct3, 1'b0};
             end
@@ -154,9 +165,9 @@ module Decoder (
                 ALUControl = 4'b0000;  // add
             end
 
-            7'b1100111: begin // JALR
+            7'b1100111: begin  // JALR
                 ImmSrc     = 3'b011;  // I-type
-                ALUControl = 4'b0000; // add
+                ALUControl = 4'b0000;  // add
             end
 
             default: begin
