@@ -45,7 +45,7 @@ module Decoder (
     output reg [3:0] ALUControl,	// 0000 for add, 0001 for sub, 1110 for and, 1100 for or, 0010 for sll, 1010 for srl, 1011 for sra, 0001 for branch, 0000 for all others.
     // Note that the most significant 3 bits are Funct3 for all DP instrns. LSB is the same as Funct[5] for DPReg type and DPImm_shifts. For other DPImms, Funct[5] is 0.
     // It is the same as sub for branches, and add for all others not mentioned in the line above.
-    output MulDiv, // select to choose ALUResult or mul/div result as the computeResult (ALUResult)
+    output ComputeResultSel, // select to choose ALUResult or mul/div result as the computeResult (ALUResult)
     output reg MCycleStart,  // to issue the MCycle to start
     output reg [1:0] MCycleOp, // to select operation (mul, div, signed, or unsigned) to do in MCycle
     output [2:0] SizeSel // Size selection for load/store
@@ -92,7 +92,7 @@ module Decoder (
         2'b00;  // DP Reg and Branch
 
     // ALU & Mcycle mux
-    assign MulDiv = (Opcode == 7'b0110011 && Funct7 == 7'b0000001) ? 1'b1 : 1'b0;  // decide ALU result or Mcycle result
+    assign ComputeResultSel = (Opcode == 7'b0110011 && Funct7 == 7'b0000001) ? 1'b1 : 1'b0;  // decide ALU result or Mcycle result
 
     // SizeSel generation based on Funct3 for load/store instructions
     // 000: byte, 001: halfword, 010: word, 100: byte unsigned, 101: halfword unsigned

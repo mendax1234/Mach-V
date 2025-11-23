@@ -42,7 +42,7 @@ module pipeline_E(
     input [2:0]  Funct3D,
     input [1:0]  MCycleOpD,
     input        MCycleStartD,
-    input        MulDivD,
+    input        ComputeResultSelD,
     output reg [1:0] PCSE,
     output reg RegWriteE,
     output reg MemtoRegE,
@@ -60,7 +60,7 @@ module pipeline_E(
     output reg [2:0]  Funct3E,
     output reg [1:0]  MCycleOpE,
     output reg        MCycleStartE,
-    output reg        MulDivE
+    output reg        ComputeResultSelE
     );
     
     always @(posedge CLK) begin
@@ -82,7 +82,7 @@ module pipeline_E(
             Funct3E     <= 3'b0;
             MCycleOpE    <= 2'b0;
             MCycleStartE <= 1'b0;
-            MulDivE      <= 1'b0;
+            ComputeResultSelE      <= 1'b0;
         end else if (~Busy) begin
             PCSE        <= PCSD;
             RegWriteE   <= RegWriteD;
@@ -101,7 +101,7 @@ module pipeline_E(
             Funct3E     <= Funct3D;    
             MCycleOpE    <= MCycleOpD;
             MCycleStartE <= MCycleStartD;
-            MulDivE      <= MulDivD;
+            ComputeResultSelE      <= ComputeResultSelD;
         end 
     end
     

@@ -170,7 +170,7 @@ module RV #(
     wire [1:0] ALUSrcBD ;
     //wire [2:0] ImmSrc ;
     wire [3:0] ALUControlD ;
-    wire MulDivD ;
+    wire ComputeResultSelD ;
     wire MCycleStartD;
     wire [1:0] MCycleOpD;
 
@@ -215,7 +215,7 @@ module RV #(
     wire Busy;
     wire [1:0] MCycleOpE;
     wire MCycleStartE;
-    wire MulDivE;
+    wire ComputeResultSelE;
     wire [31:0] ComputeResultE;
 
     // ProgramCounter signals
@@ -376,15 +376,16 @@ module RV #(
         RD2E_Forwarded;  // default
 
     //needs to fix
-    // compute result multiplexed by the MulDiv signal
+    // compute result multiplexed by the ComputeResultSel signal
     // MUL, DIV, DIVU instructions use Result1 (LSW / Quotient)
     // The rest use Result2
     assign MCycleResult = (Funct3E == 3'b000 || Funct3E == 3'b100 || Funct3E == 3'b101) ?  MCycleResult_1 : MCycleResult_2;  // LSW/Quotient or MSW/Remainder depending on instruction
-    assign ComputeResultE = (MulDivE == 1) ? MCycleResult : ALUResultE;
+    assign ComputeResultE = (ComputeResultSelE == 1) ? MCycleResult : ALUResultE;
 
     // Memory Interface
     assign WriteDataE = RD2E_Forwarded; //change in W
 
+    // TODO: add ResultW intermediate value
     // Writeback mux
     assign WD = MemtoRegW ? ReadDataW : ComputeResultW;
 
@@ -440,7 +441,7 @@ module RV #(
         .Funct3D(Funct3D),
         .MCycleOpD(MCycleOpD),
         .MCycleStartD(MCycleStartD),
-        .MulDivD(MulDivD),
+        .ComputeResultSelD(ComputeResultSelD),
         .PCSE(PCSE),
         .RegWriteE(RegWriteE),
         .MemtoRegE(MemtoRegE),
@@ -458,7 +459,7 @@ module RV #(
         .Funct3E(Funct3E),
         .MCycleOpE(MCycleOpE),
         .MCycleStartE(MCycleStartE),
-        .MulDivE(MulDivE)
+        .ComputeResultSelE(ComputeResultSelE)
     );   
     
     pipeline_M pipelineM (
@@ -530,7 +531,7 @@ module RV #(
         .ALUSrcB    (ALUSrcBD),
         .ImmSrc     (ImmSrc),
         .ALUControl (ALUControlD),
-        .MulDiv     (MulDivD),
+        .ComputeResultSel     (ComputeResultSelD),
         .MCycleStart(MCycleStartD),
         .MCycleOp   (MCycleOpD),
         .SizeSel    (SizeSel)
