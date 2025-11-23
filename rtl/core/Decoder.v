@@ -51,131 +51,131 @@ module Decoder (
     output reg [1:0] MCycleOp, // to select operation (mul, div, signed, or unsigned) to do in MCycle
     output [2:0] SizeSel  // Size selection for load/store
 );
-    // Change wire to reg if assigned inside a procedural (always) block. However, where it is easy enough, use assign instead of always.
-    // A 2-1 multiplexing can be done easily using an assign with a ternary operator
-    // For multiplexing with number of inputs > 2, a case construct within an always block is a natural fit. DO NOT to use nested ternary assignment operator as it hampers the readability of your code.
+  // Change wire to reg if assigned inside a procedural (always) block. However, where it is easy enough, use assign instead of always.
+  // A 2-1 multiplexing can be done easily using an assign with a ternary operator
+  // For multiplexing with number of inputs > 2, a case construct within an always block is a natural fit. DO NOT to use nested ternary assignment operator as it hampers the readability of your code.
 
-    // PCS: program counter selection
-    assign PCS = (Opcode == 7'b1101111) ? 2'b10 :  // jal
-        (Opcode == 7'b1100011) ? 2'b01 :  // branch
-        (Opcode == 7'b1100111) ? 2'b11 :  // jalr
-        2'b00;
+  // PCS: program counter selection
+  assign PCS = (Opcode == 7'b1101111) ? 2'b10 :  // jal
+      (Opcode == 7'b1100011) ? 2'b01 :  // branch
+      (Opcode == 7'b1100111) ? 2'b11 :  // jalr
+      2'b00;
 
-    // RegWrite
-    assign RegWrite = (Opcode == 7'b0000011  // load
-        || Opcode == 7'b0010011  // DP Imm
-        || Opcode == 7'b0110011  // DP Reg
-        || Opcode == 7'b0010111  // auipc
-        || Opcode == 7'b0110111  // lui
-        || Opcode == 7'b1101111);  // jal
+  // RegWrite
+  assign RegWrite = (Opcode == 7'b0000011  // load
+      || Opcode == 7'b0010011  // DP Imm
+      || Opcode == 7'b0110011  // DP Reg
+      || Opcode == 7'b0010111  // auipc
+      || Opcode == 7'b0110111  // lui
+      || Opcode == 7'b1101111);  // jal
 
-    // MemtoReg
-    assign MemtoReg = (Opcode == 7'b0000011);  // load
+  // MemtoReg
+  assign MemtoReg = (Opcode == 7'b0000011);  // load
 
-    // MemWrite
-    assign MemWrite = (Opcode == 7'b0100011);  // store
+  // MemWrite
+  assign MemWrite = (Opcode == 7'b0100011);  // store
 
-    // ALUSrcA
-    assign ALUSrcA = (Opcode == 7'b0010111  // auipc
-        || Opcode == 7'b1101111  // jal
-        || Opcode == 7'b1100111) ? 2'b11 :  // jalr
-        (Opcode == 7'b0110111) ? 2'b01 :  // lui
-        2'b00;  // remaining instructions will use rs1
+  // ALUSrcA
+  assign ALUSrcA = (Opcode == 7'b0010111  // auipc
+      || Opcode == 7'b1101111  // jal
+      || Opcode == 7'b1100111) ? 2'b11 :  // jalr
+      (Opcode == 7'b0110111) ? 2'b01 :  // lui
+      2'b00;  // remaining instructions will use rs1
 
-    // ALUSrcB
-    assign ALUSrcB = (Opcode == 7'b0010011  // DP Imm
-        || Opcode == 7'b0000011  // load
-        || Opcode == 7'b0100011  // store
-        || Opcode == 7'b0010111  // auipc
-        || Opcode == 7'b0110111) ? 2'b11 :  // lui
-        (Opcode == 7'b1101111  // jal
-        || Opcode == 7'b1100111) ? 2'b01 :  // jalr
-        2'b00;  // DP Reg and Branch
+  // ALUSrcB
+  assign ALUSrcB = (Opcode == 7'b0010011  // DP Imm
+      || Opcode == 7'b0000011  // load
+      || Opcode == 7'b0100011  // store
+      || Opcode == 7'b0010111  // auipc
+      || Opcode == 7'b0110111) ? 2'b11 :  // lui
+      (Opcode == 7'b1101111  // jal
+      || Opcode == 7'b1100111) ? 2'b01 :  // jalr
+      2'b00;  // DP Reg and Branch
 
-    // ALU & Mcycle mux
-    assign ComputeResultSel = (Opcode == 7'b0110011 && Funct7 == 7'b0000001) ? 1'b1 : 1'b0;  // decide ALU result or Mcycle result
+  // ALU & Mcycle mux
+  assign ComputeResultSel = (Opcode == 7'b0110011 && Funct7 == 7'b0000001) ? 1'b1 : 1'b0;  // decide ALU result or Mcycle result
 
-    // SizeSel generation based on Funct3 for load/store instructions
-    // 000: byte, 001: halfword, 010: word, 100: byte unsigned, 101: halfword unsigned
-    assign SizeSel = (Opcode == 7'b0000011 || Opcode == 7'b0100011) ? Funct3 : 3'b010;
+  // SizeSel generation based on Funct3 for load/store instructions
+  // 000: byte, 001: halfword, 010: word, 100: byte unsigned, 101: halfword unsigned
+  assign SizeSel = (Opcode == 7'b0000011 || Opcode == 7'b0100011) ? Funct3 : 3'b010;
 
-    // MCycleOp decode- 00: signed mul, 01: unsigned mul, 10: signed div, 11:  unsigned div
-    always @(*) begin
-        MCycleOp[1] = Funct3[2];  // divide or mul
-        if (MCycleOp[1]) begin
-            MCycleOp[0] = Funct3[0];  // signed or unsigned for divisio
-        end else begin
-            MCycleOp[0] = Funct3[1];  // signed or unsigned for
-        end
+  // MCycleOp decode- 00: signed mul, 01: unsigned mul, 10: signed div, 11:  unsigned div
+  always @(*) begin
+    MCycleOp[1] = Funct3[2];  // divide or mul
+    if (MCycleOp[1]) begin
+      MCycleOp[0] = Funct3[0];  // signed or unsigned for divisio
+    end else begin
+      MCycleOp[0] = Funct3[1];  // signed or unsigned for
     end
+  end
 
-    // Logic to select between Lower 32-bits (Result1) and Upper 32-bits (Result2)
-    always @(*) begin
-        case (Funct3)
-            3'b000:  MCycleResultSel = 1'b0;  // MUL (Low)
-            3'b100:  MCycleResultSel = 1'b0;  // DIV (Quotient)
-            3'b101:  MCycleResultSel = 1'b0;  // DIVU (Quotient)
-            default: MCycleResultSel = 1'b1;  // All others (High/Remainder)
-        endcase
-    end
+  // Logic to select between Lower 32-bits (Result1) and Upper 32-bits (Result2)
+  always @(*) begin
+    case (Funct3)
+      3'b000:  MCycleResultSel = 1'b0;  // MUL (Low)
+      3'b100:  MCycleResultSel = 1'b0;  // DIV (Quotient)
+      3'b101:  MCycleResultSel = 1'b0;  // DIVU (Quotient)
+      default: MCycleResultSel = 1'b1;  // All others (High/Remainder)
+    endcase
+  end
 
-    always @(*) begin
+  always @(*) begin
+    MCycleStart = 1'b0;
+    case (Opcode)
+      7'b0110011: begin  // R-type (DPReg)
+        MCycleStart = (Funct7 == 7'b0000001) ? 1'b1 : 1'b0;  // start if Funct7 = 0x01
+        ImmSrc      = 3'bxxx;  // R-type has no immediate
+        ALUControl  = {Funct3, Funct7[5]};  // ALU op decided by funct3/funct7
+      end
+
+      7'b0010011: begin  // I-type (DPImm)
+        ImmSrc = 3'b011;  // I-type immediate
+        if (Funct3 == 3'b001 || Funct3 == 3'b101)  // slli, srli, srai
+          ALUControl = {Funct3, Funct7[5]};  // shift-immediates use imm[30]
+        else ALUControl = {Funct3, 1'b0};
+      end
+
+      7'b0000011: begin  // Load
+        ImmSrc     = 3'b011;  // I-type immediate
+        ALUControl = 4'b0000;  // add base + offset
+      end
+
+      7'b0100011: begin  // Store
+        ImmSrc     = 3'b110;  // S-type immediate
+        ALUControl = 4'b0000;  // add base + offset
+      end
+
+      7'b1100011: begin  // Branch
+        ImmSrc     = 3'b111;  // B-type immediate
+        ALUControl = 4'b0001;  // subtract (for comparison)
+      end
+
+      7'b0010111: begin  // AUIPC
+        ImmSrc     = 3'b000;  // U-type
+        ALUControl = 4'b0000;  // add
+      end
+
+      7'b0110111: begin  // LUI
+        ImmSrc     = 3'b000;  // U-type
+        ALUControl = 4'b0000;  // just pass imm (ALU add with zero)
+      end
+
+      7'b1101111: begin  // JAL
+        ImmSrc     = 3'b010;  // J-type immediate
+        ALUControl = 4'b0000;  // add
+      end
+
+      7'b1100111: begin  // JALR
+        ImmSrc     = 3'b011;  // I-type
+        ALUControl = 4'b0000;  // add
+      end
+
+      default: begin
+        ImmSrc      = 3'b000;
+        ALUControl  = 4'b0000;  // safe default
         MCycleStart = 1'b0;
-        case (Opcode)
-            7'b0110011: begin  // R-type (DPReg)
-                MCycleStart = (Funct7 == 7'b0000001) ? 1'b1 : 1'b0;  // start if Funct7 = 0x01
-                ImmSrc      = 3'bxxx;  // R-type has no immediate
-                ALUControl  = {Funct3, Funct7[5]};  // ALU op decided by funct3/funct7
-            end
-
-            7'b0010011: begin  // I-type (DPImm)
-                ImmSrc = 3'b011;  // I-type immediate
-                if (Funct3 == 3'b001 || Funct3 == 3'b101)  // slli, srli, srai
-                    ALUControl = {Funct3, Funct7[5]};  // shift-immediates use imm[30]
-                else ALUControl = {Funct3, 1'b0};
-            end
-
-            7'b0000011: begin  // Load
-                ImmSrc     = 3'b011;  // I-type immediate
-                ALUControl = 4'b0000;  // add base + offset
-            end
-
-            7'b0100011: begin  // Store
-                ImmSrc     = 3'b110;  // S-type immediate
-                ALUControl = 4'b0000;  // add base + offset
-            end
-
-            7'b1100011: begin  // Branch
-                ImmSrc     = 3'b111;  // B-type immediate
-                ALUControl = 4'b0001;  // subtract (for comparison)
-            end
-
-            7'b0010111: begin  // AUIPC
-                ImmSrc     = 3'b000;  // U-type
-                ALUControl = 4'b0000;  // add
-            end
-
-            7'b0110111: begin  // LUI
-                ImmSrc     = 3'b000;  // U-type
-                ALUControl = 4'b0000;  // just pass imm (ALU add with zero)
-            end
-
-            7'b1101111: begin  // JAL
-                ImmSrc     = 3'b010;  // J-type immediate
-                ALUControl = 4'b0000;  // add
-            end
-
-            7'b1100111: begin  // JALR
-                ImmSrc     = 3'b011;  // I-type
-                ALUControl = 4'b0000;  // add
-            end
-
-            default: begin
-                ImmSrc      = 3'b000;
-                ALUControl  = 4'b0000;  // safe default
-                MCycleStart = 1'b0;
-            end
-        endcase
-    end
+      end
+    endcase
+  end
 
 endmodule

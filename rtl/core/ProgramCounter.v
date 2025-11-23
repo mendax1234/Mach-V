@@ -41,14 +41,14 @@ module ProgramCounter #(
     output reg [31:0] PC
 );
 
-    initial begin
-        PC <= PC_INIT;
-    end
+  initial begin
+    PC <= PC_INIT;
+  end
 
-    always @(posedge CLK) begin
-        if (RESET) PC <= PC_INIT;
-        else if (~StallF) PC <= PC_IN;
-    end
+  always @(posedge CLK) begin
+    if (RESET) PC <= PC_INIT;
+    else if (~StallF) PC <= PC_IN;
+  end
 
 endmodule
 

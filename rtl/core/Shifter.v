@@ -38,43 +38,43 @@ module Shifter (
     output [31:0] ShOut
 );
 
-    wire [31:0] ShTemp0;
-    wire [31:0] ShTemp1;
-    wire [31:0] ShTemp2;
-    wire [31:0] ShTemp3;
-    wire [31:0] ShTemp4;
+  wire [31:0] ShTemp0;
+  wire [31:0] ShTemp1;
+  wire [31:0] ShTemp2;
+  wire [31:0] ShTemp3;
+  wire [31:0] ShTemp4;
 
-    assign ShTemp0 = ShIn;
-    shiftByNPowerOf2 #(0) shiftBy0PowerOf2 (
-        Sh,
-        Shamt5[0],
-        ShTemp0,
-        ShTemp1
-    );
-    shiftByNPowerOf2 #(1) shiftBy1PowerOf2 (
-        Sh,
-        Shamt5[1],
-        ShTemp1,
-        ShTemp2
-    );
-    shiftByNPowerOf2 #(2) shiftBy2PowerOf2 (
-        Sh,
-        Shamt5[2],
-        ShTemp2,
-        ShTemp3
-    );
-    shiftByNPowerOf2 #(3) shiftBy3PowerOf2 (
-        Sh,
-        Shamt5[3],
-        ShTemp3,
-        ShTemp4
-    );
-    shiftByNPowerOf2 #(4) shiftBy4PowerOf2 (
-        Sh,
-        Shamt5[4],
-        ShTemp4,
-        ShOut
-    );
+  assign ShTemp0 = ShIn;
+  shiftByNPowerOf2 #(0) shiftBy0PowerOf2 (
+      Sh,
+      Shamt5[0],
+      ShTemp0,
+      ShTemp1
+  );
+  shiftByNPowerOf2 #(1) shiftBy1PowerOf2 (
+      Sh,
+      Shamt5[1],
+      ShTemp1,
+      ShTemp2
+  );
+  shiftByNPowerOf2 #(2) shiftBy2PowerOf2 (
+      Sh,
+      Shamt5[2],
+      ShTemp2,
+      ShTemp3
+  );
+  shiftByNPowerOf2 #(3) shiftBy3PowerOf2 (
+      Sh,
+      Shamt5[3],
+      ShTemp3,
+      ShTemp4
+  );
+  shiftByNPowerOf2 #(4) shiftBy4PowerOf2 (
+      Sh,
+      Shamt5[4],
+      ShTemp4,
+      ShOut
+  );
 
 
 endmodule
@@ -92,16 +92,16 @@ module shiftByNPowerOf2
     output reg [31:0] ShTempOut
 );
 
-    always @(Sh, ShTempIn, flagShift) begin
-        if (flagShift)
-            case (Sh)
-                2'b00:   ShTempOut = {ShTempIn[31-2**i:0], {2 ** i{1'b0}}};  // SLL
-                2'b10:   ShTempOut = {{2 ** i{1'b0}}, ShTempIn[31:2**i]};  // SRL    
-                2'b11:   ShTempOut = {{2 ** i{ShTempIn[31]}}, ShTempIn[31:2**i]};  // SRA
-                //2'b01: ShTempOut = { ShTempIn[2**i-1:0], ShTempIn[31:2**i] } ;  	// ROR is not supported by RISC-V
-                default: ShTempOut = ShTempIn;  // invalid
-            endcase
-        else ShTempOut = ShTempIn;
-    end
+  always @(Sh, ShTempIn, flagShift) begin
+    if (flagShift)
+      case (Sh)
+        2'b00:   ShTempOut = {ShTempIn[31-2**i:0], {2 ** i{1'b0}}};  // SLL
+        2'b10:   ShTempOut = {{2 ** i{1'b0}}, ShTempIn[31:2**i]};  // SRL    
+        2'b11:   ShTempOut = {{2 ** i{ShTempIn[31]}}, ShTempIn[31:2**i]};  // SRA
+        //2'b01: ShTempOut = { ShTempIn[2**i-1:0], ShTempIn[31:2**i] } ;  	// ROR is not supported by RISC-V
+        default: ShTempOut = ShTempIn;  // invalid
+      endcase
+    else ShTempOut = ShTempIn;
+  end
 
 endmodule
