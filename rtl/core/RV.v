@@ -234,93 +234,45 @@ module RV #(
     
     // lb/sb support
     wire [1:0] ByteOffset;  // Last 2 bits of address for byte/halfword access
-    reg [31:0] ReadData_extracted;
     reg [31:0] WriteData_aligned;
-    reg [3:0]  MemWrite_enable;
+    reg [31:0] loaded_val;
     // Byte offset from address
     assign ByteOffset = ComputeResultM[1:0];
 
-    // LOAD DATA PATH
-    // Extract and extend loaded data based on SizeSel and ByteOffset
+    // STORE DATA PATH
+    // Helper wire for shift amount (bits)
+    wire [4:0] shamt = {ByteOffset, 3'b000}; // Multiplies ByteOffset by 8 (0, 8, 16, or 24)
+
+    // Data Alignment: Just shift the data into position
+    // If WriteDataM is 0x000000AB and Offset is 1 (8 bits), result is 0x0000AB00
     always @(*) begin
+        WriteData_aligned = WriteDataM << shamt;
+    end
+
+    // Write Mask Generation
+    reg [3:0] BaseMask;
+    always @(*) begin
+        // Determine the "shape" of the write based on funct3
         case (Funct3M)
-            3'b000: case (ByteOffset)   // lb
-                2'b00: ReadData_extracted = {{24{ReadData_in[7]}},  ReadData_in[7:0]};
-                2'b01: ReadData_extracted = {{24{ReadData_in[15]}}, ReadData_in[15:8]};
-                2'b10: ReadData_extracted = {{24{ReadData_in[23]}}, ReadData_in[23:16]};
-                2'b11: ReadData_extracted = {{24{ReadData_in[31]}}, ReadData_in[31:24]};
-            endcase
-            3'b001: case (ByteOffset[1])    // lh
-                1'b0: ReadData_extracted = {{16{ReadData_in[15]}}, ReadData_in[15:0]};
-                1'b1: ReadData_extracted = {{16{ReadData_in[31]}}, ReadData_in[31:16]};
-            endcase
-            3'b010: ReadData_extracted = ReadData_in;  // LW
-            3'b100: case (ByteOffset)   //lbu
-                2'b00: ReadData_extracted = {24'b0, ReadData_in[7:0]};
-                2'b01: ReadData_extracted = {24'b0, ReadData_in[15:8]};
-                2'b10: ReadData_extracted = {24'b0, ReadData_in[23:16]};
-                2'b11: ReadData_extracted = {24'b0, ReadData_in[31:24]};
-            endcase
-            3'b101: case (ByteOffset[1])    //lhu
-                1'b0: ReadData_extracted = {16'b0, ReadData_in[15:0]};
-                1'b1: ReadData_extracted = {16'b0, ReadData_in[31:16]};
-            endcase
-            default: ReadData_extracted = ReadData_in;
+            3'b000:  BaseMask = 4'b0001; // SB
+            3'b001:  BaseMask = 4'b0011; // SH
+            default: BaseMask = 4'b1111; // SW
         endcase
     end
 
-    assign ReadDataM = ReadData_extracted;
+    // LOAD DATA PATH 
+    // Pre-shifter: Move the target byte/halfword to the LSB
+    // If ReadData_in is 0xAABBCCDD and Offset is 1, this becomes 0x00AABBCC
+    wire [31:0] data_shifted = ReadData_in >> shamt; 
 
-    // STORE DATA PATH
-    // Align store data and generate write enables based on SizeSel and ByteOffset
+    // Extension Logic (Sign vs Zero)
     always @(*) begin
-        WriteData_aligned = 32'h0;
-        MemWrite_enable   = 4'b0000;
-
         case (Funct3M)
-            3'b000: begin  // SB
-                case (ByteOffset)
-                    2'b00: begin
-                        WriteData_aligned = {24'b0, WriteDataM[7:0]};
-                        MemWrite_enable   = 4'b0001;
-                    end
-                    2'b01: begin
-                        WriteData_aligned = {16'b0, WriteDataM[7:0], 8'b0};
-                        MemWrite_enable   = 4'b0010;
-                    end
-                    2'b10: begin
-                        WriteData_aligned = {8'b0, WriteDataM[7:0], 16'b0};
-                        MemWrite_enable   = 4'b0100;
-                    end
-                    2'b11: begin
-                        WriteData_aligned = {WriteDataM[7:0], 24'b0};
-                        MemWrite_enable   = 4'b1000;
-                    end
-                endcase
-            end
-
-            3'b001: begin  // SH
-                case (ByteOffset[1])
-                    1'b0: begin
-                        WriteData_aligned = {16'b0, WriteDataM[15:0]};
-                        MemWrite_enable   = 4'b0011;
-                    end
-                    1'b1: begin
-                        WriteData_aligned = {WriteDataM[15:0], 16'b0};
-                        MemWrite_enable   = 4'b1100;
-                    end
-                endcase
-            end
-
-            3'b010: begin  // SW
-                WriteData_aligned = WriteDataM;
-                MemWrite_enable   = 4'b1111;
-            end
-
-            default: begin
-                WriteData_aligned = WriteDataM;
-                MemWrite_enable   = 4'b1111;
-            end
+            3'b000: loaded_val = {{24{data_shifted[7]}},  data_shifted[7:0]};  // LB (Sign Ext)
+            3'b001: loaded_val = {{16{data_shifted[15]}}, data_shifted[15:0]}; // LH (Sign Ext)
+            3'b100: loaded_val = {24'b0, data_shifted[7:0]};                   // LBU (Zero Ext)
+            3'b101: loaded_val = {16'b0, data_shifted[15:0]};                  // LHU (Zero Ext)
+            default: loaded_val = data_shifted;                                // LW
         endcase
     end
 
@@ -331,15 +283,12 @@ module RV #(
     assign MemRead = MemtoRegM; // This is needed for the proper functionality of some devices such as UART CONSOLE
     assign WE_PC = ~Busy ;  // Will need to control it for multi-cycle operations (Multiplication, Division) and/or Pipelining with hazard hardware.
 
-    //assign ReadDataM = ReadData_in;  // Change datapath as appropriate if supporting lb/lbu/lh/lhu
     
-    // assign WriteData_out = WriteData_aligned;
     assign WriteData_out = ForwardM ? ResultW : WriteData_aligned;  // Change datapath as appropriate if supporting sb/sh
 
+    assign ReadDataM = loaded_val;
     // needs to change Memwrite to MemWrite_?
-    assign MemWrite_out = (MemWriteM) ? MemWrite_enable : 4'b0000;
-    //assign SizeSel = 3'b010;             // Change this to be generated by the Decoder (control) as appropriate if 
-                                         // supporting lb/sb/lbu/lh/sh/lhu/lw/sw. Hint: funct3
+    assign MemWrite_out = (MemWriteM) ? (BaseMask << ByteOffset) : 4'b0000;
 
     // Instruction Decoder
     assign OpcodeD  = InstrD[6:0];
@@ -386,7 +335,6 @@ module RV #(
     // Memory Interface
     assign WriteDataE = RD2E_Forwarded; //change in W
 
-    // TODO: add ResultW intermediate value
     // Writeback mux
     assign ResultW = MemtoRegW ? ReadDataW : ComputeResultW;
     assign WD = ResultW;
