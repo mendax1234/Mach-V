@@ -109,6 +109,7 @@ module RV #(
     // into
     // wire RegWriteM, MemtoRegM;
     wire [31:0] ReadDataM;
+    wire [31:0] ResultW;
     // wire [31:0] ComputeResultM;
     // wire [4:0] rdM;
 
@@ -205,8 +206,8 @@ module RV #(
     wire [31:0] RD1D_Forwarded;
     wire [31:0] RD2D_Forwarded;
 
-    assign RD1D_Forwarded = Forward1D ? WD : RD1D;
-    assign RD2D_Forwarded = Forward2D ? WD : RD2D;
+    assign RD1D_Forwarded = Forward1D ? ResultW : RD1D;
+    assign RD2D_Forwarded = Forward2D ? ResultW : RD2D;
 
     // MCycle signals
     wire [31:0] MCycleResult_1;
@@ -333,7 +334,7 @@ module RV #(
     //assign ReadDataM = ReadData_in;  // Change datapath as appropriate if supporting lb/lbu/lh/lhu
     
     // assign WriteData_out = WriteData_aligned;
-    assign WriteData_out = ForwardM ? WD : WriteData_aligned;  // Change datapath as appropriate if supporting sb/sh
+    assign WriteData_out = ForwardM ? ResultW : WriteData_aligned;  // Change datapath as appropriate if supporting sb/sh
 
     // needs to change Memwrite to MemWrite_?
     assign MemWrite_out = (MemWriteM) ? MemWrite_enable : 4'b0000;
@@ -353,14 +354,14 @@ module RV #(
     always @(*) begin
         case (ForwardAE)
             2'b00: RD1E_Forwarded = RD1E; // No forwarding
-            2'b01: RD1E_Forwarded = WD; // Forward from Writeback stage
+            2'b01: RD1E_Forwarded = ResultW; // Forward from Writeback stage
             2'b10: RD1E_Forwarded = ComputeResultM; // Forward from Memory stage
             default: RD1E_Forwarded = RD1E; // default safe
         endcase
 
         case (ForwardBE)
             2'b00: RD2E_Forwarded = RD2E; // No forwarding
-            2'b01: RD2E_Forwarded = WD; // Forward from Writeback stage
+            2'b01: RD2E_Forwarded = ResultW; // Forward from Writeback stage
             2'b10: RD2E_Forwarded = ComputeResultM; // Forward from Memory stage
             default: RD2E_Forwarded = RD2E; // default safe
         endcase 
@@ -387,7 +388,8 @@ module RV #(
 
     // TODO: add ResultW intermediate value
     // Writeback mux
-    assign WD = MemtoRegW ? ReadDataW : ComputeResultW;
+    assign ResultW = MemtoRegW ? ReadDataW : ComputeResultW;
+    assign WD = ResultW;
 
     // 00: sequential use pcf
     // 01: branch or jal, extimm and PCE
