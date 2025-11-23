@@ -46,10 +46,8 @@ module ProgramCounter #(
     end
 
     always @(posedge CLK) begin
-        if (RESET) 
-            PC <= PC_INIT;
-        else if (~StallF) 
-            PC <= PC_IN;
+        if (RESET) PC <= PC_INIT;
+        else if (~StallF) PC <= PC_IN;
     end
 
 endmodule

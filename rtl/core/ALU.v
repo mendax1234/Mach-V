@@ -50,7 +50,7 @@ module ALU (
     reg  [32:0] Src_A_comp;
     reg  [32:0] Src_B_comp;
     reg  [32:0] C_0;
-    reg  [32:0] diff; // for sltu 
+    reg  [32:0] diff;  // for sltu 
     wire N, Z, C, V;  // optional intermediate values to derive eq, lt, ltu
     // Hint: We need to care about V only for subtraction
     wire eq, lt, ltu;
@@ -74,9 +74,9 @@ module ALU (
                 Src_B_comp = {1'b0, ~Src_B};
                 ALUResult = S_wider[31:0];
             end
-            4'b1110: ALUResult = Src_A & Src_B; // and {111,0}
-            4'b1100: ALUResult = Src_A | Src_B; // or  {110,0}
-            4'b1000: ALUResult = Src_A ^ Src_B; // xor {100,0}
+            4'b1110: ALUResult = Src_A & Src_B;  // and {111,0}
+            4'b1100: ALUResult = Src_A | Src_B;  // or  {110,0}
+            4'b1000: ALUResult = Src_A ^ Src_B;  // xor {100,0}
 
             // slt, sltu
             4'b0100: begin  // slt  {010,0} 
@@ -90,7 +90,7 @@ module ALU (
             4'b0110: begin  // sltu {011,0}
                 C_0[0] = 1;
                 Src_B_comp = {1'b0, ~Src_B};
-                ALUResult = {31'b0, (~C)}; 
+                ALUResult = {31'b0, (~C)};
                 // Some comments for clarification with prof
                 // ALUResult = {31'b0, (~S_wider[32])};
             end
@@ -109,14 +109,14 @@ module ALU (
     assign N = ALUResult[31];
     // Set Carry flag according to the MSB of the S_wider and only when doing add/sub
     assign add_or_sub = (ALUControl == 4'b0000)  // add
-                 || (ALUControl == 4'b0001)  // sub
-                 || (ALUControl == 4'b0100)  // slt
-                 || (ALUControl == 4'b0110); // sltu
+        || (ALUControl == 4'b0001)  // sub
+        || (ALUControl == 4'b0100)  // slt
+        || (ALUControl == 4'b0110);  // sltu
     assign C = S_wider[32] & add_or_sub;
     // Set Overflow flag when performing add/sub
-    assign sub = (ALUControl == 4'b0001) // sub
-        || (ALUControl == 4'b0100)       // slt
-        || (ALUControl == 4'b0110);      // sltu
+    assign sub = (ALUControl == 4'b0001)  // sub
+        || (ALUControl == 4'b0100)  // slt
+        || (ALUControl == 4'b0110);  // sltu
     assign V = add_or_sub & (Src_A[31] ^ S_wider[31]) & ~(Src_A[31] ^ sub ^ Src_B[31]);
 
     // For instruction that involves subtraction (blt, bltu, etc.)

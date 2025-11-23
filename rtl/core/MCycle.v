@@ -60,19 +60,19 @@ module MCycle #(
     reg [7:0] count = 0;  // assuming no computation takes more than 256 cycles.
     reg [2*width-1:0] temp_sum = 0;
     reg [2*width-1:0] shifted_op1 = 0;  // for mul(ori)
-    reg [2*width-1:0] shifted_op2 = 0; // for mul(ori)
-    reg [2*width-1:0] rem = 0; // remainder (for division)
-    reg [2*width-1:0] div = 0; // divisor (for division)
-    reg [width-1:0] op1 = 0; // operand1 after considering sign (for division)
-    reg [width-1:0] op2 = 0; // operand2 after considering sign (for division)
-    reg [2*width:0] rem_temp = 0; // to replace sign extension
-    
+    reg [2*width-1:0] shifted_op2 = 0;  // for mul(ori)
+    reg [2*width-1:0] rem = 0;  // remainder (for division)
+    reg [2*width-1:0] div = 0;  // divisor (for division)
+    reg [width-1:0] op1 = 0;  // operand1 after considering sign (for division)
+    reg [width-1:0] op2 = 0;  // operand2 after considering sign (for division)
+    reg [2*width:0] rem_temp = 0;  // to replace sign extension
+
     // Improvements for mul
     // Booths algo
-    reg [width:0] A;    // accumulator (33 bits to preserve sign)
+    reg [width:0] A;  // accumulator (33 bits to preserve sign)
     reg [width-1:0] Q;  // multiplier (Operand2)
     reg [width-1:0] M;  // multiplicand (Operand1)
-    reg Qm; // Q-1
+    reg Qm;  // Q-1
     reg correction;
 
     always @(state, done, Start, RESET) begin : IDLE_PROCESS
@@ -110,62 +110,59 @@ module MCycle #(
         if( RESET | (n_state == COMPUTING & state == IDLE) ) begin // 2nd condition is true during the very 1st clock cycle of the multiplication
             count = 0;
             temp_sum = 0;
-            op1 = (~MCycleOp[0] && Operand1[width-1]) ? ~Operand1 + 1 : Operand1; // add one mux
-            op2 = (~MCycleOp[0] && Operand2[width-1]) ? ~Operand2 + 1 : Operand2; // add one mux
+            op1 = (~MCycleOp[0] && Operand1[width-1]) ? ~Operand1 + 1 : Operand1;  // add one mux
+            op2 = (~MCycleOp[0] && Operand2[width-1]) ? ~Operand2 + 1 : Operand2;  // add one mux
 
             // we can just do left shift on the div to position and dont have to right align rem
             div = {op2, {width{1'b0}}};  //left-aligned divisor 
             rem = {{width{1'b0}}, op1};  //right-aligned remainder (dividend)
-             
+
             // Multiply (booths)
             A = 0;
             M = Operand1;
             Q = Operand2;
             Qm = 0;
             correction = 0;
-            
+
         end
         ;
         done <= 1'b0;
- 
+
         // Multiply (improved)
         // Booths algo
-        
+
         if (~MCycleOp[1]) begin  // Multiply booths
-        // TODO: I think the non-blocking done are a bit mess, need to fix, but now it works
+            // TODO: I think the non-blocking done are a bit mess, need to fix, but now it works
             if (~correction) begin
-                case ({Q[0], Qm})  
-                    2'b01: A = A + {M[width-1], M};   // accumulator  = accumulator + M(extended) 
-                    2'b10: A = A - {M[width-1], M};   // accumulator  = accumulator - M(extended)
+                case ({
+                    Q[0], Qm
+                })
+                    2'b01:   A = A + {M[width-1], M};  // accumulator  = accumulator + M(extended) 
+                    2'b10:   A = A - {M[width-1], M};  // accumulator  = accumulator - M(extended)
                     default: A = A;
                 endcase
-    
+
                 // right shift { A , Q , Qm}
                 Qm = Q[0];
-                Q = {A[0], Q[width-1:1]};   // shift right bring Q[0] as msb
-                A = {A[width], A[width:1]}; // shift right duplicate msb
-    
-                if (count == width-1) begin
-                    if (MCycleOp[0])
-                        correction = 1'b1;   // unsigned ? extra correction cycle
-                    else    
-                        done <= 1'b1;
-                end    
+                Q  = {A[0], Q[width-1:1]};  // shift right bring Q[0] as msb
+                A  = {A[width], A[width:1]};  // shift right duplicate msb
+
+                if (count == width - 1) begin
+                    if (MCycleOp[0]) correction = 1'b1;  // unsigned ? extra correction cycle
+                    else done <= 1'b1;
+                end
                 count = count + 1;
-            end
-            else begin  // correction cycle
+            end else begin  // correction cycle
                 if (Operand2[width-1])  // if multiplier  msb = 1
                     A = A + {1'b0, M};  // add multiplicand to upper half
-                if (Operand1[width-1])
-                    A = A + {1'b0, Operand2};
-                
+                if (Operand1[width-1]) A = A + {1'b0, Operand2};
+
                 correction = 1'b0;
                 done <= 1'b1;
             end
-        end
-        ////////////////////////////////////////////////////
-      
-        //Divide    
+        end  ////////////////////////////////////////////////////
+
+             //Divide    
         else begin // Supposed to be Divide. The dummy code below takes 1 cycle to execute, just returns the operands. Change this to signed 
             //[ if(~MCycleOp[0]) ] and unsigned [ if(MCycleOp[0]) ] division.
 
@@ -195,12 +192,12 @@ module MCycle #(
             count = count + 1;
         end
         ;
-         
+
         //booths mul
-        if (~MCycleOp[1]) begin        // mul booths
-            Result1 <= Q;              // LSW
-            Result2 <= A[width-1:0];   // MSW
-        end else begin                 // divide (original)
+        if (~MCycleOp[1]) begin  // mul booths
+            Result1 <= Q;  // LSW
+            Result2 <= A[width-1:0];  // MSW
+        end else begin  // divide (original)
             Result2 <= temp_sum[2*width-1 : width];
             Result1 <= temp_sum[width-1 : 0];
         end

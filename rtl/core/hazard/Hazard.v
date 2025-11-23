@@ -1,4 +1,4 @@
-module Hazard(
+module Hazard (
     input [4:0] rs1D,
     input [4:0] rs2D,
     input [4:0] rs1E,
@@ -14,7 +14,7 @@ module Hazard(
     input MemtoRegE,
     input Busy,
     input [1:0] PCSrcE,
-    output reg [1:0] ForwardAE,	
+    output reg [1:0] ForwardAE,
     output reg [1:0] ForwardBE,
     output ForwardM,
     output lwStall,
@@ -62,5 +62,5 @@ module Hazard(
     // W&D Forwarding
     assign Forward1D = (rs1D == rdW) & RegWriteW & (rdW != 0);
     assign Forward2D = (rs2D == rdW) & RegWriteW & (rdW != 0);
-    
+
 endmodule
