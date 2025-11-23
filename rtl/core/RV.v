@@ -23,7 +23,8 @@ module RV #(
   wire [31:0] InstrF;  // Fetched Instruction
   wire        StallF;  // Stall Fetch
   wire [31:0] PC_IN;  // Next PC
-  wire [31:0] PC_Base, PC_Offset;  // PC Calculation
+  wire [31:0] PC_Offset;  // PC Calculation
+  reg  [31:0] PC_Base;  // PC Calculation
 
   // --- ID Stage (Decode) ---
   wire [31:0] PCD;
@@ -38,14 +39,14 @@ module RV #(
   // Control Signals
   wire RegWriteD, MemtoRegD, MemWriteD;
   wire [1:0] ALUSrcAD, ALUSrcBD;
-  wire [3:0] ALUControlD;
-  wire [1:0] PCSD;
-  wire ComputeResultSelD;
-  wire MCycleResultSelD;
-  wire MCycleStartD;
-  wire [1:0] MCycleOpD;
-  wire [2:0] ImmSrc;
-  wire [2:0] SizeSel;  // For LSU
+  wire [ 3:0] ALUControlD;
+  wire [ 1:0] PCSD;
+  wire        ComputeResultSelD;
+  wire        MCycleResultSelD;
+  wire        MCycleStartD;
+  wire [ 1:0] MCycleOpD;
+  wire [ 2:0] ImmSrc;
+  wire [ 2:0] SizeSel;  // For LSU
 
   // --- EX Stage (Execute) ---
   wire [31:0] PCE;
@@ -53,7 +54,7 @@ module RV #(
   wire [4:0] rs1E, rs2E, rdE;
   wire [2:0] Funct3E;
   // ALU / MCycle Signals
-  wire [31:0] Src_A, Src_B;  // ALU Inputs
+  reg [31:0] Src_A, Src_B;  // ALU Inputs
   reg [31:0] RD1E_Forwarded, RD2E_Forwarded;  // Hazard Mux Outputs
   wire [31:0] ALUResultE;
   wire [ 2:0] ALUFlags;
@@ -106,9 +107,13 @@ module RV #(
 
   // PC Selection Logic
   assign PC_Offset = (PCSrcE[0] == 1) ? ExtImmE : 32'd4;
-  assign PC_Base = (PCSrcE[1] == 1) ? RD1E_Forwarded :  // JALR
-      (PCSrcE[0] == 1) ? PCE :  // Branch/JAL
-      PCF;  // Sequential
+  always @(*) begin
+    case (PCSrcE)
+      2'b10, 2'b11: PC_Base = RD1E_Forwarded;  // JALR
+      2'b01:        PC_Base = PCE;  // Branch/JAL
+      default:      PC_Base = PCF;  // Sequential (2'b00)
+    endcase
+  end
   assign PC_IN = PC_Base + PC_Offset;
 
   // --- Decode Stage Forwarding ---
@@ -125,16 +130,24 @@ module RV #(
 
   // --- Execute Stage Logic ---
 
-  // ALU Source A Mux
-  assign Src_A = (ALUSrcAE == 2'b00) ? RD1E_Forwarded : (ALUSrcAE == 2'b01) ? 32'b0 :  // LUI
-      (ALUSrcAE == 2'b11) ? PCE :  // AUIPC/JAL
-      RD1E_Forwarded;
+  // ALU Muxes
+  always @(*) begin
+    // ALU Source A Mux
+    case (ALUSrcAE)
+      2'b00:   Src_A = RD1E_Forwarded;
+      2'b01:   Src_A = 32'b0;  // LUI
+      2'b11:   Src_A = PCE;  // AUIPC/JAL
+      default: Src_A = RD1E_Forwarded;
+    endcase
 
-  // ALU Source B Mux
-  assign Src_B = (ALUSrcBE == 2'b00) ? RD2E_Forwarded :
-                   (ALUSrcBE == 2'b01) ? 32'd4 :           // JAL/JALR return
-      (ALUSrcBE == 2'b11) ? ExtImmE :  // Immediate
-      RD2E_Forwarded;
+    // ALU Source B Mux
+    case (ALUSrcBE)
+      2'b00:   Src_B = RD2E_Forwarded;
+      2'b01:   Src_B = 32'd4;  // JAL/JALR return
+      2'b11:   Src_B = ExtImmE;  // Immediate
+      default: Src_B = RD2E_Forwarded;
+    endcase
+  end
 
   // Hazard Muxes (Forwarding Logic)
   always @(*) begin

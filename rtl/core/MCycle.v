@@ -1,23 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: NUS
-// Engineer: Shahzor Ahmad, Rajesh C Panicker
-// 
-// Create Date: 27.09.2016 10:59:44
-// Design Name: 
-// Module Name: MCycle
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 /* 
 ----------------------------------------------------------------------------------
 --	(c) Shahzor Ahmad, Rajesh C Panicker
@@ -47,160 +28,160 @@ module MCycle #(
     output reg Busy // Set immediately when Start is set. Cleared when the Results become ready. This bit can be used to stall the processor while multi-cycle operations are on.
 );
 
-    // use the Busy signal to reset WE_PC to 0 in ARM.v (aka "freeze" PC). The two signals are complements of each other
-    // since the IDLE_PROCESS is combinational, instantaneously asserts Busy once Start is asserted
+  // use the Busy signal to reset WE_PC to 0 in ARM.v (aka "freeze" PC). The two signals are complements of each other
+  // since the IDLE_PROCESS is combinational, instantaneously asserts Busy once Start is asserted
 
-    parameter IDLE = 1'b0 ;  // will cause a warning which is ok to ignore - [Synth 8-2507] parameter declaration becomes local in MCycle with formal parameter declaration list...
+  parameter IDLE = 1'b0 ;  // will cause a warning which is ok to ignore - [Synth 8-2507] parameter declaration becomes local in MCycle with formal parameter declaration list...
 
-    parameter COMPUTING = 1'b1;  // this line will also cause the above warning
-    reg state = IDLE;
-    reg n_state = IDLE;
+  parameter COMPUTING = 1'b1;  // this line will also cause the above warning
+  reg state = IDLE;
+  reg n_state = IDLE;
 
-    reg done;
-    reg [7:0] count = 0;  // assuming no computation takes more than 256 cycles.
-    reg [2*width-1:0] temp_sum = 0;
-    reg [2*width-1:0] shifted_op1 = 0;  // for mul(ori)
-    reg [2*width-1:0] shifted_op2 = 0;  // for mul(ori)
-    reg [2*width-1:0] rem = 0;  // remainder (for division)
-    reg [2*width-1:0] div = 0;  // divisor (for division)
-    reg [width-1:0] op1 = 0;  // operand1 after considering sign (for division)
-    reg [width-1:0] op2 = 0;  // operand2 after considering sign (for division)
-    reg [2*width:0] rem_temp = 0;  // to replace sign extension
+  reg done;
+  reg [7:0] count = 0;  // assuming no computation takes more than 256 cycles.
+  reg [2*width-1:0] temp_sum = 0;
+  reg [2*width-1:0] shifted_op1 = 0;  // for mul(ori)
+  reg [2*width-1:0] shifted_op2 = 0;  // for mul(ori)
+  reg [2*width-1:0] rem = 0;  // remainder (for division)
+  reg [2*width-1:0] div = 0;  // divisor (for division)
+  reg [width-1:0] op1 = 0;  // operand1 after considering sign (for division)
+  reg [width-1:0] op2 = 0;  // operand2 after considering sign (for division)
+  reg [2*width:0] rem_temp = 0;  // to replace sign extension
 
-    // Improvements for mul
-    // Booths algo
-    reg [width:0] A;  // accumulator (33 bits to preserve sign)
-    reg [width-1:0] Q;  // multiplier (Operand2)
-    reg [width-1:0] M;  // multiplicand (Operand1)
-    reg Qm;  // Q-1
-    reg correction;
+  // Improvements for mul
+  // Booths algo
+  reg [width:0] A;  // accumulator (33 bits to preserve sign)
+  reg [width-1:0] Q;  // multiplier (Operand2)
+  reg [width-1:0] M;  // multiplicand (Operand1)
+  reg Qm;  // Q-1
+  reg correction;
 
-    always @(state, done, Start, RESET) begin : IDLE_PROCESS
-        // Note : This block uses non-blocking assignments to get around an unpredictable Verilog simulation behaviour.
-        // default outputs
-        Busy <= 1'b0;
-        n_state <= IDLE;
+  always @(state, done, Start, RESET) begin : IDLE_PROCESS
+    // Note : This block uses non-blocking assignments to get around an unpredictable Verilog simulation behaviour.
+    // default outputs
+    Busy <= 1'b0;
+    n_state <= IDLE;
 
-        // reset
-        if (~RESET)
-            case (state)
-                IDLE: begin
-                    if(Start) begin // note: a mealy machine, since output depends on current state (IDLE) & input (Start)
-                        n_state <= COMPUTING;
-                        Busy <= 1'b1;
-                    end
-                end
-                COMPUTING: begin
-                    if (~done) begin
-                        n_state <= COMPUTING;
-                        Busy <= 1'b1;
-                    end
-                end
-            endcase
-    end
-
-
-    always @(posedge CLK) begin : STATE_UPDATE_PROCESS  // state updating
-        state <= n_state;
-    end
-
-
-    always @(posedge CLK) begin : COMPUTING_PROCESS  // process which does the actual computation
-        // n_state == COMPUTING and state == IDLE implies we are just transitioning into COMPUTING
-        if( RESET | (n_state == COMPUTING & state == IDLE) ) begin // 2nd condition is true during the very 1st clock cycle of the multiplication
-            count = 0;
-            temp_sum = 0;
-            op1 = (~MCycleOp[0] && Operand1[width-1]) ? ~Operand1 + 1 : Operand1;  // add one mux
-            op2 = (~MCycleOp[0] && Operand2[width-1]) ? ~Operand2 + 1 : Operand2;  // add one mux
-
-            // we can just do left shift on the div to position and dont have to right align rem
-            div = {op2, {width{1'b0}}};  //left-aligned divisor 
-            rem = {{width{1'b0}}, op1};  //right-aligned remainder (dividend)
-
-            // Multiply (booths)
-            A = 0;
-            M = Operand1;
-            Q = Operand2;
-            Qm = 0;
-            correction = 0;
-
+    // reset
+    if (~RESET)
+      case (state)
+        IDLE: begin
+          if(Start) begin // note: a mealy machine, since output depends on current state (IDLE) & input (Start)
+            n_state <= COMPUTING;
+            Busy <= 1'b1;
+          end
         end
-        ;
-        done <= 1'b0;
+        COMPUTING: begin
+          if (~done) begin
+            n_state <= COMPUTING;
+            Busy <= 1'b1;
+          end
+        end
+      endcase
+  end
 
-        // Multiply (improved)
-        // Booths algo
 
-        if (~MCycleOp[1]) begin  // Multiply booths
-            // TODO: I think the non-blocking done are a bit mess, need to fix, but now it works
-            if (~correction) begin
-                case ({
-                    Q[0], Qm
-                })
-                    2'b01:   A = A + {M[width-1], M};  // accumulator  = accumulator + M(extended) 
-                    2'b10:   A = A - {M[width-1], M};  // accumulator  = accumulator - M(extended)
-                    default: A = A;
-                endcase
+  always @(posedge CLK) begin : STATE_UPDATE_PROCESS  // state updating
+    state <= n_state;
+  end
 
-                // right shift { A , Q , Qm}
-                Qm = Q[0];
-                Q  = {A[0], Q[width-1:1]};  // shift right bring Q[0] as msb
-                A  = {A[width], A[width:1]};  // shift right duplicate msb
 
-                if (count == width - 1) begin
-                    if (MCycleOp[0]) correction = 1'b1;  // unsigned ? extra correction cycle
-                    else done <= 1'b1;
-                end
-                count = count + 1;
-            end else begin  // correction cycle
-                if (Operand2[width-1])  // if multiplier  msb = 1
-                    A = A + {1'b0, M};  // add multiplicand to upper half
-                if (Operand1[width-1]) A = A + {1'b0, Operand2};
+  always @(posedge CLK) begin : COMPUTING_PROCESS  // process which does the actual computation
+    // n_state == COMPUTING and state == IDLE implies we are just transitioning into COMPUTING
+    if( RESET | (n_state == COMPUTING & state == IDLE) ) begin // 2nd condition is true during the very 1st clock cycle of the multiplication
+      count = 0;
+      temp_sum = 0;
+      op1 = (~MCycleOp[0] && Operand1[width-1]) ? ~Operand1 + 1 : Operand1;  // add one mux
+      op2 = (~MCycleOp[0] && Operand2[width-1]) ? ~Operand2 + 1 : Operand2;  // add one mux
 
-                correction = 1'b0;
-                done <= 1'b1;
-            end
-        end  ////////////////////////////////////////////////////
+      // we can just do left shift on the div to position and dont have to right align rem
+      div = {op2, {width{1'b0}}};  //left-aligned divisor 
+      rem = {{width{1'b0}}, op1};  //right-aligned remainder (dividend)
+
+      // Multiply (booths)
+      A = 0;
+      M = Operand1;
+      Q = Operand2;
+      Qm = 0;
+      correction = 0;
+
+    end
+    ;
+    done <= 1'b0;
+
+    // Multiply (improved)
+    // Booths algo
+
+    if (~MCycleOp[1]) begin  // Multiply booths
+      // TODO: I think the non-blocking done are a bit mess, need to fix, but now it works
+      if (~correction) begin
+        case ({
+          Q[0], Qm
+        })
+          2'b01:   A = A + {M[width-1], M};  // accumulator  = accumulator + M(extended) 
+          2'b10:   A = A - {M[width-1], M};  // accumulator  = accumulator - M(extended)
+          default: A = A;
+        endcase
+
+        // right shift { A , Q , Qm}
+        Qm = Q[0];
+        Q  = {A[0], Q[width-1:1]};  // shift right bring Q[0] as msb
+        A  = {A[width], A[width:1]};  // shift right duplicate msb
+
+        if (count == width - 1) begin
+          if (MCycleOp[0]) correction = 1'b1;  // unsigned ? extra correction cycle
+          else done <= 1'b1;
+        end
+        count = count + 1;
+      end else begin  // correction cycle
+        if (Operand2[width-1])  // if multiplier  msb = 1
+          A = A + {1'b0, M};  // add multiplicand to upper half
+        if (Operand1[width-1]) A = A + {1'b0, Operand2};
+
+        correction = 1'b0;
+        done <= 1'b1;
+      end
+    end  ////////////////////////////////////////////////////
 
              //Divide    
-        else begin // Supposed to be Divide. The dummy code below takes 1 cycle to execute, just returns the operands. Change this to signed 
-            //[ if(~MCycleOp[0]) ] and unsigned [ if(MCycleOp[0]) ] division.
+    else begin // Supposed to be Divide. The dummy code below takes 1 cycle to execute, just returns the operands. Change this to signed 
+      //[ if(~MCycleOp[0]) ] and unsigned [ if(MCycleOp[0]) ] division.
 
-            rem_temp = {1'b0, rem} + {1'b0, ~div} + 1'b1;  // subtract divisor from remainder
-            if (rem_temp[2*width] == 1'b1) begin  // negative
-                rem = rem_temp[2*width-1:0];  //add operand2 back to rem
-                temp_sum[width-1 : 0] = {
-                    temp_sum[width-2 : 0], 1'b1
-                };  // quotient bit = 0, shift quotient left
-            end else begin
-                temp_sum[width-1 : 0] = {
-                    temp_sum[width-2 : 0], 1'b0
-                };  // quotient bit = 1, shift quotient left
-            end
+      rem_temp = {1'b0, rem} + {1'b0, ~div} + 1'b1;  // subtract divisor from remainder
+      if (rem_temp[2*width] == 1'b1) begin  // negative
+        rem = rem_temp[2*width-1:0];  //add operand2 back to rem
+        temp_sum[width-1 : 0] = {
+          temp_sum[width-2 : 0], 1'b1
+        };  // quotient bit = 0, shift quotient left
+      end else begin
+        temp_sum[width-1 : 0] = {
+          temp_sum[width-2 : 0], 1'b0
+        };  // quotient bit = 1, shift quotient left
+      end
 
-            div = {1'b0, div[2*width-1 : 1]};  // shift divisor right
-            temp_sum[2*width-1 : width] = rem[width-1 : 0];
+      div = {1'b0, div[2*width-1 : 1]};  // shift divisor right
+      temp_sum[2*width-1 : width] = rem[width-1 : 0];
 
-            if (count == width) begin  // last cycle?
-                done <= 1'b1;
-                // can remove ~MCycleOp[0] as for unsigned, MSB are always 0 
-                if (~MCycleOp[0] && (Operand1[width-1] ^ Operand2[width-1])) // signed and signs of operands are different
-                    temp_sum[width-1 : 0] = ~temp_sum[width-1 : 0] + 1;  // quotient = -quotient
-                if (~MCycleOp[0] && (Operand1[width-1]))  // signed and Operand1 is negative
-                    temp_sum[2*width-1 : width] = ~temp_sum[2*width-1 : width] + 1; // remainder = -remainder
-            end
-            count = count + 1;
-        end
-        ;
-
-        //booths mul
-        if (~MCycleOp[1]) begin  // mul booths
-            Result1 <= Q;  // LSW
-            Result2 <= A[width-1:0];  // MSW
-        end else begin  // divide (original)
-            Result2 <= temp_sum[2*width-1 : width];
-            Result1 <= temp_sum[width-1 : 0];
-        end
+      if (count == width) begin  // last cycle?
+        done <= 1'b1;
+        // can remove ~MCycleOp[0] as for unsigned, MSB are always 0 
+        if (~MCycleOp[0] && (Operand1[width-1] ^ Operand2[width-1])) // signed and signs of operands are different
+          temp_sum[width-1 : 0] = ~temp_sum[width-1 : 0] + 1;  // quotient = -quotient
+        if (~MCycleOp[0] && (Operand1[width-1]))  // signed and Operand1 is negative
+          temp_sum[2*width-1 : width] = ~temp_sum[2*width-1 : width] + 1;  // remainder = -remainder
+      end
+      count = count + 1;
     end
+    ;
+
+    //booths mul
+    if (~MCycleOp[1]) begin  // mul booths
+      Result1 <= Q;  // LSW
+      Result2 <= A[width-1:0];  // MSW
+    end else begin  // divide (original)
+      Result2 <= temp_sum[2*width-1 : width];
+      Result1 <= temp_sum[width-1 : 0];
+    end
+  end
 
 endmodule
