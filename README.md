@@ -16,10 +16,11 @@ The project follows a staged evolution towards high-performance parallel process
 - [ ] **Phase 2: Pipeline & Latency Optimization**
   - Move Branch Logic to Memory (M) Stage to reach 100MHz or above.
   - Optimize Multiply/Divide logic to minimize stall cycles.
+  - Improve the Hazard Unit to prevent extra stalls.
 - [ ] **Phase 3: Advanced Architecture**
   - Dynamic Branch Prediction (BHT/BTB)
   - Superscalar Execution (Dual-issue)
-  - Out-of-Order Execution (Scoreboarding/Tomasulo)
+  - Out-of-Order Execution (The broadcasting diagram on Lec 06)
 - [ ] **Phase 4: The "Hydra"**
   - Simultaneous Multithreading (SMT)
   - Multi-Core Implementation
@@ -54,7 +55,7 @@ To compile the CoreMark benchmark and generate memory initialization files:
 ```bash
 cd sw/apps/coremark
 make
-# Output: coremark.mem (Load this into Vivado Block RAM)
+# Output: data.hex & code.hex (Change name to DMEM.mem aand IROM.mem, then load into Vivado Block RAM)
 ```
 
 ### FPGA Deployment
@@ -62,7 +63,7 @@ make
 1. Open Vivado and create a new project.
 2. Add all files from `rtl/` and `fpga/nexys4/wrapper/`.
 3. Add constraints from `fpga/nexys4/constraints/`.
-4. Update the Block RAM with the generated `.mem` file.
+4. Add the generated `.mem` file as sources for Block RAM initialization.
 5. Generate Bitstream and Program Device.
 
 ## Performance
