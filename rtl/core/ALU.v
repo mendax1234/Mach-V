@@ -9,7 +9,7 @@ module ALU (
 );
 
   // ========================================================================
-  //                          INTERNAL SIGNALS
+  // INTERNAL SIGNALS
   // ========================================================================
   // Shifter Signals
   reg  [ 1:0] Sh;  // Shifter Control: 00:sll, 10:srl, 11:sra
@@ -26,7 +26,7 @@ module ALU (
   reg N, Z, C, V;  // Negative, Zero, Carry, Overflow
 
   // ========================================================================
-  //                          SHIFTER CONTROL
+  // SHIFTER CONTROL
   // ========================================================================
   // Decodes ALUControl to generate Shifter signals
   assign Shamt5 = Src_B[4:0];
@@ -48,7 +48,7 @@ module ALU (
   );
 
   // ========================================================================
-  //                          ALU MAIN LOGIC
+  // ALU MAIN LOGIC
   // ========================================================================
   always @(*) begin
     // --- Operand Preparation (Adder Inputs) ---
