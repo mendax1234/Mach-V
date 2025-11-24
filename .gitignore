@@ -53,4 +53,3 @@ usage_statistics_webtalk.html
 site/
 __pycache__/
 .cache/
-secret.txt
