@@ -42,7 +42,13 @@ usage_statistics_webtalk.html
 # ==========================
 # System & Editor Junk
 # ==========================
+# VSCode
 .DS_Store
 .vscode/
 *.swp
 *~
+
+# MkDocs
+.venv/
+site/
+__pycache__/

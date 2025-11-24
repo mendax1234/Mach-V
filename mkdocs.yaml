@@ -1,0 +1,73 @@
+site_name: Hydra-V Docs
+site_url: https://mendax1234.github.io/Hydra-V/
+repo_url: https://github.com/mendax1234/Hydra-V
+repo_name: mendax1234/Hydra-V
+
+# Theme configuration
+theme:
+  name: material
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Switch to system preference
+  features:
+    - navigation.tabs # Top-level tabs for major sections
+    - navigation.sections # Clean sidebar grouping
+    - navigation.top # "Back to top" button
+    - content.code.copy # Copy button on code blocks
+
+plugins:
+  - search # Required to keep the Search Bar working
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago # "Last Updated" format
+  - git-committers:
+      repository: mendax1234/Hydra-V
+      branch: main
+  - git-authors:
+
+# Extensions essential for Hardware Docs
+markdown_extensions:
+  - admonition # Callout blocks (Notes, Warnings)
+  - pymdownx.details # Collapsible blocks
+  - pymdownx.superfences: # Diagrams (Mermaid)
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight: # Code Highlighting
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.arithmatex: # LaTeX Math support
+      generic: true
+
+# MathJax Setup (Required for rendering Equations)
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+# Navigation Map
+nav:
+  - Home: index.md
+  - Architecture:
+      - Pipeline Design: architecture/pipeline.md
+      - Hazards & Logic: architecture/hazard.md
+  - Verification: sim/simulation.md
+  - User Guide: sw/software.md
