@@ -37,10 +37,7 @@ plugins:
   - git-revision-date-localized:
       enable_creation_date: true
       type: timeago # "Last Updated" format
-  - git-committers:
-      repository: mendax1234/Hydra-V
-      branch: main
-  - git-authors:
+  - git-authors
 
 # Extensions essential for Hardware Docs
 markdown_extensions:
