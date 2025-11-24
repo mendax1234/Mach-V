@@ -31,3 +31,19 @@ git push origin v1.0
 * A new folder `/1.0/` is created in the documentation.
 * The `latest` alias is updated to point to `1.0`.
 * The default landing page is switched to `1.0`.
+
+## 3. PDF / Offline Access
+
+The documentation supports exporting the entire site as a single consolidated PDF using the [`mkdocs-print-site-plugin`](https://timvink.github.io/mkdocs-print-site-plugin/index.html).
+
+**How to access:**
+There is currently no direct icon in the navigation bar. To access the printable version, you must manually navigate to the print page:
+
+1. **Navigate to the Print URL:**
+    Append `/print_page/` (or `print_page.html`) to the end of the current documentation URL.
+    * *Example:* `.../Hydra-V/dev/print_page/`
+
+2. **Save as PDF:**
+    Once the consolidated page loads (containing all documentation chapters), use your browser's print function:
+    * Press `Ctrl + P` (Windows/Linux) or `Cmd + P` (macOS).
+    * Select **"Save as PDF"** as the destination.
