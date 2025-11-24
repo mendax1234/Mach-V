@@ -4,6 +4,9 @@ on:
     branches:
       - master
       - main
+    tags:            # <--- ADD THIS SECTION
+      - 'v*'         # Triggers on tags like v1.0, v0.5, etc.
+
 permissions:
   contents: write
 jobs:
@@ -12,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetches full history for proper dates
+          fetch-depth: 0 
 
       - name: Configure Git Credentials
         run: |
@@ -24,7 +27,6 @@ jobs:
           python-version: 3.x
 
       - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
-
       - uses: actions/cache@v4
         with:
           key: mkdocs-material-${{ env.cache_id }}
@@ -34,7 +36,22 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Build and Deploy
+      - name: Deploy Docs
         env:
           MKDOCS_GIT_COMMITTERS_APIKEY: ${{ secrets.MKDOCS_TOKEN }} 
-        run: mkdocs gh-deploy --force
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            # 1. CLEANUP: Extract "1.0" from "refs/tags/v1.0"
+            VERSION=${GITHUB_REF#refs/tags/v}
+            
+            # 2. RELEASE: Deploy 1.0 and point 'latest' to it
+            echo "🚀 Deploying Release Version: $VERSION"
+            mike deploy --push --update-aliases $VERSION latest
+            
+            # 3. OPTIONAL: Set this as the default page users see
+            mike set-default --push latest
+          else
+            # 4. DEVELOP: Just update the dev preview
+            echo "🛠️ Deploying Dev Version"
+            mike deploy --push --update-aliases dev
+          fi
