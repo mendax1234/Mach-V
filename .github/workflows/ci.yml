@@ -54,4 +54,6 @@ jobs:
             # 4. DEVELOP: Just update the dev preview
             echo "🛠️ Deploying Dev Version"
             mike deploy --push --update-aliases dev
+            # 5. OPTIONAL: Set dev as the default page
+            mike set-default --push dev
           fi
