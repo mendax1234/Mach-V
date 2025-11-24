@@ -1,4 +1,4 @@
-name: ci
+name: ci 
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetches full history (good for "Last Updated" dates)
+          fetch-depth: 0 # Fetches full history for proper dates
 
       - name: Configure Git Credentials
         run: |
@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: 3.x
 
-      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
+      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
 
       - uses: actions/cache@v4
         with:
@@ -32,7 +32,9 @@ jobs:
           restore-keys: |
             mkdocs-material-
 
-      # CHANGED: Use requirements file for consistency
       - run: pip install -r requirements.txt
 
-      - run: mkdocs gh-deploy --force
+      - name: Build and Deploy
+        env:
+          MKDOCS_GIT_COMMITTERS_APIKEY: ${{ secrets.MKDOCS_TOKEN }} 
+        run: mkdocs gh-deploy --force
