@@ -837,7 +837,6 @@
 <li><strong>Solution:</strong> The pipeline <strong>stalls for 1 cycle</strong>.</li>
 <li><strong>Signal:</strong> <code>stall_IF_ID</code> and <code>stall_ID_EX</code> go HIGH; <code>flush_EX</code> goes HIGH.</li>
 </ul>
-<hr />
 <h2 id="control-hazards-branching">Control Hazards (Branching)</h2>
 <p>The pipeline needs to know the next PC address in the Fetch stage, but the Branch/Jump decision is made in the <strong>Execute (EX)</strong> stage.</p>
 <div class="admonition warning">
@@ -852,7 +851,6 @@
 <li>These instructions become <code>NOP</code> (bubbles).</li>
 <li>The PC is updated to the <code>Branch Target</code>.</li>
 </ol>
-<hr />
 <h2 id="verilog-implementation-details">Verilog Implementation Details</h2>
 <p>Here is a snippet of the Forwarding Logic implemented in the Core:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Forwarding Logic for Operand A</span>
@@ -893,7 +891,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 24, 2025 06:06:44 UTC"><span class="timeago" datetime="2025-11-24T06:06:44+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 24, 2025 06:06:44 UTC">2025-11-24</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 24, 2025 06:41:11 UTC"><span class="timeago" datetime="2025-11-24T06:41:11+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 24, 2025 06:41:11 UTC">2025-11-24</span>
   </span>
 
     
