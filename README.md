@@ -55,7 +55,8 @@ To compile the CoreMark benchmark and generate memory initialization files:
 ```bash
 cd sw/apps/coremark
 make
-# Output: data.hex & code.hex (Change name to DMEM.mem aand IROM.mem, then load into Vivado Block RAM)
+# Output: data.hex & code.hex 
+# (Change name to DMEM.mem and IROM.mem, then load into Vivado Block RAM)
 ```
 
 ### FPGA Deployment
