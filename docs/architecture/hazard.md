@@ -22,8 +22,6 @@ Forwarding cannot solve a "Load-Use" hazard because the data comes from Data Mem
 * **Solution:** The pipeline **stalls for 1 cycle**.
 * **Signal:** `stall_IF_ID` and `stall_ID_EX` go HIGH; `flush_EX` goes HIGH.
 
----
-
 ## Control Hazards (Branching)
 
 The pipeline needs to know the next PC address in the Fetch stage, but the Branch/Jump decision is made in the **Execute (EX)** stage.
@@ -39,8 +37,6 @@ If a branch is taken:
 2. The Control Unit asserts `flush_ID` and `flush_EX`.
 3. These instructions become `NOP` (bubbles).
 4. The PC is updated to the `Branch Target`.
-
----
 
 ## Verilog Implementation Details
 
