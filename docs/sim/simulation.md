@@ -39,4 +39,5 @@ To verify the full processor pipeline:
 2. Run the top-level testbench `tb_core.v`.
 3. Observe the `d_mem` and register file changes.
 
-!!! tip "Debugging with Waveforms" If the processor stalls, check the stall_signal and flush lines in the Waveform viewer. A permanent high signal usually indicates a lockup in the Hazard Unit.
+!!! tip
+    "Debugging with Waveforms" If the processor stalls, check the stall_signal and flush lines in the Waveform viewer. A permanent high signal usually indicates a lockup in the Hazard Unit.
