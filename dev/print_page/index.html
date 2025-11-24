@@ -1054,7 +1054,28 @@
 <li>A new folder <code>/1.0/</code> is created in the documentation.</li>
 <li>The <code>latest</code> alias is updated to point to <code>1.0</code>.</li>
 <li>The default landing page is switched to <code>1.0</code>.</li>
-</ul></section></section></div><style>.print-site-enumerate-headings #index > h1:before { content: '1 ' }
+</ul>
+<h2 id="sw-contributing-3-pdf-offline-access">3. PDF / Offline Access</h2>
+<p>The documentation supports exporting the entire site as a single consolidated PDF using the <a href="https://timvink.github.io/mkdocs-print-site-plugin/index.html"><code>mkdocs-print-site-plugin</code></a>.</p>
+<p><strong>How to access:</strong>
+There is currently no direct icon in the navigation bar. To access the printable version, you must manually navigate to the print page:</p>
+<ol>
+<li>
+<p><strong>Navigate to the Print URL:</strong>
+    Append <code>/print_page/</code> (or <code>print_page.html</code>) to the end of the current documentation URL.</p>
+<ul>
+<li><em>Example:</em> <code>.../Hydra-V/dev/print_page/</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Save as PDF:</strong>
+    Once the consolidated page loads (containing all documentation chapters), use your browser's print function:</p>
+<ul>
+<li>Press <code>Ctrl + P</code> (Windows/Linux) or <code>Cmd + P</code> (macOS).</li>
+<li>Select <strong>"Save as PDF"</strong> as the destination.</li>
+</ul>
+</li>
+</ol></section></section></div><style>.print-site-enumerate-headings #index > h1:before { content: '1 ' }
 
                 .print-site-enumerate-headings #index h2:before { content: '1.' counter(counter-index-2) ' ' }
                 .print-site-enumerate-headings #index h2 {  counter-reset: counter-index-3 ;  counter-increment: counter-index-2 }
