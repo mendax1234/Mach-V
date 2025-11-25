@@ -37,7 +37,7 @@ Hydra-V/
 ├── fpga/             # FPGA Implementation
 │   └── nexys4/       # Constraints and Top-Level Wrappers for Nexys 4
 ├── sw/               # CoreMark, OLED Demo, Benchmarks
-└── sim/              # Testbenches and Simulation Waveforms
+└── sim/              # Testbenches and memory initialization files
 ```
 
 ## Quick Start
