@@ -45,48 +45,48 @@ module pipeline_E (
     output reg        ComputeResultSelE
 );
 
-  always @(posedge CLK) begin
-    if (RESET || FlushE) begin
-      PCSE              <= 2'b0;
-      RegWriteE         <= 1'b0;
-      MemtoRegE         <= 1'b0;
-      MemWriteE         <= 1'b0;
-      ALUControlE       <= 4'b0;
-      ALUSrcAE          <= 2'b0;
-      ALUSrcBE          <= 2'b0;
-      RD1E              <= 32'b0;
-      RD2E              <= 32'b0;
-      ExtImmE           <= 32'b0;
-      rs1E              <= 5'b0;
-      rs2E              <= 5'b0;
-      rdE               <= 5'b0;
-      PCE               <= 32'b0;
-      Funct3E           <= 3'b0;
-      MCycleOpE         <= 2'b0;
-      MCycleStartE      <= 1'b0;
-      MCycleResultSelE  <= 1'b0;
-      ComputeResultSelE <= 1'b0;
-    end else if (~Busy) begin
-      PCSE              <= PCSD;
-      RegWriteE         <= RegWriteD;
-      MemtoRegE         <= MemtoRegD;
-      MemWriteE         <= MemWriteD;
-      ALUControlE       <= ALUControlD;
-      ALUSrcAE          <= ALUSrcAD;
-      ALUSrcBE          <= ALUSrcBD;
-      RD1E              <= RD1D;
-      RD2E              <= RD2D;
-      ExtImmE           <= ExtImmD;
-      rs1E              <= rs1D;
-      rs2E              <= rs2D;
-      rdE               <= rdD;
-      PCE               <= PCD;
-      Funct3E           <= Funct3D;
-      MCycleOpE         <= MCycleOpD;
-      MCycleStartE      <= MCycleStartD;
-      MCycleResultSelE  <= MCycleResultSelD;
-      ComputeResultSelE <= ComputeResultSelD;
+    always @(posedge CLK) begin
+        if (RESET || FlushE) begin
+            PCSE              <= 2'b0;
+            RegWriteE         <= 1'b0;
+            MemtoRegE         <= 1'b0;
+            MemWriteE         <= 1'b0;
+            ALUControlE       <= 4'b0;
+            ALUSrcAE          <= 2'b0;
+            ALUSrcBE          <= 2'b0;
+            RD1E              <= 32'b0;
+            RD2E              <= 32'b0;
+            ExtImmE           <= 32'b0;
+            rs1E              <= 5'b0;
+            rs2E              <= 5'b0;
+            rdE               <= 5'b0;
+            PCE               <= 32'b0;
+            Funct3E           <= 3'b0;
+            MCycleOpE         <= 2'b0;
+            MCycleStartE      <= 1'b0;
+            MCycleResultSelE  <= 1'b0;
+            ComputeResultSelE <= 1'b0;
+        end else if (~Busy) begin
+            PCSE              <= PCSD;
+            RegWriteE         <= RegWriteD;
+            MemtoRegE         <= MemtoRegD;
+            MemWriteE         <= MemWriteD;
+            ALUControlE       <= ALUControlD;
+            ALUSrcAE          <= ALUSrcAD;
+            ALUSrcBE          <= ALUSrcBD;
+            RD1E              <= RD1D;
+            RD2E              <= RD2D;
+            ExtImmE           <= ExtImmD;
+            rs1E              <= rs1D;
+            rs2E              <= rs2D;
+            rdE               <= rdD;
+            PCE               <= PCD;
+            Funct3E           <= Funct3D;
+            MCycleOpE         <= MCycleOpD;
+            MCycleStartE      <= MCycleStartD;
+            MCycleResultSelE  <= MCycleResultSelD;
+            ComputeResultSelE <= ComputeResultSelD;
+        end
     end
-  end
 
 endmodule
