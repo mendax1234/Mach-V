@@ -53,15 +53,15 @@ module benchmark_sim ();
     // 2. Main Simulation Thread
     initial begin
         // Initialize all inputs
-        DIP           = 16'd0;
-        PB            = 3'd0;
+        DIP = 16'd0;
+        PB = 3'd0;
         UART_TX_ready = 1'b1;  // Signal that UART is always ready to receive
-        UART_RX       = 8'd0;
+        UART_RX = 8'd0;
         UART_RX_valid = 1'b0;  // We are not sending any data to the CPU
-        ACCEL_Data    = 32'd0;
+        ACCEL_Data = 32'd0;
 
         // Pulse reset to start the CPU
-        RESET         = 1;
+        RESET = 1;
         #50;
         RESET = 0;
 

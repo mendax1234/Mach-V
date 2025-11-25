@@ -55,12 +55,12 @@ module ALU (
         // Default: Positive operands, Carry-in 0
         Src_A_comp = {1'b0, Src_A};
         Src_B_comp = {1'b0, Src_B};
-        C_0        = 33'd0;
+        C_0 = 33'd0;
 
         // If we are subtracting, we need to add the 2's complement: (~B + 1)
         if (ALUControl == 4'b0001 || ALUControl == 4'b0100 || ALUControl == 4'b0110) begin
             Src_B_comp = {1'b0, ~Src_B};  // Invert bits
-            C_0[0]     = 1'b1;  // Add 1 (Carry In)
+            C_0[0] = 1'b1;  // Add 1 (Carry In)
         end
 
         // --- Execute Addition/Subtraction ---
@@ -69,8 +69,8 @@ module ALU (
         // --- Intermediate Flag Calculation ---
         // Determine C and V based on the Adder result
         // Note: These flags are only valid for arithmetic ops, masked later if needed
-        C       = S_wider[32];  // Carry Out
-        V       = (Src_A[31] ^ S_wider[31]) & ~(Src_A[31] ^ Src_B[31] ^ (ALUControl == 4'b0000));
+        C = S_wider[32];  // Carry Out
+        V = (Src_A[31] ^ S_wider[31]) & ~(Src_A[31] ^ Src_B[31] ^ (ALUControl == 4'b0000));
 
         // Overflow = (Src_A and ~Src_B have same sign) AND (Result sign differs)
         if (ALUControl == 4'b0001 || ALUControl == 4'b0100 || ALUControl == 4'b0110) begin
@@ -105,8 +105,8 @@ module ALU (
         endcase
 
         // --- Final Flag Generation ---
-        Z        = (ALUResult == 32'b0);
-        N        = ALUResult[31];
+        Z = (ALUResult == 32'b0);
+        N = ALUResult[31];
 
         // Note: C and V calculated above are raw adder flags. 
         // We strictly only need them for the Branch checks, but we output them generally here.

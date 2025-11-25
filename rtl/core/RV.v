@@ -127,49 +127,49 @@ module RV #(
     // ===========================================================================
 
     // --- Instruction & PC Logic ---
-    assign InstrF    = Instr;
-    assign PC        = PCF;
-    assign WE_PC     = ~Busy;  // Freeze PC if Multi-Cycle Unit is busy
+    assign InstrF = Instr;
+    assign PC = PCF;
+    assign WE_PC = ~Busy;  // Freeze PC if Multi-Cycle Unit is busy
 
     // PC Selection Logic
     assign PC_Offset = (PCSrcE[0] == 1) ? ExtImmE : 32'd4;
     always @(*) begin
         case (PCSrcE)
             2'b10, 2'b11: PC_Base = RD1E_Forwarded;  // JALR
-            2'b01:        PC_Base = PCE;  // Branch/JAL
-            default:      PC_Base = PCF;  // Sequential (2'b00)
+            2'b01: PC_Base = PCE;  // Branch/JAL
+            default: PC_Base = PCF;  // Sequential (2'b00)
         endcase
     end
-    assign PC_IN          = PC_Base + PC_Offset;
+    assign PC_IN = PC_Base + PC_Offset;
 
     // --- Decode Stage Forwarding ---
     assign RD1D_Forwarded = Forward1D ? ResultW : RD1D;
     assign RD2D_Forwarded = Forward2D ? ResultW : RD2D;
 
     // Decoder output splitting
-    assign OpcodeD        = InstrD[6:0];
-    assign rdD            = InstrD[11:7];
-    assign Funct3D        = InstrD[14:12];
-    assign rs1D           = InstrD[19:15];
-    assign rs2D           = InstrD[24:20];
-    assign Funct7D        = InstrD[31:25];
+    assign OpcodeD = InstrD[6:0];
+    assign rdD = InstrD[11:7];
+    assign Funct3D = InstrD[14:12];
+    assign rs1D = InstrD[19:15];
+    assign rs2D = InstrD[24:20];
+    assign Funct7D = InstrD[31:25];
 
     // --- Execute Stage Logic ---
     // ALU Muxes
     always @(*) begin
         // ALU Source A Mux
         case (ALUSrcAE)
-            2'b00:   Src_A = RD1E_Forwarded;
-            2'b01:   Src_A = 32'b0;  // LUI
-            2'b11:   Src_A = PCE;  // AUIPC/JAL
+            2'b00: Src_A = RD1E_Forwarded;
+            2'b01: Src_A = 32'b0;  // LUI
+            2'b11: Src_A = PCE;  // AUIPC/JAL
             default: Src_A = RD1E_Forwarded;
         endcase
 
         // ALU Source B Mux
         case (ALUSrcBE)
-            2'b00:   Src_B = RD2E_Forwarded;
-            2'b01:   Src_B = 32'd4;  // JAL/JALR return
-            2'b11:   Src_B = ExtImmE;  // Immediate
+            2'b00: Src_B = RD2E_Forwarded;
+            2'b01: Src_B = 32'd4;  // JAL/JALR return
+            2'b11: Src_B = ExtImmE;  // Immediate
             default: Src_B = RD2E_Forwarded;
         endcase
     end
@@ -177,39 +177,39 @@ module RV #(
     // Hazard Muxes (Forwarding Logic)
     always @(*) begin
         case (ForwardAE)
-            2'b00:   RD1E_Forwarded = RD1E;
-            2'b01:   RD1E_Forwarded = ResultW;  // Forward from WB
-            2'b10:   RD1E_Forwarded = ComputeResultM;  // Forward from MEM
+            2'b00: RD1E_Forwarded = RD1E;
+            2'b01: RD1E_Forwarded = ResultW;  // Forward from WB
+            2'b10: RD1E_Forwarded = ComputeResultM;  // Forward from MEM
             default: RD1E_Forwarded = RD1E;
         endcase
 
         case (ForwardBE)
-            2'b00:   RD2E_Forwarded = RD2E;
-            2'b01:   RD2E_Forwarded = ResultW;  // Forward from WB
-            2'b10:   RD2E_Forwarded = ComputeResultM;  // Forward from MEM
+            2'b00: RD2E_Forwarded = RD2E;
+            2'b01: RD2E_Forwarded = ResultW;  // Forward from WB
+            2'b10: RD2E_Forwarded = ComputeResultM;  // Forward from MEM
             default: RD2E_Forwarded = RD2E;
         endcase
     end
 
     // Multiply/Divide Unit Result Selection
-    assign MCycleResult   = (MCycleResultSelE) ? MCycleResult_2 : MCycleResult_1;
+    assign MCycleResult = (MCycleResultSelE) ? MCycleResult_2 : MCycleResult_1;
 
     // Final Execute Result Select (ALU vs MCycle)
     assign ComputeResultE = (ComputeResultSelE) ? MCycleResult : ALUResultE;
 
     // Data to be stored (Passes to M stage)
-    assign WriteDataE     = RD2E_Forwarded;
+    assign WriteDataE = RD2E_Forwarded;
 
     // --- Memory Stage Logic ---
-    assign MemRead        = MemtoRegM;  // Simple read enable
+    assign MemRead = MemtoRegM;  // Simple read enable
 
     // Handle Store Data Forwarding (M Stage)
     assign WriteDataM_Raw = ForwardM ? ResultW : WriteDataM;
 
     // --- Writeback Stage Logic ---
-    assign ResultW        = MemtoRegW ? ReadDataW : ComputeResultW;
-    assign WD             = ResultW;  // Data to RegFile
-    assign WE             = RegWriteW;  // WE to RegFile
+    assign ResultW = MemtoRegW ? ReadDataW : ComputeResultW;
+    assign WD = ResultW;  // Data to RegFile
+    assign WE = RegWriteW;  // WE to RegFile
 
     // ===========================================================================
     // MODULE INSTANTIATIONS

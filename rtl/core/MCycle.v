@@ -47,7 +47,7 @@ module MCycle #(
 
     always @(state, done, Start, RESET) begin : IDLE_PROCESS
         // Default values
-        Busy    <= 1'b0;
+        Busy <= 1'b0;
         n_state <= IDLE;
 
         if (~RESET) begin
@@ -55,13 +55,13 @@ module MCycle #(
                 IDLE: begin
                     if (Start) begin
                         n_state <= COMPUTING;
-                        Busy    <= 1'b1;
+                        Busy <= 1'b1;
                     end
                 end
                 COMPUTING: begin
                     if (~done) begin
                         n_state <= COMPUTING;
-                        Busy    <= 1'b1;
+                        Busy <= 1'b1;
                     end
                 end
             endcase
@@ -86,23 +86,23 @@ module MCycle #(
         // This runs at the transition from IDLE to COMPUTING (Cycle 0)
         // It initializes variables, and execution FALLS THROUGH to step 2 immediately.
         if (RESET | (n_state == COMPUTING & state == IDLE)) begin
-            count          = 0;
+            count = 0;
             div_result_buf = 0;
 
             // Handle Signs for Division
-            abs_op1        = (~MCycleOp[0] && Operand1[width-1]) ? ~Operand1 + 1 : Operand1;
-            abs_op2        = (~MCycleOp[0] && Operand2[width-1]) ? ~Operand2 + 1 : Operand2;
+            abs_op1 = (~MCycleOp[0] && Operand1[width-1]) ? ~Operand1 + 1 : Operand1;
+            abs_op2 = (~MCycleOp[0] && Operand2[width-1]) ? ~Operand2 + 1 : Operand2;
 
             // Align Divisor and Remainder
-            div            = {abs_op2, {width{1'b0}}};
-            rem            = {{width{1'b0}}, abs_op1};
+            div = {abs_op2, {width{1'b0}}};
+            rem = {{width{1'b0}}, abs_op1};
 
             // Init Booth's Algo
-            A              = 0;
-            M              = Operand1;
-            Q              = Operand2;
-            Qm             = 0;
-            correction     = 0;
+            A = 0;
+            M = Operand1;
+            Q = Operand2;
+            Qm = 0;
+            correction = 0;
         end
 
         // Reset done flag every cycle (will be set to 1 if finished)
@@ -119,15 +119,15 @@ module MCycle #(
                 case ({
                     Q[0], Qm
                 })
-                    2'b01:   A = A + {M[width-1], M};
-                    2'b10:   A = A - {M[width-1], M};
+                    2'b01: A = A + {M[width-1], M};
+                    2'b10: A = A - {M[width-1], M};
                     default: A = A;
                 endcase
 
                 // Arithmetic Shift Right {A, Q, Qm}
                 Qm = Q[0];
-                Q  = {A[0], Q[width-1:1]};
-                A  = {A[width], A[width:1]};
+                Q = {A[0], Q[width-1:1]};
+                A = {A[width], A[width:1]};
 
                 // Check Termination
                 if (count == width - 1) begin
@@ -150,7 +150,7 @@ module MCycle #(
             if (diff_ext[2*width] == 1'b1) begin
                 // Carry=1 -> Result Positive
                 // Update Rem, Shift 1 into Quotient.
-                rem                       = diff_ext[2*width-1:0];
+                rem = diff_ext[2*width-1:0];
                 div_result_buf[width-1:0] = {div_result_buf[width-2:0], 1'b1};
             end else begin
                 // Carry=0 -> Result Negative

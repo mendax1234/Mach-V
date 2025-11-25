@@ -17,17 +17,17 @@ module pipeline_W (
 
     always @(posedge CLK)
         if (RESET) begin
-            RegWriteW      <= 1'b0;
-            MemtoRegW      <= 1'b0;
-            ReadDataW      <= 32'b0;
+            RegWriteW <= 1'b0;
+            MemtoRegW <= 1'b0;
+            ReadDataW <= 32'b0;
             ComputeResultW <= 32'b0;
-            rdW            <= 5'b0;
+            rdW <= 5'b0;
         end else begin  // do not stall M/W stage for MCycle
-            RegWriteW      <= RegWriteM;
-            MemtoRegW      <= MemtoRegM;
-            ReadDataW      <= ReadDataM;
+            RegWriteW <= RegWriteM;
+            MemtoRegW <= MemtoRegM;
+            ReadDataW <= ReadDataM;
             ComputeResultW <= ComputeResultM;
-            rdW            <= rdM;
+            rdW <= rdM;
         end
 
 endmodule

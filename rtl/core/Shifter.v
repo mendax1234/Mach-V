@@ -95,9 +95,9 @@ module shiftByNPowerOf2
     always @(Sh, ShTempIn, flagShift) begin
         if (flagShift)
             case (Sh)
-                2'b00:   ShTempOut = {ShTempIn[31-2**i:0], {2 ** i{1'b0}}};  // SLL
-                2'b10:   ShTempOut = {{2 ** i{1'b0}}, ShTempIn[31:2**i]};  // SRL    
-                2'b11:   ShTempOut = {{2 ** i{ShTempIn[31]}}, ShTempIn[31:2**i]};  // SRA
+                2'b00: ShTempOut = {ShTempIn[31-2**i:0], {2 ** i{1'b0}}};  // SLL
+                2'b10: ShTempOut = {{2 ** i{1'b0}}, ShTempIn[31:2**i]};  // SRL    
+                2'b11: ShTempOut = {{2 ** i{ShTempIn[31]}}, ShTempIn[31:2**i]};  // SRA
                 //2'b01: ShTempOut = { ShTempIn[2**i-1:0], ShTempIn[31:2**i] } ;  	// ROR is not supported by RISC-V
                 default: ShTempOut = ShTempIn;  // invalid
             endcase

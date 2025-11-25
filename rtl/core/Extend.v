@@ -11,11 +11,11 @@ module Extend (
 
     always @(ImmSrc, InstrImm)
         case (ImmSrc)
-            3'b000:  ExtImm = {InstrImm[31:12], 12'h000};  // U type
-            3'b010:  ExtImm = {{12{InstrImm[31]}}, InstrImm[19:12], InstrImm[20], InstrImm[30:21], 1'b0};  // UJ   
-            3'b011:  ExtImm = {{20{InstrImm[31]}}, InstrImm[31:20]};  // I    
-            3'b110:  ExtImm = {{20{InstrImm[31]}}, InstrImm[31:25], InstrImm[11:7]};  // S    
-            3'b111:  ExtImm = {{20{InstrImm[31]}}, InstrImm[7], InstrImm[30:25], InstrImm[11:8], 1'b0};  // SB    
+            3'b000: ExtImm = {InstrImm[31:12], 12'h000};  // U type
+            3'b010: ExtImm = {{12{InstrImm[31]}}, InstrImm[19:12], InstrImm[20], InstrImm[30:21], 1'b0};  // UJ   
+            3'b011: ExtImm = {{20{InstrImm[31]}}, InstrImm[31:20]};  // I    
+            3'b110: ExtImm = {{20{InstrImm[31]}}, InstrImm[31:25], InstrImm[11:7]};  // S    
+            3'b111: ExtImm = {{20{InstrImm[31]}}, InstrImm[7], InstrImm[30:25], InstrImm[11:8], 1'b0};  // SB    
             default: ExtImm = 32'bx;  // undefined     
         endcase
 

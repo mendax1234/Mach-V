@@ -16,20 +16,20 @@ module PC_Logic (  // This is a combinational module, unlike ARM. See the note b
     // Conditional logic goes here
     always @(*) begin
         case (PCS)
-            2'b00:   PCSrc = 2'b00;  // Non-control -> don't branch
+            2'b00: PCSrc = 2'b00;  // Non-control -> don't branch
             2'b01: begin  // Conditional branch
                 case (Funct3)
-                    3'b000:  PCSrc = {1'b0, ALUFlags[2]};  // beq
-                    3'b001:  PCSrc = {1'b0, ~ALUFlags[2]};  // bne
-                    3'b100:  PCSrc = {1'b0, ALUFlags[1]};  // blt
-                    3'b101:  PCSrc = {1'b0, ~ALUFlags[1]};  // bge
-                    3'b110:  PCSrc = {1'b0, ALUFlags[0]};  // bltu
-                    3'b111:  PCSrc = {1'b0, ~ALUFlags[0]};  // bgeu
+                    3'b000: PCSrc = {1'b0, ALUFlags[2]};  // beq
+                    3'b001: PCSrc = {1'b0, ~ALUFlags[2]};  // bne
+                    3'b100: PCSrc = {1'b0, ALUFlags[1]};  // blt
+                    3'b101: PCSrc = {1'b0, ~ALUFlags[1]};  // bge
+                    3'b110: PCSrc = {1'b0, ALUFlags[0]};  // bltu
+                    3'b111: PCSrc = {1'b0, ~ALUFlags[0]};  // bgeu
                     default: PCSrc = 2'b00;
                 endcase
             end
-            2'b10:   PCSrc = 2'b01;  // jal
-            2'b11:   PCSrc = 2'b11;  // jalr
+            2'b10: PCSrc = 2'b01;  // jal
+            2'b11: PCSrc = 2'b11;  // jalr
             default: PCSrc = 2'b00;
         endcase
     end

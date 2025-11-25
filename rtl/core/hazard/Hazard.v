@@ -48,16 +48,16 @@ module Hazard (
     end
 
     //forwardM for mem-mem copy hazard
-    assign ForwardM  = (rs2M == rdW) && MemWriteM && MemtoRegW && (rdW != 0);
+    assign ForwardM = (rs2M == rdW) && MemWriteM && MemtoRegW && (rdW != 0);
 
     //lwstall load and use hazard 
-    assign lwStall   = ((rs1D == rdE) | (rs2D == rdE)) & MemtoRegE;
-    assign StallF    = lwStall | Busy;
-    assign StallD    = lwStall | Busy;
+    assign lwStall = ((rs1D == rdE) | (rs2D == rdE)) & MemtoRegE;
+    assign StallF = lwStall | Busy;
+    assign StallD = lwStall | Busy;
 
     // flushE and flushD for branch hazard
-    assign FlushE    = lwStall | PCSrcE[0];
-    assign FlushD    = PCSrcE[0];
+    assign FlushE = lwStall | PCSrcE[0];
+    assign FlushD = PCSrcE[0];
 
     // W&D Forwarding
     assign Forward1D = (rs1D == rdW) & RegWriteW & (rdW != 0);

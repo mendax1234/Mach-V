@@ -21,8 +21,8 @@ module LoadStoreUnit (
     reg [3:0] BaseMask;
     always @(*) begin
         case (Funct3)
-            3'b000:  BaseMask = 4'b0001;  // SB
-            3'b001:  BaseMask = 4'b0011;  // SH
+            3'b000: BaseMask = 4'b0001;  // SB
+            3'b001: BaseMask = 4'b0011;  // SH
             default: BaseMask = 4'b1111;  // SW
         endcase
     end
@@ -36,10 +36,10 @@ module LoadStoreUnit (
 
     always @(*) begin
         case (Funct3)
-            3'b000:  loaded_val = {{24{data_shifted[7]}}, data_shifted[7:0]};  // LB
-            3'b001:  loaded_val = {{16{data_shifted[15]}}, data_shifted[15:0]};  // LH
-            3'b100:  loaded_val = {24'b0, data_shifted[7:0]};  // LBU
-            3'b101:  loaded_val = {16'b0, data_shifted[15:0]};  // LHU
+            3'b000: loaded_val = {{24{data_shifted[7]}}, data_shifted[7:0]};  // LB
+            3'b001: loaded_val = {{16{data_shifted[15]}}, data_shifted[15:0]};  // LH
+            3'b100: loaded_val = {24'b0, data_shifted[7:0]};  // LBU
+            3'b101: loaded_val = {16'b0, data_shifted[15:0]};  // LHU
             default: loaded_val = data_shifted;  // LW
         endcase
     end
