@@ -27,12 +27,12 @@ module MCycle #(
   reg [        7:0] count = 0;
 
   // --- Division Variables ---
-  reg [2*width-1:0] temp_sum = 0;
-  reg [2*width-1:0] rem = 0;  // Remainder
-  reg [2*width-1:0] div = 0;  // Divisor
-  reg [  width-1:0] op1 = 0;  // Abs(Operand1)
-  reg [  width-1:0] op2 = 0;  // Abs(Operand2)
-  reg [  2*width:0] rem_temp = 0;  // Temp for subtraction
+  reg [2*width-1:0] div_result_buf = 0;  // Buffer for [Remainder (MSW) | Quotient (LSW)]
+  reg [2*width-1:0] rem = 0;  // Current Remainder (Initialized with Dividend)
+  reg [2*width-1:0] div = 0;  // Current Divisor (Shifted right every cycle)
+  reg [  width-1:0] abs_op1 = 0;  // Absolute value of Dividend (Operand1)
+  reg [  width-1:0] abs_op2 = 0;  // Absolute value of Divisor (Operand2)
+  reg [  2*width:0] diff_ext = 0;  // Extended difference (rem - div) to check Carry bit
 
   // --- Multiplication Variables (Booth's) ---
   reg [    width:0] A;  // Accumulator
@@ -87,15 +87,15 @@ module MCycle #(
     // It initializes variables, and execution FALLS THROUGH to step 2 immediately.
     if (RESET | (n_state == COMPUTING & state == IDLE)) begin
       count = 0;
-      temp_sum = 0;
+      div_result_buf = 0;
 
       // Handle Signs for Division
-      op1 = (~MCycleOp[0] && Operand1[width-1]) ? ~Operand1 + 1 : Operand1;
-      op2 = (~MCycleOp[0] && Operand2[width-1]) ? ~Operand2 + 1 : Operand2;
+      abs_op1 = (~MCycleOp[0] && Operand1[width-1]) ? ~Operand1 + 1 : Operand1;
+      abs_op2 = (~MCycleOp[0] && Operand2[width-1]) ? ~Operand2 + 1 : Operand2;
 
       // Align Divisor and Remainder
-      div = {op2, {width{1'b0}}};
-      rem = {{width{1'b0}}, op1};
+      div = {abs_op2, {width{1'b0}}};
+      rem = {{width{1'b0}}, abs_op1};
 
       // Init Booth's Algo
       A = 0;
@@ -145,33 +145,33 @@ module MCycle #(
     end  // --- Divide (Shift & Subtract) ---
     else begin
       // Subtract divisor from remainder
-      rem_temp = {1'b0, rem} + {1'b0, ~div} + 1'b1;
+      diff_ext = {1'b0, rem} + {1'b0, ~div} + 1'b1;
 
-      if (rem_temp[2*width] == 1'b1) begin
-        // Result Negative: Restore remainder, Shift 0 into Quotient
-        rem = rem_temp[2*width-1:0];
-        temp_sum[width-1:0] = {
-          temp_sum[width-2:0], 1'b1
-        };  // Note: Logic inverted in original? Kept as is.
+      if (diff_ext[2*width] == 1'b1) begin
+        // Carry=1 -> Result Positive
+        // Update Rem, Shift 1 into Quotient.
+        rem = diff_ext[2*width-1:0];
+        div_result_buf[width-1:0] = {div_result_buf[width-2:0], 1'b1};
       end else begin
-        // Result Positive: Keep result, Shift 1 into Quotient
-        temp_sum[width-1:0] = {temp_sum[width-2:0], 1'b0};
+        // Carry=0 -> Result Negative
+        // Restore Rem (do nothing), Shift 0 into Quotient.
+        div_result_buf[width-1:0] = {div_result_buf[width-2:0], 1'b0};
       end
 
       // Shift Divisor Right
       div = {1'b0, div[2*width-1:1]};
 
-      // Update upper half of temp_sum with Remainder
-      temp_sum[2*width-1:width] = rem[width-1:0];
+      // Update upper half of div_result_buf with Remainder
+      div_result_buf[2*width-1:width] = rem[width-1:0];
 
       // Check Termination
       if (count == width) begin
         done <= 1'b1;
         // Sign Correction
         if (~MCycleOp[0] && (Operand1[width-1] ^ Operand2[width-1]))
-          temp_sum[width-1:0] = ~temp_sum[width-1:0] + 1;  // Negate Quotient
+          div_result_buf[width-1:0] = ~div_result_buf[width-1:0] + 1;  // Negate Quotient
         if (~MCycleOp[0] && (Operand1[width-1]))
-          temp_sum[2*width-1:width] = ~temp_sum[2*width-1:width] + 1;  // Negate Remainder
+          div_result_buf[2*width-1:width] = ~div_result_buf[2*width-1:width] + 1;  // Negate Remainder
       end
       count = count + 1;
     end
@@ -183,8 +183,8 @@ module MCycle #(
       Result1 <= Q;  // LSW
       Result2 <= A[width-1:0];  // MSW
     end else begin  // Divide Output
-      Result1 <= temp_sum[width-1:0];  // Quotient
-      Result2 <= temp_sum[2*width-1:width];  // Remainder
+      Result1 <= div_result_buf[width-1:0];  // Quotient
+      Result2 <= div_result_buf[2*width-1:width];  // Remainder
     end
   end
 
