@@ -29,16 +29,25 @@ module RV #(
   // --- ID Stage (Decode) ---
   wire [31:0] PCD;
   wire [31:0] InstrD;
-  wire StallD, FlushD;
-  wire [6:0] OpcodeD, Funct7D;
-  wire [2:0] Funct3D;
-  wire [4:0] rs1D, rs2D, rdD;
-  wire [31:0] RD1D, RD2D;  // Raw Register Data
-  wire [31:0] RD1D_Forwarded, RD2D_Forwarded;  // Data after Decode Forwarding
+  wire        StallD;
+  wire        FlushD;
+  wire [ 6:0] OpcodeD;
+  wire [ 6:0] Funct7D;
+  wire [ 2:0] Funct3D;
+  wire [ 4:0] rs1D;
+  wire [ 4:0] rs2D;
+  wire [ 4:0] rdD;
+  wire [31:0] RD1D;  // Raw Register Data
+  wire [31:0] RD2D;
+  wire [31:0] RD1D_Forwarded;  // Data after Decode Forwarding
+  wire [31:0] RD2D_Forwarded;
   wire [31:0] ExtImmD;
   // Control Signals
-  wire RegWriteD, MemtoRegD, MemWriteD;
-  wire [1:0] ALUSrcAD, ALUSrcBD;
+  wire        RegWriteD;
+  wire        MemtoRegD;
+  wire        MemWriteD;
+  wire [ 1:0] ALUSrcAD;
+  wire [ 1:0] ALUSrcBD;
   wire [ 3:0] ALUControlD;
   wire [ 1:0] PCSD;
   wire        ComputeResultSelD;
@@ -46,23 +55,34 @@ module RV #(
   wire        MCycleStartD;
   wire [ 1:0] MCycleOpD;
   wire [ 2:0] ImmSrc;
-  wire [ 2:0] SizeSel;  // For LSU
+  wire [ 2:0] SizeSel;  // For LoadStore Unit
 
   // --- EX Stage (Execute) ---
   wire [31:0] PCE;
-  wire [31:0] RD1E, RD2E, ExtImmE;
-  wire [4:0] rs1E, rs2E, rdE;
-  wire [2:0] Funct3E;
+  wire [31:0] RD1E;
+  wire [31:0] RD2E;
+  wire [31:0] ExtImmE;
+  wire [ 4:0] rs1E;
+  wire [ 4:0] rs2E;
+  wire [ 4:0] rdE;
+  wire [ 2:0] Funct3E;
   // ALU / MCycle Signals
-  reg [31:0] Src_A, Src_B;  // ALU Inputs
-  reg [31:0] RD1E_Forwarded, RD2E_Forwarded;  // Hazard Mux Outputs
+  reg  [31:0] Src_A;  // ALU Inputs
+  reg  [31:0] Src_B;
+  reg  [31:0] RD1E_Forwarded;  // Hazard Mux Outputs
+  reg  [31:0] RD2E_Forwarded;
   wire [31:0] ALUResultE;
   wire [ 2:0] ALUFlags;
-  wire [31:0] MCycleResult, MCycleResult_1, MCycleResult_2;
+  wire [31:0] MCycleResult;
+  wire [31:0] MCycleResult_1;
+  wire [31:0] MCycleResult_2;
   wire [31:0] ComputeResultE;  // Final result of Execute Stage
   // Control Signals
-  wire RegWriteE, MemtoRegE, MemWriteE;
-  wire [1:0] ALUSrcAE, ALUSrcBE;
+  wire        RegWriteE;
+  wire        MemtoRegE;
+  wire        MemWriteE;
+  wire [ 1:0] ALUSrcAE;
+  wire [ 1:0] ALUSrcBE;
   wire [ 3:0] ALUControlE;
   wire [ 1:0] PCSE;
   wire        ComputeResultSelE;
@@ -77,13 +97,17 @@ module RV #(
   wire [31:0] WriteDataE;  // Data to be written (pre-alignment)
   wire [31:0] WriteDataM;  // Data to be written (at Memory stage)
   wire [31:0] ReadDataM;  // Data read from memory (Aligned)
-  wire RegWriteM, MemtoRegM, MemWriteM;
-  wire [2:0] Funct3M;
-  wire [4:0] rdM, rs2M;
+  wire        RegWriteM;
+  wire        MemtoRegM;
+  wire        MemWriteM;
+  wire [ 2:0] Funct3M;
+  wire [ 4:0] rdM;
+  wire [ 4:0] rs2M;
   wire [31:0] WriteDataM_Raw;  // Before LSU processing
 
   // --- WB Stage (Writeback) ---
-  wire RegWriteW, MemtoRegW;
+  wire        RegWriteW;
+  wire        MemtoRegW;
   wire [31:0] ReadDataW;  // From Memory
   wire [31:0] ComputeResultW;  // From ALU/MCycle
   wire [31:0] ResultW;  // Final Result (The one that goes to RegFile)
@@ -91,10 +115,12 @@ module RV #(
   wire [ 4:0] rdW;
 
   // --- Hazard Unit Signals ---
-  wire [1:0] ForwardAE, ForwardBE;
-  wire ForwardM;
-  wire Forward1D, Forward2D;
-  wire lwStall;
+  wire [ 1:0] ForwardAE;
+  wire [ 1:0] ForwardBE;
+  wire        ForwardM;
+  wire        Forward1D;
+  wire        Forward2D;
+  wire        lwStall;
 
   // ===========================================================================
   // Data Path
