@@ -159,7 +159,7 @@ module MCycle #(
             end
 
             // Shift Divisor Right
-            div                             = {1'b0, div[2*width-1:1]};
+            div = {1'b0, div[2*width-1:1]};
 
             // Update upper half of div_result_buf with Remainder
             div_result_buf[2*width-1:width] = rem[width-1:0];

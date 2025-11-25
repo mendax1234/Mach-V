@@ -86,9 +86,9 @@ module shiftByNPowerOf2
     parameter i = 0
 )  // exponent
 (
-    input [1:0] Sh,
-    input flagShift,
-    input [31:0] ShTempIn,
+    input      [ 1:0] Sh,
+    input             flagShift,
+    input      [31:0] ShTempIn,
     output reg [31:0] ShTempOut
 );
 

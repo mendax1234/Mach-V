@@ -107,11 +107,11 @@ module Decoder (
             // JAL (Jump and Link)
             // ------------------------------------
             7'b1101111: begin
-                PCS = 2'b10;  // JAL
-                RegWrite = 1'b1;
-                ALUSrcA = 2'b11;  // PC
-                ALUSrcB = 2'b01;  // 4
-                ImmSrc = 3'b010;  // J-Type
+                PCS        = 2'b10;  // JAL
+                RegWrite   = 1'b1;
+                ALUSrcA    = 2'b11;  // PC
+                ALUSrcB    = 2'b01;  // 4
+                ImmSrc     = 3'b010;  // J-Type
                 ALUControl = 4'b0000;  // PC + 4 (Actually handled by dedicated adder, but ALU setup safely)
             end
 

@@ -1,18 +1,18 @@
 `timescale 1ns / 1ps
 
 module pipeline_W (
-    input CLK,
-    input RESET,
-    input RegWriteM,
-    input MemtoRegM,
-    input [31:0] ReadDataM,
-    input [31:0] ComputeResultM,
-    input [4:0] rdM,
-    output reg RegWriteW,
-    output reg MemtoRegW,
+    input             CLK,
+    input             RESET,
+    input             RegWriteM,
+    input             MemtoRegM,
+    input      [31:0] ReadDataM,
+    input      [31:0] ComputeResultM,
+    input      [ 4:0] rdM,
+    output reg        RegWriteW,
+    output reg        MemtoRegW,
     output reg [31:0] ReadDataW,
     output reg [31:0] ComputeResultW,
-    output reg [4:0] rdW
+    output reg [ 4:0] rdW
 );
 
     always @(posedge CLK)

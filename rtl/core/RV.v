@@ -182,7 +182,7 @@ module RV #(
             2'b10:   RD1E_Forwarded = ComputeResultM;  // Forward from MEM
             default: RD1E_Forwarded = RD1E;
         endcase
-        
+
         case (ForwardBE)
             2'b00:   RD2E_Forwarded = RD2E;
             2'b01:   RD2E_Forwarded = ResultW;  // Forward from WB
