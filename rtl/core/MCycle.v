@@ -40,6 +40,7 @@ module MCycle #(
     reg [  width-1:0] M;  // Multiplicand
     reg               Qm;  // Q[-1]
     reg               correction;  // Unsigned correction flag
+    reg [        1:0] booth_bits;  // Helper signal for Booth's logic
 
     // ========================================================================
     // FSM: State Transition (Combinational)
@@ -103,6 +104,7 @@ module MCycle #(
             Q = Operand2;
             Qm = 0;
             correction = 0;
+            booth_bits = 0;
         end
 
         // Reset done flag every cycle (will be set to 1 if finished)
@@ -116,9 +118,8 @@ module MCycle #(
         if (~MCycleOp[1]) begin
             if (~correction) begin
                 // Booth's Add/Sub Step
-                case ({
-                    Q[0], Qm
-                })
+                booth_bits = {Q[0], Qm};
+                case (booth_bits)
                     2'b01: A = A + {M[width-1], M};
                     2'b10: A = A - {M[width-1], M};
                     default: A = A;

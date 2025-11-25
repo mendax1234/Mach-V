@@ -7,7 +7,7 @@ module pipeline_D (
     input             FlushD,
     input      [31:0] InstrF,
     input      [31:0] PCF,
-    output reg [31:0] InstrD
+    output reg [31:0] InstrD,
     output reg [31:0] PCD
 );
 
