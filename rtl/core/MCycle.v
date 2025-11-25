@@ -144,7 +144,7 @@ module MCycle #(
                 done <= 1'b1;
             end
         end  // --- Divide (Shift & Subtract) ---
-    else begin
+        else begin
             // Subtract divisor from remainder
             diff_ext = {1'b0, rem} + {1'b0, ~div} + 1'b1;
 
