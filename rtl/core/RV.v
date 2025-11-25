@@ -414,6 +414,7 @@ module RV #(
         .MemtoRegE(MemtoRegE),
         .Busy     (Busy),
         .PCSrcE   (PCSrcE),
+        .OpcodeD  (OpcodeD),
         // Outputs
         .ForwardAE(ForwardAE),
         .ForwardBE(ForwardBE),
