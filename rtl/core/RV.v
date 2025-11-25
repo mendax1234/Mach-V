@@ -129,7 +129,6 @@ module RV #(
   assign Funct7D = InstrD[31:25];
 
   // --- Execute Stage Logic ---
-
   // ALU Muxes
   always @(*) begin
     // ALU Source A Mux
@@ -166,10 +165,10 @@ module RV #(
     endcase
   end
 
-  // Multi-Cycle Result Selection
+  // Multiply/Divide Unit Result Selection
   assign MCycleResult = (MCycleResultSelE) ? MCycleResult_2 : MCycleResult_1;
 
-  // Final Execute Result Select (ALU vs Multi-Cycle)
+  // Final Execute Result Select (ALU vs MCycle)
   assign ComputeResultE = (ComputeResultSelE) ? MCycleResult : ALUResultE;
 
   // Data to be stored (Passes to M stage)
@@ -179,7 +178,6 @@ module RV #(
   assign MemRead = MemtoRegM;  // Simple read enable
 
   // Handle Store Data Forwarding (M Stage)
-  // Note: The shifting/masking is now inside LoadStoreUnit
   assign WriteDataM_Raw = ForwardM ? ResultW : WriteDataM;
 
   // --- Writeback Stage Logic ---
