@@ -15,7 +15,7 @@ The project follows a staged evolution towards high-performance parallel process
   - Verified with **CoreMark** Benchmark
 - [ ] **Phase 2: Pipeline & Latency Optimization**
   - Move Branch Logic to Memory (M) Stage to reach 100MHz or above.
-  - Optimize Multiply/Divide logic to minimize stall cycles.
+  - Optimize Multiply/Divide logic to minimize stall cycles. (Use fast multiplier and non-restoring division)
   - Improve the Hazard Unit to prevent extra stalls.
 - [ ] **Phase 3: Advanced Architecture**
   - Dynamic Branch Prediction (BHT/BTB)
