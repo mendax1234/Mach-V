@@ -14,3 +14,8 @@ assignees: ''
 
 *To implement/fix/refactor...*
 
+## Definition of Done
+
+- [ ] Implementation completed.
+- [ ] Verified in simulation/testbench.
+- [ ] **Documentation updated** (Architecture spec or Readme).
