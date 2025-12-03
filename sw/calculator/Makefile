@@ -30,7 +30,7 @@ CFLAGS = \
 ASFLAGS = -march=rv32im -mabi=ilp32
 
 # --- Files ---
-SRCS = main.c
+SRCS = uart_calculator.c
 OBJS = $(SRCS:.c=.o)
 CRTASM = crt.s
 CRTOBJ = crt.o
