@@ -57,6 +57,9 @@ plugins:
       repository: mendax1234/Hydra-V
       branch: main
   - print-site
+  - optimize:         # Compresses all images for faster loading
+      enabled: true
+      cache: true     # Speeds up future builds by not re-doing unchanged images
 
 # ==============================================================================
 # 4. MARKDOWN EXTENSIONS
