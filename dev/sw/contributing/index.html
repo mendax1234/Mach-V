@@ -96,7 +96,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Hydra-V Docs" class="md-header__button md-logo" aria-label="Hydra-V Docs" data-md-component="logo">
       
@@ -221,14 +223,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -316,7 +312,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -797,24 +799,77 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../software/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    User Guide
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
                   
 
 
   
+    <a href="https://github.com/mendax1234/Hydra-V/edit/main/docs/sw/contributing.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
   
 
 
-<h1 id="documentation-workflow">Documentation Workflow</h1>
+<h1 id="documentation-workflow">Documentation Workflow<a class="headerlink" href="#documentation-workflow" title="Permanent link">&para;</a></h1>
 <p>The Hydra-V documentation uses <a href="https://github.com/jimporter/mike">mike</a> to manage multiple versions (e.g., <code>1.0</code>, <code>dev</code>). This process is automated via GitHub Actions.</p>
-<h2 id="1-daily-development-dev">1. Daily Development (<code>dev</code>)</h2>
+<h2 id="1-daily-development-dev">1. Daily Development (<code>dev</code>)<a class="headerlink" href="#1-daily-development-dev" title="Permanent link">&para;</a></h2>
 <p>Any commit pushed to the <code>main</code> branch automatically triggers a deployment to the <strong>dev</strong> version.</p>
 <ul>
 <li><strong>URL:</strong> <code>.../Hydra-V/dev/</code></li>
 <li><strong>Behavior:</strong> This version is mutable. New pushes overwrite the previous <code>dev</code> content.</li>
 </ul>
-<h2 id="2-publishing-a-release-vxx">2. Publishing a Release (<code>vX.X</code>)</h2>
+<h2 id="2-publishing-a-release-vxx">2. Publishing a Release (<code>vX.X</code>)<a class="headerlink" href="#2-publishing-a-release-vxx" title="Permanent link">&para;</a></h2>
 <p>To "freeze" the documentation for a specific processor version (e.g., when Version 1.0 RTL is complete), use <strong>Git Tags</strong>. The CI pipeline detects tags starting with <code>v</code> and creates a permanent documentation snapshot.</p>
 <p><strong>Steps to release:</strong></p>
 <ol>
@@ -822,18 +877,18 @@
 <li>Tag the commit with the version number (e.g., <code>v1.0</code>).</li>
 <li>Push the tag to GitHub.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Example: Releasing Version 1.0</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;Finalize RTL and Docs for v1.0&quot;</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>git<span class="w"> </span>tag<span class="w"> </span>v1.0
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v1.0
-</code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Example: Releasing Version 1.0</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;Finalize RTL and Docs for v1.0&quot;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>git<span class="w"> </span>tag<span class="w"> </span>v1.0
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v1.0
+</span></code></pre></div>
 <p><strong>Results:</strong></p>
 <ul>
 <li>A new folder <code>/1.0/</code> is created in the documentation.</li>
 <li>The <code>latest</code> alias is updated to point to <code>1.0</code>.</li>
 <li>The default landing page is switched to <code>1.0</code>.</li>
 </ul>
-<h2 id="3-pdf-offline-access">3. PDF / Offline Access</h2>
+<h2 id="3-pdf-offline-access">3. PDF / Offline Access<a class="headerlink" href="#3-pdf-offline-access" title="Permanent link">&para;</a></h2>
 <p>The documentation supports exporting the entire site as a single consolidated PDF using the <a href="https://timvink.github.io/mkdocs-print-site-plugin/index.html"><code>mkdocs-print-site-plugin</code></a>.</p>
 <p><strong>How to access:</strong>
 There is currently no direct icon in the navigation bar. To access the printable version, you must manually navigate to the print page:</p>
@@ -939,6 +994,30 @@ There is currently no direct icon in the navigation bar. To access the printable
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../software/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Benchmark &amp; OLED">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Benchmark & OLED
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -964,7 +1043,7 @@ There is currently no direct icon in the navigation bar. To access the printable
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "dev", "provider": "mike"}}</script>
     
     
       <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
