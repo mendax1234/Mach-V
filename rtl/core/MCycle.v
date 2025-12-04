@@ -6,8 +6,7 @@ module Multiplier32x8 (
     output [39:0] Product  // Result (32 + 8 = 40 bits max)
 );
 
-    // Generate Partial Products
-    // If B[i] is 1, take (A << i). If 0, take 0.
+    // // Generate Partial Products (Shift A based on bit position of B)
     wire [39:0] pp0 = B[0] ? {8'b0, A} : 40'b0;
     wire [39:0] pp1 = B[1] ? {7'b0, A, 1'b0} : 40'b0;
     wire [39:0] pp2 = B[2] ? {6'b0, A, 2'b0} : 40'b0;
@@ -96,12 +95,21 @@ module MCycle #(
     reg  [2*width-1:0] div = 0;  // Current Divisor (Shifted right every cycle)
     reg  [  width-1:0] abs_op1 = 0;  // Absolute value of Dividend (Operand1)
     reg  [  width-1:0] abs_op2 = 0;  // Absolute value of Divisor (Operand2)
-    reg  [  2*width:0] diff_ext = 0;  // Extended difference (rem - div) to check Carry bit
 
-    // --- Division Slice Instantiation ---
+    // --- Multiplication Variables ---
+    reg  [2*width-1:0] mult_acc;  // 64-bit Accumulator
+    reg  [2*width-1:0] final_product;
+    reg  [        7:0] current_byte_op2;
+
+    // --- Sub-Module Connections ---
     wire [2*width-1:0] next_rem;
     wire [2*width-1:0] next_div;
     wire [  width-1:0] next_quot;
+    wire [       39:0] partial_product_out;
+
+    // ========================================================================
+    // Sub-Module Instantiation
+    // ========================================================================
 
     DivSlice8 div_unit (
         .rem_in  (rem),
@@ -112,17 +120,6 @@ module MCycle #(
         .quot_out(next_quot)
     );
 
-    // --- Multiplication Variables ---
-    reg  [2*width-1:0] mult_acc;  // 64-bit Accumulator
-    reg  [2*width-1:0] final_product;
-
-    // Signals for the Sub-Module
-    reg  [        7:0] current_byte_op2;
-    wire [       39:0] partial_product_out;
-
-    // ========================================================================
-    // Sub-Module Instantiation (Multiplier32x8)
-    // ========================================================================
     Multiplier32x8 mul_unit (
         .A      (abs_op1),
         .B      (current_byte_op2),
@@ -183,7 +180,7 @@ module MCycle #(
             abs_op2 = (~MCycleOp[0] && Operand2[width-1]) ? ~Operand2 + 1 : Operand2;
 
             // Align Divisor and Remainder
-            div = {1'b0, abs_op2, {(width-1){1'b0}}};
+            div = {1'b0, abs_op2, {(width - 1) {1'b0}}};
             rem = {{width{1'b0}}, abs_op1};
         end
 
@@ -203,7 +200,7 @@ module MCycle #(
         // Arithmetic Phase
         // ----------------------------------------
 
-        // --- Multiply (Booth's Algorithm) ---
+        // --- Multiply ---
         if (~MCycleOp[1]) begin
             // Add the result of the combinational multiplier to the accumulator.
             if (count > 0) begin
