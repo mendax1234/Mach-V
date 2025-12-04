@@ -22,6 +22,47 @@ module Multiplier32x8 (
 
 endmodule
 
+module DivSlice8 #(
+    parameter width = 32
+) (
+    input      [2*width-1:0] rem_in,   // Current Remainder
+    input      [2*width-1:0] div_in,   // Current Divisor
+    input      [  width-1:0] quot_in,  // Current Quotient (LSW of buffer)
+    output reg [2*width-1:0] rem_out,  // Next Remainder
+    output reg [2*width-1:0] div_out,  // Next Divisor
+    output reg [  width-1:0] quot_out  // Next Quotient
+);
+
+    integer             i;
+    reg     [2*width:0] diff_ext;  // Temporary variable for subtraction
+
+    always @(*) begin
+        // Initialize temporary variables with inputs
+        rem_out = rem_in;
+        div_out = div_in;
+        quot_out = quot_in;
+
+        // Perform 8 iterations of division logic (Combinational Loop)
+        for (i = 0; i < 8; i = i + 1) begin
+            // 1. Subtract: Remainder - Divisor
+            diff_ext = {1'b0, rem_out} + {1'b0, ~div_out} + 1'b1;
+
+            // 2. Check Sign
+            if (diff_ext[2*width] == 1'b1) begin
+                // Result Positive: Update Remainder, Shift 1 into Quotient
+                rem_out = diff_ext[2*width-1:0];
+                quot_out = {quot_out[width-2:0], 1'b1};
+            end else begin
+                // Result Negative: Keep Remainder, Shift 0 into Quotient
+                quot_out = {quot_out[width-2:0], 1'b0};
+            end
+
+            // 3. Shift Divisor Right for the next step
+            div_out = {1'b0, div_out[2*width-1:1]};
+        end
+    end
+endmodule
+
 module MCycle #(
     parameter width = 32
 ) (
@@ -55,6 +96,20 @@ module MCycle #(
     reg  [  width-1:0] abs_op1 = 0;  // Absolute value of Dividend (Operand1)
     reg  [  width-1:0] abs_op2 = 0;  // Absolute value of Divisor (Operand2)
     reg  [  2*width:0] diff_ext = 0;  // Extended difference (rem - div) to check Carry bit
+
+    // --- Division Slice Instantiation ---
+    wire [2*width-1:0] next_rem;
+    wire [2*width-1:0] next_div;
+    wire [  width-1:0] next_quot;
+
+    DivSlice8 div_unit (
+        .rem_in  (rem),
+        .div_in  (div),
+        .quot_in (div_result_buf[width-1:0]),
+        .rem_out (next_rem),
+        .div_out (next_div),
+        .quot_out(next_quot)
+    );
 
     // --- Multiplication Variables ---
     reg  [2*width-1:0] mult_acc;  // 64-bit Accumulator
@@ -170,35 +225,22 @@ module MCycle #(
             count = count + 1;
         end  // --- Divide (Shift & Subtract) ---
         else begin
-            // Subtract divisor from remainder
-            diff_ext = {1'b0, rem} + {1'b0, ~div} + 1'b1;
-
-            if (diff_ext[2*width] == 1'b1) begin
-                // Carry=1 -> Result Positive
-                // Update Rem, Shift 1 into Quotient.
-                rem = diff_ext[2*width-1:0];
-                div_result_buf[width-1:0] = {div_result_buf[width-2:0], 1'b1};
-            end else begin
-                // Carry=0 -> Result Negative
-                // Restore Rem (do nothing), Shift 0 into Quotient.
-                div_result_buf[width-1:0] = {div_result_buf[width-2:0], 1'b0};
+            if (count > 0) begin
+                rem = next_rem;
+                div = next_div;
+                div_result_buf[width-1:0] = next_quot;
+                div_result_buf[2*width-1:width] = rem[width-1:0];
             end
 
-            // Shift Divisor Right
-            div = {1'b0, div[2*width-1:1]};
-
-            // Update upper half of div_result_buf with Remainder
-            div_result_buf[2*width-1:width] = rem[width-1:0];
-
-            // Check Termination
-            if (count == width) begin
+            if (count == 4) begin
                 done <= 1'b1;
                 // Sign Correction
                 if (~MCycleOp[0] && (Operand1[width-1] ^ Operand2[width-1]))
-                    div_result_buf[width-1:0] = ~div_result_buf[width-1:0] + 1;  // Negate Quotient
+                    div_result_buf[width-1:0] = ~div_result_buf[width-1:0] + 1;
                 if (~MCycleOp[0] && (Operand1[width-1]))
-                    div_result_buf[2*width-1:width] = ~div_result_buf[2*width-1:width] + 1;  // Negate Remainder
+                    div_result_buf[2*width-1:width] = ~div_result_buf[2*width-1:width] + 1;
             end
+            
             count = count + 1;
         end
 
