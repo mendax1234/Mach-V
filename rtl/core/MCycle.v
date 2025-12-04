@@ -1,5 +1,27 @@
 `timescale 1ns / 1ps
 
+module Multiplier32x8 (
+    input  [31:0] A,       // The 32-bit full operand
+    input  [ 7:0] B,       // The 8-bit slice
+    output [39:0] Product  // Result (32 + 8 = 40 bits max)
+);
+
+    // Generate Partial Products
+    // If B[i] is 1, take (A << i). If 0, take 0.
+    wire [39:0] pp0 = B[0] ? {8'b0, A} : 40'b0;
+    wire [39:0] pp1 = B[1] ? {7'b0, A, 1'b0} : 40'b0;
+    wire [39:0] pp2 = B[2] ? {6'b0, A, 2'b0} : 40'b0;
+    wire [39:0] pp3 = B[3] ? {5'b0, A, 3'b0} : 40'b0;
+    wire [39:0] pp4 = B[4] ? {4'b0, A, 4'b0} : 40'b0;
+    wire [39:0] pp5 = B[5] ? {3'b0, A, 5'b0} : 40'b0;
+    wire [39:0] pp6 = B[6] ? {2'b0, A, 6'b0} : 40'b0;
+    wire [39:0] pp7 = B[7] ? {1'b0, A, 7'b0} : 40'b0;
+
+    // Sum them up (Tree adder is faster, but this simple chain works also)
+    assign Product = pp0 + pp1 + pp2 + pp3 + pp4 + pp5 + pp6 + pp7;
+
+endmodule
+
 module MCycle #(
     parameter width = 32
 ) (
@@ -21,26 +43,35 @@ module MCycle #(
     localparam IDLE = 1'b0;
     localparam COMPUTING = 1'b1;
 
-    reg               state = IDLE;
-    reg               n_state = IDLE;
-    reg               done;
-    reg [        7:0] count = 0;
+    reg                state = IDLE;
+    reg                n_state = IDLE;
+    reg                done;
+    reg  [        7:0] count = 0;
 
     // --- Division Variables ---
-    reg [2*width-1:0] div_result_buf = 0;  // Buffer for [Remainder (MSW) | Quotient (LSW)]
-    reg [2*width-1:0] rem = 0;  // Current Remainder (Initialized with Dividend)
-    reg [2*width-1:0] div = 0;  // Current Divisor (Shifted right every cycle)
-    reg [  width-1:0] abs_op1 = 0;  // Absolute value of Dividend (Operand1)
-    reg [  width-1:0] abs_op2 = 0;  // Absolute value of Divisor (Operand2)
-    reg [  2*width:0] diff_ext = 0;  // Extended difference (rem - div) to check Carry bit
+    reg  [2*width-1:0] div_result_buf = 0;  // Buffer for [Remainder (MSW) | Quotient (LSW)]
+    reg  [2*width-1:0] rem = 0;  // Current Remainder (Initialized with Dividend)
+    reg  [2*width-1:0] div = 0;  // Current Divisor (Shifted right every cycle)
+    reg  [  width-1:0] abs_op1 = 0;  // Absolute value of Dividend (Operand1)
+    reg  [  width-1:0] abs_op2 = 0;  // Absolute value of Divisor (Operand2)
+    reg  [  2*width:0] diff_ext = 0;  // Extended difference (rem - div) to check Carry bit
 
-    // --- Multiplication Variables (Booth's) ---
-    reg [    width:0] A;  // Accumulator
-    reg [  width-1:0] Q;  // Multiplier
-    reg [  width-1:0] M;  // Multiplicand
-    reg               Qm;  // Q[-1]
-    reg               correction;  // Unsigned correction flag
-    reg [        1:0] booth_bits;  // Helper signal for Booth's logic
+    // --- Multiplication Variables ---
+    reg  [2*width-1:0] mult_acc;  // 64-bit Accumulator
+    reg  [2*width-1:0] final_product;
+
+    // Signals for the Sub-Module
+    reg  [        7:0] current_byte_op2;
+    wire [       39:0] partial_product_out;
+
+    // ========================================================================
+    // Sub-Module Instantiation (Multiplier32x8)
+    // ========================================================================
+    Multiplier32x8 mul_unit (
+        .A      (abs_op1),
+        .B      (current_byte_op2),
+        .Product(partial_product_out)
+    );
 
     // ========================================================================
     // FSM: State Transition (Combinational)
@@ -89,6 +120,7 @@ module MCycle #(
         if (RESET | (n_state == COMPUTING & state == IDLE)) begin
             count = 0;
             div_result_buf = 0;
+            mult_acc = 0;
 
             // Handle Signs for Division
             abs_op1 = (~MCycleOp[0] && Operand1[width-1]) ? ~Operand1 + 1 : Operand1;
@@ -97,15 +129,16 @@ module MCycle #(
             // Align Divisor and Remainder
             div = {abs_op2, {width{1'b0}}};
             rem = {{width{1'b0}}, abs_op1};
-
-            // Init Booth's Algo
-            A = 0;
-            M = Operand1;
-            Q = Operand2;
-            Qm = 0;
-            correction = 0;
-            booth_bits = 0;
         end
+
+        // --- Logic Selection ---
+        // Prepare input for Multiplier Module (Select Byte based on Count)
+        case (count[1:0])
+            2'b00: current_byte_op2 = abs_op2[7:0];
+            2'b01: current_byte_op2 = abs_op2[15:8];
+            2'b10: current_byte_op2 = abs_op2[23:16];
+            2'b11: current_byte_op2 = abs_op2[31:24];
+        endcase
 
         // Reset done flag every cycle (will be set to 1 if finished)
         done <= 1'b0;
@@ -116,33 +149,25 @@ module MCycle #(
 
         // --- Multiply (Booth's Algorithm) ---
         if (~MCycleOp[1]) begin
-            if (~correction) begin
-                // Booth's Add/Sub Step
-                booth_bits = {Q[0], Qm};
-                case (booth_bits)
-                    2'b01: A = A + {M[width-1], M};
-                    2'b10: A = A - {M[width-1], M};
-                    default: A = A;
+            // Add the result of the combinational multiplier to the accumulator.
+            if (count > 0) begin
+                // Start accumulating from Cycle 1 as abs_op1 and abs_op2
+                // are available from Cycle 1, so Cycle 0 does nothing
+                case (count)
+                    1: mult_acc = mult_acc + partial_product_out;
+                    2: mult_acc = mult_acc + (partial_product_out << 8);
+                    3: mult_acc = mult_acc + (partial_product_out << 16);
+                    4: mult_acc = mult_acc + (partial_product_out << 24);
                 endcase
-
-                // Arithmetic Shift Right {A, Q, Qm}
-                Qm = Q[0];
-                Q = {A[0], Q[width-1:1]};
-                A = {A[width], A[width:1]};
-
-                // Check Termination
-                if (count == width - 1) begin
-                    if (MCycleOp[0]) correction = 1'b1;  // Need extra cycle for Unsigned
-                    else done <= 1'b1;
-                end
-                count = count + 1;
-            end else begin
-                // Correction Cycle (for Unsigned Mul)
-                if (Operand2[width-1]) A = A + {1'b0, M};
-                if (Operand1[width-1]) A = A + {1'b0, Operand2};
-                correction = 1'b0;
-                done <= 1'b1;
             end
+
+            if (count == 4) begin
+                done <= 1'b1;
+                // Sign Correction
+                if (~MCycleOp[0] && (Operand1[width-1] ^ Operand2[width-1])) final_product = ~mult_acc + 1;
+                else final_product = mult_acc;
+            end
+            count = count + 1;
         end  // --- Divide (Shift & Subtract) ---
         else begin
             // Subtract divisor from remainder
@@ -181,8 +206,8 @@ module MCycle #(
         // Output Phase
         // ----------------------------------------
         if (~MCycleOp[1]) begin  // Multiply Output
-            Result1 <= Q;  // LSW
-            Result2 <= A[width-1:0];  // MSW
+            Result1 <= final_product[width-1:0];
+            Result2 <= final_product[2*width-1:width];
         end else begin  // Divide Output
             Result1 <= div_result_buf[width-1:0];  // Quotient
             Result2 <= div_result_buf[2*width-1:width];  // Remainder
