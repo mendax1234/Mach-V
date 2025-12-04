@@ -1,24 +1,4 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 15.10.2025 11:35:57
-// Design Name: 
-// Module Name: uart_top_sim
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module uart_top_sim(
 );
@@ -107,73 +87,55 @@ module uart_top_sim(
 
         #100;
         
-//        // ---- test subtract 9 - 5 ----
-//        send_uart("s", 32'd9, 32'd5);
-//        #150;
-//        $display("SUB 9-5 = %0d (0x%h)", dut.ComputeResult, dut.ComputeResult);
+       // ---- Test SUB 9 - 5 ----
+       send_uart("s", 32'd9, 32'd5);
+       #150;
+       $display("SUB 9-5 = %0d (0x%h)", dut.ComputeResult, dut.ComputeResult);
 
-        // ---- test divide 14 / 2 ----
+        // ---- Test DIV 14 / 2 ----
         send_uart("d", 32'd14, 32'd2);
         #150;
         $display("DIV 14 / 2 = 0x%h (Expect 0x00000007)", dut.ComputeResult);
         
-        // ---- Test DIVU (Unsigned Division) ----
+        // ---- Test DIVU 0x80000000 / 2 ----
         send_uart("D", 32'h80000000, 32'd2);
         #150;
         $display("DIVU 0x80000000 / 2 = 0x%h (Expect 0x40000000)", dut.ComputeResult);
 
 
-        // ---- Test REM (Signed Remainder) ----
-        // Scenario: -14 % 3
-        // Math: -14 = (-4 * 3) - 2. The remainder matches the sign of the Dividend (Op1).
-        // Op1: -14 (0xFFFFFFF2)
-        // Op2: 3
-        // Result: -2 (0xFFFFFFFE)
+        // ---- Test REM -14 % 3  ----
         send_uart("r", -32'd14, 32'd3);
         #150;
         $display("REM -14 %% 3 = %0d (Expect -2, Hex: FFFFFFFE)", $signed(dut.ComputeResult));
 
 
-        // ---- Test REMU (Unsigned Remainder) ----
-        // Scenario: 0xFFFFFFF2 (Large Positive) % 5
-        // Unsigned Value of 0xFFFFFFF2 is 4,294,967,282.
-        // Math: 4,294,967,282 / 5 = 858,993,456 with a remainder of 2.
+        // ---- Test REMU 0xFFFFFFF2 / 5 ----
         send_uart("M", -32'd14, 32'd5); // Passing -14 creates 0xFFFFFFF2 bit pattern
         #150;
         $display("REMU 0xFFFFFFF2 %% 5 = %0d (Expect 2)", dut.ComputeResult);
 
 
-        // ---- Optional: REM (Sign Check 2) ----
-        // Scenario: 14 % -3
-        // Math: 14 = (-4 * -3) + 2. Remainder should be positive (matches Dividend).
+        // ---- Test REM 14 % 3 ----
         send_uart("r", 32'd14, -32'd3);
         #150;
         $display("REM 14 %% -3 = %0d (Expect 2)", $signed(dut.ComputeResult));
         
-        // ---- test MUL (Lower 32 bits) ----
+        // ---- Test MUL 6 * 7 ----
         send_uart("m", 32'd6, 32'd7);
         #150;
         $display("MUL 6*7 = %0d (0x%h)", dut.ComputeResult, dut.ComputeResult);
 
-        // ---- test MULH (Signed High 32 bits) ----
-        // 0x40000000 (1,073,741,824) * 4 = 4,294,967,296
-        // Result in hex is 0x1_00000000. 
-        // Lower 32 bits = 0, Upper 32 bits = 1.
+        // ---- Test MULH 0x400000000 * 4 ----
         send_uart("H", 32'h40000000, 32'd4);
         #150;
         $display("MULH (Signed) 0x40000000 * 4 = %0d (Expect 1)", dut.ComputeResult);
 
-        // ---- test MULHU (Unsigned High 32 bits) ----
-        // 0x80000000 (2,147,483,648) * 2 = 4,294,967,296
-        // Result in hex is 0x1_00000000.
-        // Upper 32 bits = 1.
+        // ---- Test MULHU 0x80000000 * 2 ----
         send_uart("h", 32'h80000000, 32'd2);
         #150;
         $display("MULHU (Unsigned) 0x80000000 * 2 = %0d (Expect 1)", dut.ComputeResult);
 
-        // ---- test MULH Negative Case ----
-        // -1 (0xFFFFFFFF) * -1 (0xFFFFFFFF) = 1 (0x00000000_00000001)
-        // Upper 32 bits should be 0.
+        // ---- Test MULH -1 * -1 ----
         send_uart("H", 32'hFFFFFFFF, 32'hFFFFFFFF);
         #150;
         $display("MULH (Signed) -1 * -1 = %0d (Expect 0)", dut.ComputeResult);

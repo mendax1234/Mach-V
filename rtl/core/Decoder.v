@@ -121,7 +121,7 @@ module Decoder (
             7'b1100111: begin
                 PCS = 2'b11;  // JALR
                 RegWrite = 1'b1;
-                ALUSrcA = 2'b00;  // rs1
+                ALUSrcA = 2'b11;  // PC
                 ALUSrcB = 2'b01;  // 4
                 ImmSrc = 3'b011;  // I-Type
                 ALUControl = 4'b0000;  // PC + 4
