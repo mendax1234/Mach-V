@@ -1,23 +1,23 @@
 `timescale 1ns / 1ps
 
-module Multiplier32x8 (
-    input  [31:0] A,       // The 32-bit full operand
-    input  [ 7:0] B,       // The 8-bit slice
-    output [39:0] Product  // Result (32 + 8 = 40 bits max)
+module Multiplier32x16 (
+    input      [31:0] A,       // The 32-bit full operand
+    input      [15:0] B,       // The 16-bit slice
+    output reg [47:0] Product  // Result (32 + 16 = 48 bits max)
 );
 
-    // // Generate Partial Products (Shift A based on bit position of B)
-    wire [39:0] pp0 = B[0] ? {8'b0, A} : 40'b0;
-    wire [39:0] pp1 = B[1] ? {7'b0, A, 1'b0} : 40'b0;
-    wire [39:0] pp2 = B[2] ? {6'b0, A, 2'b0} : 40'b0;
-    wire [39:0] pp3 = B[3] ? {5'b0, A, 3'b0} : 40'b0;
-    wire [39:0] pp4 = B[4] ? {4'b0, A, 4'b0} : 40'b0;
-    wire [39:0] pp5 = B[5] ? {3'b0, A, 5'b0} : 40'b0;
-    wire [39:0] pp6 = B[6] ? {2'b0, A, 6'b0} : 40'b0;
-    wire [39:0] pp7 = B[7] ? {1'b0, A, 7'b0} : 40'b0;
+    integer i;
 
-    // Sum them up (Tree adder is faster, but this simple chain works also)
-    assign Product = pp0 + pp1 + pp2 + pp3 + pp4 + pp5 + pp6 + pp7;
+    always @(*) begin
+        Product = 48'b0;
+
+        for (i = 0; i < 16; i = i + 1) begin
+            if (B[i]) begin
+                // Shift A by 'i' and add to Product.
+                Product = Product + ({16'b0, A} << i);
+            end
+        end
+    end
 
 endmodule
 
@@ -99,13 +99,13 @@ module MCycle #(
     // --- Multiplication Variables ---
     reg  [2*width-1:0] mult_acc;  // 64-bit Accumulator
     reg  [2*width-1:0] final_product;
-    reg  [        7:0] current_byte_op2;
+    reg  [        15:0] current_half_word_op2;
 
     // --- Sub-Module Connections ---
     wire [2*width-1:0] next_rem;
     wire [2*width-1:0] next_div;
     wire [  width-1:0] next_quot;
-    wire [       39:0] partial_product_out;
+    wire [       47:0] partial_product_out;
 
     // ========================================================================
     // Sub-Module Instantiation
@@ -120,9 +120,9 @@ module MCycle #(
         .quot_out(next_quot)
     );
 
-    Multiplier32x8 mul_unit (
+    Multiplier32x16 mul_unit (
         .A      (abs_op1),
-        .B      (current_byte_op2),
+        .B      (current_half_word_op2),
         .Product(partial_product_out)
     );
 
@@ -186,11 +186,9 @@ module MCycle #(
 
         // --- Logic Selection ---
         // Prepare input for Multiplier Module (Select Byte based on Count)
-        case (count[1:0])
-            2'b00: current_byte_op2 = abs_op2[7:0];
-            2'b01: current_byte_op2 = abs_op2[15:8];
-            2'b10: current_byte_op2 = abs_op2[23:16];
-            2'b11: current_byte_op2 = abs_op2[31:24];
+        case (count[0])
+            1'b0: current_half_word_op2 = abs_op2[15:0];
+            1'b1: current_half_word_op2 = abs_op2[31:16];
         endcase
 
         // Reset done flag every cycle (will be set to 1 if finished)
@@ -208,13 +206,11 @@ module MCycle #(
                 // are available from Cycle 1, so Cycle 0 does nothing
                 case (count)
                     1: mult_acc = mult_acc + partial_product_out;
-                    2: mult_acc = mult_acc + (partial_product_out << 8);
-                    3: mult_acc = mult_acc + (partial_product_out << 16);
-                    4: mult_acc = mult_acc + (partial_product_out << 24);
+                    2: mult_acc = mult_acc + (partial_product_out << 16);
                 endcase
             end
 
-            if (count == 4) begin
+            if (count == 2) begin
                 done <= 1'b1;
                 // Sign Correction
                 if (~MCycleOp[0] && (Operand1[width-1] ^ Operand2[width-1])) final_product = ~mult_acc + 1;
