@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://mendax1234.github.io/Hydra-V/dev/architecture/hazard/">
+        <link rel="canonical" href="https://mendax1234.github.io/Hydra-V/dev/sw/uart_calculator/">
       
       
-        <link rel="prev" href="../pipeline/">
+        <link rel="prev" href="../benchmark/">
       
       
-        <link rel="next" href="../../sim/simulation/">
+        <link rel="next" href="../contributing/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Hazards & Logic - Hydra-V Docs</title>
+        <title>UART Calculator - Hydra-V Docs</title>
       
     
     
@@ -81,11 +81,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#hazards-complex-logic" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -122,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Hazards & Logic
+              UART Calculator
             
           </span>
         </div>
@@ -254,17 +249,17 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../pipeline/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../microarchitecture/" class="md-tabs__link">
           
   
   
-  Architecture
+    
+  
+  Microarchitecture
 
         </a>
       </li>
@@ -284,7 +279,7 @@
   
     
   
-  Verification
+  Simulation
 
       </a>
     </li>
@@ -295,15 +290,19 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../sw/software/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../benchmark/" class="md-tabs__link">
           
   
   
-  User Guide
+    
+  
+  Software
 
         </a>
       </li>
@@ -393,38 +392,42 @@
       
   
   
-    
   
   
-  
-    
-    
     
     
       
-        
-        
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
-            
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../microarchitecture/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
     
   
-    Architecture
+    Microarchitecture
   
 
     
@@ -432,19 +435,98 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Architecture
+    Microarchitecture
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../microarchitecture/mul-div/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Multiply & Divide Unit
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Multiply & Divide Unit
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -453,14 +535,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline/" class="md-nav__link">
+      <a href="../../microarchitecture/mul-div/native-design/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Pipeline Design
+    Native Design
   
 
     
@@ -478,44 +560,17 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Hazards & Logic
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../microarchitecture/mul-div/vendor-ip/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Hazards & Logic
+    Xilinix IP Design
   
 
     
@@ -524,103 +579,13 @@
   
 
       </a>
-      
-        
+    </li>
+  
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#data-hazards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data Hazards
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Data Hazards">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#forwarding-unit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Forwarding Unit
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#load-use-hazard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Load-Use Hazard
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-hazards-branching" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Control Hazards (Branching)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Control Hazards (Branching)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#flushing-logic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Flushing Logic
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#verilog-implementation-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verilog Implementation Details
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -648,7 +613,7 @@
   <span class="md-ellipsis">
     
   
-    Verification
+    Simulation
   
 
     
@@ -665,33 +630,46 @@
       
   
   
+    
   
   
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
     
     
     
-    
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
             
   
   
   <span class="md-ellipsis">
     
   
-    User Guide
+    Software
   
 
     
@@ -702,12 +680,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
   
-    User Guide
+    Software
   
 
           </label>
@@ -720,14 +698,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/software/" class="md-nav__link">
+      <a href="../benchmark/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Benchmark & OLED
+    Benchmark
   
 
     
@@ -745,10 +723,46 @@
                 
   
   
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UART Calculator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
   
   
     <li class="md-nav__item">
-      <a href="../../sw/contributing/" class="md-nav__link">
+      <a href="../contributing/" class="md-nav__link">
         
   
   
@@ -793,94 +807,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#data-hazards" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Data Hazards
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Data Hazards">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#forwarding-unit" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Forwarding Unit
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#load-use-hazard" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Load-Use Hazard
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#control-hazards-branching" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Control Hazards (Branching)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Control Hazards (Branching)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#flushing-logic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Flushing Logic
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#verilog-implementation-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verilog Implementation Details
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -923,10 +849,10 @@
     
     
       <li class="md-path__item">
-        <a href="../pipeline/" class="md-path__link">
+        <a href="../benchmark/" class="md-path__link">
           
   <span class="md-ellipsis">
-    Architecture
+    Software
   </span>
 
         </a>
@@ -945,7 +871,7 @@
 
 
   
-    <a href="https://github.com/mendax1234/Hydra-V/edit/main/docs/architecture/hazard.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/mendax1234/Hydra-V/edit/main/docs/sw/uart_calculator.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -953,74 +879,9 @@
   
 
 
-<h1 id="hazards-complex-logic">Hazards &amp; Complex Logic<a class="headerlink" href="#hazards-complex-logic" title="Permanent link">&para;</a></h1>
-<p>This section details how the Hydra-V processor handles data and control hazards to maintain pipeline throughput.</p>
-<h2 id="data-hazards">Data Hazards<a class="headerlink" href="#data-hazards" title="Permanent link">&para;</a></h2>
-<p>Data hazards occur when an instruction depends on the result of a previous instruction that has not yet been committed to the Register File.</p>
-<h3 id="forwarding-unit">Forwarding Unit<a class="headerlink" href="#forwarding-unit" title="Permanent link">&para;</a></h3>
-<p>To resolve Read-After-Write (RAW) hazards without stalling, we implement a <strong>Full Forwarding Unit</strong>. This unit bypasses data from the <code>EX</code> or <code>MEM</code> stages directly to the ALU inputs.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Source Stage</th>
-<th style="text-align: left;">Condition</th>
-<th style="text-align: left;">Forwarding Path</th>
-<th style="text-align: left;">Priority</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>EX/MEM</strong></td>
-<td style="text-align: left;"><code>rd == rs1</code> or <code>rd == rs2</code></td>
-<td style="text-align: left;">ALU Result <span class="arithmatex">\(\rightarrow\)</span> ALU Input</td>
-<td style="text-align: left;">High</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>MEM/WB</strong></td>
-<td style="text-align: left;"><code>rd == rs1</code> or <code>rd == rs2</code></td>
-<td style="text-align: left;">Writeback Data <span class="arithmatex">\(\rightarrow\)</span> ALU Input</td>
-<td style="text-align: left;">Low</td>
-</tr>
-</tbody>
-</table>
-<h3 id="load-use-hazard">Load-Use Hazard<a class="headerlink" href="#load-use-hazard" title="Permanent link">&para;</a></h3>
-<p>Forwarding cannot solve a "Load-Use" hazard because the data comes from Data Memory (available in WB) but is needed immediately in EX.</p>
-<ul>
-<li><strong>Solution:</strong> The pipeline <strong>stalls for 1 cycle</strong>.</li>
-<li><strong>Signal:</strong> <code>stall_IF_ID</code> and <code>stall_ID_EX</code> go HIGH; <code>flush_EX</code> goes HIGH.</li>
-</ul>
-<h2 id="control-hazards-branching">Control Hazards (Branching)<a class="headerlink" href="#control-hazards-branching" title="Permanent link">&para;</a></h2>
-<p>The pipeline needs to know the next PC address in the Fetch stage, but the Branch/Jump decision is made in the <strong>Execute (EX)</strong> stage.</p>
-<div class="admonition warning">
-<p class="admonition-title">Static Prediction</p>
-<p>The current implementation uses <strong>"Assume Not Taken"</strong> static prediction.</p>
-</div>
-<h3 id="flushing-logic">Flushing Logic<a class="headerlink" href="#flushing-logic" title="Permanent link">&para;</a></h3>
-<p>If a branch is taken:</p>
-<ol>
-<li>The instructions currently in <strong>Fetch</strong> and <strong>Decode</strong> are wrong.</li>
-<li>The Control Unit asserts <code>flush_ID</code> and <code>flush_EX</code>.</li>
-<li>These instructions become <code>NOP</code> (bubbles).</li>
-<li>The PC is updated to the <code>Branch Target</code>.</li>
-</ol>
-<h2 id="verilog-implementation-details">Verilog Implementation Details<a class="headerlink" href="#verilog-implementation-details" title="Permanent link">&para;</a></h2>
-<p>Here is a snippet of the Forwarding Logic implemented in the Core:</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Forwarding Logic for Operand A</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">ex_mem_reg_write</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">ex_mem_rd</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">0</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">ex_mem_rd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">id_ex_rs1</span><span class="p">))</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="c1">// Forward from ALU Result (EX/MEM pipeline register)</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="n">forward_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mb">&#39;b10</span><span class="p">;</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="k">end</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">mem_wb_reg_write</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">mem_wb_rd</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">0</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">mem_wb_rd</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">id_ex_rs1</span><span class="p">))</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="c1">// Forward from Writeback (MEM/WB pipeline register)</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="n">forward_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mb">&#39;b01</span><span class="p">;</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="k">end</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">begin</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="c1">// No forwarding (use Register File output)</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="n">forward_a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">2</span><span class="mb">&#39;b00</span><span class="p">;</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="k">end</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="k">end</span>
-</span></code></pre></div>
+  <h1>UART Calculator</h1>
+
+
 
 
 
@@ -1043,7 +904,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 24, 2025 06:41:11 UTC"><span class="timeago" datetime="2025-11-24T06:41:11+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 24, 2025 06:41:11 UTC">2025-11-24</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 11, 2025 13:35:13 UTC"><span class="timeago" datetime="2025-12-11T13:35:13+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 11, 2025 13:35:13 UTC">2025-12-11</span>
   </span>
 
     
@@ -1053,7 +914,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 24, 2025 06:06:44 UTC"><span class="timeago" datetime="2025-11-24T06:06:44+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 24, 2025 06:06:44 UTC">2025-11-24</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 11, 2025 13:35:13 UTC"><span class="timeago" datetime="2025-12-11T13:35:13+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 11, 2025 13:35:13 UTC">2025-12-11</span>
   </span>
 
     
@@ -1111,7 +972,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../pipeline/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Pipeline Design">
+          <a href="../benchmark/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Benchmark">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1121,20 +982,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Pipeline Design
+                Benchmark
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../sim/simulation/" class="md-footer__link md-footer__link--next" aria-label="Next: Verification">
+          <a href="../contributing/" class="md-footer__link md-footer__link--next" aria-label="Next: Contributing">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Verification
+                Contributing
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1171,7 +1032,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "dev", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "dev", "provider": "mike"}}</script>
     
     
       <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>

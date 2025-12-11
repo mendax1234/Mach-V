@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://mendax1234.github.io/Hydra-V/dev/sim/simulation/">
+        <link rel="canonical" href="https://mendax1234.github.io/Hydra-V/dev/sw/benchmark/">
       
       
-        <link rel="prev" href="../../microarchitecture/mul-div/vendor-ip/">
+        <link rel="prev" href="../../sim/simulation/">
       
       
-        <link rel="next" href="../../sw/benchmark/">
+        <link rel="next" href="../uart_calculator/">
       
       
         
@@ -25,7 +25,7 @@
     
     
       
-        <title>Simulation - Hydra-V Docs</title>
+        <title>Benchmark - Hydra-V Docs</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#verification-simulation" class="md-skip">
+        <a href="#software-development-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Simulation
+              Benchmark
             
           </span>
         </div>
@@ -276,11 +276,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../sim/simulation/" class="md-tabs__link">
         
   
   
@@ -297,11 +295,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../sw/benchmark/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -608,6 +608,98 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sim/simulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Software
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Software
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
     
   
   
@@ -627,7 +719,7 @@
   <span class="md-ellipsis">
     
   
-    Simulation
+    Benchmark
   
 
     
@@ -645,7 +737,7 @@
   <span class="md-ellipsis">
     
   
-    Simulation
+    Benchmark
   
 
     
@@ -671,10 +763,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#simulation-directory-structure" class="md-nav__link">
+  <a href="#software-directory-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Simulation Directory Structure
+        Software Directory Structure
       
     </span>
   </a>
@@ -682,10 +774,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#memory-map" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Memory Map
       
     </span>
   </a>
@@ -693,41 +785,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-simulations" class="md-nav__link">
+  <a href="#toolchain-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Running Simulations
+        Toolchain Setup
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Running Simulations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#unit-level-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unit Level Testing
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#top-level-system-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Top Level System Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -738,93 +802,6 @@
     </li>
   
 
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Software
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Software
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../sw/benchmark/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Benchmark
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -834,7 +811,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/uart_calculator/" class="md-nav__link">
+      <a href="../uart_calculator/" class="md-nav__link">
         
   
   
@@ -862,7 +839,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/contributing/" class="md-nav__link">
+      <a href="../contributing/" class="md-nav__link">
         
   
   
@@ -917,10 +894,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#simulation-directory-structure" class="md-nav__link">
+  <a href="#software-directory-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Simulation Directory Structure
+        Software Directory Structure
       
     </span>
   </a>
@@ -928,10 +905,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#memory-map" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Memory Map
       
     </span>
   </a>
@@ -939,41 +916,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-simulations" class="md-nav__link">
+  <a href="#toolchain-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Running Simulations
+        Toolchain Setup
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Running Simulations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#unit-level-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unit Level Testing
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#top-level-system-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Top Level System Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -995,6 +944,46 @@
   
 
 
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Software
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
               
               <article class="md-content__inner md-typeset">
                 
@@ -1002,7 +991,7 @@
 
 
   
-    <a href="https://github.com/mendax1234/Hydra-V/edit/main/docs/sim/simulation.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/mendax1234/Hydra-V/edit/main/docs/sw/benchmark.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1010,41 +999,73 @@
   
 
 
-<h1 id="verification-simulation">Verification &amp; Simulation<a class="headerlink" href="#verification-simulation" title="Permanent link">&para;</a></h1>
-<p>This section outlines the verification strategy for the Hydra-V processor, including unit testing and full system simulation.</p>
-<h2 id="simulation-directory-structure">Simulation Directory Structure<a class="headerlink" href="#simulation-directory-structure" title="Permanent link">&para;</a></h2>
-<p>The <code>sim/</code> directory contains all testbench and verification artifacts:</p>
+<h1 id="software-development-guide">Software Development Guide<a class="headerlink" href="#software-development-guide" title="Permanent link">&para;</a></h1>
+<p>This guide explains how to write, compile, and run the Coremark Benchmark on the Hydra-V processor.</p>
+<h2 id="software-directory-structure">Software Directory Structure<a class="headerlink" href="#software-directory-structure" title="Permanent link">&para;</a></h2>
+<p>The <code>sw/</code> directory is organized by application:</p>
 <ul>
-<li><strong><code>sim/tb/</code></strong>: Verilog testbenches for individual modules (ALU, RegFile) and the top-level core.</li>
-<li><strong><code>sim/hex/</code></strong>: Pre-compiled hexadecimal files (machine code) loaded into instruction memory for simulation.</li>
+<li><strong><code>sw/coremark/</code></strong>: The industry-standard CoreMark benchmark ported for this microarchitecture.</li>
 </ul>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<p>Ensure you have the following tools installed:</p>
+<h2 id="memory-map">Memory Map<a class="headerlink" href="#memory-map" title="Permanent link">&para;</a></h2>
+<p>The processor uses a flat 32-bit address space.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Address Range</th>
+<th style="text-align: left;">Size</th>
+<th style="text-align: left;">Device</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>0x0000_0000</code></td>
+<td style="text-align: left;">64 KB</td>
+<td style="text-align: left;"><strong>Instruction Memory</strong></td>
+<td style="text-align: left;">Read-Only program storage (BRAM).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>0x0010_0000</code></td>
+<td style="text-align: left;">64 KB</td>
+<td style="text-align: left;"><strong>Data Memory</strong></td>
+<td style="text-align: left;">Read/Write RAM for stack and variables.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>0x8000_0000</code></td>
+<td style="text-align: left;">4 B</td>
+<td style="text-align: left;"><strong>GPIO_LEDS</strong></td>
+<td style="text-align: left;">Write logic <code>1</code> to turn on board LEDs.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>0x8000_0004</code></td>
+<td style="text-align: left;">4 B</td>
+<td style="text-align: left;"><strong>UART_TX</strong></td>
+<td style="text-align: left;">Write a character (byte) to send via Serial.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="toolchain-setup">Toolchain Setup<a class="headerlink" href="#toolchain-setup" title="Permanent link">&para;</a></h2>
+<p>You need the RISC-V GNU Toolchain to compile C code into machine code.</p>
 <ol>
-<li><strong>Xilinx Vivado</strong> (for Behavioral Simulation)</li>
-<li><strong>Verilator</strong> (Optional, for faster C++ based simulation)</li>
-<li><strong>GTKWave</strong> (for viewing waveform dumps outside Vivado)</li>
-</ol>
-<h2 id="running-simulations">Running Simulations<a class="headerlink" href="#running-simulations" title="Permanent link">&para;</a></h2>
-<h3 id="unit-level-testing">Unit Level Testing<a class="headerlink" href="#unit-level-testing" title="Permanent link">&para;</a></h3>
-<p>Unit tests verify specific components before integration.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Example: Running the ALU testbench</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>sim/tb
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>xvlog<span class="w"> </span>alu.v<span class="w"> </span>alu_tb.v
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>xelab<span class="w"> </span>-debug<span class="w"> </span>typical<span class="w"> </span>alu_tb<span class="w"> </span>-s<span class="w"> </span>alu_sim
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>xsim<span class="w"> </span>alu_sim<span class="w"> </span>-R
+<li>
+<p><strong>Install Toolchain:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>gcc-riscv64-unknown-elf
 </span></code></pre></div>
-<h3 id="top-level-system-test">Top Level System Test<a class="headerlink" href="#top-level-system-test" title="Permanent link">&para;</a></h3>
-<p>To verify the full processor pipeline:</p>
-<ol>
-<li>Load a program hex file into <code>sim/hex/main.hex</code>.</li>
-<li>Run the top-level testbench <code>tb_core.v</code>.</li>
-<li>Observe the <code>d_mem</code> and register file changes.</li>
+</li>
+<li>
+<p><strong>Compilation Steps:</strong>
+    We treat the processor as "Bare Metal" (no Operating System).</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 1. Compile C to Object</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>riscv64-unknown-elf-gcc<span class="w"> </span>-march<span class="o">=</span>rv32i<span class="w"> </span>-mabi<span class="o">=</span>ilp32<span class="w"> </span>-c<span class="w"> </span>main.c<span class="w"> </span>-o<span class="w"> </span>main.o
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># 2. Link (using custom linker script)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>riscv64-unknown-elf-ld<span class="w"> </span>-T<span class="w"> </span>linker.ld<span class="w"> </span>main.o<span class="w"> </span>-o<span class="w"> </span>main.elf
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># 3. Generate Hex File (for Verilog $readmemh)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>riscv64-unknown-elf-objcopy<span class="w"> </span>-O<span class="w"> </span>verilog<span class="w"> </span>main.elf<span class="w"> </span>main.hex
+</span></code></pre></div>
+</li>
 </ol>
-<div class="admonition tip">
-<p class="admonition-title">Debugging with Waveforms</p>
-<p>If the processor stalls, check the stall_signal and flush lines in the Waveform viewer. A permanent high signal usually indicates a lockup in the Hazard Unit.</p>
-</div>
 
 
 
@@ -1067,7 +1088,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 24, 2025 09:36:27 UTC"><span class="timeago" datetime="2025-11-24T09:36:27+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 24, 2025 09:36:27 UTC">2025-11-24</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 24, 2025 06:06:44 UTC"><span class="timeago" datetime="2025-11-24T06:06:44+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 24, 2025 06:06:44 UTC">2025-11-24</span>
   </span>
 
     
@@ -1135,7 +1156,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../microarchitecture/mul-div/vendor-ip/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Xilinix IP Design">
+          <a href="../../sim/simulation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Simulation">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1145,20 +1166,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Xilinix IP Design
+                Simulation
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../sw/benchmark/" class="md-footer__link md-footer__link--next" aria-label="Next: Benchmark">
+          <a href="../uart_calculator/" class="md-footer__link md-footer__link--next" aria-label="Next: UART Calculator">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Benchmark
+                UART Calculator
               </div>
             </div>
             <div class="md-footer__button md-icon">
