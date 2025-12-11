@@ -18,7 +18,7 @@ I have tried two implementations for the `MCycle` module:
 
     Implement the multiply and divide unit by "hand-typped" Verilog code.
 
-    [:octicons-arrow-right-24: View Documentation](mul-div/native-design.md)
+    [:octicons-arrow-right-24: View Documentation](native-design.md)
 
 - :simple-circuitverse: __Using IP Cores__
 
@@ -26,6 +26,6 @@ I have tried two implementations for the `MCycle` module:
 
     Use Xilinx IP cores to implement the multiply and divide unit.
 
-    [:octicons-arrow-right-24: View Documentation](mul-div/vendor-ip.md)
+    [:octicons-arrow-right-24: View Documentation](vendor-ip.md)
 
 </div>
