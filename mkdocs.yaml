@@ -22,6 +22,7 @@ theme:
     - navigation.top            # "Back to top" button
     - navigation.footer         # Next/Previous buttons at bottom
     - navigation.path           # Breadcrumbs (Home > Architecture > Pipeline)
+    - navigation.indexes        # Clickable section headers
     - content.code.copy         # Copy button on code blocks
     - content.action.edit       # Enable the edit button defined in repo_url
 
@@ -65,22 +66,17 @@ plugins:
 # 4. MARKDOWN EXTENSIONS
 # ==============================================================================
 markdown_extensions:
-  # 4.1 Standard & Layout
+  # 4.1 Standard Formatting
+  - abbr                        # Tooltips for abbreviations
   - admonition                  # Callout blocks (Notes, Warnings)
   - attr_list                   # Allows resizing images {: width="300" }
   - pymdownx.details            # Collapsible blocks
+  - md_in_html                  # Allow Markdown inside HTML tags
   - toc:                        # Permalink support
       toc_depth: 3
       permalink: true
 
-  # 4.2 Diagrams & Visuals
-  - pymdownx.superfences:       # Mermaid Diagrams
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
-
-  # 4.3 Code Highlighting
+  # 4.2 Code & Syntax Highlighting
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -88,9 +84,20 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
 
-  # 4.4 Math (Crucial for CPU Architecture)
+  # 4.3 Math (Crucial for CPU Architecture)
   - pymdownx.arithmatex:
       generic: true
+
+  # 4.4 Visuals & Layouts
+  - pymdownx.superfences:       # Mermaid Diagrams
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.details                # Collapsible "details" blocks
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 # ==============================================================================
 # 5. ASSETS (CSS & JS)
@@ -109,10 +116,14 @@ extra:
 # ==============================================================================
 nav:
   - Home: index.md
-  - Architecture:
-      - Pipeline Design: architecture/pipeline.md
-      - Hazards & Logic: architecture/hazard.md
-  - Verification: sim/simulation.md
-  - User Guide:
-      - Benchmark & OLED: sw/software.md
+  - Microarchitecture:
+      - microarchitecture/index.md
+      - Multiply & Divide Unit:
+        - microarchitecture/mul-div/index.md
+        - Native Design: microarchitecture/mul-div/native-design.md
+        - Xilinix IP Design: microarchitecture/mul-div/vendor-ip.md
+  - Simulation: sim/simulation.md
+  - Software:
+      - Benchmark: sw/benchmark.md
+      - UART Calculator: sw/uart_calculator.md
       - Contributing: sw/contributing.md
