@@ -5,22 +5,6 @@
          <lastmod>2025-12-12</lastmod>
     </url>
     <url>
-         <loc>https://mendax1234.github.io/Hydra-V/microarchitecture/</loc>
-         <lastmod>2025-12-12</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Hydra-V/microarchitecture/mul-div/</loc>
-         <lastmod>2025-12-12</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Hydra-V/microarchitecture/mul-div/native-design/</loc>
-         <lastmod>2025-12-12</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Hydra-V/microarchitecture/mul-div/vendor-ip/</loc>
-         <lastmod>2025-12-12</lastmod>
-    </url>
-    <url>
          <loc>https://mendax1234.github.io/Hydra-V/sim/simulation/</loc>
          <lastmod>2025-12-12</lastmod>
     </url>
@@ -34,6 +18,22 @@
     </url>
     <url>
          <loc>https://mendax1234.github.io/Hydra-V/sw/uart_calculator/</loc>
+         <lastmod>2025-12-12</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Hydra-V/uarch/</loc>
+         <lastmod>2025-12-12</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Hydra-V/uarch/mul-div/</loc>
+         <lastmod>2025-12-12</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Hydra-V/uarch/mul-div/native-design/</loc>
+         <lastmod>2025-12-12</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Hydra-V/uarch/mul-div/vendor-ip/</loc>
          <lastmod>2025-12-12</lastmod>
     </url>
 </urlset>
