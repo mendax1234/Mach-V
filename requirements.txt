@@ -1,6 +1,7 @@
 # This is for Hydra-V documentation site
 mkdocs-material
-mike
+# mike is for the different versions of the documentation
+# mike
 mkdocs-git-revision-date-localized-plugin
 mkdocs-git-committers-plugin-2
 mkdocs-print-site-plugin
