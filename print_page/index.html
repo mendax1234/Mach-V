@@ -1170,7 +1170,71 @@
 <p class="admonition-title">Warning</p>
 <p>Using the unrolling techniue in the divider unit here will use a lot of hardware! iirc, the propagation delay is around 66ns for this design! Given that high propagation delay, it is impossible to use this design on Hydra-V. So, I moved on to the next section, which is to use Xilinix IP core for the multiply and divide unit.</p>
 </div></section><section class="print-page" id="microarchitecture-mul-div-vendor-ip" heading-number="2.2.3"><h1 id="microarchitecture-mul-div-vendor-ip-amd-ip-design">AMD IP Design<a class="headerlink" href="#microarchitecture-mul-div-vendor-ip-amd-ip-design" title="Permanent link">&para;</a></h1>
-<p>As mentioned in the <a href="#microarchitecture-mul-div-native-design">previous documentation</a>, if I only use the unrolling technique, it is impossible for me to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the Xilinix IP cores (Multiplier and Divider) to implement the multiply and divide unit.</p></section></section></section><section class="print-page" id="sim-simulation" heading-number="3"><h1 id="sim-simulation-verification-simulation">Verification &amp; Simulation<a class="headerlink" href="#sim-simulation-verification-simulation" title="Permanent link">&para;</a></h1>
+<p>As mentioned in the <a href="#microarchitecture-mul-div-native-design">previous documentation</a>, if I only use the unrolling technique, it is impossible to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the AMD IP cores (Multiplier and Divider) to implement the multiply and divide unit.</p>
+<h2 id="microarchitecture-mul-div-vendor-ip-generate-the-ip-core">Generate the IP Core<a class="headerlink" href="#microarchitecture-mul-div-vendor-ip-generate-the-ip-core" title="Permanent link">&para;</a></h2>
+<h3 id="microarchitecture-mul-div-vendor-ip-multiplier-ip">Multiplier IP<a class="headerlink" href="#microarchitecture-mul-div-vendor-ip-multiplier-ip" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://www.amd.com/en/products/adaptive-socs-and-fpgas/intellectual-property/multiplier.html">multiplier IP core</a> comes from AMD and can be used in Vivado directly.</p>
+<p>To use the IP in Vivado, click the "IP Catalog" on the left flow navigator. Then, search for "multiplier". Click the "Multiplier" (not "Complex Multiplier"). And the configure the IP to use the following settings:</p>
+<ol>
+<li>In the "Basic" tab:<ul>
+<li>Set Multiplier Type to "Parallel Multiplier"</li>
+<li>Set <code>A</code> and <code>B</code> to be "unsigned" and "32-bit" wide</li>
+<li>Set Multiplier Construction to "Use Mults"</li>
+<li>Set the Optimization Options to "Speed Optimized"</li>
+</ul>
+</li>
+<li>In the "Output and Control" tab<ul>
+<li>Make sure the <code>P</code> (output) is 64-bit wide.</li>
+<li>Set the Pipeline Stages to 4.</li>
+</ul>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>With the above settings, the multiplier IP core will take 5 cycles to complete and the propagation is safer for the processor to reach 100MHz and higher.</p>
+</div>
+<h3 id="microarchitecture-mul-div-vendor-ip-divider-ip">Divider IP<a class="headerlink" href="#microarchitecture-mul-div-vendor-ip-divider-ip" title="Permanent link">&para;</a></h3>
+<p>Simiarly, the <a href="https://www.amd.com/en/products/adaptive-socs-and-fpgas/intellectual-property/divider.html">divider IP core</a> also comes from AMD and can be used in Vivado directly.</p>
+<p>Follow the similar steps as the multiplier IP core, but configure the divider using the following settings:</p>
+<ol>
+<li>In the "Channel Settings" tab:<ul>
+<li>Set Algorithm type of "Radix 2" and Operand sign to "unsigned".</li>
+<li>Change dividend and divisor width to "32".</li>
+<li>Set the Remainder Type to be "Remainder" and fractional width to be "32".</li>
+</ul>
+</li>
+<li>In the "Options" tab:<ul>
+<li>Set Clocks per Division to be "1".</li>
+<li>Set the flow control under AXI4-Stream settings to "Blocking".</li>
+<li>Set the optimize goal under AXI4-Stream settings to "Performance".</li>
+</ul>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>With the above settings, the divider IP core will take 32 cycles to complete and the propagation is safer for the processor to reach 100MHz and higher.</p>
+</div>
+<h2 id="microarchitecture-mul-div-vendor-ip-use-ip-core">Use IP Core<a class="headerlink" href="#microarchitecture-mul-div-vendor-ip-use-ip-core" title="Permanent link">&para;</a></h2>
+<p>To use the two IP cores that we have generated above, we just need to know the inputs and outputs of each IP core and then instantiate them in our <code>MCycle.v</code> to replace the multiple unit and the divide unit that we have implemented manually in the <a href="#microarchitecture-mul-div-native-design">previous section</a>.</p>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-1"></a><span class="c1">// Multiplier IP: 32x32 Unsigned -&gt; 64-bit Product</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-2"></a><span class="n">mult_gen_0</span><span class="w"> </span><span class="n">my_multiplier</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-3"></a><span class="w">    </span><span class="p">.</span><span class="n">CLK</span><span class="p">(</span><span class="n">CLK</span><span class="p">),</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-4"></a><span class="w">    </span><span class="p">.</span><span class="n">A</span><span class="w">  </span><span class="p">(</span><span class="n">abs_op1</span><span class="p">),</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-5"></a><span class="w">    </span><span class="p">.</span><span class="n">B</span><span class="w">  </span><span class="p">(</span><span class="n">abs_op2</span><span class="p">),</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-6"></a><span class="w">    </span><span class="p">.</span><span class="n">P</span><span class="w">  </span><span class="p">(</span><span class="n">mul_dout</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-7"></a><span class="p">);</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-9"></a><span class="c1">// Divider IP: 32/32 Unsigned -&gt; 32 Quot, 32 Rem</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-10"></a><span class="n">div_gen_0</span><span class="w"> </span><span class="n">my_divider</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-11"></a><span class="w">    </span><span class="p">.</span><span class="n">aclk</span><span class="w">                  </span><span class="p">(</span><span class="n">CLK</span><span class="p">),</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-12"></a><span class="w">    </span><span class="p">.</span><span class="n">s_axis_divisor_tvalid</span><span class="w"> </span><span class="p">(</span><span class="n">div_in_valid</span><span class="p">),</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-13"></a><span class="w">    </span><span class="p">.</span><span class="n">s_axis_divisor_tdata</span><span class="w">  </span><span class="p">(</span><span class="n">abs_op2</span><span class="p">),</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-14"></a><span class="w">    </span><span class="p">.</span><span class="n">s_axis_dividend_tvalid</span><span class="p">(</span><span class="n">div_in_valid</span><span class="p">),</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-15"></a><span class="w">    </span><span class="p">.</span><span class="n">s_axis_dividend_tdata</span><span class="w"> </span><span class="p">(</span><span class="n">abs_op1</span><span class="p">),</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-16"></a><span class="w">    </span><span class="p">.</span><span class="n">m_axis_dout_tvalid</span><span class="w">    </span><span class="p">(</span><span class="n">div_out_valid</span><span class="p">),</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-17"></a><span class="w">    </span><span class="p">.</span><span class="n">m_axis_dout_tdata</span><span class="w">     </span><span class="p">(</span><span class="n">div_dout</span><span class="p">)</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#microarchitecture-mul-div-vendor-ip-__codelineno-0-18"></a><span class="p">);</span>
+</span></code></pre></div></section></section></section><section class="print-page" id="sim-simulation" heading-number="3"><h1 id="sim-simulation-verification-simulation">Verification &amp; Simulation<a class="headerlink" href="#sim-simulation-verification-simulation" title="Permanent link">&para;</a></h1>
 <p>This section outlines the verification strategy for the Hydra-V processor, including unit testing and full system simulation.</p>
 <h2 id="sim-simulation-simulation-directory-structure">Simulation Directory Structure<a class="headerlink" href="#sim-simulation-simulation-directory-structure" title="Permanent link">&para;</a></h2>
 <p>The <code>sim/</code> directory contains all testbench and verification artifacts:</p>
