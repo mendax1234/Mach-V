@@ -119,11 +119,11 @@ extra_javascript:
 nav:
   - Home: index.md
   - Microarchitecture:
-      - microarchitecture/index.md
+      - uarch/index.md
       - Multiply & Divide Unit:
-        - microarchitecture/mul-div/index.md
-        - Native Design: microarchitecture/mul-div/native-design.md
-        - AMD IP Design: microarchitecture/mul-div/vendor-ip.md
+        - uarch/mul-div/index.md
+        - Native Design: uarch/mul-div/native-design.md
+        - AMD IP Design: uarch/mul-div/vendor-ip.md
   - Simulation: sim/simulation.md
   - Software:
       - Benchmark: sw/benchmark.md
