@@ -70,6 +70,7 @@ markdown_extensions:
   - abbr                        # Tooltips for abbreviations
   - admonition                  # Callout blocks (Notes, Warnings)
   - attr_list                   # Allows resizing images {: width="300" }
+  - pymdownx.blocks.caption     # Image captions
   - pymdownx.details            # Collapsible blocks
   - md_in_html                  # Allow Markdown inside HTML tags
   - toc:                        # Permalink support
