@@ -15,7 +15,7 @@ module Hazard (
     input            MemtoRegW,
     input            MemtoRegE,
     input            Busy,
-    input      [1:0] PCSrcE,
+    input      [1:0] PCSrcM,
     input      [6:0] OpcodeD,
     output reg [1:0] ForwardAE,
     output reg [1:0] ForwardBE,
@@ -25,6 +25,7 @@ module Hazard (
     output           StallD,
     output           FlushE,
     output           FlushD,
+    output           FlushM,
     output           Forward1D,
     output           Forward2D
 );
@@ -86,12 +87,13 @@ module Hazard (
     // Stalls if Load in EX matches rs1 or rs2 in Decode (and rs1/rs2 are actually active)
     assign lwStall = MemtoRegE && (rdE != 0) && (((rs1D == rdE) && rs1_active) || ((rs2D == rdE) && rs2_active));
 
-    assign StallF = lwStall | Busy;
-    assign StallD = lwStall | Busy;
+    assign StallF = (lwStall | Busy) & ~PCSrcM[0];
+    assign StallD = (lwStall | Busy) & ~PCSrcM[0];
 
     // Control Hazards
-    assign FlushE = lwStall | PCSrcE[0];
-    assign FlushD = PCSrcE[0];
+    assign FlushE = lwStall | PCSrcM[0];
+    assign FlushD = PCSrcM[0];
+    assign FlushM = PCSrcM[0];
 
     // Decode Forwarding
     assign Forward1D = (rs1D == rdW) & RegWriteW & (rdW != 0);

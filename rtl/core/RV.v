@@ -72,7 +72,7 @@ module RV #(
     reg  [31:0] RD1E_Forwarded;  // Hazard Mux Outputs
     reg  [31:0] RD2E_Forwarded;
     wire [31:0] ALUResultE;
-    wire [ 2:0] ALUFlags;
+    wire [ 2:0] ALUFlagsE;
     wire [31:0] MCycleResult;
     wire [31:0] MCycleResult_1;
     wire [31:0] MCycleResult_2;
@@ -90,7 +90,6 @@ module RV #(
     wire        MCycleStartE;
     wire [ 1:0] MCycleOpE;
     wire        Busy;  // Multi-Cycle Busy
-    wire [ 1:0] PCSrcE;  // PC Branch Decision
     wire        FlushE;
 
     // --- MEM Stage (Memory) ---
@@ -104,6 +103,14 @@ module RV #(
     wire [ 4:0] rdM;
     wire [ 4:0] rs2M;
     wire [31:0] WriteDataM_Raw;  // Before LSU processing
+    wire [31:0] RD1M;  // Latch the RD1E_Forwarded
+    wire [31:0] ExtImmM;
+    wire        FlushM;
+    wire [31:0] PCM;
+    // PC Logic Module in MEM Stage
+    wire [ 1:0] PCSM;
+    wire [ 2:0] ALUFlagsM;
+    wire [ 1:0] PCSrcM;
 
     // --- WB Stage (Writeback) ---
     wire        RegWriteW;
@@ -132,11 +139,11 @@ module RV #(
     assign WE_PC = ~Busy;  // Freeze PC if Multi-Cycle Unit is busy
 
     // PC Selection Logic
-    assign PC_Offset = (PCSrcE[0] == 1) ? ExtImmE : 32'd4;
+    assign PC_Offset = (PCSrcM[0] == 1) ? ExtImmM : 32'd4;
     always @(*) begin
-        case (PCSrcE)
-            2'b10, 2'b11: PC_Base = RD1E_Forwarded;  // JALR
-            2'b01: PC_Base = PCE;  // Branch/JAL
+        case (PCSrcM)
+            2'b10, 2'b11: PC_Base = RD1M;  // JALR
+            2'b01: PC_Base = PCM;  // Branch/JAL
             default: PC_Base = PCF;  // Sequential (2'b00)
         endcase
     end
@@ -323,7 +330,7 @@ module RV #(
         .Src_B     (Src_B),
         .ALUControl(ALUControlE),
         .ALUResult (ALUResultE),
-        .ALUFlags  (ALUFlags)
+        .ALUFlags  (ALUFlagsE)
     );
 
     MCycle #(
@@ -331,7 +338,7 @@ module RV #(
     ) MCycle1 (
         .CLK     (CLK),
         .RESET   (RESET),
-        .Start   (MCycleStartE),
+        .Start   (MCycleStartE & ~FlushE),
         .MCycleOp(MCycleOpE),
         .Operand1(RD1E_Forwarded),
         .Operand2(RD2E_Forwarded),
@@ -341,16 +348,17 @@ module RV #(
     );
 
     PC_Logic PC_Logic1 (
-        .PCS     (PCSE),
-        .Funct3  (Funct3E),
-        .ALUFlags(ALUFlags),
-        .PCSrc   (PCSrcE)
+        .PCS     (PCSM),
+        .Funct3  (Funct3M),
+        .ALUFlags(ALUFlagsM),
+        .PCSrc   (PCSrcM)
     );
 
     pipeline_M pipelineM (
         .CLK           (CLK),
         .RESET         (RESET),
         .Busy          (Busy),
+        .FlushM        (FlushM),
         .RegWriteE     (RegWriteE),
         .MemtoRegE     (MemtoRegE),
         .MemWriteE     (MemWriteE),
@@ -359,6 +367,11 @@ module RV #(
         .WriteDataE    (WriteDataE),
         .rs2E          (rs2E),
         .rdE           (rdE),
+        .RD1E_Forwarded(RD1E_Forwarded),
+        .PCE           (PCE),
+        .ExtImmE       (ExtImmE),
+        .PCSE          (PCSE),
+        .ALUFlagsE     (ALUFlagsE),
         // Outputs
         .RegWriteM     (RegWriteM),
         .MemtoRegM     (MemtoRegM),
@@ -367,7 +380,12 @@ module RV #(
         .ComputeResultM(ComputeResultM),
         .WriteDataM    (WriteDataM),
         .rs2M          (rs2M),
-        .rdM           (rdM)
+        .rdM           (rdM),
+        .RD1M          (RD1M),
+        .PCM           (PCM),
+        .ExtImmM       (ExtImmM),
+        .PCSM          (PCSM),
+        .ALUFlagsM     (ALUFlagsM)
     );
 
     LoadStoreUnit LoadStoreUnit (
@@ -413,7 +431,7 @@ module RV #(
         .MemtoRegW(MemtoRegW),
         .MemtoRegE(MemtoRegE),
         .Busy     (Busy),
-        .PCSrcE   (PCSrcE),
+        .PCSrcM   (PCSrcM),
         .OpcodeD  (OpcodeD),
         // Outputs
         .ForwardAE(ForwardAE),
@@ -424,6 +442,7 @@ module RV #(
         .StallD   (StallD),
         .FlushE   (FlushE),
         .FlushD   (FlushD),
+        .FlushM   (FlushM),
         .Forward1D(Forward1D),
         .Forward2D(Forward2D)
     );
