@@ -43,7 +43,7 @@ LDSCRIPT = ld.script
 
 # Coremark specific definition
 ITERATIONS = 0
-CLOCKS_PER_SEC = 100000000
+CLOCKS_PER_SEC = 115000000
 FLAGS_STR = ""
 
 CORE_FILES = \
