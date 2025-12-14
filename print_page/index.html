@@ -297,7 +297,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../sw/benchmark/" class="md-tabs__link">
+        <a href="../sw/" class="md-tabs__link">
           
   
   
@@ -637,6 +637,10 @@
     
       
         
+          
+        
+      
+        
       
         
       
@@ -658,8 +662,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../sw/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -673,8 +678,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
@@ -686,6 +697,8 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
             
               
                 
@@ -915,10 +928,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#sw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Software Development Guide
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sw-benchmark" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.1 Benchmark
+        4.2 Benchmark
       
     </span>
   </a>
@@ -929,7 +953,7 @@
   <a href="#sw-uart_calculator" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.2 UART Calculator
+        4.3 UART Calculator
       
     </span>
   </a>
@@ -940,7 +964,7 @@
   <a href="#sw-contributing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.3 Contributing
+        4.4 Contributing
       
     </span>
   </a>
@@ -1272,73 +1296,265 @@
                     <section class='print-page md-section' id='section-4' heading-number='4'>
                         <h1>Software<a class='headerlink' href='#section-4' title='Permanent link'></a>
                         </h1>
-                    <section class="print-page" id="sw-benchmark" heading-number="4.1"><h1 id="sw-benchmark-software-development-guide">Software Development Guide<a class="headerlink" href="#sw-benchmark-software-development-guide" title="Permanent link">&para;</a></h1>
-<p>This guide explains how to write, compile, and run the Coremark Benchmark on the Hydra-V processor.</p>
-<h2 id="sw-benchmark-software-directory-structure">Software Directory Structure<a class="headerlink" href="#sw-benchmark-software-directory-structure" title="Permanent link">&para;</a></h2>
-<p>The <code>sw/</code> directory is organized by application:</p>
+                    <section class="print-page" id="sw" heading-number="4.1"><h1 id="sw-software-development-guide">Software Development Guide<a class="headerlink" href="#sw-software-development-guide" title="Permanent link">&para;</a></h1>
+<p>This guide explains how to write, compile, and run different software on the Hydra-V processor.</p>
+<h2 id="sw-software-directory-structure">Software Directory Structure<a class="headerlink" href="#sw-software-directory-structure" title="Permanent link">&para;</a></h2>
+<p>The <code>sw/</code> directory is organized by application. For example:</p>
 <ul>
-<li><strong><code>sw/coremark/</code></strong>: The industry-standard CoreMark benchmark ported for this microarchitecture.</li>
+<li><code>sw/coremark/</code> contais the CoreMark benchmark source code and build scripts.</li>
 </ul>
-<h2 id="sw-benchmark-memory-map">Memory Map<a class="headerlink" href="#sw-benchmark-memory-map" title="Permanent link">&para;</a></h2>
-<p>The processor uses a flat 32-bit address space.</p>
+<h2 id="sw-system-memory-map">System Memory Map<a class="headerlink" href="#sw-system-memory-map" title="Permanent link">&para;</a></h2>
+<p>Followed by the convention set in <a href="https://nus-cg3207.github.io/labs/rv_resources/rv_memmap/">NUS CG3207</a>, the Hydra-V processor uses a memory-mapped I/O architecture. The address space is divided into Instruction Memory, Data Memory, and Peripheral (MMIO) regions.</p>
+<div class="admonition info">
+<p class="admonition-title">Configuration Source</p>
+<p>The memory capacities defined below are determined by parameters in <code>Wrapper.v</code>. For example,
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#sw-__codelineno-0-1"></a><span class="k">localparam</span><span class="w"> </span><span class="n">IROM_DEPTH_BITS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">15</span><span class="p">;</span><span class="w">     </span><span class="c1">// for 2^15 words = 32KB</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#sw-__codelineno-0-2"></a><span class="k">localparam</span><span class="w"> </span><span class="n">DMEM_DEPTH_BITS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">14</span><span class="p">;</span><span class="w">     </span><span class="c1">// for 2^14 words = 16KB</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#sw-__codelineno-0-3"></a><span class="k">localparam</span><span class="w"> </span><span class="n">MMIO_DEPTH_BITS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">8</span><span class="p">;</span><span class="w">      </span><span class="c1">// for 2^8 words = 1KB</span>
+</span></code></pre></div></p>
+<p>If you modify these parameters in <code>Wrapper.v</code>, you must update your linker script and stack initialization accordingly.</p>
+</div>
+<h3 id="sw-main-memory">Main Memory<a class="headerlink" href="#sw-main-memory" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Address Range</th>
-<th style="text-align: left;">Size</th>
-<th style="text-align: left;">Device</th>
-<th style="text-align: left;">Description</th>
+<th>Address Range</th>
+<th>Name</th>
+<th>Permissions</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><code>0x0000_0000</code></td>
-<td style="text-align: left;">64 KB</td>
-<td style="text-align: left;"><strong>Instruction Memory</strong></td>
-<td style="text-align: left;">Read-Only program storage (BRAM).</td>
+<td><code>0x00400000 – 0x00407FFF</code></td>
+<td>IROM (Instruction Memory)</td>
+<td>RO (Read-Only)</td>
+<td>Capacity: 8,192 words (32 KB). Based on <code>IROM_DEPTH_BITS = 15</code>.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><code>0x0010_0000</code></td>
-<td style="text-align: left;">64 KB</td>
-<td style="text-align: left;"><strong>Data Memory</strong></td>
-<td style="text-align: left;">Read/Write RAM for stack and variables.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>0x8000_0000</code></td>
-<td style="text-align: left;">4 B</td>
-<td style="text-align: left;"><strong>GPIO_LEDS</strong></td>
-<td style="text-align: left;">Write logic <code>1</code> to turn on board LEDs.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>0x8000_0004</code></td>
-<td style="text-align: left;">4 B</td>
-<td style="text-align: left;"><strong>UART_TX</strong></td>
-<td style="text-align: left;">Write a character (byte) to send via Serial.</td>
+<td><code>0x10010000 – 0x10013FFF</code></td>
+<td>DMEM (Data Memory)</td>
+<td>RW (Read-Write)</td>
+<td>Capacity: 4,096 words (16 KB). Used for storing constants and variables. Based on <code>DMEM_DEPTH_BITS = 14</code>.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="sw-benchmark-toolchain-setup">Toolchain Setup<a class="headerlink" href="#sw-benchmark-toolchain-setup" title="Permanent link">&para;</a></h2>
-<p>You need the RISC-V GNU Toolchain to compile C code into machine code.</p>
-<ol>
-<li>
-<p><strong>Install Toolchain:</strong></p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#sw-benchmark-__codelineno-0-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>gcc-riscv64-unknown-elf
+<div class="admonition warning">
+<p class="admonition-title">Addressing Constraints</p>
+<p>Accesses must be aligned to 4-byte boundaries.</p>
+</div>
+<h3 id="sw-memory-mapped-peripherals-mmio">Memory-Mapped Peripherals (MMIO)<a class="headerlink" href="#sw-memory-mapped-peripherals-mmio" title="Permanent link">&para;</a></h3>
+<p>All peripherals are mapped to the upper memory range starting at <code>0xFFFFxxxx</code>.</p>
+<h4 id="sw-communication-uart">Communication (UART)<a class="headerlink" href="#sw-communication-uart" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Register Name</th>
+<th>Perms</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0xFFFF0000</code></td>
+<td>UART_RX_VALID</td>
+<td>RO</td>
+<td>Receive Status. Data is valid to read from <code>UART_RX</code> only when the LSB (Least Significant Bit) of this register is set to 1.</td>
+</tr>
+<tr>
+<td><code>0xFFFF0004</code></td>
+<td>UART_RX</td>
+<td>RO</td>
+<td>Receive Data. Reads input from the keyboard. Only the LSByte (lowest 8 bits) contains valid data.</td>
+</tr>
+<tr>
+<td><code>0xFFFF0008</code></td>
+<td>UART_TX_READY</td>
+<td>RO</td>
+<td>Transmit Status. Data is safe to write to <code>UART_TX</code> only when the LSB of this register is set to 1.</td>
+</tr>
+<tr>
+<td><code>0xFFFF000C</code></td>
+<td>UART_TX</td>
+<td>WO</td>
+<td>Transmit Data. Sends output to the display/console. Only the LSByte is writeable.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sw-on-board-io-gpio">On-Board I/O (GPIO)<a class="headerlink" href="#sw-on-board-io-gpio" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Register Name</th>
+<th>Perms</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0xFFFF0060</code></td>
+<td>LED</td>
+<td>WO</td>
+<td>LED control register</td>
+</tr>
+<tr>
+<td><code>0xFFFF0064</code></td>
+<td>DIP</td>
+<td>RO</td>
+<td>DIP switch input register</td>
+</tr>
+<tr>
+<td><code>0xFFFF0068</code></td>
+<td>PB</td>
+<td>RO</td>
+<td>Push button input register</td>
+</tr>
+<tr>
+<td><code>0xFFFF0080</code></td>
+<td>SEVENSEG</td>
+<td>WO</td>
+<td>7-segment display output register</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Register Details</p>
+<dl>
+<dt><code>LED -- 0xFFFF0060 (WO)</code></dt>
+<dd>
+<p>The lower <strong>8 bits</strong> are user-writeable. The upper bits are hardwired as follows:</p>
+<ul>
+<li><strong>[7:0]</strong> user writeable,</li>
+<li><strong>[8]</strong> divided clock,</li>
+<li><strong>[15:9]</strong> program counter <code>[8:2]</code>.</li>
+</ul>
+</dd>
+<dt><code>DIP -- 0xFFFF0064 (RO)</code></dt>
+<dd>
+<p>Reads the state of the <strong>16 on-board switches</strong>, covering switch range <strong>SW15–SW0</strong>.</p>
+</dd>
+<dt><code>PB -- 0xFFFF0068 (RO)</code></dt>
+<dd>
+<p>Only the lowest <strong>3 bits</strong> are valid.</p>
+<ul>
+<li><strong>[2]</strong> BTNR (Right),</li>
+<li><strong>[1]</strong> BTNC (Center),</li>
+<li><strong>[0]</strong> BTNL (Left).</li>
+</ul>
+<p>The remaining buttons are hardwired: <strong>BTND</strong> resets the system, while <strong>BTNU</strong> pauses execution.</p>
+</dd>
+<dt><code>SEVENSEG -- 0xFFFF0080 (WO)</code></dt>
+<dd>
+<p>Writes an <strong>8-digit hexadecimal number</strong> to the 7-segment display.</p>
+</dd>
+</dl>
+</div>
+<h4 id="sw-sensor-display-modules">Sensor &amp; Display Modules<a class="headerlink" href="#sw-sensor-display-modules" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Register Name</th>
+<th>Perms</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0xFFFF0020</code></td>
+<td>OLED_COL</td>
+<td>WO</td>
+<td>Sets the OLED pixel column index (0 – 95).</td>
+</tr>
+<tr>
+<td><code>0xFFFF0024</code></td>
+<td>OLED_ROW</td>
+<td>WO</td>
+<td>Sets the OLED pixel row index (0 – 63).</td>
+</tr>
+<tr>
+<td><code>0xFFFF0028</code></td>
+<td>OLED_DATA</td>
+<td>WO</td>
+<td>Writes data to the pixel. Format depends on <code>OLED_CTRL</code>.</td>
+</tr>
+<tr>
+<td><code>0xFFFF002C</code></td>
+<td>OLED_CTRL</td>
+<td>WO</td>
+<td>Controls OLED data format and operation modes.</td>
+</tr>
+<tr>
+<td><code>0xFFFF0040</code></td>
+<td>ACCEL_DATA</td>
+<td>RO</td>
+<td>Reads accelerometer data (refer to peripherals documentation for format).</td>
+</tr>
+<tr>
+<td><code>0xFFFF0044</code></td>
+<td>ACCEL_DREADY</td>
+<td>RO</td>
+<td>Data Ready. LSB is set when a new reading is available.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sw-system-counters">System Counters<a class="headerlink" href="#sw-system-counters" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Register Name</th>
+<th>Perms</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0xFFFF00A0</code></td>
+<td>CYCLECOUNT</td>
+<td>RO</td>
+<td>Returns the number of clock cycles elapsed since system reset.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sw-toolchain-setup">Toolchain Setup<a class="headerlink" href="#sw-toolchain-setup" title="Permanent link">&para;</a></h2>
+<p>I used the RISC-V GNU Toolchain to compile C code into machine code (hex files) and then load them into the Hydra-V processor's IROM (<code>AA_IROM.mem</code>) and DMEM (<code>AA_DMEM.mem</code>).</p>
+<h3 id="sw-install-toolchain">Install Toolchain<a class="headerlink" href="#sw-install-toolchain" title="Permanent link">&para;</a></h3>
+<p>The toolchain that I used is pre-built and can be found on <a href="https://github.com/stnolting/riscv-gcc-prebuilt">GitHub</a>. I chose the <code>rv32i-131023</code> version. The installation guide is also available on the <a href="https://github.com/stnolting/riscv-gcc-prebuilt?tab=readme-ov-file#installation">repository</a>.</p>
+<h3 id="sw-build-configuration">Build Configuration<a class="headerlink" href="#sw-build-configuration" title="Permanent link">&para;</a></h3>
+<p>To compile C code into hex files for IROM and DMEM, I used three files: <code>Makefile</code>, <code>ld.script</code> and <code>crt.s</code>. For every C program that is newly written, these three files need to be added and modified accordingly.</p>
+<h4 id="sw-makefile"><code>Makefile</code><a class="headerlink" href="#sw-makefile" title="Permanent link">&para;</a></h4>
+<p><code>Makefile</code> defines the rules for the <code>make</code> command to work. Make sure the <code>GCC_DIR</code> is correct and feel free to change the <code>CFLAGS</code> as you wish (like changing the Optimization flag from <code>-O2</code> to <code>-O3</code> etc).</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>You can get a template from any one of the application, but I recommend the <a href="https://github.com/mendax1234/Hydra-V/blob/main/sw/calculator/Makefile"><code>sw/calculator/Makefile</code></a>.</p>
+</div>
+<h4 id="sw-ldscript"><code>ld.script</code><a class="headerlink" href="#sw-ldscript" title="Permanent link">&para;</a></h4>
+<p><code>ld.script</code> first specifies the size left for IROM and DMEM. In the Hydra-V processor,</p>
+<ul>
+<li><code>ROM</code> stands for IROM, its <code>ORIGIN</code> is <code>0x00400000</code>, its <code>LENGTH</code> depends on the size of the <code>code.hex</code> generated.</li>
+<li><code>RAM</code> stands for DMEM, its <code>ORIGIN</code> is <code>0x10010000</code>, its <code>LENGTH</code> depends on the size of the <code>data.hex</code> generated.</li>
+</ul>
+<p>Secondly, it specifies which section in the compiled program goes to which memory region. This determines which part of the program is stored in IROM and which part is stored in DMEM. For example,</p>
+<ul>
+<li>the <code>.rodata</code> and <code>.data</code> sections are dumped into DMEM</li>
+<li>the <code>.text</code> section is dumped into IROM.</li>
+</ul>
+<h4 id="sw-crts"><code>crt.s</code><a class="headerlink" href="#sw-crts" title="Permanent link">&para;</a></h4>
+<p>The <code>crt.s</code> file is the entry point of the software. It sets up the execution environment before handing control to the C <code>main()</code> function.</p>
+<p>For each new application, the <code>li sp, &lt;address&gt;</code> instruction needs to be modified to set the stack pointer (<code>sp</code>) to the top of DMEM. The stack grows downwards from high memory to low memory. Thus you should set the stack pointer to the very end of your available DMEM.</p>
+<div class="arithmatex">\[
+\text{Initial SP} = \text{DMEM_BASE} + \text{DMEM_SIZE}
+\]</div>
+<p>For example, if your DMEM size is 7KB (the <code>sw/coremark</code> example), and the Hydra-V processor's DMEM base address is <code>0x10010000</code>, then the initial stack pointer should be set to:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#sw-__codelineno-1-1"></a>li sp, 0x10011C00  # 0x10010000 + 7 * 1024
 </span></code></pre></div>
-</li>
-<li>
-<p><strong>Compilation Steps:</strong>
-    We treat the processor as "Bare Metal" (no Operating System).</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#sw-benchmark-__codelineno-1-1"></a><span class="c1"># 1. Compile C to Object</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#sw-benchmark-__codelineno-1-2"></a>riscv64-unknown-elf-gcc<span class="w"> </span>-march<span class="o">=</span>rv32i<span class="w"> </span>-mabi<span class="o">=</span>ilp32<span class="w"> </span>-c<span class="w"> </span>main.c<span class="w"> </span>-o<span class="w"> </span>main.o
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#sw-benchmark-__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#sw-benchmark-__codelineno-1-4"></a><span class="c1"># 2. Link (using custom linker script)</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#sw-benchmark-__codelineno-1-5"></a>riscv64-unknown-elf-ld<span class="w"> </span>-T<span class="w"> </span>linker.ld<span class="w"> </span>main.o<span class="w"> </span>-o<span class="w"> </span>main.elf
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#sw-benchmark-__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#sw-benchmark-__codelineno-1-7"></a><span class="c1"># 3. Generate Hex File (for Verilog $readmemh)</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#sw-benchmark-__codelineno-1-8"></a>riscv64-unknown-elf-objcopy<span class="w"> </span>-O<span class="w"> </span>verilog<span class="w"> </span>main.elf<span class="w"> </span>main.hex
-</span></code></pre></div>
-</li>
-</ol></section><section class="print-page" id="sw-contributing" heading-number="4.3"><h1 id="sw-contributing-documentation-workflow">Documentation Workflow<a class="headerlink" href="#sw-contributing-documentation-workflow" title="Permanent link">&para;</a></h1>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>Now you are ready to write, compile, and run your software on the Hydra-V processor! Feel free to move on to explore the existing software applications in the <code>sw/</code> directory.</p>
+</div></section><section class="print-page" id="sw-contributing" heading-number="4.4"><h1 id="sw-contributing-documentation-workflow">Documentation Workflow<a class="headerlink" href="#sw-contributing-documentation-workflow" title="Permanent link">&para;</a></h1>
 <p>The Hydra-V documentation uses <a href="https://github.com/jimporter/mike">mike</a> to manage multiple versions (e.g., <code>1.0</code>, <code>dev</code>). This process is automated via GitHub Actions.</p>
 <h2 id="sw-contributing-1-daily-development-dev">1. Daily Development (<code>dev</code>)<a class="headerlink" href="#sw-contributing-1-daily-development-dev" title="Permanent link">&para;</a></h2>
 <p>Any commit pushed to the <code>main</code> branch automatically triggers a deployment to the <strong>dev</strong> version.</p>
@@ -1415,15 +1631,16 @@ There is currently no direct icon in the navigation bar. To access the printable
                 .print-site-enumerate-headings #sim-simulation h3 {  counter-increment: counter-sim-simulation-3 }
             
 .print-site-enumerate-headings #section-4 > h1:before { content: '4 ' }
-.print-site-enumerate-headings #sw-benchmark > h1:before { content: '4.1 ' }
+.print-site-enumerate-headings #sw > h1:before { content: '4.1 ' }
 
-                .print-site-enumerate-headings #sw-benchmark h2:before { content: '4.1.' counter(counter-sw-benchmark-2) ' ' }
-                .print-site-enumerate-headings #sw-benchmark h2 {  counter-increment: counter-sw-benchmark-2 }
+                .print-site-enumerate-headings #sw h2:before { content: '4.1.' counter(counter-sw-2) ' ' }
+                .print-site-enumerate-headings #sw h2 {  counter-increment: counter-sw-2 }
             
-.print-site-enumerate-headings #sw-uart_calculator > h1:before { content: '4.2 ' }
-.print-site-enumerate-headings #sw-contributing > h1:before { content: '4.3 ' }
+.print-site-enumerate-headings #sw-benchmark > h1:before { content: '4.2 ' }
+.print-site-enumerate-headings #sw-uart_calculator > h1:before { content: '4.3 ' }
+.print-site-enumerate-headings #sw-contributing > h1:before { content: '4.4 ' }
 
-                .print-site-enumerate-headings #sw-contributing h2:before { content: '4.3.' counter(counter-sw-contributing-2) ' ' }
+                .print-site-enumerate-headings #sw-contributing h2:before { content: '4.4.' counter(counter-sw-contributing-2) ' ' }
                 .print-site-enumerate-headings #sw-contributing h2 {  counter-increment: counter-sw-contributing-2 }
             </style>
 
