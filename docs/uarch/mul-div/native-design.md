@@ -1,3 +1,7 @@
+---
+icon: material/cog
+---
+
 # Native Design of Multiply & Divide Unit
 
 This is a follow-up from [CG3207 Assignment 3](https://nus-cg3207.github.io/labs/asst_manuals/Asst_03/Asst_03/). More specifically, it is my try to finish the first bullet point in the [Task 3 of this assignment](https://nus-cg3207.github.io/labs/asst_manuals/Asst_03/Asst_03/#task-3-enhancements-5-points).

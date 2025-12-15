@@ -6,7 +6,7 @@ This guide explains how to write, compile, and run different software on the Hyd
 
 The `sw/` directory is organized by application. For example:
 
-* `sw/coremark/` contais the CoreMark benchmark source code and build scripts.
+* `sw/coremark/` contains the CoreMark benchmark source code and build scripts.
 
 ## System Memory Map
 
