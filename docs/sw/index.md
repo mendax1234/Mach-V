@@ -145,5 +145,11 @@ For example, if your DMEM size is 7KB (the `sw/coremark` example), and the Hydra
 li sp, 0x10011C00  # 0x10010000 + 7 * 1024
 ```
 
+### Compile and Load
+
+After setting up the three files above, you can simply run the `make` command in the terminal while being in the application's directory. If everything is set up correctly, two hex files named `code.hex` and `data.hex` will be generated. Copy and paste the contents of `code.hex` into `AA_IROM.mem` and `data.hex` into `AA_DMEM.mem` in the Vivado project to load the program into the Hydra-V processor.
+
+To clean up the generated files, you can run `make clean`.
+
 !!! success
     Now you are ready to write, compile, and run your software on the Hydra-V processor! Feel free to move on to explore the existing software applications in the `sw/` directory.

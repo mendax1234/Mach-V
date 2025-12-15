@@ -133,4 +133,4 @@ nav:
       - sw/index.md
       - Benchmark: sw/benchmark.md
       - UART Calculator: sw/uart_calculator.md
-      - Contributing: sw/contributing.md
+      - Resources: sw/resources.md
