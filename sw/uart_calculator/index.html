@@ -14,7 +14,7 @@
         <link rel="prev" href="../benchmark/">
       
       
-        <link rel="next" href="../contributing/">
+        <link rel="next" href="../resources/">
       
       
         
@@ -80,6 +80,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#uart-calculator" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -711,6 +716,8 @@
         
   
   
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m16 11.78 4.24-7.33 1.73 1-5.23 9.05-6.51-3.75L5.46 19H22v2H2V3h2v14.54L9.5 8z"/></svg>
+  
   <span class="md-ellipsis">
     
   
@@ -741,10 +748,34 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 2v4h10V4zm0 6v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2z"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+    UART Calculator
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 2v4h10V4zm0 6v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2z"/></svg>
   
   <span class="md-ellipsis">
     
@@ -759,6 +790,125 @@
 
       </a>
       
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#source-code-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Code Organization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#porting-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Porting Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Porting Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uart-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dmem-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DMEM Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Usage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#communication-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Communication Protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -771,14 +921,16 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/" class="md-nav__link">
+      <a href="../resources/" class="md-nav__link">
         
   
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Contributing
+    Resources
   
 
     
@@ -816,6 +968,116 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#source-code-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Code Organization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#porting-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Porting Implementation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Porting Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uart-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dmem-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DMEM Initialization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Build Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Application Usage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Application Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#communication-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Communication Protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -888,9 +1150,192 @@
   
 
 
-  <h1>UART Calculator</h1>
-
-
+<h1 id="uart-calculator">UART Calculator<a class="headerlink" href="#uart-calculator" title="Permanent link">&para;</a></h1>
+<p>This is a simple calculator program that is used to test the basic functionality of the Hydra-V processor. It contains all the basic instructiosn from RISC-V I and M extensions, and performs arithmetic operations based on user input via UART.</p>
+<h2 id="source-code-organization">Source Code Organization<a class="headerlink" href="#source-code-organization" title="Permanent link">&para;</a></h2>
+<p>The source code for the UART Calculator is located in the <code>sw/uart_calculator/</code> directory. The main source file is <code>uart_calculator.c</code>, which contains the implementation of the calculator logic and UART communication.</p>
+<h2 id="porting-implementation">Porting Implementation<a class="headerlink" href="#porting-implementation" title="Permanent link">&para;</a></h2>
+<h3 id="uart-output">UART Output<a class="headerlink" href="#uart-output" title="Permanent link">&para;</a></h3>
+<p>As the calculator uses UART to communicate with the Hydra-V processor, if the MMIO addresses are changed, the code in <code>uart_calculator.c</code> must be updated accordingly. The MMIO definitions are located at the top of the <code>uart_calculator.c</code> file,</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#define MMIO_BASE 0xFFFF0000</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#define UART_RX_VALID_OFF 0x00</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cp">#define UART_RX_DATA_OFF 0x04</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="cp">#define UART_TX_READY_OFF 0x08</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="cp">#define UART_TX_DATA_OFF 0x0C</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="cp">#define SEVENSEG_OFF 0x80</span>
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If you are using different MMIO addresses for UART or other peripherals, make sure to update these definitions accordingly.</p>
+</div>
+<h3 id="dmem-initialization">DMEM Initialization<a class="headerlink" href="#dmem-initialization" title="Permanent link">&para;</a></h3>
+<p>The application pre-loads data into Data Memory (DMEM) to test Load/Store instructions. This is handled via initialized global arrays in C, which the linker places in the <code>.data</code> section.</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Pre-loaded test patterns for Load operations</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kt">uint32_t</span><span class="w"> </span><span class="n">test_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="mh">0x12345678</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="mh">0x9ABCDEF0</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="mh">0xAABBCCDD</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="mh">0xEEFF0011</span><span class="p">};</span>
+</span></code></pre></div>
+<h2 id="build-configuration">Build Configuration<a class="headerlink" href="#build-configuration" title="Permanent link">&para;</a></h2>
+<p>There is nothing much to customize or change in the <code>Makefile</code>, <code>ld.script</code> and <code>crt.s</code> files for this application. This is also why this application can be regarded as a template for other new applications.</p>
+<h2 id="application-usage">Application Usage<a class="headerlink" href="#application-usage" title="Permanent link">&para;</a></h2>
+<p>The calculator operates using a strictly defined 9-byte communication protocol over UART.</p>
+<h3 id="communication-protocol">Communication Protocol<a class="headerlink" href="#communication-protocol" title="Permanent link">&para;</a></h3>
+<p>For every operation, the user must send exactly <strong>9 bytes</strong> to the processor:</p>
+<ol>
+<li><strong>Command 1(1 Byte)</strong>: An ASCII character selecting the operation (see table below).</li>
+<li><strong>Operand 1(4 Bytes)</strong>: The first 32-bit argument, sent Big-Endian (MSB first).</li>
+<li><strong>Operand 2(4 Bytes)</strong>: The second 32-bit argument, sent Big-Endian (MSB first).</li>
+</ol>
+<p><strong>Output</strong>: The result of the operation is written to the <strong>7-segment Display</strong> MMIO address.</p>
+<h3 id="command-reference">Command Reference<a class="headerlink" href="#command-reference" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Command</th>
+<th>ASCII</th>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Arithmetic</strong></td>
+<td>ADD</td>
+<td>a</td>
+<td>op1 + op2</td>
+<td>32-bit Addition</td>
+</tr>
+<tr>
+<td></td>
+<td>SUB</td>
+<td>s</td>
+<td>op1 - op2</td>
+<td>32-bit Subtraction</td>
+</tr>
+<tr>
+<td><strong>Logical</strong></td>
+<td>AND</td>
+<td>c</td>
+<td>op1 &amp; op2</td>
+<td>Bitwise AND</td>
+</tr>
+<tr>
+<td></td>
+<td>OR</td>
+<td>o</td>
+<td>op1 | op2</td>
+<td>Bitwise OR</td>
+</tr>
+<tr>
+<td></td>
+<td>XOR</td>
+<td>x</td>
+<td>op1 ^ op2</td>
+<td>Bitwise XOR</td>
+</tr>
+<tr>
+<td><strong>Shift</strong></td>
+<td>SLL</td>
+<td>L</td>
+<td>op1 &lt;&lt; op2</td>
+<td>Shift Left Logical</td>
+</tr>
+<tr>
+<td></td>
+<td>SRL</td>
+<td>R</td>
+<td>op1 &gt;&gt; op2</td>
+<td>Shift Right Logical</td>
+</tr>
+<tr>
+<td></td>
+<td>SRA</td>
+<td>A</td>
+<td>op1 &gt;&gt; op2</td>
+<td>Shift Right Arithmetic (sign-extended)</td>
+</tr>
+<tr>
+<td><strong>Comparison</strong></td>
+<td>SLT</td>
+<td>l</td>
+<td>op1 &lt; op2</td>
+<td>Set if Less Than (Signed)</td>
+</tr>
+<tr>
+<td></td>
+<td>SLTU</td>
+<td>u</td>
+<td>op1 &lt; op2</td>
+<td>Set if Less Than (Unsigned)</td>
+</tr>
+<tr>
+<td><strong>Multiply / Div</strong></td>
+<td>MUL</td>
+<td>m</td>
+<td>op1 * op2</td>
+<td>Low 32 bits of product</td>
+</tr>
+<tr>
+<td></td>
+<td>MULH</td>
+<td>H</td>
+<td>op1 * op2</td>
+<td>High 32 bits (Signed)</td>
+</tr>
+<tr>
+<td></td>
+<td>MULHU</td>
+<td>h</td>
+<td>op1 * op2</td>
+<td>High 32 bits (Unsigned)</td>
+</tr>
+<tr>
+<td></td>
+<td>DIV</td>
+<td>d</td>
+<td>op1 / op2</td>
+<td>Signed Division</td>
+</tr>
+<tr>
+<td></td>
+<td>DIVU</td>
+<td>D</td>
+<td>op1 / op2</td>
+<td>Unsigned Division</td>
+</tr>
+<tr>
+<td></td>
+<td>REM</td>
+<td>r</td>
+<td>op1 % op2</td>
+<td>Signed Remainder</td>
+</tr>
+<tr>
+<td></td>
+<td>REMU</td>
+<td>M</td>
+<td>op1 % op2</td>
+<td>Unsigned Remainder</td>
+</tr>
+<tr>
+<td><strong>Memory Access</strong></td>
+<td>LOAD</td>
+<td>1..4</td>
+<td>Mem[op1]</td>
+<td>Reads from <code>test_data</code>. 1=LB, 2=LBU, 3=LH, 4=LHU</td>
+</tr>
+<tr>
+<td></td>
+<td>STORE</td>
+<td>5..6</td>
+<td>Mem[op1] = op2</td>
+<td>Writes to <code>scratch_mem</code>. 5=SB, 6=SH</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -913,7 +1358,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 11, 2025 13:35:13 UTC"><span class="timeago" datetime="2025-12-11T13:35:13+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 11, 2025 13:35:13 UTC">2025-12-11</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 15, 2025 08:02:17 UTC"><span class="timeago" datetime="2025-12-15T08:02:17+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 15, 2025 08:02:17 UTC">2025-12-15</span>
   </span>
 
     
@@ -998,13 +1443,13 @@
         
         
           
-          <a href="../contributing/" class="md-footer__link md-footer__link--next" aria-label="Next: Contributing">
+          <a href="../resources/" class="md-footer__link md-footer__link--next" aria-label="Next: Resources">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Contributing
+                Resources
               </div>
             </div>
             <div class="md-footer__button md-icon">

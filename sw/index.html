@@ -716,6 +716,8 @@
         
   
   
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m16 11.78 4.24-7.33 1.73 1-5.23 9.05-6.51-3.75L5.46 19H22v2H2V3h2v14.54L9.5 8z"/></svg>
+  
   <span class="md-ellipsis">
     
   
@@ -744,6 +746,8 @@
         
   
   
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 2v4h10V4zm0 6v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2z"/></svg>
+  
   <span class="md-ellipsis">
     
   
@@ -768,14 +772,16 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="resources/" class="md-nav__link">
         
   
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Contributing
+    Resources
   
 
     
@@ -900,6 +906,17 @@
     <span class="md-ellipsis">
       
         Build Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compile-and-load" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compile and Load
       
     </span>
   </a>
@@ -1239,6 +1256,9 @@
 <p>For example, if your DMEM size is 7KB (the <code>sw/coremark</code> example), and the Hydra-V processor's DMEM base address is <code>0x10010000</code>, then the initial stack pointer should be set to:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>li sp, 0x10011C00  # 0x10010000 + 7 * 1024
 </span></code></pre></div>
+<h3 id="compile-and-load">Compile and Load<a class="headerlink" href="#compile-and-load" title="Permanent link">&para;</a></h3>
+<p>After setting up the three files above, you can simply run the <code>make</code> command in the terminal while being in the application's directory. If everything is set up correctly, two hex files named <code>code.hex</code> and <code>data.hex</code> will be generated. Copy and paste the contents of <code>code.hex</code> into <code>AA_IROM.mem</code> and <code>data.hex</code> into <code>AA_DMEM.mem</code> in the Vivado project to load the program into the Hydra-V processor.</p>
+<p>To clean up the generated files, you can run <code>make clean</code>.</p>
 <div class="admonition success">
 <p class="admonition-title">Success</p>
 <p>Now you are ready to write, compile, and run your software on the Hydra-V processor! Feel free to move on to explore the existing software applications in the <code>sw/</code> directory.</p>
@@ -1265,7 +1285,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 14, 2025 13:08:23 UTC"><span class="timeago" datetime="2025-12-14T13:08:23+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 14, 2025 13:08:23 UTC">2025-12-14</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 15, 2025 08:02:17 UTC"><span class="timeago" datetime="2025-12-15T08:02:17+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 15, 2025 08:02:17 UTC">2025-12-15</span>
   </span>
 
     

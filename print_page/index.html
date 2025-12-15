@@ -711,6 +711,8 @@
         
   
   
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m16 11.78 4.24-7.33 1.73 1-5.23 9.05-6.51-3.75L5.46 19H22v2H2V3h2v14.54L9.5 8z"/></svg>
+  
   <span class="md-ellipsis">
     
   
@@ -739,6 +741,8 @@
         
   
   
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 2v4h10V4zm0 6v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2z"/></svg>
+  
   <span class="md-ellipsis">
     
   
@@ -763,14 +767,16 @@
   
   
     <li class="md-nav__item">
-      <a href="../sw/contributing/" class="md-nav__link">
+      <a href="../sw/resources/" class="md-nav__link">
         
   
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Contributing
+    Resources
   
 
     
@@ -961,10 +967,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sw-contributing" class="md-nav__link">
+  <a href="#sw-resources" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4 Contributing
+        4.4 Resources
       
     </span>
   </a>
@@ -1551,57 +1557,294 @@
 <p>For example, if your DMEM size is 7KB (the <code>sw/coremark</code> example), and the Hydra-V processor's DMEM base address is <code>0x10010000</code>, then the initial stack pointer should be set to:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#sw-__codelineno-1-1"></a>li sp, 0x10011C00  # 0x10010000 + 7 * 1024
 </span></code></pre></div>
+<h3 id="sw-compile-and-load">Compile and Load<a class="headerlink" href="#sw-compile-and-load" title="Permanent link">&para;</a></h3>
+<p>After setting up the three files above, you can simply run the <code>make</code> command in the terminal while being in the application's directory. If everything is set up correctly, two hex files named <code>code.hex</code> and <code>data.hex</code> will be generated. Copy and paste the contents of <code>code.hex</code> into <code>AA_IROM.mem</code> and <code>data.hex</code> into <code>AA_DMEM.mem</code> in the Vivado project to load the program into the Hydra-V processor.</p>
+<p>To clean up the generated files, you can run <code>make clean</code>.</p>
 <div class="admonition success">
 <p class="admonition-title">Success</p>
 <p>Now you are ready to write, compile, and run your software on the Hydra-V processor! Feel free to move on to explore the existing software applications in the <code>sw/</code> directory.</p>
-</div></section><section class="print-page" id="sw-contributing" heading-number="4.4"><h1 id="sw-contributing-documentation-workflow">Documentation Workflow<a class="headerlink" href="#sw-contributing-documentation-workflow" title="Permanent link">&para;</a></h1>
-<p>The Hydra-V documentation uses <a href="https://github.com/jimporter/mike">mike</a> to manage multiple versions (e.g., <code>1.0</code>, <code>dev</code>). This process is automated via GitHub Actions.</p>
-<h2 id="sw-contributing-1-daily-development-dev">1. Daily Development (<code>dev</code>)<a class="headerlink" href="#sw-contributing-1-daily-development-dev" title="Permanent link">&para;</a></h2>
-<p>Any commit pushed to the <code>main</code> branch automatically triggers a deployment to the <strong>dev</strong> version.</p>
-<ul>
-<li><strong>URL:</strong> <code>.../Hydra-V/dev/</code></li>
-<li><strong>Behavior:</strong> This version is mutable. New pushes overwrite the previous <code>dev</code> content.</li>
-</ul>
-<h2 id="sw-contributing-2-publishing-a-release-vxx">2. Publishing a Release (<code>vX.X</code>)<a class="headerlink" href="#sw-contributing-2-publishing-a-release-vxx" title="Permanent link">&para;</a></h2>
-<p>To "freeze" the documentation for a specific processor version (e.g., when Version 1.0 RTL is complete), use <strong>Git Tags</strong>. The CI pipeline detects tags starting with <code>v</code> and creates a permanent documentation snapshot.</p>
-<p><strong>Steps to release:</strong></p>
-<ol>
-<li>Commit your final changes.</li>
-<li>Tag the commit with the version number (e.g., <code>v1.0</code>).</li>
-<li>Push the tag to GitHub.</li>
-</ol>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#sw-contributing-__codelineno-0-1"></a><span class="c1"># Example: Releasing Version 1.0</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#sw-contributing-__codelineno-0-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;Finalize RTL and Docs for v1.0&quot;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#sw-contributing-__codelineno-0-3"></a>git<span class="w"> </span>tag<span class="w"> </span>v1.0
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#sw-contributing-__codelineno-0-4"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v1.0
+</div></section><section class="print-page" id="sw-benchmark" heading-number="4.2"><h1 id="sw-benchmark-coremark-benchmark">CoreMark Benchmark<a class="headerlink" href="#sw-benchmark-coremark-benchmark" title="Permanent link">&para;</a></h1>
+<p>The <a href="https://www.eembc.org/coremark/">CoreMark</a> benchmark is used to evaluate the performance of the Hydra-V processor. It measures the CPU's ability to handle list processing, matrix manipulation, and state machine execution.</p>
+<h2 id="sw-benchmark-source-code-organization">Source Code Organization<a class="headerlink" href="#sw-benchmark-source-code-organization" title="Permanent link">&para;</a></h2>
+<p>The CoreMark source code and build scripts are located in the <code>sw/coremark/</code> directory.</p>
+<h2 id="sw-benchmark-porting-implementation">Porting Implementation<a class="headerlink" href="#sw-benchmark-porting-implementation" title="Permanent link">&para;</a></h2>
+<p>The CoreMark port for Hydra-V is based on the barebones implementation. To adapt it for the Hydra-V memory map, modifications are required in <code>sw/coremark/barebones/core_portme.c</code> and <code>sw/coremark/barebones/ee_printf.c</code>.</p>
+<h3 id="sw-benchmark-system-timer">System Timer<a class="headerlink" href="#sw-benchmark-system-timer" title="Permanent link">&para;</a></h3>
+<p>CoreMark requires a method to measure time to calculate the performance score. In <code>core_portme.c</code>, the <code>barebones_clock()</code> function is modified to read the Hydra-V <code>CYCLECOUNT</code> system counter.</p>
+<p><strong>Modification:</strong> Update <code>hardwareCounterAddr</code> to point to the Hydra-V <a href="#sw-system-counters">system counter</a> address (<code>0xFFFF00A0</code>).</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#sw-benchmark-__codelineno-0-1"></a><span class="n">CORETIMETYPE</span><span class="w"> </span><span class="nf">barebones_clock</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#sw-benchmark-__codelineno-0-2"></a><span class="w">    </span><span class="c1">// Pointer to the Hydra-V System Counter (CYCLECOUNT)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#sw-benchmark-__codelineno-0-3"></a><span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">hardwareCounterAddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="p">)</span><span class="mh">0xffff00a0</span><span class="p">;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#sw-benchmark-__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#sw-benchmark-__codelineno-0-5"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">hardwareCounter</span><span class="p">;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#sw-benchmark-__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#sw-benchmark-__codelineno-0-7"></a><span class="w">    </span><span class="c1">// Read hardwareCounter (Execution Cycle)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#sw-benchmark-__codelineno-0-8"></a><span class="w">    </span><span class="n">hardwareCounter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">hardwareCounterAddr</span><span class="p">;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#sw-benchmark-__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#sw-benchmark-__codelineno-0-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">CORETIMETYPE</span><span class="p">)</span><span class="n">hardwareCounter</span><span class="p">;</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#sw-benchmark-__codelineno-0-11"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><strong>Results:</strong></p>
-<ul>
-<li>A new folder <code>/1.0/</code> is created in the documentation.</li>
-<li>The <code>latest</code> alias is updated to point to <code>1.0</code>.</li>
-<li>The default landing page is switched to <code>1.0</code>.</li>
-</ul>
-<h2 id="sw-contributing-3-pdf-offline-access">3. PDF / Offline Access<a class="headerlink" href="#sw-contributing-3-pdf-offline-access" title="Permanent link">&para;</a></h2>
-<p>The documentation supports exporting the entire site as a single consolidated PDF using the <a href="https://timvink.github.io/mkdocs-print-site-plugin/index.html"><code>mkdocs-print-site-plugin</code></a>.</p>
-<p><strong>How to access:</strong>
-There is currently no direct icon in the navigation bar. To access the printable version, you must manually navigate to the print page:</p>
+<h3 id="sw-benchmark-uart-output">UART Output<a class="headerlink" href="#sw-benchmark-uart-output" title="Permanent link">&para;</a></h3>
+<p>To output the benchmark results to the console, the UART transmission function must be mapped to the correct MMIO addresses.</p>
+<p><strong>Modification:</strong> In <code>ee_printf.c</code>, update the pointers in <code>uart_send_char()</code> to match the Hydra-V UART peripheral addresses. The relevant addresses are introduced in <a href="#sw-communication-uart">System Memory Map</a>.</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#sw-benchmark-__codelineno-1-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">uart_send_char</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#sw-benchmark-__codelineno-1-2"></a><span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">UART_TX_READY_ADDR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="p">)</span><span class="mh">0xFFFF0008</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#sw-benchmark-__codelineno-1-3"></a><span class="w">    </span><span class="k">volatile</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">UART_TX_ADDR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="mh">0xFFFF000C</span><span class="p">;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#sw-benchmark-__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#sw-benchmark-__codelineno-1-5"></a><span class="w">    </span><span class="c1">// Wait until UART is ready (LSB == 1 indicates ready)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#sw-benchmark-__codelineno-1-6"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">UART_TX_READY_ADDR</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#sw-benchmark-__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#sw-benchmark-__codelineno-1-8"></a><span class="w">    </span><span class="c1">// Write character to the transmission buffer</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#sw-benchmark-__codelineno-1-9"></a><span class="w">    </span><span class="o">*</span><span class="n">UART_TX_ADDR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#sw-benchmark-__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#sw-benchmark-__codelineno-1-11"></a><span class="w">    </span><span class="c1">// Optional: Wait for transmission completion</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#sw-benchmark-__codelineno-1-12"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="o">*</span><span class="n">UART_TX_READY_ADDR</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x1</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#sw-benchmark-__codelineno-1-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="sw-benchmark-build-configuration">Build Configuration<a class="headerlink" href="#sw-benchmark-build-configuration" title="Permanent link">&para;</a></h2>
+<h3 id="sw-benchmark-setting-clock-frequency">Setting Clock Frequency<a class="headerlink" href="#sw-benchmark-setting-clock-frequency" title="Permanent link">&para;</a></h3>
+<p>To ensure the CoreMark score (Iterations/Sec) is calculated correctly, the build script must know the target processor frequency.</p>
+<p>Modify the <code>Makefile</code> under <code>sw/coremark</code> to set the <code>CLOCKS_PER_SEC</code> flag. This value must match the frequency of the Hydra-V processor. For example, for a design running at 50 MHz:</p>
+<div class="language-makefile highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#sw-benchmark-__codelineno-2-1"></a><span class="nv">CLOCKS_PER_SEC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">50000000</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If <code>CLOCKS_PER_SEC</code> does not match the actual hardware clock frequency, the reported CoreMark/MHz score will be mathematically incorrect.</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">Ready to Run</p>
+<p>With the porting layer configured and the frequency set, the CoreMark benchmark is ready to run on Hydra-V!</p>
+</div></section><section class="print-page" id="sw-uart_calculator" heading-number="4.3"><h1 id="sw-uart_calculator-uart-calculator">UART Calculator<a class="headerlink" href="#sw-uart_calculator-uart-calculator" title="Permanent link">&para;</a></h1>
+<p>This is a simple calculator program that is used to test the basic functionality of the Hydra-V processor. It contains all the basic instructiosn from RISC-V I and M extensions, and performs arithmetic operations based on user input via UART.</p>
+<h2 id="sw-uart_calculator-source-code-organization">Source Code Organization<a class="headerlink" href="#sw-uart_calculator-source-code-organization" title="Permanent link">&para;</a></h2>
+<p>The source code for the UART Calculator is located in the <code>sw/uart_calculator/</code> directory. The main source file is <code>uart_calculator.c</code>, which contains the implementation of the calculator logic and UART communication.</p>
+<h2 id="sw-uart_calculator-porting-implementation">Porting Implementation<a class="headerlink" href="#sw-uart_calculator-porting-implementation" title="Permanent link">&para;</a></h2>
+<h3 id="sw-uart_calculator-uart-output">UART Output<a class="headerlink" href="#sw-uart_calculator-uart-output" title="Permanent link">&para;</a></h3>
+<p>As the calculator uses UART to communicate with the Hydra-V processor, if the MMIO addresses are changed, the code in <code>uart_calculator.c</code> must be updated accordingly. The MMIO definitions are located at the top of the <code>uart_calculator.c</code> file,</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#sw-uart_calculator-__codelineno-0-1"></a><span class="cp">#define MMIO_BASE 0xFFFF0000</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#sw-uart_calculator-__codelineno-0-2"></a><span class="cp">#define UART_RX_VALID_OFF 0x00</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#sw-uart_calculator-__codelineno-0-3"></a><span class="cp">#define UART_RX_DATA_OFF 0x04</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#sw-uart_calculator-__codelineno-0-4"></a><span class="cp">#define UART_TX_READY_OFF 0x08</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#sw-uart_calculator-__codelineno-0-5"></a><span class="cp">#define UART_TX_DATA_OFF 0x0C</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#sw-uart_calculator-__codelineno-0-6"></a><span class="cp">#define SEVENSEG_OFF 0x80</span>
+</span></code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If you are using different MMIO addresses for UART or other peripherals, make sure to update these definitions accordingly.</p>
+</div>
+<h3 id="sw-uart_calculator-dmem-initialization">DMEM Initialization<a class="headerlink" href="#sw-uart_calculator-dmem-initialization" title="Permanent link">&para;</a></h3>
+<p>The application pre-loads data into Data Memory (DMEM) to test Load/Store instructions. This is handled via initialized global arrays in C, which the linker places in the <code>.data</code> section.</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#sw-uart_calculator-__codelineno-1-1"></a><span class="c1">// Pre-loaded test patterns for Load operations</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#sw-uart_calculator-__codelineno-1-2"></a><span class="kt">uint32_t</span><span class="w"> </span><span class="n">test_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#sw-uart_calculator-__codelineno-1-3"></a><span class="w">    </span><span class="mh">0x12345678</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#sw-uart_calculator-__codelineno-1-4"></a><span class="w">    </span><span class="mh">0x9ABCDEF0</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#sw-uart_calculator-__codelineno-1-5"></a><span class="w">    </span><span class="mh">0xAABBCCDD</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#sw-uart_calculator-__codelineno-1-6"></a><span class="w">    </span><span class="mh">0xEEFF0011</span><span class="p">};</span>
+</span></code></pre></div>
+<h2 id="sw-uart_calculator-build-configuration">Build Configuration<a class="headerlink" href="#sw-uart_calculator-build-configuration" title="Permanent link">&para;</a></h2>
+<p>There is nothing much to customize or change in the <code>Makefile</code>, <code>ld.script</code> and <code>crt.s</code> files for this application. This is also why this application can be regarded as a template for other new applications.</p>
+<h2 id="sw-uart_calculator-application-usage">Application Usage<a class="headerlink" href="#sw-uart_calculator-application-usage" title="Permanent link">&para;</a></h2>
+<p>The calculator operates using a strictly defined 9-byte communication protocol over UART.</p>
+<h3 id="sw-uart_calculator-communication-protocol">Communication Protocol<a class="headerlink" href="#sw-uart_calculator-communication-protocol" title="Permanent link">&para;</a></h3>
+<p>For every operation, the user must send exactly <strong>9 bytes</strong> to the processor:</p>
 <ol>
-<li>
-<p><strong>Navigate to the Print URL:</strong>
-    Append <code>/print_page/</code> (or <code>print_page.html</code>) to the end of the current documentation URL.</p>
+<li><strong>Command 1(1 Byte)</strong>: An ASCII character selecting the operation (see table below).</li>
+<li><strong>Operand 1(4 Bytes)</strong>: The first 32-bit argument, sent Big-Endian (MSB first).</li>
+<li><strong>Operand 2(4 Bytes)</strong>: The second 32-bit argument, sent Big-Endian (MSB first).</li>
+</ol>
+<p><strong>Output</strong>: The result of the operation is written to the <strong>7-segment Display</strong> MMIO address.</p>
+<h3 id="sw-uart_calculator-command-reference">Command Reference<a class="headerlink" href="#sw-uart_calculator-command-reference" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Command</th>
+<th>ASCII</th>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Arithmetic</strong></td>
+<td>ADD</td>
+<td>a</td>
+<td>op1 + op2</td>
+<td>32-bit Addition</td>
+</tr>
+<tr>
+<td></td>
+<td>SUB</td>
+<td>s</td>
+<td>op1 - op2</td>
+<td>32-bit Subtraction</td>
+</tr>
+<tr>
+<td><strong>Logical</strong></td>
+<td>AND</td>
+<td>c</td>
+<td>op1 &amp; op2</td>
+<td>Bitwise AND</td>
+</tr>
+<tr>
+<td></td>
+<td>OR</td>
+<td>o</td>
+<td>op1 | op2</td>
+<td>Bitwise OR</td>
+</tr>
+<tr>
+<td></td>
+<td>XOR</td>
+<td>x</td>
+<td>op1 ^ op2</td>
+<td>Bitwise XOR</td>
+</tr>
+<tr>
+<td><strong>Shift</strong></td>
+<td>SLL</td>
+<td>L</td>
+<td>op1 &lt;&lt; op2</td>
+<td>Shift Left Logical</td>
+</tr>
+<tr>
+<td></td>
+<td>SRL</td>
+<td>R</td>
+<td>op1 &gt;&gt; op2</td>
+<td>Shift Right Logical</td>
+</tr>
+<tr>
+<td></td>
+<td>SRA</td>
+<td>A</td>
+<td>op1 &gt;&gt; op2</td>
+<td>Shift Right Arithmetic (sign-extended)</td>
+</tr>
+<tr>
+<td><strong>Comparison</strong></td>
+<td>SLT</td>
+<td>l</td>
+<td>op1 &lt; op2</td>
+<td>Set if Less Than (Signed)</td>
+</tr>
+<tr>
+<td></td>
+<td>SLTU</td>
+<td>u</td>
+<td>op1 &lt; op2</td>
+<td>Set if Less Than (Unsigned)</td>
+</tr>
+<tr>
+<td><strong>Multiply / Div</strong></td>
+<td>MUL</td>
+<td>m</td>
+<td>op1 * op2</td>
+<td>Low 32 bits of product</td>
+</tr>
+<tr>
+<td></td>
+<td>MULH</td>
+<td>H</td>
+<td>op1 * op2</td>
+<td>High 32 bits (Signed)</td>
+</tr>
+<tr>
+<td></td>
+<td>MULHU</td>
+<td>h</td>
+<td>op1 * op2</td>
+<td>High 32 bits (Unsigned)</td>
+</tr>
+<tr>
+<td></td>
+<td>DIV</td>
+<td>d</td>
+<td>op1 / op2</td>
+<td>Signed Division</td>
+</tr>
+<tr>
+<td></td>
+<td>DIVU</td>
+<td>D</td>
+<td>op1 / op2</td>
+<td>Unsigned Division</td>
+</tr>
+<tr>
+<td></td>
+<td>REM</td>
+<td>r</td>
+<td>op1 % op2</td>
+<td>Signed Remainder</td>
+</tr>
+<tr>
+<td></td>
+<td>REMU</td>
+<td>M</td>
+<td>op1 % op2</td>
+<td>Unsigned Remainder</td>
+</tr>
+<tr>
+<td><strong>Memory Access</strong></td>
+<td>LOAD</td>
+<td>1..4</td>
+<td>Mem[op1]</td>
+<td>Reads from <code>test_data</code>. 1=LB, 2=LBU, 3=LH, 4=LHU</td>
+</tr>
+<tr>
+<td></td>
+<td>STORE</td>
+<td>5..6</td>
+<td>Mem[op1] = op2</td>
+<td>Writes to <code>scratch_mem</code>. 5=SB, 6=SH</td>
+</tr>
+</tbody>
+</table></section><section class="print-page" id="sw-resources" heading-number="4.4"><h1 id="sw-resources-resoures-utilities">Resoures &amp; Utilities<a class="headerlink" href="#sw-resources-resoures-utilities" title="Permanent link">&para;</a></h1>
+<p>This section contains utility guides and extra information regarding the Hydra-V software stack.</p>
+<h2 id="sw-resources-offline-access">Offline Access<a class="headerlink" href="#sw-resources-offline-access" title="Permanent link">&para;</a></h2>
+<p>This documentation supports exporting the entire site as a single, consolidated PDF for offline reading. This is powered by the <a href="https://timvink.github.io/mkdocs-print-site-plugin/index.html"><code>mkdocs-print-site-plugin</code></a>.</p>
+<h3 id="sw-resources-export-to-pdf">Export to PDF<a class="headerlink" href="#sw-resources-export-to-pdf" title="Permanent link">&para;</a></h3>
+<p>Currently, there is no direct download button in the navigation bar. You can generate the PDF manually by following these steps:</p>
+<ol>
+<li>Access the Print View: Navigate to the consolidated print view by appending <code>print_page/</code> to the base URL of the documentation. For example, go to <code>https://mendax1234.github.io/Hydra-V/print_page/</code>.</li>
+<li>Print to PDF: Once the page loads (it may take a moment to render all chapters):<ol>
+<li>Open your browser's print dialog (<code>Ctrl + P</code> on Windows/Linux or <code>Cmd + P</code> on macOS).</li>
+<li>Set the <strong>Destination</strong> to <strong>"Save as PDF"</strong>.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Formatting</p>
+<p>For the best layout, ensure <strong>Background graphics</strong> is checked in your browser's print settings to preserve syntax highlighting and admonition colors.</p>
+</div>
+<h2 id="sw-resources-useful-links">Useful Links<a class="headerlink" href="#sw-resources-useful-links" title="Permanent link">&para;</a></h2>
+<p>The success of Hydra-V cannot be achieved without the help of many open-source projects and resources. Here are some useful links that you may find helpful when working with Hydra-V:</p>
+<div class="grid cards">
 <ul>
-<li><em>Example:</em> <code>.../Hydra-V/dev/print_page/</code></li>
-</ul>
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 16a3 3 0 0 1-3-3c0-1.12.61-2.1 1.5-2.61l9.71-5.62-5.53 9.58c-.5.98-1.51 1.65-2.68 1.65m0-13c1.81 0 3.5.5 4.97 1.32l-2.1 1.21C14 5.19 13 5 12 5a8 8 0 0 0-8 8c0 2.21.89 4.21 2.34 5.65h.01c.39.39.39 1.02 0 1.41s-1.03.39-1.42.01A9.97 9.97 0 0 1 2 13 10 10 0 0 1 12 3m10 10c0 2.76-1.12 5.26-2.93 7.07-.39.38-1.02.38-1.41-.01a.996.996 0 0 1 0-1.41A7.95 7.95 0 0 0 20 13c0-1-.19-2-.54-2.9L20.67 8C21.5 9.5 22 11.18 22 13"/></svg></span> <strong>CoreMark Benchmark</strong></p>
+<hr />
+<p>Official CoreMark benchmark by EEMBC, widely used to evaluate embedded
+processor performance.</p>
+<p><a href="https://www.eembc.org/coremark/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Visit EEMBC</a></p>
 </li>
 <li>
-<p><strong>Save as PDF:</strong>
-    Once the consolidated page loads (containing all documentation chapters), use your browser's print function:</p>
-<ul>
-<li>Press <code>Ctrl + P</code> (Windows/Linux) or <code>Cmd + P</code> (macOS).</li>
-<li>Select <strong>"Save as PDF"</strong> as the destination.</li>
-</ul>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v1h3v2h-3v2h3v2h-3v2h3v2h-3v2h3v2h-3v1H6v-1H3v-2h3v-2H3v-2h3v-2H3V9h3V7H3V5h3zm5 11v3h1v-3zm2 0v3h1v-3zm2 0v3h1v-3z"/></svg></span> <strong>CoreMark on Bare-Metal Systems</strong></p>
+<hr />
+<p>CoreMark running on bare-bone RISC-V systems, including build scripts
+and platform-specific adaptations.</p>
+<p><a href="https://github.com/yutyan0119/rv32I-TangNano9K/tree/main/Coremark"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> View on GitHub</a></p>
 </li>
-</ol></section></section></div><style>.print-site-enumerate-headings #index > h1:before { content: '1 ' }
+<li>
+<p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.71 20.29-1.42 1.42a1 1 0 0 1-1.41 0L7 9.85A3.8 3.8 0 0 1 6 10a4 4 0 0 1-3.78-5.3l2.54 2.54.53-.53 1.42-1.42.53-.53L4.7 2.22A4 4 0 0 1 10 6a3.8 3.8 0 0 1-.15 1l11.86 11.88a1 1 0 0 1 0 1.41M2.29 18.88a1 1 0 0 0 0 1.41l1.42 1.42a1 1 0 0 0 1.41 0l5.47-5.46-2.83-2.83M20 2l-4 2v2l-2.17 2.17 2 2L18 8h2l2-4Z"/></svg></span> <strong>Pre-built RISC-V GNU Toolchain</strong></p>
+<hr />
+<p>Pre-compiled RISC-V GCC toolchain for rapid development without
+building from source.</p>
+<p><a href="https://github.com/stnolting/riscv-gcc-prebuilt"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Download Toolchain</a></p>
+</li>
+</ul>
+</div></section></section></div><style>.print-site-enumerate-headings #index > h1:before { content: '1 ' }
 
                 .print-site-enumerate-headings #index h2:before { content: '1.' counter(counter-index-2) ' ' }
                 .print-site-enumerate-headings #index h2 {  counter-reset: counter-index-3 ;  counter-increment: counter-index-2 }
@@ -1637,11 +1880,19 @@ There is currently no direct icon in the navigation bar. To access the printable
                 .print-site-enumerate-headings #sw h2 {  counter-increment: counter-sw-2 }
             
 .print-site-enumerate-headings #sw-benchmark > h1:before { content: '4.2 ' }
-.print-site-enumerate-headings #sw-uart_calculator > h1:before { content: '4.3 ' }
-.print-site-enumerate-headings #sw-contributing > h1:before { content: '4.4 ' }
 
-                .print-site-enumerate-headings #sw-contributing h2:before { content: '4.4.' counter(counter-sw-contributing-2) ' ' }
-                .print-site-enumerate-headings #sw-contributing h2 {  counter-increment: counter-sw-contributing-2 }
+                .print-site-enumerate-headings #sw-benchmark h2:before { content: '4.2.' counter(counter-sw-benchmark-2) ' ' }
+                .print-site-enumerate-headings #sw-benchmark h2 {  counter-increment: counter-sw-benchmark-2 }
+            
+.print-site-enumerate-headings #sw-uart_calculator > h1:before { content: '4.3 ' }
+
+                .print-site-enumerate-headings #sw-uart_calculator h2:before { content: '4.3.' counter(counter-sw-uart_calculator-2) ' ' }
+                .print-site-enumerate-headings #sw-uart_calculator h2 {  counter-increment: counter-sw-uart_calculator-2 }
+            
+.print-site-enumerate-headings #sw-resources > h1:before { content: '4.4 ' }
+
+                .print-site-enumerate-headings #sw-resources h2:before { content: '4.4.' counter(counter-sw-resources-2) ' ' }
+                .print-site-enumerate-headings #sw-resources h2 {  counter-increment: counter-sw-resources-2 }
             </style>
 
 
