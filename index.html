@@ -321,91 +321,87 @@
 
         
       
-
 <style>
+    /* 0. REMOVE SCROLLBAR */
+    html, body {
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+    }
+    
     /* 1. RESET LAYOUT */
     .md-header {
         position: initial;
     }
-
     .md-main__inner {
         margin: 0;
     }
-
     .md-content {
         display: none;
     }
-
+    .md-footer {
+        display: none;
+    }
     @media screen and (min-width: 60em) {
         .md-sidebar--secondary {
             display: none;
         }
     }
-
     @media screen and (min-width: 76.25em) {
         .md-sidebar--primary {
             display: none;
         }
     }
-
-    /* 2. ANIMATION KEYFRAMES (UPDATED) */
-    @keyframes float {
-        0% {
-            transform: translateY(0px);
-        }
-
-        50% {
-            transform: translateY(-10px);
-        }
-
-        /* Reduced movement range */
-        100% {
-            transform: translateY(0px);
-        }
-    }
-
-    /* 3. HERO CONTAINER */
+    
+    /* 2. FULL-PAGE HERO BACKGROUND */
     .mdx-container {
-        padding-top: 1rem;
-        min-height: 80vh;
+        height: 100vh;
         display: flex;
         align-items: center;
-
-        background:
-            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1123 258'><path d='M1124,2c0,0 0,256 0,256l-1125,0l0,-48c0,0 16,5 55,5c116,0 197,-92 325,-92c121,0 114,46 254,46c140,0 214,-167 572,-166Z' style='fill: hsla(0, 0%, 100%, 1)' /></svg>") no-repeat bottom,
-            linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9 99%, var(--md-default-bg-color) 99%);
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        margin-top: -3rem;
+        background: linear-gradient(
+            180deg,
+            var(--md-primary-fg-color) 0%,
+            #7d4fa3 45%,
+            #5a4d7a 70%,
+            #1b1f2a 100%
+        );
     }
-
     [data-md-color-scheme="slate"] .mdx-container {
-        background:
-            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1123 258'><path d='M1124,2c0,0 0,256 0,256l-1125,0l0,-48c0,0 16,5 55,5c116,0 197,-92 325,-92c121,0 114,46 254,46c140,0 214,-167 572,-166Z' style='fill: hsla(230, 15%, 14%, 1)' /></svg>") no-repeat bottom,
-            linear-gradient(to bottom, var(--md-primary-fg-color), #363949 99%, var(--md-default-bg-color) 99%);
+        background: linear-gradient(
+            180deg,
+            var(--md-primary-fg-color) 0%,
+            #4a5168 50%,
+            #2a2f3d 75%,
+            #0f1117 100%
+        );
     }
-
-    /* 4. HERO CONTENT STYLING */
+    
+    /* 3. HERO CONTENT */
     .mdx-hero {
         margin: 0 0.8rem;
         color: var(--md-primary-bg-color);
     }
-
     .mdx-hero h1 {
         color: currentColor;
         font-weight: 700;
         margin-bottom: 1rem;
     }
-
-    /* Desktop View Adjustments */
+    
+    /* Desktop layout */
     @media screen and (min-width: 60em) {
         .mdx-hero {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
         .mdx-hero__content {
-            max-width: 25rem;
+            max-width: 26rem;
         }
-
         .mdx-hero__image {
             order: 1;
             transform: translateX(4rem);
@@ -413,57 +409,51 @@
             display: flex;
             align-items: center;
         }
-
         .mdx-hero__image img {
             max-width: 100%;
             height: auto;
-            /* UPDATED: Faster speed (3.5s) */
-            animation: float 3.5s ease-in-out infinite;
         }
     }
-
-    /* 5. BUTTON STYLING */
+    
+    /* 4. BUTTONS */
     .mdx-hero .md-button {
         color: var(--md-primary-bg-color);
         border-color: var(--md-primary-bg-color);
         margin-right: 0.5rem;
         margin-top: 0.5rem;
     }
-
     .mdx-hero .md-button:hover {
         background-color: var(--md-primary-bg-color);
         color: var(--md-primary-fg-color);
     }
-
     .mdx-hero .md-button--primary {
         background-color: var(--md-primary-bg-color);
         color: #894da8;
         font-weight: bold;
     }
 </style>
-
 <section class="mdx-container">
     <div class="md-grid md-typeset">
         <div class="mdx-hero">
-
             <div class="mdx-hero__image">
-                <img src="assets/images/hydra-v.png" alt="Hydra-V Architecture" width="1659" height="1200"
-                    draggable="false">
+                <img
+                    src="assets/images/hydra-v.png"
+                    alt="Hydra-V Architecture"
+                    width="1659"
+                    height="1200"
+                    draggable="false"
+                >
             </div>
-
             <div class="mdx-hero__content">
-                <h1>Hydra V: RISC-V on FPGA</h1>
+                <h1>Hydra-V: RISC-V on FPGA</h1>
                 <p>A high-performance RISC-V processor on FPGA. Bridging the gap between beginner-friendly education and advanced hardware architecture.</p>
-
                 <a href="uarch/" class="md-button md-button--primary">
                     Quick Start
                 </a>
-
                 <a href="https://github.com/mendax1234/hydra-v" class="md-button">
                     View on GitHub
                 </a>
             </div>
-
         </div>
     </div>
 </section>
