@@ -103,6 +103,35 @@
         color: #894da8;
         font-weight: bold;
     }
+
+    /* 5. MOBILE LIGHT MODE OVERRIDES */
+    @media screen and (max-width: 59.9em) {
+
+        /* Target only Default (Light) Mode */
+        [data-md-color-scheme="default"] .mdx-hero .md-button {
+            /* Secondary Button (View on GitHub) */
+            color: #ffffff;
+            /* Keep text white */
+            border-color: #ffffff;
+            /* Keep border white */
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Optional: slight background for contrast */
+        }
+
+        [data-md-color-scheme="default"] .mdx-hero .md-button:hover {
+            background-color: #ffffff;
+            color: #894da8;
+        }
+
+        [data-md-color-scheme="default"] .mdx-hero .md-button--primary {
+            /* Primary Button (Quick Start) */
+            background-color: #ffffff;
+            /* White background */
+            color: #894da8;
+            /* Purple text */
+            border-color: #ffffff;
+        }
+    }
 </style>
 
 <section class="mdx-container">
@@ -110,13 +139,8 @@
         <div class="mdx-hero">
 
             <div class="mdx-hero__image">
-                <img
-                    src="assets/images/hydra-v.png"
-                    alt="Hydra-V Architecture"
-                    width="1659"
-                    height="1200"
-                    draggable="false"
-                >
+                <img src="assets/images/hydra-v.png" alt="Hydra-V Architecture" width="1659" height="1200"
+                    draggable="false">
             </div>
 
             <div class="mdx-hero__content">
