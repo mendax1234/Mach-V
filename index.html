@@ -323,53 +323,86 @@
       
 
 <style>
-    /* 1. RESET LAYOUT */
-    .md-header {
-        position: initial;
+    /* ==========================================================================
+       1. GLOBAL LAYOUT & RESET
+       ========================================================================== */
+    
+    /* Lock the viewport to create a single-screen "Landing Page" experience.
+       overflow: hidden prevents scrollbars from appearing. */
+    html, body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
     }
 
-    .md-main__inner {
-        margin: 0;
+    /* CRITICAL FIX: 
+       MkDocs renders an empty main content area (.md-main) and footer by default.
+       We must hide them explicitly to prevent the "black block" at the bottom 
+       and ensure the gradient fills the screen. */
+    .md-main, .md-footer {
+        display: none !important;
     }
 
-    .md-content {
-        display: none;
-    }
-
+    /* Explicitly hide sidebars on larger screens to prevent layout shifting. */
     @media screen and (min-width: 60em) {
-        .md-sidebar--secondary {
-            display: none;
-        }
+        .md-sidebar--secondary { display: none; }
     }
-
     @media screen and (min-width: 76.25em) {
-        .md-sidebar--primary {
-            display: none;
-        }
+        .md-sidebar--primary { display: none; }
     }
 
-    /* 2. HERO CONTAINER */
+    /* ==========================================================================
+       2. HEADER INTEGRATION (SEAMLESS TRANSITION)
+       ========================================================================== */
+    
+    /* Remove default shadows and borders from the Header and Tabs.
+       This allows the purple header to blend perfectly into the hero gradient. */
+    .md-header {
+        box-shadow: none !important;
+    }
+    .md-tabs {
+        box-shadow: none !important;
+        border-bottom: none !important;
+    }
+
+    /* ==========================================================================
+       3. HERO CONTAINER
+       ========================================================================== */
+    
     .mdx-container {
-        padding-top: 1rem;
-        min-height: 80vh;
+        /* DYNAMIC HEIGHT CALCULATION:
+           100vh (Viewport Height) - 48px (Approx. height of the MkDocs header).
+           This ensures the container fills exactly the remaining space below the header. */
+        height: calc(100vh - 48px); 
+        width: 100%;
+        
+        /* Flexbox centering for content */
         display: flex;
         align-items: center;
+        justify-content: center;
 
-        background:
-            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1123 258'><path d='M1124,2c0,0 0,256 0,256l-1125,0l0,-48c0,0 16,5 55,5c116,0 197,-92 325,-92c121,0 114,46 254,46c140,0 214,-167 572,-166Z' style='fill: hsla(0, 0%, 100%, 1)' /></svg>") no-repeat bottom,
-            linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9 99%, var(--md-default-bg-color) 99%);
+        /* OPTICAL ALIGNMENT:
+           Add padding-bottom to lift the content visually. Without this, the 
+           center point feels too low because of the header space above. */
+        padding-bottom: 5rem;
+
+        /* BACKGROUND: Light Mode Gradient */
+        background: linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9);
     }
 
+    /* BACKGROUND: Dark Mode Gradient (Slate Theme) */
     [data-md-color-scheme="slate"] .mdx-container {
-        background:
-            url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1123 258'><path d='M1124,2c0,0 0,256 0,256l-1125,0l0,-48c0,0 16,5 55,5c116,0 197,-92 325,-92c121,0 114,46 254,46c140,0 214,-167 572,-166Z' style='fill: hsla(230, 15%, 14%, 1)' /></svg>") no-repeat bottom,
-            linear-gradient(to bottom, var(--md-primary-fg-color), #363949 99%, var(--md-default-bg-color) 99%);
+        background: linear-gradient(to bottom, var(--md-primary-fg-color), #363949);
     }
 
-    /* 3. HERO CONTENT STYLING */
+    /* ==========================================================================
+       4. CONTENT STYLING (TEXT & IMAGE)
+       ========================================================================== */
+    
     .mdx-hero {
         margin: 0 0.8rem;
-        color: var(--md-primary-bg-color);
+        color: var(--md-primary-bg-color); /* White text color */
+        text-align: center; /* Default to center for mobile */
     }
 
     .mdx-hero h1 {
@@ -378,38 +411,46 @@
         margin-bottom: 1rem;
     }
 
-    /* Desktop View Adjustments */
+    /* --- DESKTOP VIEW CONFIGURATION (min-width: 60em) --- */
     @media screen and (min-width: 60em) {
         .mdx-hero {
             display: flex;
             align-items: center;
             justify-content: center;
+            text-align: left; /* Revert to left align for desktop */
         }
 
         .mdx-hero__content {
             max-width: 25rem;
+            margin-right: 2rem; /* Spacing between text and image */
         }
 
         .mdx-hero__image {
-            order: 1;
-            transform: translateX(4rem);
-            width: 65rem;
+            order: 1; /* Places image to the right of text */
+            width: 40rem;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
 
         .mdx-hero__image img {
             max-width: 100%;
             height: auto;
+            /* Adds depth to the isometric image */
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2)); 
         }
     }
 
-    /* 4. BUTTON STYLING */
+    /* ==========================================================================
+       5. BUTTON STYLING
+       ========================================================================== */
+    
     .mdx-hero .md-button {
         color: var(--md-primary-bg-color);
         border-color: var(--md-primary-bg-color);
         margin-right: 0.5rem;
         margin-top: 0.5rem;
+        transition: all 0.2s ease;
     }
 
     .mdx-hero .md-button:hover {
@@ -417,9 +458,10 @@
         color: var(--md-primary-fg-color);
     }
 
+    /* Primary "Learn More" Button */
     .mdx-hero .md-button--primary {
         background-color: var(--md-primary-bg-color);
-        color: #894da8;
+        color: #894da8; /* Matches the purple theme */
         font-weight: bold;
     }
 </style>
@@ -427,11 +469,6 @@
 <section class="mdx-container">
     <div class="md-grid md-typeset">
         <div class="mdx-hero">
-
-            <div class="mdx-hero__image">
-                <img src="assets/images/hydra-v.png" alt="Hydra-V Architecture" width="1659" height="1200"
-                    draggable="false">
-            </div>
 
             <div class="mdx-hero__content">
                 <h1>Hydra-V: RISC-V on FPGA</h1>
@@ -444,6 +481,11 @@
                 <a href="https://github.com/mendax1234/hydra-v" class="md-button">
                     View on GitHub
                 </a>
+            </div>
+
+            <div class="mdx-hero__image">
+                <img src="assets/images/hydra-v.png" alt="Hydra-V Architecture" width="1659" height="1200"
+                    draggable="false">
             </div>
 
         </div>
