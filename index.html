@@ -337,6 +337,10 @@
 
     /* --- LIGHT MODE GRADIENT (Default) --- */
     body {
+        /* FIX 2: Disable the "rubber-band" bounce effect on iOS/Mobile.
+           This forces the scrollbar to stop firmly at the top edge. */
+        overscroll-behavior-y: none;
+
         /* THE FIX: "Solid Buffer"
            0px - 150px: Solid Primary Color (Matches the opaque header perfectly)
            150px - End: Fades to Purple (#a63fd9)
