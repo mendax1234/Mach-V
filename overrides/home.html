@@ -8,167 +8,177 @@
        1. GLOBAL LAYOUT & RESET
        ========================================================================== */
     
-    /* Lock the viewport to create a single-screen "Landing Page" experience.
-       overflow: hidden prevents scrollbars from appearing. */
     html, body {
         height: 100%;
         width: 100%;
-        overflow: hidden;
+        overflow: hidden; /* Prevent scrolling */
     }
 
-    /* CRITICAL FIX: 
-       MkDocs renders an empty main content area (.md-main) and footer by default.
-       We must hide them explicitly to prevent the "black block" at the bottom 
-       and ensure the gradient fills the screen. */
-    .md-main, .md-footer {
+    /* FIX: Collapse .md-main to keep mobile navigation alive but invisible */
+    .md-main {
+        height: 0;
+        padding: 0 !important;
+        overflow: visible; 
+    }
+
+    /* Hide Footer and Content Text */
+    .md-footer, .md-content {
         display: none !important;
     }
 
-    /* Explicitly hide sidebars on larger screens to prevent layout shifting. */
+    /* ==========================================================================
+       2. HEADER & TABS STYLING
+       ========================================================================== */
+    
+    .md-header { box-shadow: none !important; }
+    .md-tabs { box-shadow: none !important; border-bottom: none !important; }
+
+    /* ==========================================================================
+       3. SIDEBAR LOGIC
+       ========================================================================== */
+
+    /* DESKTOP: Hide sidebars */
     @media screen and (min-width: 60em) {
         .md-sidebar--secondary { display: none; }
     }
     @media screen and (min-width: 76.25em) {
-        .md-sidebar--primary { display: none; }
+        .md-sidebar--primary { display: none; } 
     }
 
     /* ==========================================================================
-       2. HEADER INTEGRATION (SEAMLESS TRANSITION)
-       ========================================================================== */
-    
-    /* Remove default shadows and borders from the Header and Tabs.
-       This allows the purple header to blend perfectly into the hero gradient. */
-    .md-header {
-        box-shadow: none !important;
-    }
-    .md-tabs {
-        box-shadow: none !important;
-        border-bottom: none !important;
-    }
-
-    /* ==========================================================================
-       3. HERO CONTAINER
+       4. HERO CONTAINER
        ========================================================================== */
     
     .mdx-container {
-        /* DYNAMIC HEIGHT CALCULATION:
-           100vh (Viewport Height) - 48px (Approx. height of the MkDocs header).
-           This ensures the container fills exactly the remaining space below the header. */
-        height: calc(100vh - 48px); 
+        /* Height Calculation: 100vh - Header - Tabs */
+        height: calc(100vh - var(--md-header-height, 48px) - var(--md-tabs-height, 48px));
         width: 100%;
-        
-        /* Flexbox centering for content */
         display: flex;
         align-items: center;
         justify-content: center;
-
-        /* OPTICAL ALIGNMENT:
-           Add padding-bottom to lift the content visually. Without this, the 
-           center point feels too low because of the header space above. */
-        padding-bottom: 5rem;
-
-        /* BACKGROUND: Light Mode Gradient */
+        padding-bottom: 3rem; 
         background: linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9);
     }
 
-    /* BACKGROUND: Dark Mode Gradient (Slate Theme) */
+    /* DARK MODE BACKGROUND */
     [data-md-color-scheme="slate"] .mdx-container {
         background: linear-gradient(to bottom, var(--md-primary-fg-color), #363949);
     }
 
     /* ==========================================================================
-       4. CONTENT STYLING (TEXT & IMAGE)
+       5. CONTENT STYLING (TEXT & IMAGE)
        ========================================================================== */
     
+    /* RESTORE ORIGINAL TEXT COLOR */
     .mdx-hero {
         margin: 0 0.8rem;
-        color: var(--md-primary-bg-color); /* White text color */
-        text-align: center; /* Default to center for mobile */
+        /* Force WHITE text to override MkDocs default black text in Light Mode */
+        color: #ffffff !important; 
+        line-height: 1.6; /* Better readability for the paragraph */
     }
 
     .mdx-hero h1 {
-        color: currentColor;
-        font-weight: 700;
+        /* Force WHITE and BOLD for the title */
+        color: #ffffff !important;
+        font-weight: 700 !important;
         margin-bottom: 1rem;
+        line-height: 1.2;
     }
 
-    /* --- DESKTOP VIEW CONFIGURATION (min-width: 60em) --- */
+    /* ==========================================================================
+       6. RESPONSIVE LAYOUT
+       ========================================================================== */
+
+    /* MOBILE (< 1220px) */
+    @media screen and (max-width: 76.1875em) {
+        .mdx-container {
+            height: calc(100vh - var(--md-header-height, 48px));
+            flex-direction: column;
+            padding-bottom: 1rem;
+        }
+
+        .mdx-hero {
+            text-align: center;
+            display: block;
+            margin-top: 2rem;
+        }
+
+        .mdx-hero__image {
+            width: 80%;
+            margin: 2rem auto 0;
+        }
+    }
+
+    /* DESKTOP (> 960px) */
     @media screen and (min-width: 60em) {
         .mdx-hero {
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: left; /* Revert to left align for desktop */
+            text-align: left;
         }
 
         .mdx-hero__content {
             max-width: 25rem;
-            margin-right: 2rem; /* Spacing between text and image */
+            margin-right: 2rem;
         }
 
         .mdx-hero__image {
-            order: 1; /* Places image to the right of text */
+            order: 1;
             width: 40rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .mdx-hero__image img {
             max-width: 100%;
             height: auto;
-            /* Adds depth to the isometric image */
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2)); 
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
         }
     }
 
     /* ==========================================================================
-       5. BUTTON STYLING
+       7. BUTTON STYLING
        ========================================================================== */
     
     .mdx-hero .md-button {
-        color: var(--md-primary-bg-color);
-        border-color: var(--md-primary-bg-color);
+        /* Force White Text/Border for buttons on the dark background */
+        color: #ffffff !important;
+        border-color: #ffffff !important;
         margin-right: 0.5rem;
         margin-top: 0.5rem;
         transition: all 0.2s ease;
     }
 
     .mdx-hero .md-button:hover {
-        background-color: var(--md-primary-bg-color);
-        color: var(--md-primary-fg-color);
+        background-color: #ffffff !important;
+        color: var(--md-primary-fg-color) !important; /* Purple text on hover */
     }
 
-    /* Primary "Learn More" Button */
+    /* PRIMARY BUTTON (FILLED WHITE) */
     .mdx-hero .md-button--primary {
-        background-color: var(--md-primary-bg-color);
-        color: #894da8; /* Matches the purple theme */
+        background-color: #ffffff !important;
+        color: #894da8 !important; /* Purple text */
         font-weight: bold;
+        border-color: #ffffff !important;
+    }
+    
+    .mdx-hero .md-button--primary:hover {
+        background-color: transparent !important;
+        color: #ffffff !important;
     }
 </style>
 
 <section class="mdx-container">
     <div class="md-grid md-typeset">
         <div class="mdx-hero">
-
             <div class="mdx-hero__content">
                 <h1>Hydra-V: RISC-V on FPGA</h1>
                 <p>{{ config.site_description }}</p>
-
-                <a href="{{ page.next_page.url | url }}" class="md-button md-button--primary">
-                    Learn More
-                </a>
-
-                <a href="https://github.com/mendax1234/hydra-v" class="md-button">
-                    View on GitHub
-                </a>
+                <a href="{{ page.next_page.url | url }}" class="md-button md-button--primary">Learn More</a>
+                <a href="https://github.com/mendax1234/hydra-v" class="md-button">View on GitHub</a>
             </div>
-
             <div class="mdx-hero__image">
-                <img src="assets/images/hydra-v.png" alt="Hydra-V Architecture" width="1659" height="1200"
-                    draggable="false">
+                <img src="assets/images/hydra-v.png" alt="Hydra-V Architecture" width="1659" height="1200" draggable="false">
             </div>
-
         </div>
     </div>
 </section>
