@@ -331,27 +331,35 @@
         height: 100%;
         width: 100%;
         margin: 0;
-        
-        /* SCROLL BEHAVIOR:
-           - Desktop: Hidden (locked to one page)
-           - Mobile: Auto (scrolling allowed)
-        */
         overflow-x: hidden; 
         overflow-y: auto;
     }
 
     /* --- LIGHT MODE GRADIENT (Default) --- */
     body {
-        /* Gradient covers the whole screen, starting from the very top */
-        background: linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9) fixed;
+        /* THE FIX: "Solid Buffer"
+           0px - 150px: Solid Primary Color (Matches the opaque header perfectly)
+           150px - End: Fades to Purple (#a63fd9)
+        */
+        background: linear-gradient(
+            to bottom, 
+            var(--md-primary-fg-color) 0%, 
+            var(--md-primary-fg-color) 150px, 
+            #a63fd9 100%
+        ) fixed;
         background-size: cover;
         background-repeat: no-repeat;
     }
 
     /* --- DARK MODE GRADIENT (Slate Theme) --- */
-    /* Target body specifically when in slate mode */
     body[data-md-color-scheme="slate"] {
-        background: linear-gradient(to bottom, var(--md-primary-fg-color), #363949) fixed !important;
+        /* THE FIX applied to Dark Mode too */
+        background: linear-gradient(
+            to bottom, 
+            var(--md-primary-fg-color) 0%, 
+            var(--md-primary-fg-color) 150px, 
+            #363949 100%
+        ) fixed !important;
     }
 
     /* LOCK SCROLL ON DESKTOP ONLY */
@@ -362,15 +370,15 @@
     }
 
     /* ==========================================================================
-       2. SEAMLESS HEADER (The Fix for Smooth Transition)
+       2. SEAMLESS HEADER (Opaque + Matching Color)
        ========================================================================== */
     
-    /* Make the Header and Tabs TRANSPARENT so the body gradient shows through.
-       This removes the "hard line" between the top bars and the content. 
+    /* We set the header to the EXACT same color as the top 150px of the body.
+       Since both are solid var(--md-primary-fg-color), the seam is invisible.
+       It is opaque, so scrolling text on iPad will hide behind it properly.
     */
     .md-header, .md-tabs {
-        background: transparent !important;
-        background-color: transparent !important;
+        background-color: var(--md-primary-fg-color) !important;
         box-shadow: none !important;
         border-bottom: none !important;
     }
@@ -411,18 +419,15 @@
        ========================================================================== */
     
     .mdx-container {
-        /* Fills the remaining screen height exactly */
         min-height: calc(100vh - var(--md-header-height, 48px) - var(--md-tabs-height, 48px));
         width: 100%;
-        
         display: flex;
         align-items: center;
         justify-content: center;
-        
         padding-top: 2rem;
         padding-bottom: 2rem; 
 
-        /* CRITICAL: Transparent so the Body Gradient shows through */
+        /* Transparent so the Body Gradient shows through */
         background: transparent;
     }
 
