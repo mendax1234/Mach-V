@@ -5,80 +5,107 @@
 
 <style>
     /* ==========================================================================
-       1. GLOBAL LAYOUT & RESET
+       1. GLOBAL LAYOUT
        ========================================================================== */
     
     html, body {
         height: 100%;
         width: 100%;
-        overflow: hidden; /* Prevent scrolling */
+        margin: 0;
+        
+        /* SCROLL BEHAVIOR:
+           - Desktop: Hidden (locked to one page)
+           - Mobile: Auto (scrolling allowed)
+        */
+        overflow-x: hidden; 
+        overflow-y: auto;
+        
+        /* MATCH BACKGROUND:
+           Set body background to match the gradient's bottom color.
+           This ensures that if scrolling 'bounces' or a gap appears, 
+           it looks seamless purple, not white/black.
+        */
+        background-color: #a63fd9; 
     }
 
-    /* FIX: Collapse .md-main to keep mobile navigation alive but invisible */
+    [data-md-color-scheme="slate"] body {
+        background-color: #363949; 
+    }
+
+    /* LOCK SCROLL ON DESKTOP ONLY */
+    @media screen and (min-width: 76.25em) {
+        html, body {
+            overflow: hidden !important;
+        }
+    }
+
+    /* ==========================================================================
+       2. GHOSTING THE MAIN CONTENT (The Fix)
+       ========================================================================== */
+    
+    /* PROBLEM: .md-main contains the mobile sidebar logic. We can't delete it.
+       OLD FIX: height: 0 (Failed because it still took up layout space).
+       NEW FIX: position: absolute (Removes it from layout flow entirely).
+    */
     .md-main {
+        position: absolute !important; /* Take out of flow */
+        top: 0;
+        left: 0;
+        width: 0;
         height: 0;
+        overflow: hidden;
+        z-index: -1; /* Send to back just in case */
         padding: 0 !important;
-        overflow: visible; 
+        margin: 0 !important;
     }
 
-    /* Hide Footer and Content Text */
-    .md-footer, .md-content {
+    /* Globally hide inner content text and footer */
+    .md-content, .md-footer {
         display: none !important;
     }
 
     /* ==========================================================================
-       2. HEADER & TABS STYLING
+       3. HEADER & TABS
        ========================================================================== */
     
     .md-header { box-shadow: none !important; }
     .md-tabs { box-shadow: none !important; border-bottom: none !important; }
 
     /* ==========================================================================
-       3. SIDEBAR LOGIC
-       ========================================================================== */
-
-    /* DESKTOP: Hide sidebars */
-    @media screen and (min-width: 60em) {
-        .md-sidebar--secondary { display: none; }
-    }
-    @media screen and (min-width: 76.25em) {
-        .md-sidebar--primary { display: none; } 
-    }
-
-    /* ==========================================================================
        4. HERO CONTAINER
        ========================================================================== */
     
     .mdx-container {
-        /* Height Calculation: 100vh - Header - Tabs */
-        height: calc(100vh - var(--md-header-height, 48px) - var(--md-tabs-height, 48px));
+        /* Fills the remaining screen height exactly */
+        min-height: calc(100vh - var(--md-header-height, 48px) - var(--md-tabs-height, 48px));
         width: 100%;
+        
         display: flex;
         align-items: center;
         justify-content: center;
-        padding-bottom: 3rem; 
+        
+        /* Padding adjustments */
+        padding-top: 2rem;
+        padding-bottom: 2rem; 
+
         background: linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9);
     }
 
-    /* DARK MODE BACKGROUND */
     [data-md-color-scheme="slate"] .mdx-container {
         background: linear-gradient(to bottom, var(--md-primary-fg-color), #363949);
     }
 
     /* ==========================================================================
-       5. CONTENT STYLING (TEXT & IMAGE)
+       5. CONTENT STYLING
        ========================================================================== */
     
-    /* RESTORE ORIGINAL TEXT COLOR */
     .mdx-hero {
-        margin: 0 0.8rem;
-        /* Force WHITE text to override MkDocs default black text in Light Mode */
-        color: #ffffff !important; 
-        line-height: 1.6; /* Better readability for the paragraph */
+        margin: 0 1rem;
+        color: #ffffff !important;
+        text-align: center;
     }
 
     .mdx-hero h1 {
-        /* Force WHITE and BOLD for the title */
         color: #ffffff !important;
         font-weight: 700 !important;
         margin-bottom: 1rem;
@@ -86,31 +113,36 @@
     }
 
     /* ==========================================================================
-       6. RESPONSIVE LAYOUT
+       6. RESPONSIVE BREAKPOINTS
        ========================================================================== */
 
-    /* MOBILE (< 1220px) */
+    /* MOBILE / TABLET (< 1220px) */
     @media screen and (max-width: 76.1875em) {
         .mdx-container {
-            height: calc(100vh - var(--md-header-height, 48px));
+            min-height: calc(100vh - var(--md-header-height, 48px));
             flex-direction: column;
-            padding-bottom: 1rem;
         }
 
         .mdx-hero {
-            text-align: center;
-            display: block;
-            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1rem;
         }
 
         .mdx-hero__image {
-            width: 80%;
-            margin: 2rem auto 0;
+            width: 100%;
+            max-width: 500px; 
+            margin-top: 2rem;
         }
     }
 
-    /* DESKTOP (> 960px) */
-    @media screen and (min-width: 60em) {
+    /* LARGE DESKTOP (> 1220px) */
+    @media screen and (min-width: 76.25em) {
+        .md-sidebar--primary, .md-sidebar--secondary { 
+            display: none; 
+        }
+
         .mdx-hero {
             display: flex;
             align-items: center;
@@ -119,28 +151,27 @@
         }
 
         .mdx-hero__content {
-            max-width: 25rem;
-            margin-right: 2rem;
+            max-width: 28rem;
+            margin-right: 3rem;
         }
 
         .mdx-hero__image {
             order: 1;
-            width: 40rem;
-        }
-
-        .mdx-hero__image img {
-            max-width: 100%;
-            height: auto;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+            width: 45rem;
         }
     }
 
     /* ==========================================================================
-       7. BUTTON STYLING
+       7. IMAGES & BUTTONS
        ========================================================================== */
-    
+
+    .mdx-hero__image img {
+        max-width: 100%;
+        height: auto;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+    }
+
     .mdx-hero .md-button {
-        /* Force White Text/Border for buttons on the dark background */
         color: #ffffff !important;
         border-color: #ffffff !important;
         margin-right: 0.5rem;
@@ -150,13 +181,12 @@
 
     .mdx-hero .md-button:hover {
         background-color: #ffffff !important;
-        color: var(--md-primary-fg-color) !important; /* Purple text on hover */
+        color: var(--md-primary-fg-color) !important;
     }
 
-    /* PRIMARY BUTTON (FILLED WHITE) */
     .mdx-hero .md-button--primary {
         background-color: #ffffff !important;
-        color: #894da8 !important; /* Purple text */
+        color: #894da8 !important;
         font-weight: bold;
         border-color: #ffffff !important;
     }
