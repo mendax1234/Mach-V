@@ -5,7 +5,7 @@
 
 <style>
     /* ==========================================================================
-       1. GLOBAL LAYOUT
+       1. GLOBAL LAYOUT & DYNAMIC THEME BACKGROUNDS
        ========================================================================== */
     
     html, body {
@@ -19,17 +19,20 @@
         */
         overflow-x: hidden; 
         overflow-y: auto;
-        
-        /* MATCH BACKGROUND:
-           Set body background to match the gradient's bottom color.
-           This ensures that if scrolling 'bounces' or a gap appears, 
-           it looks seamless purple, not white/black.
-        */
-        background-color: #a63fd9; 
     }
 
-    [data-md-color-scheme="slate"] body {
-        background-color: #363949; 
+    /* --- LIGHT MODE GRADIENT (Default) --- */
+    body {
+        /* Gradient covers the whole screen, starting from the very top */
+        background: linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9) fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    /* --- DARK MODE GRADIENT (Slate Theme) --- */
+    /* Target body specifically when in slate mode */
+    body[data-md-color-scheme="slate"] {
+        background: linear-gradient(to bottom, var(--md-primary-fg-color), #363949) fixed !important;
     }
 
     /* LOCK SCROLL ON DESKTOP ONLY */
@@ -40,36 +43,49 @@
     }
 
     /* ==========================================================================
-       2. GHOSTING THE MAIN CONTENT (The Fix)
+       2. SEAMLESS HEADER (The Fix for Smooth Transition)
        ========================================================================== */
     
-    /* PROBLEM: .md-main contains the mobile sidebar logic. We can't delete it.
-       OLD FIX: height: 0 (Failed because it still took up layout space).
-       NEW FIX: position: absolute (Removes it from layout flow entirely).
+    /* Make the Header and Tabs TRANSPARENT so the body gradient shows through.
+       This removes the "hard line" between the top bars and the content. 
     */
+    .md-header, .md-tabs {
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border-bottom: none !important;
+    }
+
+    /* ==========================================================================
+       3. MOBILE MENU LOGIC
+       ========================================================================== */
+    
+    /* MOBILE (< 1220px): Keep menu accessible */
     .md-main {
-        position: absolute !important; /* Take out of flow */
-        top: 0;
-        left: 0;
-        width: 0;
         height: 0;
-        overflow: hidden;
-        z-index: -1; /* Send to back just in case */
         padding: 0 !important;
         margin: 0 !important;
+        display: block !important;
+        overflow: visible !important; 
+    }
+
+    /* DESKTOP (> 1220px): Remove menu logic entirely */
+    @media screen and (min-width: 76.25em) {
+        .md-main {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden; 
+            z-index: -1;
+        }
     }
 
     /* Globally hide inner content text and footer */
     .md-content, .md-footer {
         display: none !important;
     }
-
-    /* ==========================================================================
-       3. HEADER & TABS
-       ========================================================================== */
-    
-    .md-header { box-shadow: none !important; }
-    .md-tabs { box-shadow: none !important; border-bottom: none !important; }
 
     /* ==========================================================================
        4. HERO CONTAINER
@@ -84,15 +100,11 @@
         align-items: center;
         justify-content: center;
         
-        /* Padding adjustments */
         padding-top: 2rem;
         padding-bottom: 2rem; 
 
-        background: linear-gradient(to bottom, var(--md-primary-fg-color), #a63fd9);
-    }
-
-    [data-md-color-scheme="slate"] .mdx-container {
-        background: linear-gradient(to bottom, var(--md-primary-fg-color), #363949);
+        /* CRITICAL: Transparent so the Body Gradient shows through */
+        background: transparent;
     }
 
     /* ==========================================================================
