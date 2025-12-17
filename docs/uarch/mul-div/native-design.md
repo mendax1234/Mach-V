@@ -94,7 +94,7 @@ Multiplier32x8 mul_unit (
     This is totally valid. However, the smart synthesizer will generate the same hardware for both implementations.
 
 !!! warning
-    The 8 bits design will still use more hardware than I thought, which will give around 13ns propagation delay. This will limit the Hydra-V clock frequency to 50MHz max if the clock wizard is not used!
+    The 8 bits design will still use more hardware than I thought, which will give around 13ns propagation delay. This will limit the Mach-V clock frequency to 50MHz max if the clock wizard is not used!
 
 ## Divide Unit
 
@@ -169,4 +169,4 @@ DivSlice8 div_unit (
 ```
 
 !!! warning
-    Using the unrolling techniue in the divider unit here will use a lot of hardware! iirc, the propagation delay is around 66ns for this design! Given that high propagation delay, it is impossible to use this design on Hydra-V. So, I moved on to the next section, which is to use Xilinix IP core for the multiply and divide unit.
+    Using the unrolling techniue in the divider unit here will use a lot of hardware! iirc, the propagation delay is around 66ns for this design! Given that high propagation delay, it is impossible to use this design on Mach-V. So, I moved on to the next section, which is to use Xilinix IP core for the multiply and divide unit.

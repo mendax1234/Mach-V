@@ -1,5 +1,5 @@
-# Microarchitecture of Hydra-V Processor
+# Microarchitecture of Mach-V Processor
 
-The microarchitecture of Hydra-V is shown in the figure below:
+The microarchitecture of Mach-V is shown in the figure below:
 
-![System Architecture](../assets/images/Hydra-V-0.1.svg)
+![System Architecture](../assets/images/Mach-V-0.1.svg)

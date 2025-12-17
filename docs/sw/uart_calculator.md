@@ -4,7 +4,7 @@ icon: material/calculator
 
 # UART Calculator
 
-This is a simple calculator program that is used to test the basic functionality of the Hydra-V processor. It contains all the basic instructiosn from RISC-V I and M extensions, and performs arithmetic operations based on user input via UART.
+This is a simple calculator program that is used to test the basic functionality of the Mach-V processor. It contains all the basic instructiosn from RISC-V I and M extensions, and performs arithmetic operations based on user input via UART.
 
 ## Source Code Organization
 
@@ -14,7 +14,7 @@ The source code for the UART Calculator is located in the `sw/uart_calculator/` 
 
 ### UART Output
 
-As the calculator uses UART to communicate with the Hydra-V processor, if the MMIO addresses are changed, the code in `uart_calculator.c` must be updated accordingly. The MMIO definitions are located at the top of the `uart_calculator.c` file,
+As the calculator uses UART to communicate with the Mach-V processor, if the MMIO addresses are changed, the code in `uart_calculator.c` must be updated accordingly. The MMIO definitions are located at the top of the `uart_calculator.c` file,
 
 ```c
 #define MMIO_BASE 0xFFFF0000

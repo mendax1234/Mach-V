@@ -1,6 +1,6 @@
 ---
-title: Hydra-V Documentation
+title: Mach-V Documentation
 template: home.html
 ---
 
-Welcome to the **Hydra-V Documentation**!
+Welcome to the **Mach-V Documentation**!

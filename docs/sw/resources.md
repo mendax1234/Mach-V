@@ -4,7 +4,7 @@ icon: material/book-open-variant
 
 # Resoures & Utilities
 
-This section contains utility guides and extra information regarding the Hydra-V software stack.
+This section contains utility guides and extra information regarding the Mach-V software stack.
 
 ## Offline Access
 
@@ -14,7 +14,7 @@ This documentation supports exporting the entire site as a single, consolidated 
 
 Currently, there is no direct download button in the navigation bar. You can generate the PDF manually by following these steps:
 
-1. Access the Print View: Navigate to the consolidated print view by appending `print_page/` to the base URL of the documentation. For example, go to `https://mendax1234.github.io/Hydra-V/print_page/`.
+1. Access the Print View: Navigate to the consolidated print view by appending `print_page/` to the base URL of the documentation. For example, go to `https://mendax1234.github.io/Mach-V/print_page/`.
 2. Print to PDF: Once the page loads (it may take a moment to render all chapters):
     1. Open your browser's print dialog (`Ctrl + P` on Windows/Linux or `Cmd + P` on macOS).
     2. Set the **Destination** to **"Save as PDF"**.
@@ -25,7 +25,7 @@ Currently, there is no direct download button in the navigation bar. You can gen
 
 ## Useful Links
 
-The success of Hydra-V cannot be achieved without the help of many open-source projects and resources. Here are some useful links that you may find helpful when working with Hydra-V:
+The success of Mach-V cannot be achieved without the help of many open-source projects and resources. Here are some useful links that you may find helpful when working with Mach-V:
 
 <div class="grid cards" markdown>
 

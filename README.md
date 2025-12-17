@@ -1,6 +1,6 @@
-# Hydra-V
+# Mach-V
 
-**Hydra-V** is an open-source RISC-V processor implementation targeting the Digilent **Nexys 4** FPGA. The project aims to evolve from a standard 5-stage pipeline into a Superscalar, Out-of-Order (OoO), and Multi-core architecture.
+**Mac-V** is an open-source RISC-V processor implementation targeting the Digilent **Nexys 4** FPGA. The project aims to evolve from a standard 5-stage pipeline into a Superscalar, Out-of-Order (OoO), and Multi-core architecture.
 
 Current status: **RV32IM Pipelined Core running CoreMark.**
 
@@ -22,7 +22,7 @@ The project follows a staged evolution towards high-performance parallel process
   - Dynamic Branch Prediction (BHT/BTB)
   - Superscalar Execution (Dual-issue)
   - Out-of-Order Execution (The broadcasting diagram on Lec 06)
-- [ ] **Phase 4: The "Hydra"**
+- [ ] **Phase 4: Multicore and Multithread System**
   - Simultaneous Multithreading (SMT)
   - Multi-Core Implementation
 
@@ -31,7 +31,7 @@ The project follows a staged evolution towards high-performance parallel process
 This repository is organized to separate the core RTL from board-specific implementations and software.
 
 ```text
-Hydra-V/
+Mach-V/
 ├── rtl/              # Core CPU Logic (Platform Agnostic)
 │   ├── core/         # Pipeline stages, ALU, Hazards
 │   └── peripherals/  # UART, SPI, Timers

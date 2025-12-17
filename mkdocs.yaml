@@ -2,15 +2,15 @@
 # 1. SITE METADATA & REPOSITORY
 # ==============================================================================
 # Project Information
-site_name: Hydra-V Docs
-site_url: https://mendax1234.github.io/Hydra-V/
+site_name: Mach-V Docs
+site_url: https://mendax1234.github.io/Mach-V/
 site_author: Wenbo (Daniel) Zhu
 site_description: A high-performance RISC-V processor on FPGA. Bridging the gap between beginner-friendly education and advanced hardware architecture.
 edit_uri: edit/main/docs/
 
 # Repository
-repo_url: https://github.com/mendax1234/Hydra-V
-repo_name: mendax1234/Hydra-V
+repo_url: https://github.com/mendax1234/Mach-V
+repo_name: mendax1234/Mach-V
 
 # ==============================================================================
 # 2. THEME CONFIGURATION
@@ -60,7 +60,7 @@ plugins:
       enable_creation_date: true
       type: timeago
   - git-committers:
-      repository: mendax1234/Hydra-V
+      repository: mendax1234/Mach-V
       branch: main
   - print-site
   - optimize:         # Compresses all images for faster loading

@@ -1,6 +1,6 @@
 # Verification & Simulation
 
-This section outlines the verification strategy for the Hydra-V processor, including unit testing and full system simulation.
+This section outlines the verification strategy for the Mach-V processor, including unit testing and full system simulation.
 
 ## Simulation Directory Structure
 
