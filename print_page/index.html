@@ -1430,6 +1430,7 @@
 <h2 id="sim-toolchain-setup">Toolchain Setup<a class="headerlink" href="#sim-toolchain-setup" title="Permanent link">&para;</a></h2>
 <p>The primary tool used for simulation is <strong><a href="https://www.xilinx.com/support/download.html">Vivado 2025.2</a></strong>. For installation instructions, refer to the <a href="https://nus-cg3207.github.io/labs/getting_started/vivado_install_guide/">NUS CG3207 Lab Guide</a> or consult the official Xilinx documentation.</p>
 <h2 id="sim-simulation-guide">Simulation Guide<a class="headerlink" href="#sim-simulation-guide" title="Permanent link">&para;</a></h2>
+<p>Simulations for Mach-V are performed by targeting the Wrapper.v module as the Device Under Test (DUT). Acting effectively as a virtual motherboard, this module connects the processor core to peripherals like UART and memory.</p>
 <h3 id="sim-debugging-the-pipelined-processor">Debugging the Pipelined Processor<a class="headerlink" href="#sim-debugging-the-pipelined-processor" title="Permanent link">&para;</a></h3>
 <p>Personally speaking, debugging a pipelined microarchitecture can be tedious due to instructions overlapping across different stages. To simplify this process, I recommend <strong>propagating the current PC value through every stage of the pipeline</strong>.</p>
 <p>By latching <code>PCF</code> into successive pipeline registers (e.g., <code>PCD</code>, <code>PCE</code>, <code>PCM</code>, <code>PCW</code>), you can easily identify exactly which instruction is occupying a specific stage at any given cycle.</p>
