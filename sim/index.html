@@ -12,19 +12,19 @@
         <meta name="author" content="Wenbo (Daniel) Zhu">
       
       
-        <link rel="canonical" href="https://mendax1234.github.io/Mach-V/sim/simulation/">
+        <link rel="canonical" href="https://mendax1234.github.io/Mach-V/sim/">
       
       
-        <link rel="prev" href="../../uarch/mul-div/vendor-ip/">
+        <link rel="prev" href="../uarch/mul-div/vendor-ip/">
       
       
-        <link rel="next" href="../../sw/">
+        <link rel="next" href="benchmark_tb/">
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
     
     
@@ -33,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -55,13 +55,13 @@
       
     
     
-      <link rel="stylesheet" href="../../css/print-site.css">
+      <link rel="stylesheet" href="../css/print-site.css">
     
-      <link rel="stylesheet" href="../../css/print-site-material.css">
+      <link rel="stylesheet" href="../css/print-site-material.css">
     
-      <link rel="stylesheet" href="../../css/timeago.css">
+      <link rel="stylesheet" href="../css/timeago.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#verification-simulation" class="md-skip">
+        <a href="#simulation" class="md-skip">
           Skip to content
         </a>
       
@@ -102,7 +102,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Mach-V Docs" class="md-header__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
+    <a href=".." title="Mach-V Docs" class="md-header__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -237,7 +237,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href=".." class="md-tabs__link">
         
   
   
@@ -258,7 +258,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../uarch/" class="md-tabs__link">
+        <a href="../uarch/" class="md-tabs__link">
           
   
   
@@ -279,17 +279,20 @@
     
   
   
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
-        
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
   
   
     
   
   Simulation
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -301,7 +304,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../sw/" class="md-tabs__link">
+        <a href="../sw/" class="md-tabs__link">
           
   
   
@@ -343,7 +346,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Mach-V Docs" class="md-nav__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
+    <a href=".." title="Mach-V Docs" class="md-nav__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -373,7 +376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -425,7 +428,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../uarch/" class="md-nav__link ">
+            <a href="../uarch/" class="md-nav__link ">
               
   
   
@@ -496,7 +499,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../uarch/mul-div/" class="md-nav__link ">
+            <a href="../uarch/mul-div/" class="md-nav__link ">
               
   
   
@@ -540,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../uarch/mul-div/native-design/" class="md-nav__link">
+      <a href="../uarch/mul-div/native-design/" class="md-nav__link">
         
   
   
@@ -570,7 +573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../uarch/mul-div/vendor-ip/" class="md-nav__link">
+      <a href="../uarch/mul-div/vendor-ip/" class="md-nav__link">
         
   
   
@@ -616,16 +619,39 @@
   
   
   
-    <li class="md-nav__item md-nav__item--active">
+    
+    
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
       
       
         
       
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
           
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
   
   
   <span class="md-ellipsis">
@@ -639,17 +665,45 @@
   
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Simulation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="benchmark_tb/" class="md-nav__link">
         
   
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 16a3 3 0 0 1-3-3c0-1.12.61-2.1 1.5-2.61l9.71-5.62-5.53 9.58c-.5.98-1.51 1.65-2.68 1.65m0-13c1.81 0 3.5.5 4.97 1.32l-2.1 1.21C14 5.19 13 5 12 5a8 8 0 0 0-8 8c0 2.21.89 4.21 2.34 5.65h.01c.39.39.39 1.02 0 1.41s-1.03.39-1.42.01A9.97 9.97 0 0 1 2 13 10 10 0 0 1 12 3m10 10c0 2.76-1.12 5.26-2.93 7.07-.39.38-1.02.38-1.41-.01a.996.996 0 0 1 0-1.41A7.95 7.95 0 0 0 20 13c0-1-.19-2-.54-2.9L20.67 8C21.5 9.5 22 11.18 22 13"/></svg>
   
   <span class="md-ellipsis">
     
   
-    Simulation
+    Benchmark Testbench
   
 
     
@@ -658,86 +712,43 @@
   
 
       </a>
-      
-        
+    </li>
+  
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+              
+            
+              
+                
   
   
   
+  
+    <li class="md-nav__item">
+      <a href="uart_tb/" class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 19V7H4v12zm0-16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm-7 14v-2h5v2zm-3.42-4L5.57 9H8.4l3.3 3.3c.39.39.39 1.03 0 1.42L8.42 17H5.59z"/></svg>
+  
+  <span class="md-ellipsis">
     
   
+    UART Testbench
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#simulation-directory-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Simulation Directory Structure
-      
-    </span>
-  </a>
+
+    
+  </span>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Prerequisites
-      
-    </span>
-  </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#running-simulations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Running Simulations
-      
-    </span>
-  </a>
+
+      </a>
+    </li>
   
-    <nav class="md-nav" aria-label="Running Simulations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#unit-level-testing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unit Level Testing
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#top-level-system-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Top Level System Test
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -779,7 +790,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../sw/" class="md-nav__link ">
+            <a href="../sw/" class="md-nav__link ">
               
   
   
@@ -823,11 +834,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/benchmark/" class="md-nav__link">
+      <a href="../sw/benchmark/" class="md-nav__link">
         
   
   
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m16 11.78 4.24-7.33 1.73 1-5.23 9.05-6.51-3.75L5.46 19H22v2H2V3h2v14.54L9.5 8z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 16a3 3 0 0 1-3-3c0-1.12.61-2.1 1.5-2.61l9.71-5.62-5.53 9.58c-.5.98-1.51 1.65-2.68 1.65m0-13c1.81 0 3.5.5 4.97 1.32l-2.1 1.21C14 5.19 13 5 12 5a8 8 0 0 0-8 8c0 2.21.89 4.21 2.34 5.65h.01c.39.39.39 1.02 0 1.41s-1.03.39-1.42.01A9.97 9.97 0 0 1 2 13 10 10 0 0 1 12 3m10 10c0 2.76-1.12 5.26-2.93 7.07-.39.38-1.02.38-1.41-.01a.996.996 0 0 1 0-1.41A7.95 7.95 0 0 0 20 13c0-1-.19-2-.54-2.9L20.67 8C21.5 9.5 22 11.18 22 13"/></svg>
   
   <span class="md-ellipsis">
     
@@ -853,7 +864,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/uart_calculator/" class="md-nav__link">
+      <a href="../sw/uart_calculator/" class="md-nav__link">
         
   
   
@@ -883,7 +894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/resources/" class="md-nav__link">
+      <a href="../sw/resources/" class="md-nav__link">
         
   
   
@@ -951,10 +962,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#toolchain-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Toolchain Setup
       
     </span>
   </a>
@@ -962,22 +973,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-simulations" class="md-nav__link">
+  <a href="#simulation-guide" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Running Simulations
+        Simulation Guide
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Running Simulations">
+    <nav class="md-nav" aria-label="Simulation Guide">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#unit-level-testing" class="md-nav__link">
+  <a href="#debugging-the-pipelined-processor" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unit Level Testing
+        Debugging the Pipelined Processor
       
     </span>
   </a>
@@ -985,10 +996,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#top-level-system-test" class="md-nav__link">
+  <a href="#handling-fly-away-situations-undefined-states" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Top Level System Test
+        Handling "Fly-Away" Situations (Undefined States)
       
     </span>
   </a>
@@ -1018,6 +1029,46 @@
   
 
 
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href=".." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Simulation
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
               
               <article class="md-content__inner md-typeset">
                 
@@ -1025,7 +1076,7 @@
 
 
   
-    <a href="https://github.com/mendax1234/Mach-V/edit/main/docs/sim/simulation.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/mendax1234/Mach-V/edit/main/docs/sim/index.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1033,40 +1084,51 @@
   
 
 
-<h1 id="verification-simulation">Verification &amp; Simulation<a class="headerlink" href="#verification-simulation" title="Permanent link">&para;</a></h1>
-<p>This section outlines the verification strategy for the Mach-V processor, including unit testing and full system simulation.</p>
+<h1 id="simulation">Simulation<a class="headerlink" href="#simulation" title="Permanent link">&para;</a></h1>
+<p>This section outlines the verification strategy for the Mach-V processor.</p>
 <h2 id="simulation-directory-structure">Simulation Directory Structure<a class="headerlink" href="#simulation-directory-structure" title="Permanent link">&para;</a></h2>
 <p>The <code>sim/</code> directory contains all testbench and verification artifacts:</p>
 <ul>
-<li><strong><code>sim/tb/</code></strong>: Verilog testbenches for individual modules (ALU, RegFile) and the top-level core.</li>
-<li><strong><code>sim/hex/</code></strong>: Pre-compiled hexadecimal files (machine code) loaded into instruction memory for simulation.</li>
+<li><strong><code>sim/tb/</code></strong>: Verilog testbenches mapped to specific <a href="../sw/">software applications</a>.</li>
+<li><strong><code>sim/mem/</code></strong>: Pre-compiled memory files (in hexadecimal format) used to initialize IROM and DMEM for simulation.</li>
 </ul>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<p>Ensure you have the following tools installed:</p>
-<ol>
-<li><strong>Xilinx Vivado</strong> (for Behavioral Simulation)</li>
-<li><strong>Verilator</strong> (Optional, for faster C++ based simulation)</li>
-<li><strong>GTKWave</strong> (for viewing waveform dumps outside Vivado)</li>
-</ol>
-<h2 id="running-simulations">Running Simulations<a class="headerlink" href="#running-simulations" title="Permanent link">&para;</a></h2>
-<h3 id="unit-level-testing">Unit Level Testing<a class="headerlink" href="#unit-level-testing" title="Permanent link">&para;</a></h3>
-<p>Unit tests verify specific components before integration.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Example: Running the ALU testbench</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>sim/tb
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>xvlog<span class="w"> </span>alu.v<span class="w"> </span>alu_tb.v
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>xelab<span class="w"> </span>-debug<span class="w"> </span>typical<span class="w"> </span>alu_tb<span class="w"> </span>-s<span class="w"> </span>alu_sim
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>xsim<span class="w"> </span>alu_sim<span class="w"> </span>-R
+<h2 id="toolchain-setup">Toolchain Setup<a class="headerlink" href="#toolchain-setup" title="Permanent link">&para;</a></h2>
+<p>The primary tool used for simulation is <strong><a href="https://www.xilinx.com/support/download.html">Vivado 2025.2</a></strong>. For installation instructions, refer to the <a href="https://nus-cg3207.github.io/labs/getting_started/vivado_install_guide/">NUS CG3207 Lab Guide</a> or consult the official Xilinx documentation.</p>
+<h2 id="simulation-guide">Simulation Guide<a class="headerlink" href="#simulation-guide" title="Permanent link">&para;</a></h2>
+<h3 id="debugging-the-pipelined-processor">Debugging the Pipelined Processor<a class="headerlink" href="#debugging-the-pipelined-processor" title="Permanent link">&para;</a></h3>
+<p>Personally speaking, debugging a pipelined microarchitecture can be tedious due to instructions overlapping across different stages. To simplify this process, I recommend <strong>propagating the current PC value through every stage of the pipeline</strong>.</p>
+<p>By latching <code>PCF</code> into successive pipeline registers (e.g., <code>PCD</code>, <code>PCE</code>, <code>PCM</code>, <code>PCW</code>), you can easily identify exactly which instruction is occupying a specific stage at any given cycle.</p>
+<p>For example, the waveform below shows the Decode (Dec) stage while executing the <a href="https://www.google.com/search?q=../sw/benchmark.md">Coremark</a> application:</p>
+<figure>
+<p><img alt="Decode Stage with PC Propagation" src="../assets/images/sim-debug-pipeline-design.png" /></p>
+<figcaption>
+<p>Decode Stage with PC Propagation</p>
+</figcaption>
+</figure>
+<p>In the waveform above, the <code>PCD</code> signal indicates the instruction currently residing in the Dec stage. This makes it significantly easier to verify if the control signals match the expected behavior. For reference, here is the corresponding snippet from <code>prog.dump</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>400000:   0080006f           j 400008 &lt;_init_reg&gt;
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>400004:   0000006f           j 400004 &lt;_end&gt;
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>400008:   00000093           li ra,0
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>40000c:   00000113           li sp,0
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>400010:   00000193           li gp,0
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>400014:   00000213           li tp,0
 </span></code></pre></div>
-<h3 id="top-level-system-test">Top Level System Test<a class="headerlink" href="#top-level-system-test" title="Permanent link">&para;</a></h3>
-<p>To verify the full processor pipeline:</p>
-<ol>
-<li>Load a program hex file into <code>sim/hex/main.hex</code>.</li>
-<li>Run the top-level testbench <code>tb_core.v</code>.</li>
-<li>Observe the <code>d_mem</code> and register file changes.</li>
-</ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While this method has been effective for Phase 2 of Mach-V, there may be more efficient debugging techniques. I will continue to explore other methods and update this section as the design evolves.</p>
+</div>
+<h3 id="handling-fly-away-situations-undefined-states">Handling "Fly-Away" Situations (Undefined States)<a class="headerlink" href="#handling-fly-away-situations-undefined-states" title="Permanent link">&para;</a></h3>
+<p>Occasionally, you may encounter a situation where signals (such as <code>PCF</code>) suddenly transition to <code>XXX</code> (undefined). This usually indicates that the processor has entered an invalid state. These issues can be difficult to trace, but below are some common causes I have encountered.</p>
+<div class="admonition info">
+<p class="admonition-title">Rule of Thumb</p>
+<p>Locate the <strong>last valid instruction</strong> in the waveform before the signals go undefined. Use the PC value of that instruction to find the corresponding RISC-V instruction in your <code>prog.dump</code> file (generated after running <code>make</code>).</p>
+</div>
+<h4 id="lw-loading-from-an-invalid-address"><code>lw</code> Loading from an Invalid Address<a class="headerlink" href="#lw-loading-from-an-invalid-address" title="Permanent link">&para;</a></h4>
+<p>This issue typically occurs when a load instruction attempts to access an address that is not mapped to the DMEM. If the data is missing from the memory initialization, the simulation returns undefined values.</p>
+<p>To resolve this, check if the source address of the load instruction falls within a section that has been put into the DMEM. This kind of information is specified in the linker script (<code>ld.script</code>).</p>
 <div class="admonition tip">
-<p class="admonition-title">Debugging with Waveforms</p>
-<p>If the processor stalls, check the stall_signal and flush lines in the Waveform viewer. A permanent high signal usually indicates a lockup in the Hazard Unit.</p>
+<p class="admonition-title">Tip</p>
+<p>A common pitfall is the <code>.rodata</code> (read-only data) section. Ensure that <code>.rodata</code> is explicitly included in the DMEM mapping in your linker script.</p>
 </div>
 
 
@@ -1090,7 +1152,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 17, 2025 08:45:40 UTC"><span class="timeago" datetime="2025-12-17T08:45:40+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 17, 2025 08:45:40 UTC">2025-12-17</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 18, 2025 07:07:32 UTC"><span class="timeago" datetime="2025-12-18T07:07:32+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 18, 2025 07:07:32 UTC">2025-12-18</span>
   </span>
 
     
@@ -1100,7 +1162,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 24, 2025 06:06:44 UTC"><span class="timeago" datetime="2025-11-24T06:06:44+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 24, 2025 06:06:44 UTC">2025-11-24</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 18, 2025 07:07:32 UTC"><span class="timeago" datetime="2025-12-18T07:07:32+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 18, 2025 07:07:32 UTC">2025-12-18</span>
   </span>
 
     
@@ -1158,7 +1220,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../uarch/mul-div/vendor-ip/" class="md-footer__link md-footer__link--prev" aria-label="Previous: AMD IP Design">
+          <a href="../uarch/mul-div/vendor-ip/" class="md-footer__link md-footer__link--prev" aria-label="Previous: AMD IP Design">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1175,13 +1237,13 @@
         
         
           
-          <a href="../../sw/" class="md-footer__link md-footer__link--next" aria-label="Next: Software Development Guide">
+          <a href="benchmark_tb/" class="md-footer__link md-footer__link--next" aria-label="Next: Benchmark Testbench">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Software Development Guide
+                Benchmark Testbench
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1218,18 +1280,18 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
       
-        <script src="../../js/print-site.js"></script>
+        <script src="../js/print-site.js"></script>
       
-        <script src="../../js/timeago.min.js"></script>
+        <script src="../js/timeago.min.js"></script>
       
-        <script src="../../js/timeago_mkdocs_material.js"></script>
+        <script src="../js/timeago_mkdocs_material.js"></script>
       
-        <script src="../../javascripts/mathjax.js"></script>
+        <script src="../javascripts/mathjax.js"></script>
       
         <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
