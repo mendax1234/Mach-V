@@ -1,4 +1,4 @@
-# Microarchitecture of Mach-V Processor
+# Microarchitecture
 
 Here is the performance scaling of the Mach-V core running the CoreMark benchmark.
 
@@ -7,4 +7,16 @@ Here is the performance scaling of the Mach-V core running the CoreMark benchmar
 
 The microarchitecture of Mach-V is shown in the figure below:
 
-![System Architecture](../assets/images/Mach-V-0.1.svg)
+=== "Mach-V Version 1"
+
+    ![Mach-V V1 Microarchitecture](../assets/images/Mach-V-V1.svg)
+    ///caption
+    Mach-V Microarchitecture - Version 1
+    ///
+
+=== "Mach-V Version 2"
+
+    ![Mach-V V2 Microarchitecture](../assets/images/Mach-V-V2.svg)
+    ///caption
+    Mach-V Microarchitecture - Version 2
+    ///
