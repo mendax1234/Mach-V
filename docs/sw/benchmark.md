@@ -1,5 +1,5 @@
 ---
-icon: material/chart-line
+icon: material/speedometer
 ---
 
 # CoreMark Benchmark

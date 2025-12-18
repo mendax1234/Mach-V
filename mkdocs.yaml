@@ -21,15 +21,15 @@ theme:
 
   # 2.1 Feature Flags
   features:
-    - navigation.tabs           # Top-level tabs for major sections
-    - navigation.tabs.sticky    # Tabs stay visible when scrolling
-    - navigation.sections       # Clean sidebar grouping
-    - navigation.top            # "Back to top" button
-    - navigation.footer         # Next/Previous buttons at bottom
-    - navigation.path           # Breadcrumbs (Home > Architecture > Pipeline)
-    - navigation.indexes        # Clickable section headers
-    - content.code.copy         # Copy button on code blocks
-    - content.action.edit       # Enable the edit button defined in repo_url
+    - navigation.tabs # Top-level tabs for major sections
+    - navigation.tabs.sticky # Tabs stay visible when scrolling
+    - navigation.sections # Clean sidebar grouping
+    - navigation.top # "Back to top" button
+    - navigation.footer # Next/Previous buttons at bottom
+    - navigation.path # Breadcrumbs (Home > Architecture > Pipeline)
+    - navigation.indexes # Clickable section headers
+    - content.code.copy # Copy button on code blocks
+    - content.action.edit # Enable the edit button defined in repo_url
 
   # 2.2 Color Palette (Auto/Light/Dark)
   palette:
@@ -63,24 +63,24 @@ plugins:
       repository: mendax1234/Mach-V
       branch: main
   - print-site
-  - optimize:         # Compresses all images for faster loading
+  - optimize: # Compresses all images for faster loading
       enabled: true
-      cache: true     # Speeds up future builds by not re-doing unchanged images
+      cache: true # Speeds up future builds by not re-doing unchanged images
 
 # ==============================================================================
 # 4. MARKDOWN EXTENSIONS
 # ==============================================================================
 markdown_extensions:
   # 4.1 Standard Formatting
-  - abbr                        # Tooltips for abbreviations
-  - admonition                  # Callout blocks (Notes, Warnings)
-  - attr_list                   # Allows resizing images {: width="300" }
-  - pymdownx.blocks.caption     # Image captions
-  - pymdownx.details            # Collapsible blocks
-  - md_in_html                  # Allow Markdown inside HTML tags
-  - tables                      # Enhanced table support
-  - def_list                    # Enhanced list support
-  - toc:                        # Permalink support
+  - abbr # Tooltips for abbreviations
+  - admonition # Callout blocks (Notes, Warnings)
+  - attr_list # Allows resizing images {: width="300" }
+  - pymdownx.blocks.caption # Image captions
+  - pymdownx.details # Collapsible blocks
+  - md_in_html # Allow Markdown inside HTML tags
+  - tables # Enhanced table support
+  - def_list # Enhanced list support
+  - toc: # Permalink support
       toc_depth: 3
       permalink: true
 
@@ -97,12 +97,12 @@ markdown_extensions:
       generic: true
 
   # 4.4 Visuals & Layouts
-  - pymdownx.superfences:       # Mermaid Diagrams
+  - pymdownx.superfences: # Mermaid Diagrams
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.details                # Collapsible "details" blocks
+  - pymdownx.details # Collapsible "details" blocks
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -130,10 +130,13 @@ nav:
   - Microarchitecture:
       - uarch/index.md
       - Multiply & Divide Unit:
-        - uarch/mul-div/index.md
-        - Native Design: uarch/mul-div/native-design.md
-        - AMD IP Design: uarch/mul-div/vendor-ip.md
-  - Simulation: sim/simulation.md
+          - uarch/mul-div/index.md
+          - Native Design: uarch/mul-div/native-design.md
+          - AMD IP Design: uarch/mul-div/vendor-ip.md
+  - Simulation:
+      - sim/index.md
+      - Benchmark Testbench: sim/benchmark_tb.md
+      - UART Testbench: sim/uart_tb.md
   - Software:
       - sw/index.md
       - Benchmark: sw/benchmark.md
