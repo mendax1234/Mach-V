@@ -15,6 +15,8 @@ The primary tool used for simulation is **[Vivado 2025.2](https://www.xilinx.com
 
 ## Simulation Guide
 
+Simulations for Mach-V are performed by targeting the Wrapper.v module as the Device Under Test (DUT). Acting effectively as a virtual motherboard, this module connects the processor core to peripherals like UART and memory.
+
 ### Debugging the Pipelined Processor
 
 Personally speaking, debugging a pipelined microarchitecture can be tedious due to instructions overlapping across different stages. To simplify this process, I recommend **propagating the current PC value through every stage of the pipeline**.
