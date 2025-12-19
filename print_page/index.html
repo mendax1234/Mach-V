@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -411,6 +411,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -471,6 +475,62 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../uarch/alu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arithmetic & Logic Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uarch/lsu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Load & Store Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -495,7 +555,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -517,14 +577,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -978,22 +1038,44 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#section-2-2" class="md-nav__link">
+  <a href="#uarch-alu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2 Multiply & Divide Unit
+        2.2 Arithmetic & Logic Unit
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2.2 Multiply &amp; Divide Unit">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uarch-lsu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Load & Store Unit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#section-2-4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Multiply & Divide Unit
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 Multiply &amp; Divide Unit">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#uarch-mul-div" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.1 Multiply &amp; Divide Unit
+        2.4.1 Multiply &amp; Divide Unit
       
     </span>
   </a>
@@ -1004,7 +1086,7 @@
   <a href="#uarch-mul-div-native-design" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.2 Native Design
+        2.4.2 Native Design
       
     </span>
   </a>
@@ -1015,7 +1097,7 @@
   <a href="#uarch-mul-div-vendor-ip" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.3 AMD IP Design
+        2.4.3 AMD IP Design
       
     </span>
   </a>
@@ -1181,10 +1263,12 @@
                         <h1>Microarchitecture<a class='headerlink' href='#section-2' title='Permanent link'></a>
                         </h1>
                     <section class="print-page" id="uarch" heading-number="2.1"><h1 id="uarch-microarchitecture">Microarchitecture<a class="headerlink" href="#uarch-microarchitecture" title="Permanent link">&para;</a></h1>
+<h2 id="uarch-performance-benchmark">Performance Benchmark<a class="headerlink" href="#uarch-performance-benchmark" title="Permanent link">&para;</a></h2>
 <p>Here is the performance scaling of the Mach-V core running the CoreMark benchmark.</p>
 <p><img alt="CoreMark Performance" src="../assets/images/mach-v-coremark-performance-light.png#only-light" />
 <img alt="CoreMark Performance" src="../assets/images/mach-v-coremark-performance-dark.png#only-dark" /></p>
-<p>The microarchitecture of Mach-V is shown in the figure below:</p>
+<h2 id="uarch-microarchitecture-overview">Microarchitecture Overview<a class="headerlink" href="#uarch-microarchitecture-overview" title="Permanent link">&para;</a></h2>
+<p>The microarchitecture of Mach-V has currently evolved through two distinct iterations:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="uarch-mach-v-version-1" name="uarch-__tabbed_1" type="radio" /><input id="uarch-mach-v-version-2" name="uarch-__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="uarch-mach-v-version-1">Mach-V Version 1</label><label for="uarch-mach-v-version-2">Mach-V Version 2</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1194,6 +1278,10 @@
 <p>Mach-V Microarchitecture - Version 1</p>
 </figcaption>
 </figure>
+<p>Mach-V Version 1 serves as the baseline implementation, featuring a classic RISC-V scalar architecture:
+1. <strong>Classic 5-Stage Pipeline:</strong> Implements the standard Fetch, Decode, Execute, Memory, and Writeback stages for balanced throughput.
+2. <strong>Comprehensive Hazard Management:</strong> Dedicated hardware for data forwarding and hazard detection resolves data and control hazards automatically.
+3. <strong>Scalar In-Order Execution:</strong> Issues, executes, and commits instructions sequentially (single-issue) to ensure deterministic behavior and architectural simplicity.</p>
 </div>
 <div class="tabbed-block">
 <figure>
@@ -1202,13 +1290,151 @@
 <p>Mach-V Microarchitecture - Version 2</p>
 </figcaption>
 </figure>
+<p>Mach-V Version 2 focuses on timing optimization and hardware acceleration, introducing the following enhancements:
+1. <strong>Enhanced Clock Frequency:</strong> Integrated Clock Wizard boosts the operating frequency to <strong>115 MHz</strong> (surpassing the 100 MHz baseline).
+2. <strong>Critical Path Optimization:</strong> PC logic is relocated from the Execute (EXE) stage to the Memory (MEM) stage to relax timing constraints.
+3. <strong>Hardware-Accelerated Arithmetic:</strong> Replaces native design with optimized AMD/Xilinx IP cores for high-performance integer multiplication and division.</p>
 </div>
 </div>
-</div></section>
-                    <section class='print-page md-section' id='section-2-2' heading-number='2.2'>
-                        <h1>Multiply & Divide Unit<a class='headerlink' href='#section-2-2' title='Permanent link'></a>
+</div></section><section class="print-page" id="uarch-alu" heading-number="2.2"><h1 id="uarch-alu-arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#uarch-alu-arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
+<p>The Mach-V ALU is a streamlined execution unit derived from the reference design used in <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v">NUS CG3207</a>. It implements standard RISC-V integer arithmetic and logical operations, utilizing a <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/Shifter.v">barrel shifter</a> designed by NUS CG3207 teaching team for efficient single-cycle shift operations.</p>
+<p>While the base architecture is inherited, a critical timing optimization was introduced to the <strong>Zero (Z) flag generation</strong>. In the <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v#L79">reference design</a>, the Z flag is typically derived from the final <code>ALUResult</code> (after the result multiplexer). This creates a long logic chain: <code>Adder -&gt; Result Mux -&gt; Zero Check</code>.</p>
+<p>To reduce the critical path, Mach-V computes the Z flag directly from the 33-bit adder output (<code>Sum</code>) <strong>in parallel</strong> with the result multiplexer. This decouples the flag generation from the multiplexing logic, significantly reducing propagation delay.</p>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#uarch-alu-__codelineno-0-1"></a><span class="c1">// Critical Path Optimization: </span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#uarch-alu-__codelineno-0-2"></a><span class="c1">// Calculate Zero flag from the intermediate Sum rather than the final ALUResult</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#uarch-alu-__codelineno-0-3"></a><span class="k">assign</span><span class="w"> </span><span class="n">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Sum</span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">32</span><span class="mb">&#39;b0</span><span class="p">);</span>
+</span></code></pre></div>
+<div class="admonition failure">
+<p class="admonition-title">Timing Closure</p>
+<p>This optimization is mandatory for Mach-V to achieve timing closure at 115 MHz. Reverting to the standard post-mux Zero generation will cause setup time violations on the Vivado tool.</p>
+</div></section><section class="print-page" id="uarch-lsu" heading-number="2.3"><h1 id="uarch-lsu-load-store-unit">Load &amp; Store Unit<a class="headerlink" href="#uarch-lsu-load-store-unit" title="Permanent link">&para;</a></h1>
+<p>Unlike the baseline design from NUS CG3207, Mach-V extends memory support beyond full-word operations. The Load Store Unit (LSU) module handles byte (<code>lb</code>/<code>lbu</code>/<code>sb</code>) and half-word (<code>lh</code>/<code>lhu</code>/<code>sh</code>) transactions, ensuring correct data alignment and sign extension.</p>
+<p>The LSU will take 5 inputs and produce 3 outputs:</p>
+<h2 id="uarch-lsu-interface-definition">Interface Definition<a class="headerlink" href="#uarch-lsu-interface-definition" title="Permanent link">&para;</a></h2>
+<p>The LSU locates in the Mem stage. It processes raw addresses and data to align them with the memory's 32-bit word boundaries.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Direction</th>
+<th style="text-align: left;">Signal</th>
+<th style="text-align: center;">Width</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Input</strong></td>
+<td style="text-align: left;">Funct3</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">Instruction function code (determines size and signing).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Input</strong></td>
+<td style="text-align: left;">MemWriteM</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Write Enable signal from the Control Unit.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Input</strong></td>
+<td style="text-align: left;">WriteDataM</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: left;">Raw data to be written.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Input</strong></td>
+<td style="text-align: left;">ReadData_in</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: left;">Raw 32-bit word read from Data Memory.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Input</strong></td>
+<td style="text-align: left;">ByteOffset</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">The 2 Least Significant Bits (LSB) of the memory address.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Output</strong></td>
+<td style="text-align: left;">MemWrite_out</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">Byte-enable mask sent to Data Memory (1 bit per byte).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Output</strong></td>
+<td style="text-align: left;">WriteData_out</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: left;">Aligned data sent to Data Memory.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Output</strong></td>
+<td style="text-align: left;">ReadDataM</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: left;">Processed data (shifted/extended) sent to Writeback.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Naming Convention</p>
+<p>The term "Load Store Unit" typically refers to a complex buffer system in Out-of-Order processors. In the context of the current Mach-V (Scalar In-Order), it refers specifically to the alignment and formatting logic within the Memory stage.</p>
+</div>
+<h2 id="uarch-lsu-store-alignment-logic">Store Alignment Logic<a class="headerlink" href="#uarch-lsu-store-alignment-logic" title="Permanent link">&para;</a></h2>
+<p>The Store Unit is responsible for placing data into the correct "byte lane" before writing to memory. Since memory is word-addressed (32-bit width), sub-word stores (like <code>sb</code>) must be shifted to the correct position within the word.</p>
+<ol>
+<li><strong>Calculate Shift Amount:</strong> The <code>ByteOffset</code> is multiplied by 8 (concatenated with <code>3'b000</code>) to convert the byte index into a bit index.</li>
+<li><strong>Align Data:</strong> The raw <code>WriteDataM</code> is logically left-shifted (<code>&lt;&lt;</code>) by this amount.</li>
+<li><strong>Generate Mask</strong>: A base mask is selected based on the instruction type (e.g., <code>0001</code> for Byte, <code>0011</code> for Half-word) and then shifted to the active position.</li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">Exmaple from NUS CG3207 Teaching Team</p>
+<p><code>WriteData_out</code> is a word, with word/byte/half-word aligned to where you wish to write it to within the word. The <code>MemWrite_out</code> bits of every byte to be modified should be 1. For example, when running <code>sb</code> (store byte) instruction, if the last 2 bits of the address is <code>2'b10</code> and the byte to be written (<code>WriteDataM</code>) is <code>8'hAB</code> (or <code>32'b000000AB</code>), <code>WriteData_out</code> should be <code>32'hxxABxxxx</code> and <code>MemWrite_out</code> should be <code>4'h0100</code>.</p>
+</div>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#uarch-lsu-__codelineno-0-1"></a><span class="c1">// --- STORE PATH (Alignment &amp; Masking) ---</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#uarch-lsu-__codelineno-0-2"></a><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">4</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">shamt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">ByteOffset</span><span class="p">,</span><span class="w"> </span><span class="mh">3</span><span class="mb">&#39;b000</span><span class="p">};</span><span class="w">  </span><span class="c1">// Offset * 8</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#uarch-lsu-__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#uarch-lsu-__codelineno-0-4"></a><span class="c1">// Align Data</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#uarch-lsu-__codelineno-0-5"></a><span class="k">assign</span><span class="w"> </span><span class="n">WriteData_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WriteDataM</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">shamt</span><span class="p">;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#uarch-lsu-__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#uarch-lsu-__codelineno-0-7"></a><span class="c1">// Generate Mask</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#uarch-lsu-__codelineno-0-8"></a><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">BaseMask</span><span class="p">;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#uarch-lsu-__codelineno-0-9"></a><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#uarch-lsu-__codelineno-0-10"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">Funct3</span><span class="p">)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#uarch-lsu-__codelineno-0-11"></a><span class="w">        </span><span class="mh">3</span><span class="mb">&#39;b000</span><span class="o">:</span><span class="w"> </span><span class="n">BaseMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4</span><span class="mb">&#39;b0001</span><span class="p">;</span><span class="w">  </span><span class="c1">// SB</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#uarch-lsu-__codelineno-0-12"></a><span class="w">        </span><span class="mh">3</span><span class="mb">&#39;b001</span><span class="o">:</span><span class="w"> </span><span class="n">BaseMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4</span><span class="mb">&#39;b0011</span><span class="p">;</span><span class="w">  </span><span class="c1">// SH</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#uarch-lsu-__codelineno-0-13"></a><span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">BaseMask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">4</span><span class="mb">&#39;b1111</span><span class="p">;</span><span class="w">  </span><span class="c1">// SW</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#uarch-lsu-__codelineno-0-14"></a><span class="w">    </span><span class="k">endcase</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#uarch-lsu-__codelineno-0-15"></a><span class="k">end</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#uarch-lsu-__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#uarch-lsu-__codelineno-0-17"></a><span class="c1">// Shift Mask</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#uarch-lsu-__codelineno-0-18"></a><span class="k">assign</span><span class="w"> </span><span class="n">MemWrite_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">MemWriteM</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="n">BaseMask</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ByteOffset</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">4</span><span class="mb">&#39;b0000</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="uarch-lsu-load-extension-logic">Load Extension Logic<a class="headerlink" href="#uarch-lsu-load-extension-logic" title="Permanent link">&para;</a></h2>
+<p>The Load Unit performs the inverse operation. It takes a full 32-bit word from memory and extracts the relevant byte or half-word.</p>
+<ol>
+<li><strong>Re-Align</strong>: The raw <code>ReadData_in</code> is right-shifted (<code>&gt;&gt;</code>) by <code>ByteOffset</code> bits so that the desired data sits in the Least Significant Bits (LSB).</li>
+<li><strong>Sign Extension</strong>: Based on <code>Funct3</code>, the logic decides whether to zero-extend (for <code>lbu</code>, <code>lhu</code>) or sign-extend (for <code>lb</code>, <code>lh</code>) the result to fill the 32-bit register.</li>
+</ol>
+<div class="admonition example">
+<p class="admonition-title">Example from NUS CG3207 Teaching Team</p>
+<p><code>ReadData_in</code> is the whole word that contains the word/half-word/byte you want. You need to extract what you want, with a sign/zero(<code>u</code>) extension as required by the instruction. For example, when running <code>lbu</code> (load byte unsigned) instruction, if the last 2 bits of the address is <code>2'b01</code>, and the address location specified in the instruction has <code>8'hAB</code>, <code>ReadData_in</code> is <code>32'hxxxxABxx</code>. <code>ReadDataM</code>, the word to be written into the destination register is <code>32'h000000AB</code> (<code>0</code>s as MSBs as it is <code>lbu</code>).</p>
+</div>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#uarch-lsu-__codelineno-1-1"></a><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">data_shifted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ReadData_in</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">shamt</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#uarch-lsu-__codelineno-1-2"></a><span class="kt">reg</span><span class="w">  </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">loaded_val</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#uarch-lsu-__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#uarch-lsu-__codelineno-1-4"></a><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#uarch-lsu-__codelineno-1-5"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">Funct3</span><span class="p">)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#uarch-lsu-__codelineno-1-6"></a><span class="w">        </span><span class="mh">3</span><span class="mb">&#39;b000</span><span class="o">:</span><span class="w"> </span><span class="n">loaded_val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mh">24</span><span class="p">{</span><span class="n">data_shifted</span><span class="p">[</span><span class="mh">7</span><span class="p">]}},</span><span class="w"> </span><span class="n">data_shifted</span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]};</span><span class="w">  </span><span class="c1">// LB</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#uarch-lsu-__codelineno-1-7"></a><span class="w">        </span><span class="mh">3</span><span class="mb">&#39;b001</span><span class="o">:</span><span class="w"> </span><span class="n">loaded_val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mh">16</span><span class="p">{</span><span class="n">data_shifted</span><span class="p">[</span><span class="mh">15</span><span class="p">]}},</span><span class="w"> </span><span class="n">data_shifted</span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]};</span><span class="w">  </span><span class="c1">// LH</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#uarch-lsu-__codelineno-1-8"></a><span class="w">        </span><span class="mh">3</span><span class="mb">&#39;b100</span><span class="o">:</span><span class="w"> </span><span class="n">loaded_val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mh">24</span><span class="mb">&#39;b0</span><span class="p">,</span><span class="w"> </span><span class="n">data_shifted</span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]};</span><span class="w">  </span><span class="c1">// LBU</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#uarch-lsu-__codelineno-1-9"></a><span class="w">        </span><span class="mh">3</span><span class="mb">&#39;b101</span><span class="o">:</span><span class="w"> </span><span class="n">loaded_val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mh">16</span><span class="mb">&#39;b0</span><span class="p">,</span><span class="w"> </span><span class="n">data_shifted</span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]};</span><span class="w">  </span><span class="c1">// LHU</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#uarch-lsu-__codelineno-1-10"></a><span class="w">        </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="n">loaded_val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data_shifted</span><span class="p">;</span><span class="w">  </span><span class="c1">// LW</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#uarch-lsu-__codelineno-1-11"></a><span class="w">    </span><span class="k">endcase</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#uarch-lsu-__codelineno-1-12"></a><span class="k">end</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#uarch-lsu-__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#uarch-lsu-__codelineno-1-14"></a><span class="k">assign</span><span class="w"> </span><span class="n">ReadDataM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loaded_val</span><span class="p">;</span>
+</span></code></pre></div></section>
+                    <section class='print-page md-section' id='section-2-4' heading-number='2.4'>
+                        <h1>Multiply & Divide Unit<a class='headerlink' href='#section-2-4' title='Permanent link'></a>
                         </h1>
-                    <section class="print-page" id="uarch-mul-div" heading-number="2.2.1"><h1 id="uarch-mul-div-multiply-divide-unit">Multiply &amp; Divide Unit<a class="headerlink" href="#uarch-mul-div-multiply-divide-unit" title="Permanent link">&para;</a></h1>
+                    <section class="print-page" id="uarch-mul-div" heading-number="2.4.1"><h1 id="uarch-mul-div-multiply-divide-unit">Multiply &amp; Divide Unit<a class="headerlink" href="#uarch-mul-div-multiply-divide-unit" title="Permanent link">&para;</a></h1>
 <p>In this version of the Mach-V processor, the multiply and divide unit is incorporated into one file called <code>MCycle.v</code>. The whole idea of the <code>MCycle</code> module is that, while it is doing the computation, the <code>Busy</code> signal (output) will be triggered high and this signal will be used to stall the other relevant pipeline registers so that no new instructions are fetched until the multiplication/division is complete.</p>
 <p>This module is implemented using the mealy state machine.</p>
 <h2 id="uarch-mul-div-state-machine-control">State Machine Control<a class="headerlink" href="#uarch-mul-div-state-machine-control" title="Permanent link">&para;</a></h2>
@@ -1229,7 +1455,7 @@
 <p><a href="#uarch-mul-div-vendor-ip"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> View Documentation</a></p>
 </li>
 </ul>
-</div></section><section class="print-page" id="uarch-mul-div-native-design" heading-number="2.2.2"><h1 id="uarch-mul-div-native-design-native-design-of-multiply-divide-unit">Native Design of Multiply &amp; Divide Unit<a class="headerlink" href="#uarch-mul-div-native-design-native-design-of-multiply-divide-unit" title="Permanent link">&para;</a></h1>
+</div></section><section class="print-page" id="uarch-mul-div-native-design" heading-number="2.4.2"><h1 id="uarch-mul-div-native-design-native-design-of-multiply-divide-unit">Native Design of Multiply &amp; Divide Unit<a class="headerlink" href="#uarch-mul-div-native-design-native-design-of-multiply-divide-unit" title="Permanent link">&para;</a></h1>
 <p>This is a follow-up from <a href="https://nus-cg3207.github.io/labs/asst_manuals/Asst_03/Asst_03/">CG3207 Assignment 3</a>. More specifically, it is my try to finish the first bullet point in the <a href="https://nus-cg3207.github.io/labs/asst_manuals/Asst_03/Asst_03/#task-3-enhancements-5-points">Task 3 of this assignment</a>.</p>
 <h2 id="uarch-mul-div-native-design-multiply-unit">Multiply Unit<a class="headerlink" href="#uarch-mul-div-native-design-multiply-unit" title="Permanent link">&para;</a></h2>
 <p>For the multiply unit, the idea is to "unroll" the loop. For the 32-bit multiplication, instead of using 32 cycles to compute the result by shifting 1 bit a time, I generate the partial products for every 8 bits of the multiplier in parallel. So, the temporal product here will be <span class="arithmatex">\(32+8=40\)</span> bits wide.</p>
@@ -1372,7 +1598,7 @@
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Using the unrolling techniue in the divider unit here will use a lot of hardware! iirc, the propagation delay is around 66ns for this design! Given that high propagation delay, it is impossible to use this design on Mach-V. So, I moved on to the next section, which is to use Xilinix IP core for the multiply and divide unit.</p>
-</div></section><section class="print-page" id="uarch-mul-div-vendor-ip" heading-number="2.2.3"><h1 id="uarch-mul-div-vendor-ip-amd-ip-design">AMD IP Design<a class="headerlink" href="#uarch-mul-div-vendor-ip-amd-ip-design" title="Permanent link">&para;</a></h1>
+</div></section><section class="print-page" id="uarch-mul-div-vendor-ip" heading-number="2.4.3"><h1 id="uarch-mul-div-vendor-ip-amd-ip-design">AMD IP Design<a class="headerlink" href="#uarch-mul-div-vendor-ip-amd-ip-design" title="Permanent link">&para;</a></h1>
 <p>As mentioned in the <a href="#uarch-mul-div-native-design">previous documentation</a>, if I only use the unrolling technique, it is impossible to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the AMD IP cores (Multiplier and Divider) to implement the multiply and divide unit.</p>
 <h2 id="uarch-mul-div-vendor-ip-generate-the-ip-core">Generate the IP Core<a class="headerlink" href="#uarch-mul-div-vendor-ip-generate-the-ip-core" title="Permanent link">&para;</a></h2>
 <h3 id="uarch-mul-div-vendor-ip-multiplier-ip">Multiplier IP<a class="headerlink" href="#uarch-mul-div-vendor-ip-multiplier-ip" title="Permanent link">&para;</a></h3>
@@ -2084,12 +2310,22 @@ building from source.</p>
                 .print-site-enumerate-headings #uarch h2:before { content: '2.1.' counter(counter-uarch-2) ' ' }
                 .print-site-enumerate-headings #uarch h2 {  counter-increment: counter-uarch-2 }
             
-.print-site-enumerate-headings #section-2-2 > h1:before { content: '2.2 ' }
-.print-site-enumerate-headings #uarch-mul-div > h1:before { content: '2.2.1 ' }
+.print-site-enumerate-headings #uarch-alu > h1:before { content: '2.2 ' }
 
-.print-site-enumerate-headings #uarch-mul-div-native-design > h1:before { content: '2.2.2 ' }
+                .print-site-enumerate-headings #uarch-alu h2:before { content: '2.2.' counter(counter-uarch-alu-2) ' ' }
+                .print-site-enumerate-headings #uarch-alu h2 {  counter-increment: counter-uarch-alu-2 }
+            
+.print-site-enumerate-headings #uarch-lsu > h1:before { content: '2.3 ' }
 
-.print-site-enumerate-headings #uarch-mul-div-vendor-ip > h1:before { content: '2.2.3 ' }
+                .print-site-enumerate-headings #uarch-lsu h2:before { content: '2.3.' counter(counter-uarch-lsu-2) ' ' }
+                .print-site-enumerate-headings #uarch-lsu h2 {  counter-increment: counter-uarch-lsu-2 }
+            
+.print-site-enumerate-headings #section-2-4 > h1:before { content: '2.4 ' }
+.print-site-enumerate-headings #uarch-mul-div > h1:before { content: '2.4.1 ' }
+
+.print-site-enumerate-headings #uarch-mul-div-native-design > h1:before { content: '2.4.2 ' }
+
+.print-site-enumerate-headings #uarch-mul-div-vendor-ip > h1:before { content: '2.4.3 ' }
 
 .print-site-enumerate-headings #section-3 > h1:before { content: '3 ' }
 .print-site-enumerate-headings #sim > h1:before { content: '3.1 ' }
@@ -2185,10 +2421,10 @@ building from source.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/Mach-V/", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "/Mach-V/", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
       
         <script src="../js/print-site.js"></script>
       

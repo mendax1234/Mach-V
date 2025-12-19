@@ -12,13 +12,13 @@
         <meta name="author" content="Wenbo (Daniel) Zhu">
       
       
-        <link rel="canonical" href="https://mendax1234.github.io/Mach-V/sw/uart_calculator/">
+        <link rel="canonical" href="https://mendax1234.github.io/Mach-V/uarch/alu/">
       
       
-        <link rel="prev" href="../benchmark/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../resources/">
+        <link rel="next" href="../lsu/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>UART Calculator - Mach-V Docs</title>
+        <title>Arithmetic & Logic Unit - Mach-V Docs</title>
       
     
     
@@ -86,7 +86,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#uart-calculator" class="md-skip">
+        <a href="#arithmetic-logic-unit-alu" class="md-skip">
           Skip to content
         </a>
       
@@ -122,7 +122,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              UART Calculator
+              Arithmetic & Logic Unit
             
           </span>
         </div>
@@ -254,11 +254,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../uarch/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -298,13 +300,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../sw/" class="md-tabs__link">
           
   
   
@@ -400,6 +400,8 @@
       
   
   
+    
+  
   
   
     
@@ -419,20 +421,23 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../uarch/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -450,13 +455,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -473,10 +478,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../uarch/alu/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -492,6 +506,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -504,7 +519,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../uarch/lsu/" class="md-nav__link">
+      <a href="../lsu/" class="md-nav__link">
         
   
   
@@ -548,10 +563,13 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
@@ -559,7 +577,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../uarch/mul-div/" class="md-nav__link ">
+            <a href="../mul-div/" class="md-nav__link ">
               
   
   
@@ -577,7 +595,7 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -603,7 +621,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../uarch/mul-div/native-design/" class="md-nav__link">
+      <a href="../mul-div/native-design/" class="md-nav__link">
         
   
   
@@ -633,7 +651,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../uarch/mul-div/vendor-ip/" class="md-nav__link">
+      <a href="../mul-div/vendor-ip/" class="md-nav__link">
         
   
   
@@ -813,8 +831,6 @@
       
   
   
-    
-  
   
   
     
@@ -834,23 +850,20 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../sw/" class="md-nav__link ">
               
   
   
@@ -868,13 +881,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -894,7 +907,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../benchmark/" class="md-nav__link">
+      <a href="../../sw/benchmark/" class="md-nav__link">
         
   
   
@@ -921,39 +934,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m0 2v4h10V4zm0 6v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2zm-8 4v2h2v-2zm4 0v2h2v-2zm4 0v2h2v-2z"/></svg>
-  
-  <span class="md-ellipsis">
-    
-  
-    UART Calculator
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../sw/uart_calculator/" class="md-nav__link">
         
   
   
@@ -971,126 +955,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#source-code-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Code Organization
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#porting-implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Porting Implementation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Porting Implementation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#uart-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UART Output
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dmem-initialization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DMEM Initialization
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#application-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Application Usage
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Application Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#communication-protocol" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Communication Protocol
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#command-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Command Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1103,7 +967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../sw/resources/" class="md-nav__link">
         
   
   
@@ -1153,114 +1017,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#source-code-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Source Code Organization
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#porting-implementation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Porting Implementation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Porting Implementation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#uart-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UART Output
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#dmem-initialization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        DMEM Initialization
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Build Configuration
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#application-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Application Usage
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Application Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#communication-protocol" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Communication Protocol
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#command-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Command Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1305,7 +1061,7 @@
         <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
-    Software
+    Microarchitecture
   </span>
 
         </a>
@@ -1324,7 +1080,7 @@
 
 
   
-    <a href="https://github.com/mendax1234/Mach-V/edit/main/docs/sw/uart_calculator.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/mendax1234/Mach-V/edit/main/docs/uarch/alu.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1332,192 +1088,18 @@
   
 
 
-<h1 id="uart-calculator">UART Calculator<a class="headerlink" href="#uart-calculator" title="Permanent link">&para;</a></h1>
-<p>This is a simple calculator program that is used to test the basic functionality of the Mach-V processor. It contains all the basic instructiosn from RISC-V I and M extensions, and performs arithmetic operations based on user input via UART.</p>
-<h2 id="source-code-organization">Source Code Organization<a class="headerlink" href="#source-code-organization" title="Permanent link">&para;</a></h2>
-<p>The source code for the UART Calculator is located in the <code>sw/uart_calculator/</code> directory. The main source file is <code>uart_calculator.c</code>, which contains the implementation of the calculator logic and UART communication.</p>
-<h2 id="porting-implementation">Porting Implementation<a class="headerlink" href="#porting-implementation" title="Permanent link">&para;</a></h2>
-<h3 id="uart-output">UART Output<a class="headerlink" href="#uart-output" title="Permanent link">&para;</a></h3>
-<p>As the calculator uses UART to communicate with the Mach-V processor, if the MMIO addresses are changed, the code in <code>uart_calculator.c</code> must be updated accordingly. The MMIO definitions are located at the top of the <code>uart_calculator.c</code> file,</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#define MMIO_BASE 0xFFFF0000</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#define UART_RX_VALID_OFF 0x00</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cp">#define UART_RX_DATA_OFF 0x04</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="cp">#define UART_TX_READY_OFF 0x08</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="cp">#define UART_TX_DATA_OFF 0x0C</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="cp">#define SEVENSEG_OFF 0x80</span>
+<h1 id="arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
+<p>The Mach-V ALU is a streamlined execution unit derived from the reference design used in <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v">NUS CG3207</a>. It implements standard RISC-V integer arithmetic and logical operations, utilizing a <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/Shifter.v">barrel shifter</a> designed by NUS CG3207 teaching team for efficient single-cycle shift operations.</p>
+<p>While the base architecture is inherited, a critical timing optimization was introduced to the <strong>Zero (Z) flag generation</strong>. In the <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v#L79">reference design</a>, the Z flag is typically derived from the final <code>ALUResult</code> (after the result multiplexer). This creates a long logic chain: <code>Adder -&gt; Result Mux -&gt; Zero Check</code>.</p>
+<p>To reduce the critical path, Mach-V computes the Z flag directly from the 33-bit adder output (<code>Sum</code>) <strong>in parallel</strong> with the result multiplexer. This decouples the flag generation from the multiplexing logic, significantly reducing propagation delay.</p>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Critical Path Optimization: </span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// Calculate Zero flag from the intermediate Sum rather than the final ALUResult</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assign</span><span class="w"> </span><span class="n">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Sum</span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">32</span><span class="mb">&#39;b0</span><span class="p">);</span>
 </span></code></pre></div>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>If you are using different MMIO addresses for UART or other peripherals, make sure to update these definitions accordingly.</p>
+<div class="admonition failure">
+<p class="admonition-title">Timing Closure</p>
+<p>This optimization is mandatory for Mach-V to achieve timing closure at 115 MHz. Reverting to the standard post-mux Zero generation will cause setup time violations on the Vivado tool.</p>
 </div>
-<h3 id="dmem-initialization">DMEM Initialization<a class="headerlink" href="#dmem-initialization" title="Permanent link">&para;</a></h3>
-<p>The application pre-loads data into Data Memory (DMEM) to test Load/Store instructions. This is handled via initialized global arrays in C, which the linker places in the <code>.data</code> section.</p>
-<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Pre-loaded test patterns for Load operations</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kt">uint32_t</span><span class="w"> </span><span class="n">test_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="mh">0x12345678</span><span class="p">,</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="mh">0x9ABCDEF0</span><span class="p">,</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="mh">0xAABBCCDD</span><span class="p">,</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="mh">0xEEFF0011</span><span class="p">};</span>
-</span></code></pre></div>
-<h2 id="build-configuration">Build Configuration<a class="headerlink" href="#build-configuration" title="Permanent link">&para;</a></h2>
-<p>There is nothing much to customize or change in the <code>Makefile</code>, <code>ld.script</code> and <code>crt.s</code> files for this application. This is also why this application can be regarded as a template for other new applications.</p>
-<h2 id="application-usage">Application Usage<a class="headerlink" href="#application-usage" title="Permanent link">&para;</a></h2>
-<p>The calculator operates using a strictly defined 9-byte communication protocol over UART.</p>
-<h3 id="communication-protocol">Communication Protocol<a class="headerlink" href="#communication-protocol" title="Permanent link">&para;</a></h3>
-<p>For every operation, the user must send exactly <strong>9 bytes</strong> to the processor:</p>
-<ol>
-<li><strong>Command 1(1 Byte)</strong>: An ASCII character selecting the operation (see table below).</li>
-<li><strong>Operand 1(4 Bytes)</strong>: The first 32-bit argument, sent Big-Endian (MSB first).</li>
-<li><strong>Operand 2(4 Bytes)</strong>: The second 32-bit argument, sent Big-Endian (MSB first).</li>
-</ol>
-<p><strong>Output</strong>: The result of the operation is written to the <strong>7-segment Display</strong> MMIO address.</p>
-<h3 id="command-reference">Command Reference<a class="headerlink" href="#command-reference" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Category</th>
-<th>Command</th>
-<th>ASCII</th>
-<th>Operation</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Arithmetic</strong></td>
-<td>ADD</td>
-<td>a</td>
-<td>op1 + op2</td>
-<td>32-bit Addition</td>
-</tr>
-<tr>
-<td></td>
-<td>SUB</td>
-<td>s</td>
-<td>op1 - op2</td>
-<td>32-bit Subtraction</td>
-</tr>
-<tr>
-<td><strong>Logical</strong></td>
-<td>AND</td>
-<td>c</td>
-<td>op1 &amp; op2</td>
-<td>Bitwise AND</td>
-</tr>
-<tr>
-<td></td>
-<td>OR</td>
-<td>o</td>
-<td>op1 | op2</td>
-<td>Bitwise OR</td>
-</tr>
-<tr>
-<td></td>
-<td>XOR</td>
-<td>x</td>
-<td>op1 ^ op2</td>
-<td>Bitwise XOR</td>
-</tr>
-<tr>
-<td><strong>Shift</strong></td>
-<td>SLL</td>
-<td>L</td>
-<td>op1 &lt;&lt; op2</td>
-<td>Shift Left Logical</td>
-</tr>
-<tr>
-<td></td>
-<td>SRL</td>
-<td>R</td>
-<td>op1 &gt;&gt; op2</td>
-<td>Shift Right Logical</td>
-</tr>
-<tr>
-<td></td>
-<td>SRA</td>
-<td>A</td>
-<td>op1 &gt;&gt; op2</td>
-<td>Shift Right Arithmetic (sign-extended)</td>
-</tr>
-<tr>
-<td><strong>Comparison</strong></td>
-<td>SLT</td>
-<td>l</td>
-<td>op1 &lt; op2</td>
-<td>Set if Less Than (Signed)</td>
-</tr>
-<tr>
-<td></td>
-<td>SLTU</td>
-<td>u</td>
-<td>op1 &lt; op2</td>
-<td>Set if Less Than (Unsigned)</td>
-</tr>
-<tr>
-<td><strong>Multiply / Div</strong></td>
-<td>MUL</td>
-<td>m</td>
-<td>op1 * op2</td>
-<td>Low 32 bits of product</td>
-</tr>
-<tr>
-<td></td>
-<td>MULH</td>
-<td>H</td>
-<td>op1 * op2</td>
-<td>High 32 bits (Signed)</td>
-</tr>
-<tr>
-<td></td>
-<td>MULHU</td>
-<td>h</td>
-<td>op1 * op2</td>
-<td>High 32 bits (Unsigned)</td>
-</tr>
-<tr>
-<td></td>
-<td>DIV</td>
-<td>d</td>
-<td>op1 / op2</td>
-<td>Signed Division</td>
-</tr>
-<tr>
-<td></td>
-<td>DIVU</td>
-<td>D</td>
-<td>op1 / op2</td>
-<td>Unsigned Division</td>
-</tr>
-<tr>
-<td></td>
-<td>REM</td>
-<td>r</td>
-<td>op1 % op2</td>
-<td>Signed Remainder</td>
-</tr>
-<tr>
-<td></td>
-<td>REMU</td>
-<td>M</td>
-<td>op1 % op2</td>
-<td>Unsigned Remainder</td>
-</tr>
-<tr>
-<td><strong>Memory Access</strong></td>
-<td>LOAD</td>
-<td>1..4</td>
-<td>Mem[op1]</td>
-<td>Reads from <code>test_data</code>. 1=LB, 2=LBU, 3=LH, 4=LHU</td>
-</tr>
-<tr>
-<td></td>
-<td>STORE</td>
-<td>5..6</td>
-<td>Mem[op1] = op2</td>
-<td>Writes to <code>scratch_mem</code>. 5=SB, 6=SH</td>
-</tr>
-</tbody>
-</table>
 
 
 
@@ -1540,7 +1122,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 17, 2025 08:45:40 UTC"><span class="timeago" datetime="2025-12-17T08:45:40+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 17, 2025 08:45:40 UTC">2025-12-17</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 19, 2025 09:09:46 UTC"><span class="timeago" datetime="2025-12-19T09:09:46+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 19, 2025 09:09:46 UTC">2025-12-19</span>
   </span>
 
     
@@ -1550,7 +1132,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 11, 2025 13:35:13 UTC"><span class="timeago" datetime="2025-12-11T13:35:13+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 11, 2025 13:35:13 UTC">2025-12-11</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 19, 2025 09:09:46 UTC"><span class="timeago" datetime="2025-12-19T09:09:46+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 19, 2025 09:09:46 UTC">2025-12-19</span>
   </span>
 
     
@@ -1608,7 +1190,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../benchmark/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Benchmark">
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Microarchitecture">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1618,20 +1200,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Benchmark
+                Microarchitecture
               </div>
             </div>
           </a>
         
         
           
-          <a href="../resources/" class="md-footer__link md-footer__link--next" aria-label="Next: Resources">
+          <a href="../lsu/" class="md-footer__link md-footer__link--next" aria-label="Next: Load &amp; Store Unit">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Resources
+                Load & Store Unit
               </div>
             </div>
             <div class="md-footer__button md-icon">
