@@ -134,6 +134,8 @@ nav:
   - Home: index.md
   - Microarchitecture:
       - uarch/index.md
+      - Arithmetic & Logic Unit: uarch/alu.md
+      - Load & Store Unit: uarch/lsu.md
       - Multiply & Divide Unit:
           - uarch/mul-div/index.md
           - Native Design: uarch/mul-div/native-design.md
