@@ -82,7 +82,7 @@ architecture arch_TOP of TOP is
 ----------------------------------------------------------------
 -- TOP Constants
 ----------------------------------------------------------------
-constant CLK_DIV_BITS : integer := 1; 	-- Set this to 26 for a ~1Hz clock. 0 for a 100MHz clock. Should not exceed 26. 
+constant CLK_DIV_BITS : integer := 0; 	-- Set this to 26 for a ~1Hz clock. 0 for a 100MHz clock. Should not exceed 26. 
 										-- There is no need to change it for simulation, as this entity/module should not be simulated
 										-- If this is set to less than 17, you might need a software delay loop between successive reads / writes to/from UART.
 
@@ -149,7 +149,7 @@ signal	CLK					: STD_LOGIC;
 -- UART Constants
 ----------------------------------------------------------------------------
 constant BAUD_RATE				: positive 	:= 115200;
-constant CLOCK_FREQUENCY		: positive 	:= 100000000;
+constant CLOCK_FREQUENCY		: positive 	:= 115000000;
 
 ----------------------------------------------------------------------------
 -- UART component
@@ -270,6 +270,28 @@ signal ACCEL_Data_Y		: STD_LOGIC_VECTOR(11 downto 0);
 signal ACCEL_Data_Z		: STD_LOGIC_VECTOR(11 downto 0);
 signal ACCEL_Data_TMP	: STD_LOGIC_VECTOR(11 downto 0);
 
+----------------------------------------------------------------------------
+-- Clock Wizard
+----------------------------------------------------------------------------
+component clk_wiz_0
+port
+ (-- Clock in ports
+  clk_in1           : in     std_logic;
+  -- Clock out ports
+  clk_out1          : out    std_logic;
+  -- Status and control signals
+  reset             : in     std_logic;
+  locked            : out    std_logic
+ );
+end component;
+
+----------------------------------------------------------------------------
+-- Clock Wizard signals
+----------------------------------------------------------------------------
+signal clk_sys        : std_logic; -- The new high-speed clock
+signal clk_locked     : std_logic; -- '1' when the clock is stable
+signal sys_reset      : std_logic; -- Combined reset signal
+
 ----------------------------------------------------------------
 ----------------------------------------------------------------	
 ----------------------------------------------------------------
@@ -291,7 +313,8 @@ LED(N_LEDs_OUT-1 downto 0) 	<= LED_OUT;	-- LED(7 downto 0) Memory-mapped writeab
 ----------------------------------------------------------------	
 -- RESET_EXT <= not RESET; 				-- CPU_RESET (red button) is active low.
 RESET_EXT <= RESET; 					-- BTNU, active high.  
-RESET_EFF <= RESET_INT or RESET_EXT; 	-- Reset sent to the Wrapper
+-- Hold reset if the button is pressed OR if the Clock Wizard is not locked yet
+RESET_EFF <= RESET_INT or RESET_EXT or (not clk_locked);
 RESET_INT <= '0'; 						-- internal reset, for future use.	
 
 ----------------------------------------------------------------
@@ -343,7 +366,7 @@ generic map (
         GREYSCALE => False,		-- color or greyscale ? (only for BPP>6)
         LEFT_SIDE => False)		-- True if the Pmod is on the left side of the board
 port map (
-		clk         	=>	CLK_undiv       ,	
+		clk         	=>	clk_sys         ,	
         reset       	=>	reset   		,    
         pix_write   	=> 	pix_write   	,
         pix_col     	=> 	pix_col     	,
@@ -372,7 +395,7 @@ generic map
 )
 port map
 (
-   SYSCLK => CLK_undiv,
+   SYSCLK => clk_sys,
    RESET => RESET_EXT,
    ACCEL_X => ACCEL_Data_X,
    ACCEL_Y => ACCEL_Data_Y,
@@ -394,7 +417,7 @@ generic map (
 		CLOCK_FREQUENCY     => CLOCK_FREQUENCY
 )
 port map (  
-		CLOCK		        => CLK_undiv,
+		CLOCK		        => clk_sys,
 		RESET               => RESET_EXT,
 		DATA_STREAM_IN      => uart_data_in,
 		DATA_STREAM_IN_STB  => uart_data_in_stb,
@@ -409,9 +432,9 @@ port map (
 ----------------------------------------------------------------
 -- UART
 ----------------------------------------------------------------
-UART_Process: process (CLK_undiv)
+UART_Process: process (clk_sys)
 begin
-if CLK_undiv'event and CLK_undiv = '1' then
+if clk_sys'event and clk_sys = '1' then
 
    if RESET_EXT = '1' then
 		uart_data_in_stb        <= '0';
@@ -472,7 +495,7 @@ end process;
 ----------------------------------------------------------------
 -- Seven Segment Display
 ----------------------------------------------------------------
-SEVENSEG_DISPLAY_PROCESS : process(CLK_undiv)
+SEVENSEG_DISPLAY_PROCESS : process(clk_sys)
 type MEM_16x7 is array (0 to 15) of std_logic_vector (6 downto 0); -- Memory type declaration (Character map for 7-Seg)
 constant SevenSegHexMap : MEM_16x7 := ("0111111", "0000110", "1011011", "1001111", "1100110", "1101101", "1111101", "0000111", "1111111", "1100111", "1110111", "1111100", "0111001", "1011110", "1111001", "1110001"); 
 -- SevenSeg display cathode bits (active low)
@@ -487,7 +510,7 @@ constant SevenSegHexMap : MEM_16x7 := ("0111111", "0000110", "1011011", "1001111
 variable sevenseg_counter : std_logic_vector(18 downto 0) := (others => '0');
 variable indices : integer := 0;
 begin
-	if CLK_undiv'event and CLK_undiv = '1' then
+	if clk_sys'event and clk_sys = '1' then
 		sevenseg_counter := sevenseg_counter+1;
 		indices := conv_integer(sevenseg_counter(18 downto 16) & "00");
 		SevenSegCat <= not(SevenSegHexMap(conv_integer(SevenSegHex(indices+3 downto indices))));
@@ -500,13 +523,13 @@ end process;
 -- Clock divider
 ----------------------------------------------------------------
 CLK_DIVIDER_OFF_SET: if CLK_DIV_BITS = 0 generate 
-	CLK <= CLK_undiv;
+	CLK <= clk_sys;
 end generate;
 CLK_DIVIDER_ON_SET: if CLK_DIV_BITS > 0 generate
-CLK_DIV_PROCESS : process(CLK_undiv)						-- Clock division
+CLK_DIV_PROCESS : process(clk_sys)						-- Clock division
 variable clk_counter : std_logic_vector(CLK_DIV_BITS downto 0) := (others => '0');
 begin
-	if CLK_undiv'event and CLK_undiv = '1' then
+	if clk_sys'event and clk_sys = '1' then
 		if PAUSE = '0' then
 			clk_counter := clk_counter+1;
 			CLK <= clk_counter(CLK_DIV_BITS);
@@ -514,6 +537,17 @@ begin
 	end if;
 end process;
 end generate;
+
+----------------------------------------------------------------
+-- Clocking Wizard Instance
+----------------------------------------------------------------
+clk_wiz_inst : clk_wiz_0
+port map ( 
+  clk_in1  => CLK_undiv,  -- Raw 100MHz from board pin
+  clk_out1 => clk_sys,    -- New Fast Clock (e.g., 120MHz)
+  reset    => RESET,      -- Use the raw button reset
+  locked   => clk_locked  -- High when clock is stable
+);
 
 end arch_TOP;
 

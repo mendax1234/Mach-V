@@ -36,4 +36,3 @@ The microarchitecture of Mach-V has currently evolved through two distinct itera
     1. **Enhanced Clock Frequency:** Integrated Clock Wizard boosts the operating frequency to **115 MHz** (surpassing the 100 MHz baseline).
     2. **Critical Path Optimization:** PC logic is relocated from the Execute (EXE) stage to the Memory (MEM) stage to relax timing constraints.
     3. **Hardware-Accelerated Arithmetic:** Replaces native design with optimized AMD/Xilinx IP cores for high-performance integer multiplication and division.
-

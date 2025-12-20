@@ -134,14 +134,12 @@ nav:
   - Home: index.md
   - Microarchitecture:
       - uarch/index.md
-      - Arithmetic & Logic Unit: uarch/alu.md
-      - Load & Store Unit: uarch/lsu.md
+      - Clock Architecture: uarch/clock.md
       - Program Counter Unit: uarch/pc-unit.md
+      - Arithmetic & Logic Unit: uarch/alu.md
+      - Multiply & Divide Unit: uarch/mul-div-unit.md
+      - Load & Store Unit: uarch/lsu.md
       - Hazard Handling Unit: uarch/hazard-unit.md
-      - Multiply & Divide Unit:
-          - uarch/mul-div/index.md
-          - Native Design: uarch/mul-div/native-design.md
-          - AMD IP Design: uarch/mul-div/vendor-ip.md
   - Simulation:
       - sim/index.md
       - Benchmark Testbench: sim/benchmark_tb.md
