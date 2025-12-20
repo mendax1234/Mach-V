@@ -417,6 +417,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -536,6 +540,62 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="pc-unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Program Counter Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="hazard-unit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hazard Handling Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -563,7 +623,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -585,14 +645,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1124,10 +1184,12 @@
 <p>Mach-V Microarchitecture - Version 1</p>
 </figcaption>
 </figure>
-<p>Mach-V Version 1 serves as the baseline implementation, featuring a classic RISC-V scalar architecture:
-1. <strong>Classic 5-Stage Pipeline:</strong> Implements the standard Fetch, Decode, Execute, Memory, and Writeback stages for balanced throughput.
-2. <strong>Comprehensive Hazard Management:</strong> Dedicated hardware for data forwarding and hazard detection resolves data and control hazards automatically.
-3. <strong>Scalar In-Order Execution:</strong> Issues, executes, and commits instructions sequentially (single-issue) to ensure deterministic behavior and architectural simplicity.</p>
+<p>Mach-V Version 1 serves as the baseline implementation, featuring a classic RISC-V scalar architecture:</p>
+<ol>
+<li><strong>Classic 5-Stage Pipeline:</strong> Implements the standard Fetch, Decode, Execute, Memory, and Writeback stages for balanced throughput.</li>
+<li><strong>Comprehensive Hazard Management:</strong> Dedicated hardware for data forwarding and hazard detection resolves data and control hazards automatically.</li>
+<li><strong>Scalar In-Order Execution:</strong> Issues, executes, and commits instructions sequentially (single-issue) to ensure deterministic behavior and architectural simplicity.</li>
+</ol>
 </div>
 <div class="tabbed-block">
 <figure>
@@ -1136,10 +1198,12 @@
 <p>Mach-V Microarchitecture - Version 2</p>
 </figcaption>
 </figure>
-<p>Mach-V Version 2 focuses on timing optimization and hardware acceleration, introducing the following enhancements:
-1. <strong>Enhanced Clock Frequency:</strong> Integrated Clock Wizard boosts the operating frequency to <strong>115 MHz</strong> (surpassing the 100 MHz baseline).
-2. <strong>Critical Path Optimization:</strong> PC logic is relocated from the Execute (EXE) stage to the Memory (MEM) stage to relax timing constraints.
-3. <strong>Hardware-Accelerated Arithmetic:</strong> Replaces native design with optimized AMD/Xilinx IP cores for high-performance integer multiplication and division.</p>
+<p>Mach-V Version 2 focuses on timing optimization and hardware acceleration, introducing the following enhancements:</p>
+<ol>
+<li><strong>Enhanced Clock Frequency:</strong> Integrated Clock Wizard boosts the operating frequency to <strong>115 MHz</strong> (surpassing the 100 MHz baseline).</li>
+<li><strong>Critical Path Optimization:</strong> PC logic is relocated from the Execute (EXE) stage to the Memory (MEM) stage to relax timing constraints.</li>
+<li><strong>Hardware-Accelerated Arithmetic:</strong> Replaces native design with optimized AMD/Xilinx IP cores for high-performance integer multiplication and division.</li>
+</ol>
 </div>
 </div>
 </div>
@@ -1165,7 +1229,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 19, 2025 09:09:46 UTC"><span class="timeago" datetime="2025-12-19T09:09:46+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 19, 2025 09:09:46 UTC">2025-12-19</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 20, 2025 11:31:02 UTC"><span class="timeago" datetime="2025-12-20T11:31:02+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 20, 2025 11:31:02 UTC">2025-12-20</span>
   </span>
 
     
