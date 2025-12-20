@@ -36,6 +36,8 @@ Followed by the convention set in [NUS CG3207](https://nus-cg3207.github.io/labs
 
 All peripherals are mapped to the upper memory range starting at `0xFFFFxxxx`.
 
+---
+
 #### Communication (UART)
 
 | Address      | Register Name | Perms | Description                                                                                                                  |
@@ -44,6 +46,8 @@ All peripherals are mapped to the upper memory range starting at `0xFFFFxxxx`.
 | `0xFFFF0004` | UART_RX       | RO    | Receive Data. Reads input from the keyboard. Only the LSByte (lowest 8 bits) contains valid data.                            |
 | `0xFFFF0008` | UART_TX_READY | RO    | Transmit Status. Data is safe to write to `UART_TX` only when the LSB of this register is set to 1.                          |
 | `0xFFFF000C` | UART_TX       | WO    | Transmit Data. Sends output to the display/console. Only the LSByte is writeable.                                            |
+
+---
 
 #### On-Board I/O (GPIO)
 
@@ -81,6 +85,8 @@ All peripherals are mapped to the upper memory range starting at `0xFFFFxxxx`.
 
     :   Writes an **8-digit hexadecimal number** to the 7-segment display.
 
+---
+
 #### Sensor & Display Modules
 
 | Address      | Register Name | Perms | Description                                                               |
@@ -91,6 +97,8 @@ All peripherals are mapped to the upper memory range starting at `0xFFFFxxxx`.
 | `0xFFFF002C` | OLED_CTRL     | WO    | Controls OLED data format and operation modes.                            |
 | `0xFFFF0040` | ACCEL_DATA    | RO    | Reads accelerometer data (refer to peripherals documentation for format). |
 | `0xFFFF0044` | ACCEL_DREADY  | RO    | Data Ready. LSB is set when a new reading is available.                   |
+
+---
 
 #### System Counters
 
@@ -110,12 +118,16 @@ The toolchain that I used is pre-built and can be found on [GitHub](https://gith
 
 To compile C code into hex files for IROM and DMEM, I used three files: `Makefile`, `ld.script` and `crt.s`. For every C program that is newly written, these three files need to be added and modified accordingly.
 
+---
+
 #### `Makefile`
 
 `Makefile` defines the rules for the `make` command to work. Make sure the `GCC_DIR` is correct and feel free to change the `CFLAGS` as you wish (like changing the Optimization flag from `-O2` to `-O3` etc).
 
 !!! info
     You can get a template from any one of the application, but I recommend the [`sw/calculator/Makefile`](https://github.com/mendax1234/Mach-V/blob/main/sw/calculator/Makefile).
+
+---
 
 #### `ld.script`
 
@@ -128,6 +140,8 @@ Secondly, it specifies which section in the compiled program goes to which memor
 
 * the `.rodata` and `.data` sections are dumped into DMEM
 * the `.text` section is dumped into IROM.
+
+---
 
 #### `crt.s`
 
@@ -144,6 +158,8 @@ For example, if your DMEM size is 7KB (the `sw/coremark` example), and the Mach-
 ```riscv
 li sp, 0x10011C00  # 0x10010000 + 7 * 1024
 ```
+
+---
 
 ### Compile and Load
 

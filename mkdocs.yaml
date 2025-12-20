@@ -136,6 +136,8 @@ nav:
       - uarch/index.md
       - Arithmetic & Logic Unit: uarch/alu.md
       - Load & Store Unit: uarch/lsu.md
+      - Program Counter Unit: uarch/pc-unit.md
+      - Hazard Handling Unit: uarch/hazard-unit.md
       - Multiply & Divide Unit:
           - uarch/mul-div/index.md
           - Native Design: uarch/mul-div/native-design.md

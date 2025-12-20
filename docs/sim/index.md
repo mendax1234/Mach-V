@@ -51,6 +51,8 @@ Occasionally, you may encounter a situation where signals (such as `PCF`) sudden
 !!! info "Rule of Thumb"
     Locate the **last valid instruction** in the waveform before the signals go undefined. Use the PC value of that instruction to find the corresponding RISC-V instruction in your `prog.dump` file (generated after running `make`).
 
+---
+
 #### `lw` Loading from an Invalid Address
 
 This issue typically occurs when a load instruction attempts to access an address that is not mapped to the DMEM. If the data is missing from the memory initialization, the simulation returns undefined values.
