@@ -41,6 +41,10 @@
          <lastmod>2025-12-20</lastmod>
     </url>
     <url>
+         <loc>https://mendax1234.github.io/Mach-V/uarch/clock/</loc>
+         <lastmod>2025-12-20</lastmod>
+    </url>
+    <url>
          <loc>https://mendax1234.github.io/Mach-V/uarch/hazard-unit/</loc>
          <lastmod>2025-12-20</lastmod>
     </url>
@@ -49,19 +53,11 @@
          <lastmod>2025-12-20</lastmod>
     </url>
     <url>
+         <loc>https://mendax1234.github.io/Mach-V/uarch/mul-div-unit/</loc>
+         <lastmod>2025-12-20</lastmod>
+    </url>
+    <url>
          <loc>https://mendax1234.github.io/Mach-V/uarch/pc-unit/</loc>
-         <lastmod>2025-12-20</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/mul-div/</loc>
-         <lastmod>2025-12-20</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/mul-div/native-design/</loc>
-         <lastmod>2025-12-20</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/mul-div/vendor-ip/</loc>
          <lastmod>2025-12-20</lastmod>
     </url>
 </urlset>
