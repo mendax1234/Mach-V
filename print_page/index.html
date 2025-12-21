@@ -57,6 +57,8 @@
     
       <link rel="stylesheet" href="../css/timeago.css">
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("/Mach-V/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -807,6 +809,8 @@
       
         
       
+        
+      
     
     
     
@@ -946,6 +950,111 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../sw/changelog/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Changelog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sw/changelog/conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1193,6 +1302,45 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#section-4-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Changelog
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 Changelog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sw-changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.1 Changelog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sw-changelog-conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5.2 Conventions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1276,6 +1424,9 @@
 </div></section><section class="print-page" id="uarch-clock" heading-number="2.2"><h1 id="uarch-clock-clock-architecture">Clock Architecture<a class="headerlink" href="#uarch-clock-clock-architecture" title="Permanent link">&para;</a></h1>
 <p>Consistent with the synchronous design conventions established in NUS CG3207, the Mach-V processor operates within a single clock domain. All registers and sequential logic are driven by a single global clock signal to simplify timing analysis.</p>
 <h2 id="uarch-clock-clock-frequency-scaling">Clock Frequency Scaling<a class="headerlink" href="#uarch-clock-clock-frequency-scaling" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-plugin" title="External IP / Plugin"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5.5L18.5 3H17v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V3zm7 1v5h3V4zm-5 8h10a1 1 0 0 1 1 1v6H6v-6a1 1 0 0 1 1-1"/></svg></span></a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
 <p>The default clock is only 100MHz maximum. To improve the performance of Mach-V, I utilize the AMD Clocking Wizard IP core to synthesize a higher frequency clock from this base input.</p>
 <h3 id="uarch-clock-generate-the-ip-core">Generate the IP Core<a class="headerlink" href="#uarch-clock-generate-the-ip-core" title="Permanent link">&para;</a></h3>
 <p>To use the IP in Vivado, click the "IP Catalog" on the left flow navigator. Then, search for "clocking wizard". Click the only option available. And then configure the IP to use the following settings:</p>
@@ -1359,6 +1510,8 @@
 </div></section><section class="print-page" id="uarch-pc-unit" heading-number="2.3"><h1 id="uarch-pc-unit-pc-logic">PC Logic<a class="headerlink" href="#uarch-pc-unit-pc-logic" title="Permanent link">&para;</a></h1>
 <p>This section details the implementation of the Program Counter (PC) logic, covering <code>PC_Logic.v</code>, <code>ProgramCounter.v</code>, and the relevant multiplexing logic for the PC adder within <code>RV.v</code>.</p>
 <h2 id="uarch-pc-unit-moving-pc-logic-to-the-mem-stage">Moving PC Logic to the Mem Stage<a class="headerlink" href="#uarch-pc-unit-moving-pc-logic-to-the-mem-stage" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
 <p>In Mach-V Version 2, the PC logic was relocated from the Execute (Exe) stage to the Memory (Mem) stage. This architectural change implies that branch and jump instructions are now committed in the Mem stage. This optimization significantly improved timing performance, allowing Mach-V to achieve a clock frequency of 115 MHz (utilizing the Clocking Wizard IP).</p>
 <p>To support this transition, the input logic for the PC Adder was redesigned as follows:</p>
 <ol>
@@ -1373,13 +1526,16 @@
 <p>Following the PC adder updates, the <code>PC_Logic</code> module itself was simplified. The control signals <code>PCSE</code> and <code>ALUFlagsE</code> are propagated through the pipeline registers to become <code>PCSM</code> and <code>ALUFlagsM</code>. These are then fed into the PC Logic unit in the Mem stage, generating the final branch decision signal, <code>PCSrcM</code>.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="#uarch-mach-v-version-2">here</a>.</p>
+<p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="#uarch-microarchitecture-overview">in Mach-V Version 2's microarchitecture diagram</a>.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Simply delaying the control signals is insufficient for this architectural change. The <a href="#uarch-pc-unit-hazard.md">Hazard Unit</a> must also be updated to handle the new branch resolution timing correctly.</p>
+<p>Simply delaying the control signals is insufficient for this architectural change. The <a href="#uarch-hazard-unit">Hazard Unit</a> must also be updated to handle the new branch resolution timing correctly.</p>
 </div></section><section class="print-page" id="uarch-alu" heading-number="2.4"><h1 id="uarch-alu-arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#uarch-alu-arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
 <p>The Mach-V ALU is a streamlined execution unit derived from the reference design used in <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v">NUS CG3207</a>. It implements standard RISC-V integer arithmetic and logical operations, utilizing a <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/Shifter.v">barrel shifter</a> designed by NUS CG3207 teaching team for efficient single-cycle shift operations.</p>
+<h2 id="uarch-alu-zero-flag-optimization">Zero Flag Optimization<a class="headerlink" href="#uarch-alu-zero-flag-optimization" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
 <p>While the base architecture is inherited, a critical timing optimization was introduced to the <strong>Zero (Z) flag generation</strong>. In the <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v#L79">reference design</a>, the Z flag is typically derived from the final <code>ALUResult</code> (after the result multiplexer). This creates a long logic chain: <code>Adder -&gt; Result Mux -&gt; Zero Check</code>.</p>
 <p>To reduce the critical path, Mach-V computes the Z flag directly from the 33-bit adder output (<code>Sum</code>) <strong>in parallel</strong> with the result multiplexer. This decouples the flag generation from the multiplexing logic, significantly reducing propagation delay.</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#uarch-alu-__codelineno-0-1"></a><span class="c1">// Critical Path Optimization: </span>
@@ -1412,6 +1568,8 @@
 </ul>
 </div>
 <h3 id="uarch-mul-div-unit-native-design">Native Design<a class="headerlink" href="#uarch-mul-div-unit-native-design" title="Permanent link">&para;</a></h3>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-1.0">1.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-experimental" title="Experimental"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 19a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1c0-.21-.07-.41-.18-.57L13 8.35V4h-2v4.35L5.18 18.43c-.11.16-.18.36-.18.57m1 3a3 3 0 0 1-3-3c0-.6.18-1.16.5-1.63L9 7.81V6a1 1 0 0 1-1-1V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1v1.81l5.5 9.56c.32.47.5 1.03.5 1.63a3 3 0 0 1-3 3zm7-6 1.34-1.34L16.27 18H7.73l2.66-4.61zm-.5-4a.5.5 0 0 1 .5.5.5.5 0 0 1-.5.5.5.5 0 0 1-.5-.5.5.5 0 0 1 .5-.5"/></svg></span></a></span></span></p>
 <p>This is a follow-up from <a href="https://nus-cg3207.github.io/labs/asst_manuals/Asst_03/Asst_03/">CG3207 Assignment 3</a>. More specifically, it is my try to finish the first bullet point in the <a href="https://nus-cg3207.github.io/labs/asst_manuals/Asst_03/Asst_03/#task-3-enhancements-5-points">Task 3 of this assignment</a>.</p>
 <hr />
 <h4 id="uarch-mul-div-unit-multiply-unit">Multiply Unit<a class="headerlink" href="#uarch-mul-div-unit-multiply-unit" title="Permanent link">&para;</a></h4>
@@ -1558,7 +1716,10 @@
 <p>Using the unrolling techniue in the divider unit here will use a lot of hardware! iirc, the propagation delay is around 66ns for this design! Given that high propagation delay, it is impossible to use this design on Mach-V. So, I moved on to the next section, which is to use Xilinix IP core for the multiply and divide unit.</p>
 </div>
 <h3 id="uarch-mul-div-unit-amd-ip-design">AMD IP Design<a class="headerlink" href="#uarch-mul-div-unit-amd-ip-design" title="Permanent link">&para;</a></h3>
-<p>As mentioned in the <a href="#uarch-mul-div-unit-native-design.md">previous documentation</a>, if I only use the unrolling technique, it is impossible to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the AMD IP cores (Multiplier and Divider) to implement the multiply and divide unit.</p>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-1.0">1.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-plugin" title="External IP / Plugin"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5.5L18.5 3H17v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V3zm7 1v5h3V4zm-5 8h10a1 1 0 0 1 1 1v6H6v-6a1 1 0 0 1 1-1"/></svg></span></a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
+<p>As mentioned in the <a href="#uarch-mul-div-unit-native-design">previous documentation</a>, if I only use the unrolling technique, it is impossible to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the AMD IP cores (Multiplier and Divider) to implement the multiply and divide unit.</p>
 <hr />
 <h4 id="uarch-mul-div-unit-generate-the-ip-core">Generate the IP Core<a class="headerlink" href="#uarch-mul-div-unit-generate-the-ip-core" title="Permanent link">&para;</a></h4>
 <p>The <a href="https://www.amd.com/en/products/adaptive-socs-and-fpgas/intellectual-property/multiplier.html">multiplier IP core</a> comes from AMD and can be used in Vivado directly.</p>
@@ -1603,7 +1764,7 @@
 </div>
 <hr />
 <h4 id="uarch-mul-div-unit-use-ip-core">Use IP Core<a class="headerlink" href="#uarch-mul-div-unit-use-ip-core" title="Permanent link">&para;</a></h4>
-<p>To use the two IP cores that we have generated above, we just need to know the inputs and outputs of each IP core and then instantiate them in our <code>MCycle.v</code> to replace the multiple unit and the divide unit that we have implemented manually in the <a href="#uarch-mul-div-unit-native-design.md">previous section</a>.</p>
+<p>To use the two IP cores that we have generated above, we just need to know the inputs and outputs of each IP core and then instantiate them in our <code>MCycle.v</code> to replace the multiple unit and the divide unit that we have implemented manually in the <a href="#uarch-mul-div-unit-native-design">previous section</a>.</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#uarch-mul-div-unit-__codelineno-8-1"></a><span class="c1">// Multiplier IP: 32x32 Unsigned -&gt; 64-bit Product</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#uarch-mul-div-unit-__codelineno-8-2"></a><span class="n">mult_gen_0</span><span class="w"> </span><span class="n">my_multiplier</span><span class="w"> </span><span class="p">(</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#uarch-mul-div-unit-__codelineno-8-3"></a><span class="w">    </span><span class="p">.</span><span class="n">CLK</span><span class="p">(</span><span class="n">CLK</span><span class="p">),</span>
@@ -1692,6 +1853,7 @@
 <p>The term "Load Store Unit" typically refers to a complex buffer system in Out-of-Order processors. In the context of the current Mach-V (Scalar In-Order), it refers specifically to the alignment and formatting logic within the Memory stage.</p>
 </div>
 <h2 id="uarch-lsu-store-alignment-logic">Store Alignment Logic<a class="headerlink" href="#uarch-lsu-store-alignment-logic" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-1.0">1.0</a></span></span></p>
 <p>The Store Unit is responsible for placing data into the correct "byte lane" before writing to memory. Since memory is word-addressed (32-bit width), sub-word stores (like <code>sb</code>) must be shifted to the correct position within the word.</p>
 <ol>
 <li><strong>Calculate Shift Amount:</strong> The <code>ByteOffset</code> is multiplied by 8 (concatenated with <code>3'b000</code>) to convert the byte index into a bit index.</li>
@@ -1722,6 +1884,7 @@
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#uarch-lsu-__codelineno-0-18"></a><span class="k">assign</span><span class="w"> </span><span class="n">MemWrite_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">MemWriteM</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="n">BaseMask</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ByteOffset</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mh">4</span><span class="mb">&#39;b0000</span><span class="p">;</span>
 </span></code></pre></div>
 <h2 id="uarch-lsu-load-extension-logic">Load Extension Logic<a class="headerlink" href="#uarch-lsu-load-extension-logic" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-1.0">1.0</a></span></span></p>
 <p>The Load Unit performs the inverse operation. It takes a full 32-bit word from memory and extracts the relevant byte or half-word.</p>
 <ol>
 <li><strong>Re-Align</strong>: The raw <code>ReadData_in</code> is right-shifted (<code>&gt;&gt;</code>) by <code>ByteOffset</code> bits so that the desired data sits in the Least Significant Bits (LSB).</li>
@@ -1752,14 +1915,20 @@
 <li><strong>Stall &amp; Flush Logic</strong>: Resolves load-use and control hazards by stalling or clearing pipeline registers.</li>
 </ol>
 <h2 id="uarch-hazard-unit-forwarding-logic">Forwarding Logic<a class="headerlink" href="#uarch-hazard-unit-forwarding-logic" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-1.0">1.0</a></span></span></p>
 <p>The stall &amp; flush logic mainly deals with the load-use hazard and control hazard. The version that Mach-V Version 1 uses are also strictly following the rules introduced in NUS CG3207 or in Harris &amp; Harris DDCA.</p>
 <p>Specific implementation details can be found in the source code Hazard.v and strictly follow the datapath connections shown in the microarchitecture diagram.</p>
 <h2 id="uarch-hazard-unit-stall-flush-logic">Stall &amp; Flush Logic<a class="headerlink" href="#uarch-hazard-unit-stall-flush-logic" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-1.0">1.0</a></span></span></p>
 <p>The base implementation of the Stall &amp; Flush logic handles standard Load-Use hazards and Control hazards, also following NUS CG3207 and DDCA (Harris &amp; Harris) model.</p>
 <h3 id="uarch-hazard-unit-modifications-for-mem-stage-branching">Modifications for Mem Stage Branching<a class="headerlink" href="#uarch-hazard-unit-modifications-for-mem-stage-branching" title="Permanent link">&para;</a></h3>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
 <p>To support moving the PC Logic to the Memory (Mem) stage, significant modifications were required to the interaction between the Hazard Unit, the Stall signals, and the Multi-Cycle Unit.</p>
 <hr />
 <h4 id="uarch-hazard-unit-priority-inversion-the-lost-jump-scenario">Priority Inversion: The "Lost Jump" Scenario<a class="headerlink" href="#uarch-hazard-unit-priority-inversion-the-lost-jump-scenario" title="Permanent link">&para;</a></h4>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
 <p><strong>The problem</strong>: When a branch/jump instruction reaches the Mem stage and resolves to branch/jump, the instruction immediately following it (the "ghost" instruction) is already in the Execute or Decode stage. If this ghost instruction triggers a Hazard Stall (e.g., a Load-Use stall or a Multi-Cycle Busy signal), a conflict arises.</p>
 <p>In the previous design, the PC update logic prioritized <code>StallF</code> over the new PC target (<code>PC_IN</code>). Because <code>StallF</code> was high (caused by the ghost instruction), the PC retained its current value, effectively ignoring the jump request. This caused the CPU to "fall through" and execute instructions that should have been skipped.</p>
 <p><strong>The Solution</strong>: Control flow changes must be prioritized over stall signals. I modified the logic to force stall signals to <code>0</code> whenever a branch or jump is confirmed (<code>PCSrcM</code> is active). This ensures that if the processor is jumping, hazards caused by instructions in the flush shadow are ignored.</p>
@@ -1773,6 +1942,8 @@
 </span></code></pre></div>
 <hr />
 <h4 id="uarch-hazard-unit-spurious-execution-in-muldiv-operations">Spurious Execution in Mul/Div Operations<a class="headerlink" href="#uarch-hazard-unit-spurious-execution-in-muldiv-operations" title="Permanent link">&para;</a></h4>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
 <p><strong>The Problem</strong>: When a branch/jump instruction takes a branch/jump in the Mem stage, the subsequent instruction (e.g., a <code>mul</code>) may have already advanced to the Execute stage.</p>
 <p>Although the Hazard Unit asserts <code>FlushE</code> to kill the <code>mul</code> for the next clock cycle, the MCycle Unit is combinational logic that reacts to its inputs instantly. It sees the <code>Start</code> signal immediately in the current cycle, begins the calculation, and raises the <code>Busy</code> flag. This stalls the entire processor to perform a "fake" multiplication that is about to be flushed.</p>
 <p>The Solution: I modified the instantiation of the MCycle Unit in <code>RV.v</code> to logically "gate" the start signal. If the Execute stage is currently being flushed (<code>FlushE</code> is high), the <code>.Start</code> input is forced to <code>0</code>. This prevents the unit from activating on instructions that are being discarded.</p>
@@ -1860,7 +2031,7 @@
 </span></code></pre></div>
 <h3 id="sim-benchmark_tb-simulation-timeout">Simulation Timeout<a class="headerlink" href="#sim-benchmark_tb-simulation-timeout" title="Permanent link">&para;</a></h3>
 <p>To prevent the simulation from running indefinitely (in case of software crashes or infinite loops), a hard limit is set. The simulation automatically stops after 50ms (5,000,000,000 ns), which is sufficient for one iteration of the benchmark.</p></section><section class="print-page" id="sim-uart_tb" heading-number="3.3"><h1 id="sim-uart_tb-uart-application-testbench">UART Application Testbench<a class="headerlink" href="#sim-uart_tb-uart-application-testbench" title="Permanent link">&para;</a></h1>
-<p>This testbench verifies the interactive capabilities of the processor, specifically focusing on the <a href="#sw-uart_calculator">UART Calculator</a> application. Unlike the <a href="#sim-uart_tb-benchmark.md">benchmark simulation</a>, this testbench actively injects data and adheres to a strict handshaking protocol.</p>
+<p>This testbench verifies the interactive capabilities of the processor, specifically focusing on the <a href="#sw-uart_calculator">UART Calculator</a> application. Unlike the <a href="#sim-benchmark_tb">benchmark simulation</a>, this testbench actively injects data and adheres to a strict handshaking protocol.</p>
 <h2 id="sim-uart_tb-the-send_uart-task">The <code>send_uart</code> Task<a class="headerlink" href="#sim-uart_tb-the-send_uart-task" title="Permanent link">&para;</a></h2>
 <p>The core of this verification is the <code>send_uart</code> task, which automates the entry of complex commands. It constructs a 9-byte packet consisting of:</p>
 <ol>
@@ -2431,7 +2602,39 @@ building from source.</p>
 <p><a href="https://github.com/stnolting/riscv-gcc-prebuilt"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Download Toolchain</a></p>
 </li>
 </ul>
-</div></section></section></div><style>.print-site-enumerate-headings #index > h1:before { content: '1 ' }
+</div></section>
+                    <section class='print-page md-section' id='section-4-5' heading-number='4.5'>
+                        <h1>Changelog<a class='headerlink' href='#section-4-5' title='Permanent link'></a>
+                        </h1>
+                    <section class="print-page" id="sw-changelog" heading-number="4.5.1"><h1 id="sw-changelog-changelog">Changelog<a class="headerlink" href="#sw-changelog-changelog" title="Permanent link">&para;</a></h1>
+<h2 id="sw-changelog-mach-v-processor">Mach-V Processor<a class="headerlink" href="#sw-changelog-mach-v-processor" title="Permanent link">&para;</a></h2>
+<h3 id="sw-changelog-2.0">2.0<a class="headerlink" href="#sw-changelog-2.0" title="Permanent link">&para;</a></h3>
+<p><strong>Focus:</strong> Timing optimization and hardware acceleration.</p>
+<ul>
+<li><strong>Enhanced Clock Frequency:</strong> Integrated Clock Wizard to boost operating frequency to <strong>115 MHz</strong> (from 100 MHz baseline).</li>
+<li><strong>Critical Path Optimization:</strong> Relocated PC logic from the Execute (EXE) stage to the Memory (MEM) stage to relax timing constraints.</li>
+<li><strong>Hardware-Accelerated Arithmetic:</strong> Replaced native multiplier/divider designs with optimized AMD/Xilinx IP cores for high-performance integer arithmetic.</li>
+</ul>
+<h3 id="sw-changelog-1.0">1.0<a class="headerlink" href="#sw-changelog-1.0" title="Permanent link">&para;</a></h3>
+<p><strong>Focus:</strong> Baseline implementation featuring a classic RISC-V scalar architecture.</p>
+<ul>
+<li><strong>Classic 5-Stage Pipeline:</strong> Implemented standard Fetch, Decode, Execute, Memory, and Writeback stages.</li>
+<li><strong>Comprehensive Hazard Management:</strong> Added dedicated hardware for data forwarding and hazard detection to resolve data/control hazards.</li>
+<li><strong>Scalar In-Order Execution:</strong> Established single-issue sequential execution ensuring deterministic behavior and architectural simplicity.</li>
+</ul></section><section class="print-page" id="sw-changelog-conventions" heading-number="4.5.2"><h1 id="sw-changelog-conventions-conventions">Conventions<a class="headerlink" href="#sw-changelog-conventions-conventions" title="Permanent link">&para;</a></h1>
+<p>This section explains the symbols and conventions used throughout the Mach-V documentation.</p>
+<h2 id="sw-changelog-conventions-symbols">Symbols<a class="headerlink" href="#sw-changelog-conventions-symbols" title="Permanent link">&para;</a></h2>
+<p>The documentation uses visual badges to denote specific hardware states, version requirements, or configuration settings. Please familiarize yourself with the following conventions:</p>
+<h3 id="sw-changelog-conventions-version"><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span></span> – Version<a class="headerlink" href="#sw-changelog-conventions-version" title="Permanent link">&para;</a></h3>
+<p>The tag symbol denotes the <strong>Mach-V Core Version</strong> required for a specific feature or architectural change. Ensure your hardware description (RTL) matches this version tag to guarantee compatibility.</p>
+<h3 id="sw-changelog-conventions-feature"><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span> – Optional Feature<a class="headerlink" href="#sw-changelog-conventions-feature" title="Permanent link">&para;</a></h3>
+<p>This symbol indicates a hardware module (such as the Branch Predictor or FPU) that is not included in the core by default. These features must be explicitly enabled via Verilog defines (e.g., <code>`define ENABLE_FPU</code>) in your configuration file.</p>
+<h3 id="sw-changelog-conventions-plugin"><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-plugin" title="External IP / Plugin"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5.5L18.5 3H17v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V3zm7 1v5h3V4zm-5 8h10a1 1 0 0 1 1 1v6H6v-6a1 1 0 0 1 1-1"/></svg></span></a></span></span> – External IP / Plugin<a class="headerlink" href="#sw-changelog-conventions-plugin" title="Permanent link">&para;</a></h3>
+<p>This symbol refers to <strong>External IP Cores</strong> (like Xilinx Clock Wizards or AMD Multipliers) or software plugins used in the project. These components may require specific vendor licenses or additional synthesis libraries.</p>
+<h3 id="sw-changelog-conventions-experimental"><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-experimental" title="Experimental"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 19a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1c0-.21-.07-.41-.18-.57L13 8.35V4h-2v4.35L5.18 18.43c-.11.16-.18.36-.18.57m1 3a3 3 0 0 1-3-3c0-.6.18-1.16.5-1.63L9 7.81V6a1 1 0 0 1-1-1V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1v1.81l5.5 9.56c.32.47.5 1.03.5 1.63a3 3 0 0 1-3 3zm7-6 1.34-1.34L16.27 18H7.73l2.66-4.61zm-.5-4a.5.5 0 0 1 .5.5.5.5 0 0 1-.5.5.5.5 0 0 1-.5-.5.5.5 0 0 1 .5-.5"/></svg></span></a></span></span> – Experimental<a class="headerlink" href="#sw-changelog-conventions-experimental" title="Permanent link">&para;</a></h3>
+<p>Features marked with the flask symbol are currently being tested on the FPGA and may be unstable. The timing closure or logic correctness for these features is not yet guaranteed in all corner cases.</p>
+<h3 id="sw-changelog-conventions-default"><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-default" title="Default value"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a6 6 0 0 1-6-6c0-4 6-10.75 6-10.75S18 10 18 14a6 6 0 0 1-6 6"/></svg></span></a></span></span> – Default Value<a class="headerlink" href="#sw-changelog-conventions-default" title="Permanent link">&para;</a></h3>
+<p>Indicates the <strong>default reset value</strong> of a hardware register or a configuration parameter if not otherwise specified by the software bootloader.</p></section></section></section></div><style>.print-site-enumerate-headings #index > h1:before { content: '1 ' }
 
                 .print-site-enumerate-headings #index h2:before { content: '1.' counter(counter-index-2) ' ' }
                 .print-site-enumerate-headings #index h2 {  counter-reset: counter-index-3 ;  counter-increment: counter-index-2 }
@@ -2511,7 +2714,12 @@ building from source.</p>
 
                 .print-site-enumerate-headings #sw-resources h2:before { content: '4.4.' counter(counter-sw-resources-2) ' ' }
                 .print-site-enumerate-headings #sw-resources h2 {  counter-increment: counter-sw-resources-2 }
-            </style>
+            
+.print-site-enumerate-headings #section-4-5 > h1:before { content: '4.5 ' }
+.print-site-enumerate-headings #sw-changelog > h1:before { content: '4.5.1 ' }
+
+.print-site-enumerate-headings #sw-changelog-conventions > h1:before { content: '4.5.2 ' }
+</style>
 
 
 
@@ -2569,7 +2777,7 @@ building from source.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/Mach-V/", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "/Mach-V/", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
