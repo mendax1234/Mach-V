@@ -4,7 +4,7 @@ icon: material/console
 
 # UART Application Testbench
 
-This testbench verifies the interactive capabilities of the processor, specifically focusing on the [UART Calculator](../sw/uart_calculator.md) application. Unlike the [benchmark simulation](./benchmark.md), this testbench actively injects data and adheres to a strict handshaking protocol.
+This testbench verifies the interactive capabilities of the processor, specifically focusing on the [UART Calculator](../sw/uart_calculator.md) application. Unlike the [benchmark simulation](./benchmark_tb.md), this testbench actively injects data and adheres to a strict handshaking protocol.
 
 ## The `send_uart` Task
 

@@ -205,7 +205,7 @@ DivSlice8 div_unit (
 
 ### AMD IP Design
 
-As mentioned in the [previous documentation](native-design.md), if I only use the unrolling technique, it is impossible to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the AMD IP cores (Multiplier and Divider) to implement the multiply and divide unit.
+As mentioned in the [previous documentation](#native-design), if I only use the unrolling technique, it is impossible to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the AMD IP cores (Multiplier and Divider) to implement the multiply and divide unit.
 
 ---
 
@@ -247,7 +247,7 @@ Follow the similar steps as the multiplier IP core, but configure the divider us
 
 #### Use IP Core
 
-To use the two IP cores that we have generated above, we just need to know the inputs and outputs of each IP core and then instantiate them in our `MCycle.v` to replace the multiple unit and the divide unit that we have implemented manually in the [previous section](./native-design.md).
+To use the two IP cores that we have generated above, we just need to know the inputs and outputs of each IP core and then instantiate them in our `MCycle.v` to replace the multiple unit and the divide unit that we have implemented manually in the [previous section](#native-design).
 
 ```verilog
 // Multiplier IP: 32x32 Unsigned -> 64-bit Product

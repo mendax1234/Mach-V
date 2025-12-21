@@ -28,8 +28,11 @@ theme:
     - navigation.footer # Next/Previous buttons at bottom
     - navigation.path # Breadcrumbs (Home > Architecture > Pipeline)
     - navigation.indexes # Clickable section headers
+    - navigation.instant # Instant loading of pages
+    - navigation.instant.preview # Show preview while loading
     - content.code.copy # Copy button on code blocks
     - content.action.edit # Enable the edit button defined in repo_url
+    - content.tooltips # Tooltips for abbreviations
 
   # 2.2 Color Palette (Auto/Light/Dark)
   palette:
@@ -121,6 +124,12 @@ extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
+extra_css:
+  - stylesheets/extra.css
+
+hooks:
+  - overrides/hooks/shortcodes.py
+
 # Mike is used for versioning the documentation
 # extra:
 #   version:
@@ -149,3 +158,6 @@ nav:
       - Benchmark: sw/benchmark.md
       - UART Calculator: sw/uart_calculator.md
       - Resources: sw/resources.md
+      - Changelog:
+          - sw/changelog/index.md
+          - Conventions: sw/changelog/conventions.md

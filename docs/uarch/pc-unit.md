@@ -4,6 +4,8 @@ This section details the implementation of the Program Counter (PC) logic, cover
 
 ## Moving PC Logic to the Mem Stage
 
+<!-- md:version 2.0 -->
+
 In Mach-V Version 2, the PC logic was relocated from the Execute (Exe) stage to the Memory (Mem) stage. This architectural change implies that branch and jump instructions are now committed in the Mem stage. This optimization significantly improved timing performance, allowing Mach-V to achieve a clock frequency of 115 MHz (utilizing the Clocking Wizard IP).
 
 To support this transition, the input logic for the PC Adder was redesigned as follows:
@@ -17,7 +19,7 @@ To support this transition, the input logic for the PC Adder was redesigned as f
 Following the PC adder updates, the `PC_Logic` module itself was simplified. The control signals `PCSE` and `ALUFlagsE` are propagated through the pipeline registers to become `PCSM` and `ALUFlagsM`. These are then fed into the PC Logic unit in the Mem stage, generating the final branch decision signal, `PCSrcM`.
 
 !!! info
-    The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found [here](index.md/#mach-v-version-2).
+    The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found [in Mach-V Version 2's microarchitecture diagram](./index.md/#microarchitecture-overview).
 
 !!! warning
-    Simply delaying the control signals is insufficient for this architectural change. The [Hazard Unit](hazard.md) must also be updated to handle the new branch resolution timing correctly.
+    Simply delaying the control signals is insufficient for this architectural change. The [Hazard Unit](hazard-unit.md) must also be updated to handle the new branch resolution timing correctly.
