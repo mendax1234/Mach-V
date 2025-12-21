@@ -2,7 +2,7 @@
 
 ## Mach-V Processor
 
-### 2.0 { id="2.0" }
+### 2.0 <small> Dec 20, 2025 </small> { id="2.0" }
 
 **Focus:** Timing optimization and hardware acceleration.
 
@@ -10,7 +10,7 @@
 - **Critical Path Optimization:** Relocated PC logic from the Execute (EXE) stage to the Memory (MEM) stage to relax timing constraints.
 - **Hardware-Accelerated Arithmetic:** Replaced native multiplier/divider designs with optimized AMD/Xilinx IP cores for high-performance integer arithmetic.
 
-### 1.0 { id="1.0" }
+### 1.0 <small> Nov 15, 2025 </small> { id="1.0" }
 
 **Focus:** Baseline implementation featuring a classic RISC-V scalar architecture.
 

@@ -69,6 +69,7 @@ plugins:
   - optimize: # Compresses all images for faster loading
       enabled: true
       cache: true # Speeds up future builds by not re-doing unchanged images
+  - typeset # Improves typography (quotes, dashes, ellipses)
 
 # ==============================================================================
 # 4. MARKDOWN EXTENSIONS
