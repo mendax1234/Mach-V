@@ -1,6 +1,6 @@
 # Mach-V
 
-**Mac-V** is an open-source RISC-V processor implementation targeting the Digilent **Nexys 4** FPGA. The project aims to evolve from a standard 5-stage pipeline into a Superscalar, Out-of-Order (OoO), and Multi-core architecture.
+**Mach-V** is an open-source RISC-V processor implementation targeting the Digilent **Nexys 4** FPGA. The project aims to evolve from a standard 5-stage pipeline into a Superscalar, Out-of-Order (OoO), and Multi-core architecture.
 
 Current status: **RV32IM Pipelined Core running CoreMark.**
 
@@ -67,13 +67,6 @@ make
 3. Add constraints from `fpga/nexys4/constraints/`.
 4. Add the generated `.mem` file as sources for Block RAM initialization.
 5. Generate Bitstream and Program Device.
-
-## Performance
-
-- **Frequency:** *100MHz*
-- **CoreMark Score:**
-  - **Coremarks:** *153*
-  - **Coremarks/MHz:** *1.53*
 
 ## License
 
