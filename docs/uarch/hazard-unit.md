@@ -7,21 +7,31 @@ The Hazard Handling Unit manages the data and control hazards inherent in Mach-V
 
 ## Forwarding Logic
 
+<!-- md:version 1.0 -->
+
 The stall & flush logic mainly deals with the load-use hazard and control hazard. The version that Mach-V Version 1 uses are also strictly following the rules introduced in NUS CG3207 or in Harris & Harris DDCA.
 
 Specific implementation details can be found in the source code Hazard.v and strictly follow the datapath connections shown in the microarchitecture diagram.
 
 ## Stall & Flush Logic
 
+<!-- md:version 1.0 -->
+
 The base implementation of the Stall & Flush logic handles standard Load-Use hazards and Control hazards, also following NUS CG3207 and DDCA (Harris & Harris) model.
 
 ### Modifications for Mem Stage Branching
+
+<!-- md:version 2.0 -->
+<!-- md:feature -->
 
 To support moving the PC Logic to the Memory (Mem) stage, significant modifications were required to the interaction between the Hazard Unit, the Stall signals, and the Multi-Cycle Unit.
 
 ---
 
 #### Priority Inversion: The "Lost Jump" Scenario
+
+<!-- md:version 2.0 -->
+<!-- md:feature -->
 
 **The problem**: When a branch/jump instruction reaches the Mem stage and resolves to branch/jump, the instruction immediately following it (the "ghost" instruction) is already in the Execute or Decode stage. If this ghost instruction triggers a Hazard Stall (e.g., a Load-Use stall or a Multi-Cycle Busy signal), a conflict arises.
 
@@ -42,6 +52,9 @@ assign StallD = (lwStall | Busy) & ~PCSrcM[0];
 ---
 
 #### Spurious Execution in Mul/Div Operations
+
+<!-- md:version 2.0 -->
+<!-- md:feature -->
 
 **The Problem**: When a branch/jump instruction takes a branch/jump in the Mem stage, the subsequent instruction (e.g., a `mul`) may have already advanced to the Execute stage.
 

@@ -5,6 +5,7 @@ This section details the implementation of the Program Counter (PC) logic, cover
 ## Moving PC Logic to the Mem Stage
 
 <!-- md:version 2.0 -->
+<!-- md:feature -->
 
 In Mach-V Version 2, the PC logic was relocated from the Execute (Exe) stage to the Memory (Mem) stage. This architectural change implies that branch and jump instructions are now committed in the Mem stage. This optimization significantly improved timing performance, allowing Mach-V to achieve a clock frequency of 115 MHz (utilizing the Clocking Wizard IP).
 

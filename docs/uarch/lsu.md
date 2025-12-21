@@ -24,6 +24,8 @@ The LSU locates in the Mem stage. It processes raw addresses and data to align t
 
 ## Store Alignment Logic
 
+<!-- md:version 1.0 -->
+
 The Store Unit is responsible for placing data into the correct "byte lane" before writing to memory. Since memory is word-addressed (32-bit width), sub-word stores (like `sb`) must be shifted to the correct position within the word.
 
 1. **Calculate Shift Amount:** The `ByteOffset` is multiplied by 8 (concatenated with `3'b000`) to convert the byte index into a bit index.
@@ -55,6 +57,8 @@ assign MemWrite_out = (MemWriteM) ? (BaseMask << ByteOffset) : 4'b0000;
 ```
 
 ## Load Extension Logic
+
+<!-- md:version 1.0 -->
 
 The Load Unit performs the inverse operation. It takes a full 32-bit word from memory and extracts the relevant byte or half-word.
 
