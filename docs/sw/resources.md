@@ -1,7 +1,3 @@
----
-icon: material/book-open-variant
----
-
 # Resoures & Utilities
 
 This section contains utility guides and extra information regarding the Mach-V software stack.

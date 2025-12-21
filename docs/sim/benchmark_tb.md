@@ -1,7 +1,3 @@
----
-icon: material/speedometer
----
-
 # Benchmark Testbench
 
 This testbench is designed for non-interactive applications, such as the [CoreMark](../sw/benchmark.md#coremark-benchmark) benchmark. Its primary goal is to run the processor at full speed and capture the output without requiring manual user input.

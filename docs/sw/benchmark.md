@@ -1,7 +1,3 @@
----
-icon: material/speedometer
----
-
 # CoreMark Benchmark
 
 The [CoreMark](https://www.eembc.org/coremark/) benchmark is used to evaluate the performance of the Mach-V processor. It measures the CPU's ability to handle list processing, matrix manipulation, and state machine execution.

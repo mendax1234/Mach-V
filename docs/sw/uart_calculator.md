@@ -1,7 +1,3 @@
----
-icon: material/calculator
----
-
 # UART Calculator
 
 This is a simple calculator program that is used to test the basic functionality of the Mach-V processor. It contains all the basic instructiosn from RISC-V I and M extensions, and performs arithmetic operations based on user input via UART.
