@@ -2,70 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://mendax1234.github.io/Mach-V/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sim/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sim/benchmark_tb/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sim/uart_tb/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sw/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sw/benchmark/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sw/resources/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sw/uart_calculator/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sw/changelog/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sw/changelog/conventions/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/uarch/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/uarch/alu/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/uarch/clock/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/uarch/hazard-unit/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/uarch/lsu/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/uarch/mul-div-unit/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/uarch/pc-unit/</loc>
-         <lastmod>2025-12-21</lastmod>
+         <lastmod>2025-12-22</lastmod>
     </url>
 </urlset>

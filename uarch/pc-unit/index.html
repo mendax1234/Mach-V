@@ -577,11 +577,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#moving-pc-logic-to-the-mem-stage" class="md-nav__link">
+  <a href="#move-pc-logic-to-mem-stage" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Moving PC Logic to the Mem Stage
+          Move PC Logic to Mem Stage
         </span>
       
     </span>
@@ -1149,11 +1149,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#moving-pc-logic-to-the-mem-stage" class="md-nav__link">
+  <a href="#move-pc-logic-to-mem-stage" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Moving PC Logic to the Mem Stage
+          Move PC Logic to Mem Stage
         </span>
       
     </span>
@@ -1235,11 +1235,11 @@
 
 
 <h1 id="pc-logic">PC Logic<a class="headerlink" href="#pc-logic" title="Permanent link">&para;</a></h1>
-<p>This section details the implementation of the Program Counter (PC) logic, covering <code>PC_Logic.v</code>, <code>ProgramCounter.v</code>, and the relevant multiplexing logic for the PC adder within <code>RV.v</code>.</p>
-<h2 id="moving-pc-logic-to-the-mem-stage">Moving PC Logic to the Mem Stage<a class="headerlink" href="#moving-pc-logic-to-the-mem-stage" title="Permanent link">&para;</a></h2>
+<p>This section details the implementation of the Program Counter (PC) logic, covering <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/PC_Logic.v"><code>PC_Logic.v</code></a>, <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/ProgramCounter.v"><code>ProgramCounter.v</code></a>, and the relevant multiplexing logic for the PC adder within <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/RV.v#L136-L150"><code>RV.v</code></a>.</p>
+<h2 id="move-pc-logic-to-mem-stage">Move PC Logic to Mem Stage<a class="headerlink" href="#move-pc-logic-to-mem-stage" title="Permanent link">&para;</a></h2>
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../sw/changelog/conventions/#version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="../../sw/changelog/#2.0">2.0</a></span></span>
 <span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../sw/changelog/conventions/#feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
-<p>In Mach-V Version 2, the PC logic was relocated from the Execute (Exe) stage to the Memory (Mem) stage. This architectural change implies that branch and jump instructions are now committed in the Mem stage. This optimization significantly improved timing performance, allowing Mach-V to achieve a clock frequency of 115 MHz (utilizing the Clocking Wizard IP).</p>
+<p>In Mach-V Version 2, the PC logic was relocated from the Execute (Exe) stage to the Memory (Mem) stage. This architectural change implies that branch and jump instructions are now committed in the Mem stage. This optimization significantly improved timing performance, allowing Mach-V to achieve a clock frequency of 115 MHz (utilizing the <a href="../clock/#clock-frequency-scaling">Clocking Wizard IP</a>).</p>
 <p>To support this transition, the input logic for the PC Adder was redesigned as follows:</p>
 <ol>
 <li><strong><code>PC_Base</code> Selection</strong>: The base address multiplexer now accepts three new inputs:<ul>
@@ -1253,7 +1253,7 @@
 <p>Following the PC adder updates, the <code>PC_Logic</code> module itself was simplified. The control signals <code>PCSE</code> and <code>ALUFlagsE</code> are propagated through the pipeline registers to become <code>PCSM</code> and <code>ALUFlagsM</code>. These are then fed into the PC Logic unit in the Mem stage, generating the final branch decision signal, <code>PCSrcM</code>.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="../#microarchitecture-overview">in Mach-V Version 2's microarchitecture diagram</a>.</p>
+<p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="../#mach-v-version-2">in Mach-V Version 2's microarchitecture diagram</a>.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -1281,7 +1281,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 21, 2025 07:56:30 UTC"><span class="timeago" datetime="2025-12-21T07:56:30+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 21, 2025 07:56:30 UTC">2025-12-21</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 22, 2025 01:52:49 UTC"><span class="timeago" datetime="2025-12-22T01:52:49+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 22, 2025 01:52:49 UTC">2025-12-22</span>
   </span>
 
     
@@ -1331,6 +1331,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -1409,7 +1411,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

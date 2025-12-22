@@ -1304,7 +1304,7 @@
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../sw/changelog/conventions/#version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="../../sw/changelog/#2.0">2.0</a></span></span>
 <span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../sw/changelog/conventions/#plugin" title="External IP / Plugin"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5.5L18.5 3H17v6a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V3zm7 1v5h3V4zm-5 8h10a1 1 0 0 1 1 1v6H6v-6a1 1 0 0 1 1-1"/></svg></span></a></span></span>
 <span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../sw/changelog/conventions/#feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
-<p>The default clock is only 100MHz maximum. To improve the performance of Mach-V, I utilize the AMD Clocking Wizard IP core to synthesize a higher frequency clock from this base input.</p>
+<p>Given that the default system clock is capped at 100 MHz and limited to coarse power-of-two division, I utilized the AMD Clocking Wizard IP core. This allows me to synthesize a precise, higher-frequency clock from the base input to maximize Mach-V's performance.</p>
 <h3 id="generate-the-ip-core">Generate the IP Core<a class="headerlink" href="#generate-the-ip-core" title="Permanent link">&para;</a></h3>
 <p>To use the IP in Vivado, click the "IP Catalog" on the left flow navigator. Then, search for "clocking wizard". Click the only option available. And then configure the IP to use the following settings:</p>
 <ol>
@@ -1321,10 +1321,10 @@
 </li>
 </ol>
 <h3 id="use-the-ip-core">Use the IP Core<a class="headerlink" href="#use-the-ip-core" title="Permanent link">&para;</a></h3>
-<p>The clock generation logic must be instantiated in the top-level entity (TOP_Nexys.vhd).</p>
+<p>The clock generation logic must be instantiated in the top-level entity (<a href="https://github.com/mendax1234/Mach-V/blob/main/fpga/nexys4-ddr/wrapper/TOP_Nexys.vhd"><code>TOP_Nexys.vhd</code></a>).</p>
 <hr />
 <h4 id="component-declaration">Component Declaration<a class="headerlink" href="#component-declaration" title="Permanent link">&para;</a></h4>
-<p>Add the component declaration before the architecture begin keyword:</p>
+<p>Add the component declaration before the architecture <code>begin</code> keyword:</p>
 <div class="language-vhdl highlight"><span class="filename">Top_Nexys.vhd</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">----------------------------------------------------------------------------</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">-- Component: Clocking Wizard</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">----------------------------------------------------------------------------</span>
@@ -1407,7 +1407,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 21, 2025 07:56:30 UTC"><span class="timeago" datetime="2025-12-21T07:56:30+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 21, 2025 07:56:30 UTC">2025-12-21</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 22, 2025 01:52:49 UTC"><span class="timeago" datetime="2025-12-22T01:52:49+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 22, 2025 01:52:49 UTC">2025-12-22</span>
   </span>
 
     
@@ -1457,6 +1457,8 @@
             </div>
           
           
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
 <script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
@@ -1535,7 +1537,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
