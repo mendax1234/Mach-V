@@ -33,6 +33,7 @@ theme:
     - content.code.copy # Copy button on code blocks
     - content.action.edit # Enable the edit button defined in repo_url
     - content.tooltips # Tooltips for abbreviations
+    - content.tabs.link # Allow linking to specific tabs
 
   # 2.2 Color Palette (Auto/Light/Dark)
   palette:

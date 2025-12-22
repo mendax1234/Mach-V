@@ -1,13 +1,13 @@
 # PC Logic
 
-This section details the implementation of the Program Counter (PC) logic, covering `PC_Logic.v`, `ProgramCounter.v`, and the relevant multiplexing logic for the PC adder within `RV.v`.
+This section details the implementation of the Program Counter (PC) logic, covering [`PC_Logic.v`](https://github.com/mendax1234/Mach-V/blob/main/rtl/core/PC_Logic.v), [`ProgramCounter.v`](https://github.com/mendax1234/Mach-V/blob/main/rtl/core/ProgramCounter.v), and the relevant multiplexing logic for the PC adder within [`RV.v`](https://github.com/mendax1234/Mach-V/blob/main/rtl/core/RV.v#L136-L150).
 
-## Moving PC Logic to the Mem Stage
+## Move PC Logic to Mem Stage
 
 <!-- md:version 2.0 -->
 <!-- md:feature -->
 
-In Mach-V Version 2, the PC logic was relocated from the Execute (Exe) stage to the Memory (Mem) stage. This architectural change implies that branch and jump instructions are now committed in the Mem stage. This optimization significantly improved timing performance, allowing Mach-V to achieve a clock frequency of 115 MHz (utilizing the Clocking Wizard IP).
+In Mach-V Version 2, the PC logic was relocated from the Execute (Exe) stage to the Memory (Mem) stage. This architectural change implies that branch and jump instructions are now committed in the Mem stage. This optimization significantly improved timing performance, allowing Mach-V to achieve a clock frequency of 115 MHz (utilizing the [Clocking Wizard IP](./clock.md#clock-frequency-scaling)).
 
 To support this transition, the input logic for the PC Adder was redesigned as follows:
 
@@ -20,7 +20,7 @@ To support this transition, the input logic for the PC Adder was redesigned as f
 Following the PC adder updates, the `PC_Logic` module itself was simplified. The control signals `PCSE` and `ALUFlagsE` are propagated through the pipeline registers to become `PCSM` and `ALUFlagsM`. These are then fed into the PC Logic unit in the Mem stage, generating the final branch decision signal, `PCSrcM`.
 
 !!! info
-    The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found [in Mach-V Version 2's microarchitecture diagram](./index.md/#microarchitecture-overview).
+    The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found [in Mach-V Version 2's microarchitecture diagram](./index.md/#mach-v-version-2).
 
 !!! warning
     Simply delaying the control signals is insufficient for this architectural change. The [Hazard Unit](hazard-unit.md) must also be updated to handle the new branch resolution timing correctly.

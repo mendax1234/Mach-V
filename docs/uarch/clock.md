@@ -8,7 +8,7 @@ Consistent with the synchronous design conventions established in NUS CG3207, th
 <!-- md:plugin -->
 <!-- md:feature -->
 
-The default clock is only 100MHz maximum. To improve the performance of Mach-V, I utilize the AMD Clocking Wizard IP core to synthesize a higher frequency clock from this base input.
+Given that the default system clock is capped at 100 MHz and limited to coarse power-of-two division, I utilized the AMD Clocking Wizard IP core. This allows me to synthesize a precise, higher-frequency clock from the base input to maximize Mach-V's performance.
 
 ### Generate the IP Core
 
@@ -24,13 +24,13 @@ To use the IP in Vivado, click the "IP Catalog" on the left flow navigator. Then
 
 ### Use the IP Core
 
-The clock generation logic must be instantiated in the top-level entity (TOP_Nexys.vhd).
+The clock generation logic must be instantiated in the top-level entity ([`TOP_Nexys.vhd`](https://github.com/mendax1234/Mach-V/blob/main/fpga/nexys4-ddr/wrapper/TOP_Nexys.vhd)).
 
 ---
 
 #### Component Declaration
 
-Add the component declaration before the architecture begin keyword:
+Add the component declaration before the architecture `begin` keyword:
 
 ```vhdl title="Top_Nexys.vhd"
 ----------------------------------------------------------------------------

@@ -30,9 +30,6 @@ To support moving the PC Logic to the Memory (Mem) stage, significant modificati
 
 #### Priority Inversion: The "Lost Jump" Scenario
 
-<!-- md:version 2.0 -->
-<!-- md:feature -->
-
 **The problem**: When a branch/jump instruction reaches the Mem stage and resolves to branch/jump, the instruction immediately following it (the "ghost" instruction) is already in the Execute or Decode stage. If this ghost instruction triggers a Hazard Stall (e.g., a Load-Use stall or a Multi-Cycle Busy signal), a conflict arises.
 
 In the previous design, the PC update logic prioritized `StallF` over the new PC target (`PC_IN`). Because `StallF` was high (caused by the ghost instruction), the PC retained its current value, effectively ignoring the jump request. This caused the CPU to "fall through" and execute instructions that should have been skipped.
@@ -52,9 +49,6 @@ assign StallD = (lwStall | Busy) & ~PCSrcM[0];
 ---
 
 #### Spurious Execution in Mul/Div Operations
-
-<!-- md:version 2.0 -->
-<!-- md:feature -->
 
 **The Problem**: When a branch/jump instruction takes a branch/jump in the Mem stage, the subsequent instruction (e.g., a `mul`) may have already advanced to the Execute stage.
 
