@@ -2,9 +2,161 @@
 
 In this version of the Mach-V processor, the multiply and divide unit is incorporated into one file called `MCycle.v`. The whole idea of the `MCycle` module is that, while it is doing the computation, the `Busy` signal (output) will be triggered high and this signal will be used to stall the other relevant pipeline registers so that no new instructions are fetched until the multiplication/division is complete.
 
-This module is implemented using the mealy state machine.
-
 ## State Machine Control
+
+The `MCycle` module utilizes a finite state machine (FSM) to coordinate the multi-cycle execution of multiplication and division operations. This FSM ensures the `Busy` signal is asserted correctly during operation and de-asserted only when the result is valid.
+
+### FSM Architecture
+
+The controller is designed as a **Mealy Machine**.
+
+- The output is the `Busy` signal.
+- The inputs are `Start` and `done`.
+
+The FSM consists of two states, encoded using a single binary bit:
+
+- **IDLE ($S_0$):** The unit is waiting for a `Start` signal.
+- **COMPUTING ($S_1$):** The unit is executing the operation.
+
+---
+
+#### State Transition Diagram
+
+The following diagram illustrates the transitions and output logic. The arc labels follow the convention `Input / Output`.
+
+![MCycle State Transition Diagram](../assets/images/MCycle.svg)
+///caption
+MCycle State Transition Diagram
+///
+
+---
+
+#### State Transition & Output Table
+
+The FSM behavior is summarized in the combined transition and output table below.
+
+| Current State ($S$) | Input (`Start`) | Input (`done`) | Next State ($S'$) | Output (`Busy`) |
+| --- | --- | --- | --- | --- |
+| **IDLE** (0) | 0 | X | **IDLE** (0) | 0 |
+| **IDLE** (0) | 1 | X | **COMPUTING** (1) | 1 |
+| **COMPUTING** (1) | X | 0 | **COMPUTING** (1) | 1 |
+| **COMPUTING** (1) | X | 1 | **IDLE** (0) | 0 |
+
+---
+
+#### Next State Logic
+
+Based on the Verilog implementation, we can derive the boolean equation for the next state $S'$. We encode $S_{\text{IDLE}} = 0$ and $S_{\text{COMPUTING}} = 1$. The next state is high (COMPUTING) if we start a new operation ($Start=1$ in IDLE) or if we are currently computing and not yet finished ($done=0$ in COMPUTING).
+
+$$\begin{align}
+S' &= (\bar{S} \cdot Start) + (S \cdot \overline{done})
+\end{align}$$
+
+---
+
+#### Output Logic
+
+The `Busy` signal tracks the next state logic exactly in this implementation to ensure 0-cycle response latency.
+
+$$\begin{align}
+Busy &= S' \\
+Busy &= (\bar{S} \cdot Start) + (S \cdot \overline{done})
+\end{align}$$
+
+!!! note "Logic Synthesis vs. Manual Equations"
+    While I derived the boolean equations above to analyze the underlying logic (the **Microscopic View**), I do not hard-code these equations in Verilog. I still write the high-level case statement and the synthesis tool will convert the high-level code into the optimized logic gates based on these equations.
+
+### Verilog Implementation
+
+The code implements this FSM using a mixed 2-block style approach to separate the combinational logic from the sequential state updates.
+
+---
+
+#### Combinational Block
+
+This block handles both **Next State Logic** (`n_state`) and **Output Logic** (`Busy`) simultaneously and strictly follows the Mealy machine template introduced in NUS CG3207.
+
+```verilog
+always @(*) begin
+    // Default assignments to prevent latches
+    n_state = state;
+    Busy = 1'b0;
+
+    case (state)
+        IDLE: begin
+            if (Start) begin
+                n_state = COMPUTING;
+                Busy = 1'b1;  // Mealy output behavior
+            end
+        end
+        COMPUTING: begin
+            if (done) begin
+                n_state = IDLE;
+                Busy = 1'b0;
+            end else begin
+                n_state = COMPUTING;
+                Busy = 1'b1;
+            end
+        end
+    endcase
+end
+
+```
+
+---
+
+#### Sequential Block
+
+This block updates the state register on the rising edge of `CLK` .
+
+```verilog
+always @(posedge CLK) begin
+    if (RESET) state <= IDLE;
+    else       state <= n_state;
+end
+
+```
+
+### Interaction with Datapath
+
+The `MCycle` module is implemented as a **Finite State Machine with Datapath**. This design pattern separates the control logic (scheduling) from the data processing logic (execution), connected by specific handshake signals.
+
+---
+
+#### The Datapath
+
+The FSM acts as the manager. It has no knowledge of *how* the multiplication works; it simply tracks *status*. The Datapath performs the heavy lifting. It contains the "implicit state" of the operation, such as the cycle counter or the handshake status of the IP cores.
+
+1. **Initialization (In IDLE):** When `Start` is detected, the datapath captures operands and performs sign analysis (2's complement conversion).
+2. **Execution (In COMPUTING):**
+    - **Multiplication:** Increments a `count` register until it matches the IP latency.
+    - **Division:** Waits for the `div_out_valid` signal from the AXI-Stream IP core.
+3. **Completion Signal:** When the latency target is met or valid data is received, the Datapath asserts `done`, instructing the FSM to release the `Busy` signal.
+
+---
+
+#### Verilog Coding Style: Mixed Assignments
+
+`MCycle` employs a specific Verilog coding style where **blocking (`=`)** and **non-blocking (`<=`)** assignments are mixed within the sequential `always` block. This is done to perform complex data processing (like 2's complement conversion) in a single clock cycle without creating unnecessary pipeline stages.
+
+| Assignment Type | Target Variable Examples | Hardware Inference | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Non-Blocking (`<=`)** | `Result1`, `count`, `abs_op1` | **Physical Register** | Defines the sequential state updates. Updates happen at the end of the time step (clock edge). |
+| **Blocking (`=`)** | `q_temp`, `sign_op1`, `is_signed_op` | **Combinational Logic** | Acts as "temporary variables". The value is updated immediately, allowing subsequent lines to use the calculated value within the *same* clock cycle. |
+
+For example, during the division post processing period and in the `COMPUTING` state, we extract the quotient and correct its sign before storing it.
+
+```verilog
+// 1. Extract (Blocking: q_temp has valid data immediately)
+q_temp = div_dout[63:32];
+
+// 2. Modify (Blocking: uses the NEW q_temp value from line above)
+if (is_signed_op && (sign_op1 ^ sign_op2))
+    q_temp = ~q_temp + 1;
+
+// 3. Store (Non-Blocking: Latches the FINAL calculated value)
+Result1 <= q_temp;
+```
 
 ## Implementation Details
 
@@ -12,25 +164,25 @@ I have tried two implementations for the `MCycle` module:
 
 <div class="grid cards" markdown>
 
-- :material-integrated-circuit-chip: __Native Design__
+- :material-integrated-circuit-chip: __Custom RTL Design__
 
     ---
 
     Implement the multiply and divide unit by "hand-typped" Verilog code.
 
-    [:octicons-arrow-right-24: View Documentation](#native-design)
+    [:octicons-arrow-right-24: View Documentation](#custom-rtl-design)
 
-- :simple-circuitverse: __Using IP Cores__
+- :simple-circuitverse: __IP Core Integration__
 
     ---
 
     Use Xilinx IP cores to implement the multiply and divide unit.
 
-    [:octicons-arrow-right-24: View Documentation](#amd-ip-design)
+    [:octicons-arrow-right-24: View Documentation](#ip-core-integration)
 
 </div>
 
-### Native Design
+### Custom RTL Design
 
 <!-- md:version 1.0 -->
 <!-- md:experimental -->
@@ -206,7 +358,7 @@ DivSlice8 div_unit (
 !!! warning
     Using the unrolling techniue in the divider unit here will use a lot of hardware! iirc, the propagation delay is around 66ns for this design! Given that high propagation delay, it is impossible to use this design on Mach-V. So, I moved on to the next section, which is to use Xilinix IP core for the multiply and divide unit.
 
-### AMD IP Design
+### IP Core Integration
 
 <!-- md:version 1.0 -->
 <!-- md:plugin -->
