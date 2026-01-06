@@ -1,8 +1,6 @@
 # Mach-V
 
-**Mach-V** is an open-source RISC-V processor implementation targeting the Digilent **Nexys 4** FPGA. The project aims to evolve from a standard 5-stage pipeline into a Superscalar, Out-of-Order (OoO), and Multi-core architecture.
-
-Current status: **RV32IM Pipelined Core running CoreMark.**
+**Mach-V** is an open-source RISC-V processor implementation targeting the Digilent **Nexys 4 DDR** FPGA. The project aims to evolve from a standard 5-stage pipeline into a Superscalar, Out-of-Order (OoO), and Multi-core architecture.
 
 ## Roadmap
 
@@ -21,7 +19,7 @@ The project follows a staged evolution towards high-performance parallel process
 - [ ] **Phase 3: Advanced Architecture**
   - Dynamic Branch Prediction (BHT/BTB)
   - Superscalar Execution (Dual-issue)
-  - Out-of-Order Execution (The broadcasting diagram on Lec 06)
+  - Out-of-Order Execution (The broadcasting diagram on CG3207 Lec 06)
 - [ ] **Phase 4: Multicore and Multithread System**
   - Simultaneous Multithreading (SMT)
   - Multi-Core Implementation
@@ -36,37 +34,14 @@ Mach-V/
 │   ├── core/         # Pipeline stages, ALU, Hazards
 │   └── peripherals/  # UART, SPI, Timers
 ├── fpga/             # FPGA Implementation
-│   └── nexys4/       # Constraints and Top-Level Wrappers for Nexys 4
+│   └── nexys4-ddr/       # Constraints and Top-Level Wrappers for Nexys 4 DDR
 ├── sw/               # CoreMark, OLED Demo, Benchmarks
 └── sim/              # Testbenches and memory initialization files
 ```
 
 ## Quick Start
 
-### Prerequisites
-
-- **Hardware:** Digilent Nexys 4 / Nexys 4 DDR (Artix-7 FPGA)
-- **Software:** Xilinx Vivado 2025.2
-- **Toolchain:** RISC-V GNU Toolchain (`riscv32-unknown-elf-gcc`)
-
-### Building Software
-
-To compile the CoreMark benchmark and generate memory initialization files:
-
-```bash
-cd sw/apps/coremark
-make
-# Output: data.hex & code.hex 
-# (Change name to DMEM.mem and IROM.mem, then load into Vivado Block RAM)
-```
-
-### FPGA Deployment
-
-1. Open Vivado and create a new project.
-2. Add all files from `rtl/` and `fpga/nexys4/wrapper/`.
-3. Add constraints from `fpga/nexys4/constraints/`.
-4. Add the generated `.mem` file as sources for Block RAM initialization.
-5. Generate Bitstream and Program Device.
+The guide can be found in the [Mach-V Document](https://mendax1234.github.io/Mach-V/sw/).
 
 ## License
 
