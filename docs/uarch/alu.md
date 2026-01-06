@@ -17,5 +17,5 @@ To reduce the critical path, Mach-V computes the Z flag directly from the 33-bit
 assign Z = (Sum[31:0] == 32'b0);
 ```
 
-!!! Failure "Timing Closure"
+!!! Failure
     This optimization is mandatory for Mach-V to achieve timing closure at 115 MHz. Reverting to the standard post-mux Zero generation will cause setup time violations on the Vivado tool.

@@ -1,3 +1,21 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   pipeline_W
+-- Project Name:  Mach-V
+-- Description:   MEM/WB Pipeline Register. 
+--                Latches memory read data and ALU results from the Memory stage 
+--                to be written back to registers in the Writeback stage.
+-- 
+-- Credits:       First version created by Hieu.
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module pipeline_W (

@@ -1,3 +1,21 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   MCycle (IP Version)
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Multi-Cycle Unit implementing multiplication and division.
+--                Uses Xilinx IP cores (mult_gen_0 and div_gen_0) for operations.
+-- 
+-- Credits:       Based on the CG3207 project (Prof. Rajesh Panicker).
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module MCycle #(

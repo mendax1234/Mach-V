@@ -1,3 +1,23 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   Hazard
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Hazard Handling Unit for Mach-V RISC-V Processor.
+--                Detects data hazards (Load-Use) and control hazards (Branches),
+--                generating the necessary Stall, Flush, and Forwarding signals.
+-- 
+-- Credits:       First version created by Hieu.
+--                Hazard handling concepts and architecture taught in CG3207.
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module Hazard (

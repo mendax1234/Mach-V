@@ -1,3 +1,22 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   ProgramCounter
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Program Counter Register.
+--                Holds the current instruction address. Updates on rising clock edge
+--                unless stalled. Resets to PC_INIT.
+-- 
+-- Credits:       Based on the CG3207 project (Prof. Rajesh Panicker).
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module ProgramCounter #(

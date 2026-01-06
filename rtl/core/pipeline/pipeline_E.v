@@ -1,3 +1,21 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   pipeline_E
+-- Project Name:  Mach-V
+-- Description:   ID/EX Pipeline Register. 
+--                Latches control and data signals from the Decode stage to be 
+--                used in the Execute stage. Handles flushing and stalling.
+-- 
+-- Credits:       First version created by Hieu.
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module pipeline_E (

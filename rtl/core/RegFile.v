@@ -1,3 +1,22 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   RegFile
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Register File (32 x 32-bit).
+--                2 Read Ports (Combinational/Async), 1 Write Port (Synchronous).
+--                Register 0 is hardwired to 0.
+-- 
+-- Credits:       Based on the CG3207 project (Prof. Rajesh Panicker).
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module RegFile (

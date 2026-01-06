@@ -1,3 +1,21 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   ALU
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Arithmetic Logic Unit (ALU).
+--                Performs arithmetic, logic, comparison, and shift operations.
+-- 
+-- Credits:       Based on the CG3207 project (Prof. Rajesh Panicker).
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module ALU (

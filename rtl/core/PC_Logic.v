@@ -1,3 +1,22 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   PC_Logic
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Program Counter Control Logic.
+--                Determines the next PC source (Sequential, Branch, or Jump)
+--                based on branch conditions (ALUFlags) and instruction type.
+-- 
+-- Credits:       Based on the CG3207 project (Prof. Rajesh Panicker).
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module PC_Logic (  // This is a combinational module, unlike ARM. See the note below.

@@ -1,3 +1,22 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   Decoder
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Main Control Decoder for RISC-V instructions.
+--                Generates control signals for ALU, Memory, Branching, and 
+--                Multi-Cycle operations based on Opcode and Funct3/7.
+-- 
+-- Credits:       Based on the CG3207 project (Prof. Rajesh Panicker).
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module Decoder (

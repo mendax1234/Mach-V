@@ -1,6 +1,6 @@
 # Multiply & Divide Unit
 
-In this version of the Mach-V processor, the multiply and divide unit is incorporated into one file called `MCycle.v`. The whole idea of the `MCycle` module is that, while it is doing the computation, the `Busy` signal (output) will be triggered high and this signal will be used to stall the other relevant pipeline registers so that no new instructions are fetched until the multiplication/division is complete.
+In the first two versions of the Mach-V processor, the multiply and divide unit is incorporated into one file called `MCycle.v`. The whole idea of the `MCycle` module is that, while it is doing the computation, the `Busy` signal (output) will be triggered high and this signal will be used to stall the other relevant pipeline registers so that no new instructions are fetched until the multiplication/division is complete.
 
 ## State Machine Control
 
@@ -22,7 +22,7 @@ The FSM consists of two states, encoded using a single binary bit:
 
 #### State Transition Diagram
 
-The following diagram illustrates the transitions and output logic. The arc labels follow the convention `Input / Output`.
+The following diagram illustrates the transitions and output logic. The arc labels follow the convention "`Input / Output`".
 
 ![MCycle State Transition Diagram](../assets/images/MCycle.svg)
 ///caption
@@ -119,7 +119,7 @@ end
 
 ### Interaction with Datapath
 
-The `MCycle` module is implemented as a **Finite State Machine with Datapath**. This design pattern separates the control logic (scheduling) from the data processing logic (execution), connected by specific handshake signals.
+The `MCycle` module is implemented as a **Finite State Machine with Datapath**. This design pattern separates the control logic (scheduling) from the data processing logic (execution), connected by specific handshake signals and it is implemented in one sequential `always` block.
 
 ---
 
@@ -137,7 +137,7 @@ The FSM acts as the manager. It has no knowledge of *how* the multiplication wor
 
 #### Verilog Coding Style: Mixed Assignments
 
-`MCycle` employs a specific Verilog coding style where **blocking (`=`)** and **non-blocking (`<=`)** assignments are mixed within the sequential `always` block. This is done to perform complex data processing (like 2's complement conversion) in a single clock cycle without creating unnecessary pipeline stages.
+`MCycle` employs a specific Verilog coding style where **blocking (`=`)** and **non-blocking (`<=`)** assignments are mixed within this sequential `always` block. This is done to perform complex data processing (like 2's complement conversion) in a single clock cycle without creating unnecessary pipeline stages.
 
 | Assignment Type | Target Variable Examples | Hardware Inference | Purpose |
 | :--- | :--- | :--- | :--- |

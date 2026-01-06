@@ -1,3 +1,23 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   RV
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Top-level RISC-V Processor Core.
+--                Instantiates and connects the 5 pipeline stages (Fetch, Decode, 
+--                Execute, Memory, Writeback), Hazard Unit, and Forwarding logic.
+-- 
+-- Credits:       First version collaborated with Hieu and Max.
+--                Architecture based on the CG3207 project (Prof. Rajesh Panicker).
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module RV #(

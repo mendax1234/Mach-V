@@ -1,3 +1,21 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   pipeline_M
+-- Project Name:  Mach-V
+-- Description:   EX/MEM Pipeline Register. 
+--                Latches calculated results and control signals from the Execute 
+--                stage to be used in the Memory stage.
+-- 
+-- Credits:       First version created by Hieu.
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module pipeline_M (

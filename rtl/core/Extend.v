@@ -1,3 +1,22 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   Extend
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Immediate Generator (Extender).
+--                Extracts and sign-extends immediates from instruction fields
+--                for I, S, B, U, and J type instructions.
+-- 
+-- Credits:       Based on the CG3207 project (Prof. Rajesh Panicker).
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module Extend (

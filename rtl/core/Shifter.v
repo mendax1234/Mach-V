@@ -1,35 +1,23 @@
-`timescale 1ns / 1ps
 /*
 ----------------------------------------------------------------------------------
--- Company: NUS	
--- Engineer: (c) Shahzor Ahmad and Rajesh Panicker  
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
 -- 
--- Create Date: 09/22/2020 06:49:10 PM
--- Module Name: Shifter
--- Project Name: CG3207 Project
--- Target Devices: Nexys 4 / Basys 3
--- Tool Versions: Vivado 2019.2
--- Description: RISC-V Processor Shifter Module
+-- Create Date:   2026-01-06
+-- Module Name:   Shifter
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Barrel Shifter for RISC-V.
+--                Performs Shift Left Logical (SLL), Shift Right Logical (SRL), 
+--                and Shift Right Arithmetic (SRA).
 -- 
--- Dependencies: NIL
+-- Credits:       Based on the CG3207 project (Prof. Rajesh Panicker).
 -- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments: Interface and implementation can be modified.
--- 
-----------------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------
---	License terms :
---	You are free to use this code as long as you
---		(i) DO NOT post it on any public repository;
---		(ii) use it only for educational purposes;
---		(iii) accept the responsibility to ensure that your implementation does not violate anyone's intellectual property.
---		(iv) accept that the program is provided "as is" without warranty of any kind or assurance regarding its suitability for any particular purpose;
---		(v) send an email to rajesh<dot>panicker<at>ieee.org briefly mentioning its use (except when used for the course CG3207 at the National University of Singapore);
---		(vi) retain this notice in this file as well as any files derived from this.
+-- License:       MIT License
 ----------------------------------------------------------------------------------
 */
+
+`timescale 1ns / 1ps
 
 module Shifter (
     input  [ 1:0] Sh,

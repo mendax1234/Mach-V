@@ -1,3 +1,20 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-01-06
+-- Module Name:   LoadStoreUnit
+-- Project Name:  Mach-V
+-- Target Devices: Nexys 4 DDR
+-- Description:   Load/Store Unit.
+--                Handles Byte/Half/Word alignment for Memory Reads (Loads) and 
+--                Memory Writes (Stores). Generates byte write masks.
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module LoadStoreUnit (
