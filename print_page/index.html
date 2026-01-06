@@ -1952,7 +1952,7 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 <hr />
 <h4 id="uarch-mul-div-unit-generate-the-ip-core">Generate the IP Core<a class="headerlink" href="#uarch-mul-div-unit-generate-the-ip-core" title="Permanent link">&para;</a></h4>
 <p>The <a href="https://www.amd.com/en/products/adaptive-socs-and-fpgas/intellectual-property/multiplier.html">multiplier IP core</a> comes from AMD and can be used in Vivado directly.</p>
-<p>To use the IP in Vivado, click the "IP Catalog" on the left flow navigator. Then, search for "multiplier". Click the "Multiplier" (not "Complex Multiplier"). And then configure the IP to use the following settings:</p>
+<p>To use the IP in Vivado, click the "IP Catalog" on the left "Flow Navigator". Then, search for "multiplier". Click the "Multiplier" (not "Complex Multiplier"). And then configure the IP to use the following settings:</p>
 <ol>
 <li>In the "Basic" tab:<ul>
 <li>Set Multiplier Type to "Parallel Multiplier"</li>
@@ -2014,7 +2014,6 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 </span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#uarch-mul-div-unit-__codelineno-11-18"></a><span class="p">);</span>
 </span></code></pre></div></section><section class="print-page" id="uarch-lsu" heading-number="2.6"><h1 id="uarch-lsu-load-store-unit">Load &amp; Store Unit<a class="headerlink" href="#uarch-lsu-load-store-unit" title="Permanent link">&para;</a></h1>
 <p>Unlike the baseline design from NUS CG3207, Mach-V extends memory support beyond full-word operations. The Load Store Unit (LSU) module handles byte (<code>lb</code>/<code>lbu</code>/<code>sb</code>) and half-word (<code>lh</code>/<code>lhu</code>/<code>sh</code>) transactions, ensuring correct data alignment and sign extension.</p>
-<p>The LSU will take 5 inputs and produce 3 outputs:</p>
 <h2 id="uarch-lsu-interface-definition">Interface Definition<a class="headerlink" href="#uarch-lsu-interface-definition" title="Permanent link">&para;</a></h2>
 <p>The LSU locates in the Mem stage. It processes raw addresses and data to align them with the memory's 32-bit word boundaries.</p>
 <table>
@@ -2145,18 +2144,18 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 </ol>
 <h2 id="uarch-hazard-unit-forwarding-logic">Forwarding Logic<a class="headerlink" href="#uarch-hazard-unit-forwarding-logic" title="Permanent link">&para;</a></h2>
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-1.0">1.0</a></span></span></p>
-<p>The stall &amp; flush logic mainly deals with the load-use hazard and control hazard. The version that Mach-V Version 1 uses are also strictly following the rules introduced in NUS CG3207 or in Harris &amp; Harris DDCA.</p>
-<p>Specific implementation details can be found in the source code Hazard.v and strictly follow the datapath connections shown in the microarchitecture diagram.</p>
+<p>The stall &amp; flush logic mainly deals with the load-use hazard and control hazard. The version that Mach-V Version 1 uses also strictly follows the rules introduced in NUS CG3207 or in Harris &amp; Harris DDCA.</p>
+<p>Specific implementation details can be found in the source code <code>Hazard.v</code> and it strictly follows the datapath connections shown in the <a href="#uarch-mach-v-version-2">microarchitecture diagram</a>.</p>
 <h2 id="uarch-hazard-unit-stall-flush-logic">Stall &amp; Flush Logic<a class="headerlink" href="#uarch-hazard-unit-stall-flush-logic" title="Permanent link">&para;</a></h2>
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-1.0">1.0</a></span></span></p>
 <p>The base implementation of the Stall &amp; Flush logic handles standard Load-Use hazards and Control hazards, also following NUS CG3207 and DDCA (Harris &amp; Harris) model.</p>
 <h3 id="uarch-hazard-unit-modifications-for-mem-stage-branching">Modifications for Mem Stage Branching<a class="headerlink" href="#uarch-hazard-unit-modifications-for-mem-stage-branching" title="Permanent link">&para;</a></h3>
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
 <span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
-<p>To support moving the PC Logic to the Memory (Mem) stage, significant modifications were required to the interaction between the Hazard Unit, the Stall signals, and the Multi-Cycle Unit.</p>
+<p>To support moving the PC Logic to the Memory (Mem) stage, significant modifications were required to complete the interaction between the Hazard Unit, the Stall signals, and the Multi-Cycle Unit.</p>
 <hr />
 <h4 id="uarch-hazard-unit-priority-inversion-the-lost-jump-scenario">Priority Inversion: The "Lost Jump" Scenario<a class="headerlink" href="#uarch-hazard-unit-priority-inversion-the-lost-jump-scenario" title="Permanent link">&para;</a></h4>
-<p><strong>The problem</strong>: When a branch/jump instruction reaches the Mem stage and resolves to branch/jump, the instruction immediately following it (the "ghost" instruction) is already in the Execute or Decode stage. If this ghost instruction triggers a Hazard Stall (e.g., a Load-Use stall or a Multi-Cycle Busy signal), a conflict arises.</p>
+<p><strong>The Problem</strong>: When a branch/jump instruction reaches the Mem stage and resolves to branch/jump, the instruction immediately following it (the "ghost" instruction) is already in the Execute or Decode stage. If this ghost instruction triggers a Hazard Stall (e.g., a Load-Use stall or a Multi-Cycle Busy signal), a conflict arises.</p>
 <p>In the previous design, the PC update logic prioritized <code>StallF</code> over the new PC target (<code>PC_IN</code>). Because <code>StallF</code> was high (caused by the ghost instruction), the PC retained its current value, effectively ignoring the jump request. This caused the CPU to "fall through" and execute instructions that should have been skipped.</p>
 <p><strong>The Solution</strong>: Control flow changes must be prioritized over stall signals. I modified the logic to force stall signals to <code>0</code> whenever a branch or jump is confirmed (<code>PCSrcM</code> is active). This ensures that if the processor is jumping, hazards caused by instructions in the flush shadow are ignored.</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#uarch-hazard-unit-__codelineno-0-1"></a><span class="c1">// Before: Stall logic only looked at hazards</span>
@@ -2171,7 +2170,7 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 <h4 id="uarch-hazard-unit-spurious-execution-in-muldiv-operations">Spurious Execution in Mul/Div Operations<a class="headerlink" href="#uarch-hazard-unit-spurious-execution-in-muldiv-operations" title="Permanent link">&para;</a></h4>
 <p><strong>The Problem</strong>: When a branch/jump instruction takes a branch/jump in the Mem stage, the subsequent instruction (e.g., a <code>mul</code>) may have already advanced to the Execute stage.</p>
 <p>Although the Hazard Unit asserts <code>FlushE</code> to kill the <code>mul</code> for the next clock cycle, the MCycle Unit is combinational logic that reacts to its inputs instantly. It sees the <code>Start</code> signal immediately in the current cycle, begins the calculation, and raises the <code>Busy</code> flag. This stalls the entire processor to perform a "fake" multiplication that is about to be flushed.</p>
-<p>The Solution: I modified the instantiation of the MCycle Unit in <code>RV.v</code> to logically "gate" the start signal. If the Execute stage is currently being flushed (<code>FlushE</code> is high), the <code>.Start</code> input is forced to <code>0</code>. This prevents the unit from activating on instructions that are being discarded.</p>
+<p><strong>The Solution</strong>: I modified the instantiation of the MCycle Unit in <code>RV.v</code> to logically "gate" the start signal. If the Execute stage is currently being flushed (<code>FlushE</code> is high), the <code>.Start</code> input is forced to <code>0</code>. This prevents the unit from activating on instructions that are being discarded.</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#uarch-hazard-unit-__codelineno-1-1"></a><span class="n">MCycle</span><span class="w"> </span><span class="p">#(</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#uarch-hazard-unit-__codelineno-1-2"></a><span class="w">    </span><span class="p">.</span><span class="n">width</span><span class="p">(</span><span class="mh">32</span><span class="p">)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#uarch-hazard-unit-__codelineno-1-3"></a><span class="p">)</span><span class="w"> </span><span class="n">MCycle1</span><span class="w"> </span><span class="p">(</span>
@@ -2190,17 +2189,17 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
                         <h1>Simulation<a class='headerlink' href='#section-3' title='Permanent link'></a>
                         </h1>
                     <section class="print-page" id="sim" heading-number="3.1"><h1 id="sim-simulation">Simulation<a class="headerlink" href="#sim-simulation" title="Permanent link">&para;</a></h1>
-<p>This section outlines the verification strategy for the Mach-V processor.</p>
+<p>This section outlines the verification strategy used for the Mach-V processor.</p>
 <h2 id="sim-simulation-directory-structure">Simulation Directory Structure<a class="headerlink" href="#sim-simulation-directory-structure" title="Permanent link">&para;</a></h2>
 <p>The <code>sim/</code> directory contains all testbench and verification artifacts:</p>
 <ul>
-<li><strong><code>sim/tb/</code></strong>: Verilog testbenches mapped to specific <a href="#sw">software applications</a>.</li>
+<li><strong><code>sim/tb/</code></strong>: Verilog testbenches mapped to a specific <a href="#sw">software applications</a>.</li>
 <li><strong><code>sim/mem/</code></strong>: Pre-compiled memory files (in hexadecimal format) used to initialize IROM and DMEM for simulation.</li>
 </ul>
 <h2 id="sim-toolchain-setup">Toolchain Setup<a class="headerlink" href="#sim-toolchain-setup" title="Permanent link">&para;</a></h2>
 <p>The primary tool used for simulation is <strong><a href="https://www.xilinx.com/support/download.html">Vivado 2025.2</a></strong>. For installation instructions, refer to the <a href="https://nus-cg3207.github.io/labs/getting_started/vivado_install_guide/">NUS CG3207 Lab Guide</a> or consult the official Xilinx documentation.</p>
 <h2 id="sim-simulation-guide">Simulation Guide<a class="headerlink" href="#sim-simulation-guide" title="Permanent link">&para;</a></h2>
-<p>Simulations for Mach-V are performed by targeting the Wrapper.v module as the Device Under Test (DUT). Acting effectively as a virtual motherboard, this module connects the processor core to peripherals like UART and memory.</p>
+<p>Simulations for Mach-V are performed by targeting the <code>Wrapper.v</code> module as the Device Under Test (DUT). Acting effectively as a virtual motherboard, this module connects the processor core to peripherals like UART and memory.</p>
 <h3 id="sim-debugging-the-pipelined-processor">Debugging the Pipelined Processor<a class="headerlink" href="#sim-debugging-the-pipelined-processor" title="Permanent link">&para;</a></h3>
 <p>Personally speaking, debugging a pipelined microarchitecture can be tedious due to instructions overlapping across different stages. To simplify this process, I recommend <strong>propagating the current PC value through every stage of the pipeline</strong>.</p>
 <p>By latching <code>PCF</code> into successive pipeline registers (e.g., <code>PCD</code>, <code>PCE</code>, <code>PCM</code>, <code>PCW</code>), you can easily identify exactly which instruction is occupying a specific stage at any given cycle.</p>
