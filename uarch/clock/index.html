@@ -1306,7 +1306,7 @@
 <span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../sw/changelog/conventions/#feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
 <p>Given that the default system clock is capped at 100 MHz and limited to coarse power-of-two division, I utilized the AMD Clocking Wizard IP core. This allows me to synthesize a precise, higher-frequency clock from the base input to maximize Mach-V's performance.</p>
 <h3 id="generate-the-ip-core">Generate the IP Core<a class="headerlink" href="#generate-the-ip-core" title="Permanent link">&para;</a></h3>
-<p>To use the IP in Vivado, click the "IP Catalog" on the left flow navigator. Then, search for "clocking wizard". Click the only option available. And then configure the IP to use the following settings:</p>
+<p>To use the IP in Vivado, click the "IP Catalog" on the left "Flow Navigator". Then, search for "clocking wizard". Click the only option available. And then configure the IP to use the following settings:</p>
 <ol>
 <li>In the "Clocking Options" tab:<ul>
 <li>Make sure the primary input clock is <code>clk_in1</code> with a frequency of <code>100 MHz</code>.</li>
@@ -1321,46 +1321,81 @@
 </li>
 </ol>
 <h3 id="use-the-ip-core">Use the IP Core<a class="headerlink" href="#use-the-ip-core" title="Permanent link">&para;</a></h3>
-<p>The clock generation logic must be instantiated in the top-level entity (<a href="https://github.com/mendax1234/Mach-V/blob/main/fpga/nexys4-ddr/wrapper/TOP_Nexys.vhd"><code>TOP_Nexys.vhd</code></a>).</p>
+<p>The clock generation logic must be instantiated in the top-level entity (<a href="https://github.com/mendax1234/Mach-V/blob/main/fpga/nexys4-ddr/wrapper/MachV_Top.v"><code>MachV_Top.v</code></a>).</p>
 <hr />
 <h4 id="component-declaration">Component Declaration<a class="headerlink" href="#component-declaration" title="Permanent link">&para;</a></h4>
-<p>Add the component declaration before the architecture <code>begin</code> keyword:</p>
-<div class="language-vhdl highlight"><span class="filename">Top_Nexys.vhd</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">----------------------------------------------------------------------------</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">-- Component: Clocking Wizard</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">----------------------------------------------------------------------------</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">component</span><span class="w"> </span><span class="nc">clk_wiz_0</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">port</span><span class="w"> </span><span class="p">(</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="c1">-- Clock in ports</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="n">clk_in1</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="k">in</span><span class="w">  </span><span class="kt">std_logic</span><span class="p">;</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="c1">-- Clock out ports</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="n">clk_out1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="c1">-- Status and control signals</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="n">reset</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">in</span><span class="w">  </span><span class="kt">std_logic</span><span class="p">;</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="n">locked</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="kt">std_logic</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">);</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">end</span><span class="w"> </span><span class="k">component</span><span class="p">;</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="c1">----------------------------------------------------------------------------</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c1">-- Signals: Clock &amp; Reset Management</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="c1">----------------------------------------------------------------------------</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="k">signal</span><span class="w"> </span><span class="n">clk_sys</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span><span class="w"> </span><span class="c1">-- The synthesized high-speed system clock</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="k">signal</span><span class="w"> </span><span class="n">clk_locked</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span><span class="w"> </span><span class="c1">-- High (&#39;1&#39;) when the clock is stable</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="k">signal</span><span class="w"> </span><span class="n">sys_reset</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span><span class="w"> </span><span class="c1">-- Combined effective system reset</span>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="verilog" name="__tabbed_1" type="radio" /><input id="vhdl" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="verilog">Verilog</label><label for="vhdl">VHDL</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-verilog highlight"><span class="filename">MachV_Top.v</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// =========================================================================</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// 1. System Signals</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// =========================================================================</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kt">wire</span><span class="w"> </span><span class="n">clk_sys</span><span class="p">;</span><span class="w">       </span><span class="c1">// The synthesized high-speed system clock</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kt">wire</span><span class="w"> </span><span class="n">clk_locked</span><span class="p">;</span><span class="w">    </span><span class="c1">// High (&#39;1&#39;) when the clock is stable</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kt">wire</span><span class="w"> </span><span class="n">sys_reset</span><span class="p">;</span><span class="w">     </span><span class="c1">// Raw reset signal</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kt">wire</span><span class="w"> </span><span class="n">reset_eff</span><span class="p">;</span><span class="w">     </span><span class="c1">// Effective Reset (Safety Guard)</span>
 </span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Add the component declaration before the architecture <code>begin</code> keyword:</p>
+<div class="language-vhdl highlight"><span class="filename">Top_Nexys.vhd</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">----------------------------------------------------------------------------</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">-- Component: Clocking Wizard</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">----------------------------------------------------------------------------</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">component</span><span class="w"> </span><span class="nc">clk_wiz_0</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">port</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="c1">-- Clock in ports</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="n">clk_in1</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="k">in</span><span class="w">  </span><span class="kt">std_logic</span><span class="p">;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="c1">-- Clock out ports</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="n">clk_out1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="c1">-- Status and control signals</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="n">reset</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">in</span><span class="w">  </span><span class="kt">std_logic</span><span class="p">;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="n">locked</span><span class="w">   </span><span class="o">:</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="kt">std_logic</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">);</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="k">end</span><span class="w"> </span><span class="k">component</span><span class="p">;</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="c1">----------------------------------------------------------------------------</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1">-- Signals: Clock &amp; Reset Management</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1">----------------------------------------------------------------------------</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="k">signal</span><span class="w"> </span><span class="n">clk_sys</span><span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span><span class="w"> </span><span class="c1">-- The synthesized high-speed system clock</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="k">signal</span><span class="w"> </span><span class="n">clk_locked</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span><span class="w"> </span><span class="c1">-- High (&#39;1&#39;) when the clock is stable</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="k">signal</span><span class="w"> </span><span class="n">sys_reset</span><span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="kt">std_logic</span><span class="p">;</span><span class="w"> </span><span class="c1">-- Combined effective system reset</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
 <hr />
 <h4 id="instantiation">Instantiation<a class="headerlink" href="#instantiation" title="Permanent link">&para;</a></h4>
-<p>Instantiate the IP core within the architecture body, mapping the board's raw clock to the input:</p>
-<div class="language-vhdl highlight"><span class="filename">Top_Nexys.vhd</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">----------------------------------------------------------------</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1">-- Instance: Clocking Wizard</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">----------------------------------------------------------------</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">clk_wiz_inst</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">clk_wiz_0</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">port</span><span class="w"> </span><span class="k">map</span><span class="w"> </span><span class="p">(</span><span class="w"> </span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="n">clk_in1</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">CLK_undiv</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Raw 100MHz from physical board pin</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="n">clk_out1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">clk_sys</span><span class="p">,</span><span class="w">    </span><span class="c1">-- Synthesized Fast Clock</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="n">reset</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">RESET</span><span class="p">,</span><span class="w">      </span><span class="c1">-- Raw button reset (Active High)</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="n">locked</span><span class="w">   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">clk_locked</span><span class="w">  </span><span class="c1">-- Status signal</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">);</span>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="verilog_1" name="__tabbed_2" type="radio" /><input id="vhdl_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="verilog_1">Verilog</label><label for="vhdl_1">VHDL</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-verilog highlight"><span class="filename">MachV_Top.v</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// =========================================================================</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1">// 2. Clocking Wizard</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1">// =========================================================================</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1">// CRITICAL: You MUST configure &#39;clk_wiz_0&#39; in Vivado to output 115 MHz!</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">clk_wiz_0</span><span class="w"> </span><span class="n">clk_gen</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p">.</span><span class="n">clk_in1</span><span class="w"> </span><span class="p">(</span><span class="n">CLK_undiv</span><span class="p">),</span><span class="w"> </span><span class="c1">// Raw 100MHz from physical board pin</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="p">.</span><span class="n">clk_out1</span><span class="p">(</span><span class="n">clk_sys</span><span class="p">),</span><span class="w">   </span><span class="c1">// Synthesized Fast Clock</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="p">.</span><span class="n">reset</span><span class="w">   </span><span class="p">(</span><span class="n">RESET</span><span class="p">),</span><span class="w">     </span><span class="c1">// Raw button reset (Active High)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="p">.</span><span class="n">locked</span><span class="w">  </span><span class="p">(</span><span class="n">clk_locked</span><span class="p">)</span><span class="w"> </span><span class="c1">// Status signal</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">);</span>
 </span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Instantiate the IP core within the architecture body, mapping the board's raw clock to the input:</p>
+<div class="language-vhdl highlight"><span class="filename">Top_Nexys.vhd</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">----------------------------------------------------------------</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1">-- Instance: Clocking Wizard</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1">----------------------------------------------------------------</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">clk_wiz_inst</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">clk_wiz_0</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">port</span><span class="w"> </span><span class="k">map</span><span class="w"> </span><span class="p">(</span><span class="w"> </span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="n">clk_in1</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">CLK_undiv</span><span class="p">,</span><span class="w">  </span><span class="c1">-- Raw 100MHz from physical board pin</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="n">clk_out1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">clk_sys</span><span class="p">,</span><span class="w">    </span><span class="c1">-- Synthesized Fast Clock</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="n">reset</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">RESET</span><span class="p">,</span><span class="w">      </span><span class="c1">-- Raw button reset (Active High)</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="n">locked</span><span class="w">   </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">clk_locked</span><span class="w">  </span><span class="c1">-- Status signal</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">);</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
 <hr />
 <h4 id="system-reset-logic">System Reset Logic<a class="headerlink" href="#system-reset-logic" title="Permanent link">&para;</a></h4>
 <p>It is critical to hold the processor in reset until the clock signal is stable. The <code>locked</code> signal from the Clocking Wizard indicates when the output frequency is stable.</p>
@@ -1369,21 +1404,55 @@
 <li>The physical reset button is pressed (<code>RESET_INT</code> / <code>RESET_EXT</code>).</li>
 <li>The clock is not yet locked (not <code>clk_locked</code>).</li>
 </ol>
-<div class="language-vhdl highlight"><span class="filename">Top_Nexys.vhd</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">-- Original Logic (Raw Button only)</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1">-- RESET_EFF &lt;= RESET_INT or RESET_EXT;</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1">-- New Logic (Button + Clock Stability Guard)</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">RESET_EFF</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">RESET_INT</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">RESET_EXT</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="k">not</span><span class="w"> </span><span class="n">clk_locked</span><span class="p">);</span>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="verilog_2" name="__tabbed_3" type="radio" /><input id="vhdl_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="verilog_2">Verilog</label><label for="vhdl_2">VHDL</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-verilog highlight"><span class="filename">MachV_Top.v</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// Reset Logic</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">assign</span><span class="w"> </span><span class="n">sys_reset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RESET</span><span class="p">;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1">// Effective Reset: Asserted if button is pressed OR clock is not yet stable</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">assign</span><span class="w"> </span><span class="n">reset_eff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sys_reset</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">clk_locked</span><span class="p">);</span>
 </span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-vhdl highlight"><span class="filename">Top_Nexys.vhd</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">-- Original Logic (Raw Button only)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1">-- RESET_EFF &lt;= RESET_INT or RESET_EXT;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1">-- New Logic (Button + Clock Stability Guard)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">RESET_EFF</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">RESET_INT</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">RESET_EXT</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="p">(</span><span class="k">not</span><span class="w"> </span><span class="n">clk_locked</span><span class="p">);</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
 <hr />
 <h4 id="frequency-constant-update">Frequency Constant Update<a class="headerlink" href="#frequency-constant-update" title="Permanent link">&para;</a></h4>
 <p>Finally, ensure the software-visible frequency constant matches the new hardware configuration. This is often used for UART baud rate calculations or timer peripherals.</p>
-<div class="language-vhdl highlight"><span class="filename">Top_Nexys.vhd</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">-- Update this value to match the Clocking Wizard output</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">constant</span><span class="w"> </span><span class="n">CLOCK_FREQUENCY</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">positive</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">115000000</span><span class="p">;</span>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="verilog_3" name="__tabbed_4" type="radio" /><input id="vhdl_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="verilog_3">Verilog</label><label for="vhdl_3">VHDL</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-verilog highlight"><span class="filename">MachV_Top.v</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">UART</span><span class="w"> </span><span class="p">#(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="p">.</span><span class="n">BAUD_RATE</span><span class="w">      </span><span class="p">(</span><span class="mh">115200</span><span class="p">),</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="p">.</span><span class="n">CLOCK_FREQUENCY</span><span class="p">(</span><span class="mh">115000000</span><span class="p">)</span><span class="w">  </span><span class="c1">// CRITICAL: Matches clk_wiz_0 output</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">)</span><span class="w"> </span><span class="n">uart_inst</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="p">.</span><span class="n">CLOCK</span><span class="w"> </span><span class="p">(</span><span class="n">clk_sys</span><span class="p">),</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="c1">// ...</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="p">);</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code>CLOCK_FREQUENCY</code> constant is not automatically linked to the IP Core settings. If you reconfigure the Clocking Wizard to a different frequency (e.g., changing from 120MHz to 150MHz), you <strong>must manually update</strong> the <code>CLOCK_FREQUENCY</code> constant in <code>MachV_Top.v</code> to ensure correct timing for peripherals like UART.</p>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="language-vhdl highlight"><span class="filename">Top_Nexys.vhd</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">-- Update this value to match the Clocking Wizard output</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">constant</span><span class="w"> </span><span class="n">CLOCK_FREQUENCY</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">positive</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">115000000</span><span class="p">;</span>
 </span></code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The <code>CLOCK_FREQUENCY</code> constant is not automatically linked to the IP Core settings. If you reconfigure the Clocking Wizard to a different frequency (e.g., changing from 120MHz to 150MHz), you <strong>must manually update</strong> the <code>CLOCK_FREQUENCY</code> constant in <code>TOP_Nexys.vhd</code> to ensure correct timing for peripherals like UART.</p>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -1407,7 +1476,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 22, 2025 01:52:49 UTC"><span class="timeago" datetime="2025-12-22T01:52:49+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 22, 2025 01:52:49 UTC">2025-12-22</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 6, 2026 07:39:47 UTC"><span class="timeago" datetime="2026-01-06T07:39:47+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 6, 2026 07:39:47 UTC">2026-01-06</span>
   </span>
 
     
