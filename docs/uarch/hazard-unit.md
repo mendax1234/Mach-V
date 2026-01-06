@@ -9,9 +9,9 @@ The Hazard Handling Unit manages the data and control hazards inherent in Mach-V
 
 <!-- md:version 1.0 -->
 
-The stall & flush logic mainly deals with the load-use hazard and control hazard. The version that Mach-V Version 1 uses are also strictly following the rules introduced in NUS CG3207 or in Harris & Harris DDCA.
+The stall & flush logic mainly deals with the load-use hazard and control hazard. The version that Mach-V Version 1 uses also strictly follows the rules introduced in NUS CG3207 or in Harris & Harris DDCA.
 
-Specific implementation details can be found in the source code Hazard.v and strictly follow the datapath connections shown in the microarchitecture diagram.
+Specific implementation details can be found in the source code `Hazard.v` and it strictly follows the datapath connections shown in the [microarchitecture diagram](./index.md/#mach-v-version-2).
 
 ## Stall & Flush Logic
 
@@ -24,13 +24,13 @@ The base implementation of the Stall & Flush logic handles standard Load-Use haz
 <!-- md:version 2.0 -->
 <!-- md:feature -->
 
-To support moving the PC Logic to the Memory (Mem) stage, significant modifications were required to the interaction between the Hazard Unit, the Stall signals, and the Multi-Cycle Unit.
+To support moving the PC Logic to the Memory (Mem) stage, significant modifications were required to complete the interaction between the Hazard Unit, the Stall signals, and the Multi-Cycle Unit.
 
 ---
 
 #### Priority Inversion: The "Lost Jump" Scenario
 
-**The problem**: When a branch/jump instruction reaches the Mem stage and resolves to branch/jump, the instruction immediately following it (the "ghost" instruction) is already in the Execute or Decode stage. If this ghost instruction triggers a Hazard Stall (e.g., a Load-Use stall or a Multi-Cycle Busy signal), a conflict arises.
+**The Problem**: When a branch/jump instruction reaches the Mem stage and resolves to branch/jump, the instruction immediately following it (the "ghost" instruction) is already in the Execute or Decode stage. If this ghost instruction triggers a Hazard Stall (e.g., a Load-Use stall or a Multi-Cycle Busy signal), a conflict arises.
 
 In the previous design, the PC update logic prioritized `StallF` over the new PC target (`PC_IN`). Because `StallF` was high (caused by the ghost instruction), the PC retained its current value, effectively ignoring the jump request. This caused the CPU to "fall through" and execute instructions that should have been skipped.
 
@@ -54,7 +54,7 @@ assign StallD = (lwStall | Busy) & ~PCSrcM[0];
 
 Although the Hazard Unit asserts `FlushE` to kill the `mul` for the next clock cycle, the MCycle Unit is combinational logic that reacts to its inputs instantly. It sees the `Start` signal immediately in the current cycle, begins the calculation, and raises the `Busy` flag. This stalls the entire processor to perform a "fake" multiplication that is about to be flushed.
 
-The Solution: I modified the instantiation of the MCycle Unit in `RV.v` to logically "gate" the start signal. If the Execute stage is currently being flushed (`FlushE` is high), the `.Start` input is forced to `0`. This prevents the unit from activating on instructions that are being discarded.
+**The Solution**: I modified the instantiation of the MCycle Unit in `RV.v` to logically "gate" the start signal. If the Execute stage is currently being flushed (`FlushE` is high), the `.Start` input is forced to `0`. This prevents the unit from activating on instructions that are being discarded.
 
 ```verilog
 MCycle #(

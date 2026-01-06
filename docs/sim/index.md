@@ -1,12 +1,12 @@
 # Simulation
 
-This section outlines the verification strategy for the Mach-V processor.
+This section outlines the verification strategy used for the Mach-V processor.
 
 ## Simulation Directory Structure
 
 The `sim/` directory contains all testbench and verification artifacts:
 
-* **`sim/tb/`**: Verilog testbenches mapped to specific [software applications](../sw/index.md).
+* **`sim/tb/`**: Verilog testbenches mapped to a specific [software applications](../sw/index.md).
 * **`sim/mem/`**: Pre-compiled memory files (in hexadecimal format) used to initialize IROM and DMEM for simulation.
 
 ## Toolchain Setup
@@ -15,7 +15,7 @@ The primary tool used for simulation is **[Vivado 2025.2](https://www.xilinx.com
 
 ## Simulation Guide
 
-Simulations for Mach-V are performed by targeting the Wrapper.v module as the Device Under Test (DUT). Acting effectively as a virtual motherboard, this module connects the processor core to peripherals like UART and memory.
+Simulations for Mach-V are performed by targeting the `Wrapper.v` module as the Device Under Test (DUT). Acting effectively as a virtual motherboard, this module connects the processor core to peripherals like UART and memory.
 
 ### Debugging the Pipelined Processor
 

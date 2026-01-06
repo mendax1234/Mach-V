@@ -2,8 +2,6 @@
 
 Unlike the baseline design from NUS CG3207, Mach-V extends memory support beyond full-word operations. The Load Store Unit (LSU) module handles byte (`lb`/`lbu`/`sb`) and half-word (`lh`/`lhu`/`sh`) transactions, ensuring correct data alignment and sign extension.
 
-The LSU will take 5 inputs and produce 3 outputs:
-
 ## Interface Definition
 
 The LSU locates in the Mem stage. It processes raw addresses and data to align them with the memory's 32-bit word boundaries.

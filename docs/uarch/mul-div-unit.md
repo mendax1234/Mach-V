@@ -372,7 +372,7 @@ As mentioned in the [previous documentation](#native-design), if I only use the 
 
 The [multiplier IP core](https://www.amd.com/en/products/adaptive-socs-and-fpgas/intellectual-property/multiplier.html) comes from AMD and can be used in Vivado directly.
 
-To use the IP in Vivado, click the "IP Catalog" on the left flow navigator. Then, search for "multiplier". Click the "Multiplier" (not "Complex Multiplier"). And then configure the IP to use the following settings:
+To use the IP in Vivado, click the "IP Catalog" on the left "Flow Navigator". Then, search for "multiplier". Click the "Multiplier" (not "Complex Multiplier"). And then configure the IP to use the following settings:
 
 1. In the "Basic" tab:
     - Set Multiplier Type to "Parallel Multiplier"
