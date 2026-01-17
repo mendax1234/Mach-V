@@ -17,10 +17,10 @@ To support this transition, the input logic for the PC Adder was redesigned as f
     - `RD1M`: For jump instructions. Note that `RD1M` is derived from `RD1E_Forwarded` and latched into the Mem stage pipeline register.
 2. **`PC_Offset` Selection**: The offset multiplexer now selects between `4` (sequential) or `ExtImmM` (branch/jump targets).
 
-Following the PC adder updates, the `PC_Logic` module itself was simplified. The control signals `PCSE` and `ALUFlagsE` are propagated through the pipeline registers to become `PCSM` and `ALUFlagsM`. These are then fed into the PC Logic unit in the Mem stage, generating the final branch decision signal, `PCSrcM`.
+The control signals `PCSE` and `ALUFlagsE` are propagated through the pipeline registers to become `PCSM` and `ALUFlagsM`. These are then fed into the PC Logic unit in the Mem stage, generating the final branch decision signal, `PCSrcM`.
 
 !!! info
     The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found [in Mach-V Version 2's microarchitecture diagram](./index.md/#mach-v-version-2).
 
 !!! warning
-    Simply delaying the control signals is insufficient for this architectural change. The [Hazard Unit](hazard-unit.md) must also be updated to handle the new branch resolution timing correctly.
+    Simply delaying the control signals is insufficient for this microarchitectural change. The [Hazard Unit](hazard-unit.md) must also be updated to handle the new branch resolution timing correctly.

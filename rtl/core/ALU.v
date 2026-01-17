@@ -67,9 +67,9 @@ module ALU (
 
     always @(*) begin
         case (ALUControl)
-            4'b0010: Sh = 2'b00; // SLL
-            4'b1010: Sh = 2'b10; // SRL
-            4'b1011: Sh = 2'b11; // SRA
+            4'b0010: Sh = 2'b00;  // SLL
+            4'b1010: Sh = 2'b10;  // SRL
+            4'b1011: Sh = 2'b11;  // SRA
             default: Sh = 2'b00;
         endcase
     end
@@ -77,10 +77,10 @@ module ALU (
     wire [31:0] ShOut;
 
     Shifter Shifter1 (
-        .Sh     (Sh),
-        .Shamt5 (Src_B[4:0]),
-        .ShIn   (Src_A),
-        .ShOut  (ShOut)
+        .Sh    (Sh),
+        .Shamt5(Src_B[4:0]),
+        .ShIn  (Src_A),
+        .ShOut (ShOut)
     );
 
     // ============================================================
