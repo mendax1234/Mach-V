@@ -1582,14 +1582,14 @@
 </li>
 <li><strong><code>PC_Offset</code> Selection</strong>: The offset multiplexer now selects between <code>4</code> (sequential) or <code>ExtImmM</code> (branch/jump targets).</li>
 </ol>
-<p>Following the PC adder updates, the <code>PC_Logic</code> module itself was simplified. The control signals <code>PCSE</code> and <code>ALUFlagsE</code> are propagated through the pipeline registers to become <code>PCSM</code> and <code>ALUFlagsM</code>. These are then fed into the PC Logic unit in the Mem stage, generating the final branch decision signal, <code>PCSrcM</code>.</p>
+<p>The control signals <code>PCSE</code> and <code>ALUFlagsE</code> are propagated through the pipeline registers to become <code>PCSM</code> and <code>ALUFlagsM</code>. These are then fed into the PC Logic unit in the Mem stage, generating the final branch decision signal, <code>PCSrcM</code>.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="#uarch-mach-v-version-2">in Mach-V Version 2's microarchitecture diagram</a>.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Simply delaying the control signals is insufficient for this architectural change. The <a href="#uarch-hazard-unit">Hazard Unit</a> must also be updated to handle the new branch resolution timing correctly.</p>
+<p>Simply delaying the control signals is insufficient for this microarchitectural change. The <a href="#uarch-hazard-unit">Hazard Unit</a> must also be updated to handle the new branch resolution timing correctly.</p>
 </div></section><section class="print-page" id="uarch-alu" heading-number="2.4"><h1 id="uarch-alu-arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#uarch-alu-arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
 <p>The Mach-V ALU is a streamlined execution unit derived from the reference design used in <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v">NUS CG3207</a>. It implements standard RISC-V integer arithmetic and logical operations, utilizing a <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/Shifter.v">barrel shifter</a> designed by NUS CG3207 teaching team for efficient single-cycle shift operations.</p>
 <h2 id="uarch-alu-zero-flag-optimization">Zero Flag Optimization<a class="headerlink" href="#uarch-alu-zero-flag-optimization" title="Permanent link">&para;</a></h2>
