@@ -1568,28 +1568,163 @@
 </div>
 </div></section><section class="print-page" id="uarch-pc-unit" heading-number="2.3"><h1 id="uarch-pc-unit-pc-logic">PC Logic<a class="headerlink" href="#uarch-pc-unit-pc-logic" title="Permanent link">&para;</a></h1>
 <p>This section details the implementation of the Program Counter (PC) logic, covering <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/PC_Logic.v"><code>PC_Logic.v</code></a>, <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/ProgramCounter.v"><code>ProgramCounter.v</code></a>, and the relevant multiplexing logic for the PC adder within <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/RV.v#L136-L150"><code>RV.v</code></a>.</p>
-<h2 id="uarch-pc-unit-move-pc-logic-to-mem-stage">Move PC Logic to Mem Stage<a class="headerlink" href="#uarch-pc-unit-move-pc-logic-to-mem-stage" title="Permanent link">&para;</a></h2>
+<h2 id="uarch-pc-unit-branch-resolution">Branch Resolution<a class="headerlink" href="#uarch-pc-unit-branch-resolution" title="Permanent link">&para;</a></h2>
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
-<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
-<p>In Mach-V Version 2, the PC logic was relocated from the Execute (Exe) stage to the Memory (Mem) stage. This microarchitectural change implies that branch and jump instructions are now committed in the Mem stage. This optimization significantly improved timing performance, allowing Mach-V to achieve a clock frequency of 115 MHz (utilizing the <a href="#uarch-clock-clock-frequency-scaling">Clocking Wizard IP</a>).</p>
-<p>To support this transition, the input logic for the PC Adder was redesigned as follows:</p>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-default" title="Default value"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a6 6 0 0 1-6-6c0-4 6-10.75 6-10.75S18 10 18 14a6 6 0 0 1-6 6"/></svg></span></a></span></span></p>
+<p>In Mach-V Version 2, branch and jump instructions are <strong>committed in the Mem stage</strong>. Moving this logic from Execute to Memory improved timing performance, allowing the design to achieve a clock frequency of <strong>115 MHz</strong>.</p>
+<p>The microarchitecture consists of two main components:</p>
 <ol>
-<li><strong><code>PC_Base</code> Selection</strong>: The base address multiplexer now accepts three new inputs:<ul>
-<li><code>PCF</code>: For sequential execution (Branch Not Taken).</li>
-<li><code>PCM</code>: For conditional branches (Branch Taken).</li>
-<li><code>RD1M</code>: For jump instructions. Note that <code>RD1M</code> is derived from <code>RD1E_Forwarded</code> and latched into the Mem stage pipeline register.</li>
+<li><strong>PC Logic Unit</strong>: Determines whether a branch is taken based on ALU flags and branch conditions.</li>
+<li><strong>PC Adder</strong>: Computes the next PC value based on the current PC, branch targets, and jump addresses.</li>
+</ol>
+<h3 id="uarch-pc-unit-pc-logic-unit">PC Logic Unit<a class="headerlink" href="#uarch-pc-unit-pc-logic-unit" title="Permanent link">&para;</a></h3>
+<p>The PC Logic Unit decides how the next PC value is formed. It uses instruction type and ALU comparison results to generate a 2-bit control signal <code>PCSrc[1:0]</code>, which selects the PC update behavior.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As <code>PCSrc[1:0]</code> controls the next PC value and it is generated in the Mem stage, we say that our branch/jump instructions are "committed" in the Mem stage.</p>
+</div>
+<ol>
+<li><code>PCS</code> (Input)<ul>
+<li>Encodes the instruction category (sequential, branch, JAL, JALR).</li>
+<li>Combined with ALU flags to decide whether a control transfer is taken.</li>
 </ul>
 </li>
-<li><strong><code>PC_Offset</code> Selection</strong>: The offset multiplexer now selects between <code>4</code> (sequential) or <code>ExtImmM</code> (branch/jump targets).</li>
+<li><code>ALUFlags[2:0] = {eq, lt, ltu}</code> (Input)<ul>
+<li>Result of comparisons performed by the ALU.</li>
+<li>Used mainly for conditional branches (e.g., BEQ, BLT, BLTU).</li>
+</ul>
+</li>
+<li><code>PCSrc[1:0]</code> (Output)<ul>
+<li>Controls how the next PC is computed.</li>
+</ul>
+</li>
 </ol>
-<p>The control signals <code>PCSE</code> and <code>ALUFlagsE</code> are propagated through the pipeline registers to become <code>PCSM</code> and <code>ALUFlagsM</code>. These are then fed into the PC Logic unit in the Mem stage, generating the final branch decision signal, <code>PCSrcM</code>.</p>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="#uarch-mach-v-version-2">in Mach-V Version 2's microarchitecture diagram</a>.</p>
-</div>
+<p>The logic of PC Logic can be summarized in the following table:</p>
+<table>
+<thead>
+<tr>
+<th>PCS</th>
+<th>Instruction</th>
+<th>Funct3</th>
+<th>PCSrc[1]</th>
+<th>PCSrc[0]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>Non control</td>
+<td>x</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>01</td>
+<td>beq</td>
+<td>000</td>
+<td>0</td>
+<td>ALUFlags[2]</td>
+</tr>
+<tr>
+<td>01</td>
+<td>bne</td>
+<td>001</td>
+<td>0</td>
+<td>ALUFlags[2]'</td>
+</tr>
+<tr>
+<td>01</td>
+<td>blt</td>
+<td>100</td>
+<td>0</td>
+<td>ALUFlags[1]</td>
+</tr>
+<tr>
+<td>01</td>
+<td>bge</td>
+<td>101</td>
+<td>0</td>
+<td>ALUFlags[1]'</td>
+</tr>
+<tr>
+<td>01</td>
+<td>bltu</td>
+<td>110</td>
+<td>0</td>
+<td>ALUFlags[0]</td>
+</tr>
+<tr>
+<td>01</td>
+<td>bgeu</td>
+<td>111</td>
+<td>0</td>
+<td>ALUFlags[0]'</td>
+</tr>
+<tr>
+<td>10</td>
+<td>jal</td>
+<td>x</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>11</td>
+<td>jalr</td>
+<td>x</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="uarch-pc-unit-pc-adder">PC Adder<a class="headerlink" href="#uarch-pc-unit-pc-adder" title="Permanent link">&para;</a></h3>
+<p>The PC Adder computes the next address (including the branch target or jump address). Because the commitment happens in the Mem stage, the inputs must be sourced correctly to avoid hazards:</p>
+<ul>
+<li><code>PC_Base</code>: Selects between the current PC (<code>PCF</code>, <code>PCM</code>) or a register value (<code>RD1M</code>). Note that <code>RD1M</code> is derived from <code>RD1E_Forwarded</code> and latched into the Mem stage pipeline register.</li>
+<li><code>PC_Offset</code>: Selects between sequential increment (<code>+4</code>) or the branch offset (<code>+ExtImmM</code>).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><code>PCSrc</code></th>
+<th>Base (<code>PC_Base</code>)</th>
+<th>Offset (<code>PC_Offset</code>)</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>00</code></td>
+<td><code>PCF</code></td>
+<td><code>+4</code></td>
+<td>Sequential execution</td>
+</tr>
+<tr>
+<td><code>01</code></td>
+<td><code>PCM</code></td>
+<td><code>+ExtImm</code></td>
+<td>Taken branch or JAL</td>
+</tr>
+<tr>
+<td><code>10</code></td>
+<td><code>RD1M</code></td>
+<td><code>+4</code></td>
+<td>JALR (no immediate offset)</td>
+</tr>
+<tr>
+<td><code>11</code></td>
+<td><code>RD1M</code></td>
+<td><code>+ExtImm</code></td>
+<td>JALR with immediate</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Simply delaying the control signals is insufficient for this microarchitectural change. The <a href="#uarch-hazard-unit">Hazard Unit</a> must also be updated to handle the new branch resolution timing correctly.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="#uarch-mach-v-version-2">in Mach-V Version 2's microarchitecture diagram</a>.</p>
 </div></section><section class="print-page" id="uarch-alu" heading-number="2.4"><h1 id="uarch-alu-arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#uarch-alu-arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
 <p>The Mach-V ALU is a streamlined execution unit derived from the reference design used in <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v">NUS CG3207</a>. It implements standard RISC-V integer arithmetic and logical operations, utilizing a <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/Shifter.v">barrel shifter</a> designed by NUS CG3207 teaching team for efficient single-cycle shift operations.</p>
 <h2 id="uarch-alu-zero-flag-optimization">Zero Flag Optimization<a class="headerlink" href="#uarch-alu-zero-flag-optimization" title="Permanent link">&para;</a></h2>
