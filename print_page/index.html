@@ -1578,7 +1578,7 @@
 <li><strong>PC Adder</strong>: Computes the next PC value based on the current PC, branch targets, and jump addresses.</li>
 </ol>
 <h3 id="uarch-pc-unit-pc-logic-unit">PC Logic Unit<a class="headerlink" href="#uarch-pc-unit-pc-logic-unit" title="Permanent link">&para;</a></h3>
-<p>The PC Logic Unit decides how the next PC value is formed. It uses instruction type and ALU comparison results to generate a 2-bit control signal <code>PCSrc[1:0]</code>, which selects the PC update behavior.</p>
+<p>The PC Logic Unit decides how the next PC value is formed. It uses instruction type and ALU comparison results to generate a 2-bit control signal <code>PCSrc[1:0]</code>, which selects the PC update behavior and thus <code>PCSrc[1:0]</code> can indicate whether a branch or jump is taken.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>As <code>PCSrc[1:0]</code> controls the next PC value and it is generated in the Mem stage, we say that our branch/jump instructions are "committed" in the Mem stage.</p>
@@ -1725,7 +1725,71 @@
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="#uarch-mach-v-version-2">in Mach-V Version 2's microarchitecture diagram</a>.</p>
-</div></section><section class="print-page" id="uarch-alu" heading-number="2.4"><h1 id="uarch-alu-arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#uarch-alu-arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
+</div>
+<h2 id="uarch-pc-unit-1-bit-branch-predictor">1-bit Branch Predictor<a class="headerlink" href="#uarch-pc-unit-1-bit-branch-predictor" title="Permanent link">&para;</a></h2>
+<p>To implement a 1-bit branch predictor, the design uses two structures:</p>
+<ul>
+<li>Branch History Table (BHT): predicts whether a branch is taken.</li>
+<li>Branch Target Buffer (BTB): predicts where the branch goes if it is taken.</li>
+</ul>
+<p>Both structures are accessed in the Fetch (F) stage using the current PC, and updated later when the actual branch outcome is known.</p>
+<h3 id="uarch-pc-unit-branch-history-table-bht">Branch History Table (BHT)<a class="headerlink" href="#uarch-pc-unit-branch-history-table-bht" title="Permanent link">&para;</a></h3>
+<p>The Branch History Table stores 2-bit prediction (the value of <code>PCSrc[1:0]</code>) for each indexed entry, indicating whether a branch was taken last time.</p>
+<figure>
+<p><img alt="BHT Block Diagram" src="../assets/images/Branch-History-Table-1-bit.svg" /></p>
+<figcaption>
+<p>Branch History Table (1-bit) Block Diagram</p>
+</figcaption>
+</figure>
+<h4 id="uarch-pc-unit-functionality">Functionality<a class="headerlink" href="#uarch-pc-unit-functionality" title="Permanent link">&para;</a></h4>
+<ul>
+<li>In the Fetch stage, <code>PCF</code> indexes the BHT to produce <code>PrPCSrcF</code>, which predicts whether the current instruction will take a branch.</li>
+<li>In the Memory stage, if a branch instruction is resolved and found to be mispredicted, the corresponding BHT entry is updated using <code>PCM</code>.</li>
+</ul>
+<hr />
+<h4 id="uarch-pc-unit-inputs">Inputs<a class="headerlink" href="#uarch-pc-unit-inputs" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>PCF</code>: Index used to read the BHT and generate a prediction in the Fetch stage.</li>
+<li><code>PCM</code>: Index used to update the BHT when the actual branch outcome is known.</li>
+<li><code>PCSrcM</code>: The actual branch outcome (taken or not taken) determined in the Memory stage.</li>
+<li><code>WE_PrPCSrc</code>: Write enable signal, asserted only when a branch is mispredicted and the BHT entry must be corrected.</li>
+</ul>
+<hr />
+<h4 id="uarch-pc-unit-output">Output<a class="headerlink" href="#uarch-pc-unit-output" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>PrPCSrcF</code>: Predicted PCSrc value for the instruction in the Fetch stage.</li>
+</ul>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>PCSrc[1:0]</code> indicates whether the branch is taken (<code>1</code>) or not taken (<code>0</code>).</p>
+</div>
+<h3 id="uarch-pc-unit-branch-target-buffer-btb">Branch Target Buffer (BTB)<a class="headerlink" href="#uarch-pc-unit-branch-target-buffer-btb" title="Permanent link">&para;</a></h3>
+<p>The Branch Target Buffer stores the target address of previously taken branches.</p>
+<figure>
+<p><img alt="BTB Block Diagram" src="../assets/images/Branch-Target-Buffer-1-bit.svg" /></p>
+<figcaption>
+<p>Branch Target Buffer (1-bit) Block Diagram</p>
+</figcaption>
+</figure>
+<h4 id="uarch-pc-unit-functionality_1">Functionality<a class="headerlink" href="#uarch-pc-unit-functionality_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>In the Fetch stage, <code>PCF</code> indexes the BTB to obtain <code>PrBTAF</code>, the predicted branch target address.</li>
+<li>In the Memory stage, if a branch is mispredicted or newly encountered, the BTB entry is updated with the correct target address using <code>PCM</code>.</li>
+</ul>
+<hr />
+<h4 id="uarch-pc-unit-inputs_1">Inputs<a class="headerlink" href="#uarch-pc-unit-inputs_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>PCF</code>: Index used to read the BTB in the Fetch stage.</li>
+<li><code>PCM</code>: Index used to update the BTB entry in the Memory stage.</li>
+<li><code>BTAM</code>: The actual branch target address computed when the branch is resolved.</li>
+<li><code>WE_PrBTA</code>: Write enable signal, asserted only when the BTB needs to be updated.</li>
+</ul>
+<hr />
+<h4 id="uarch-pc-unit-output_1">Output<a class="headerlink" href="#uarch-pc-unit-output_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>PrBTAF</code>: Predicted branch target address for the instruction in the Fetch stage.</li>
+</ul></section><section class="print-page" id="uarch-alu" heading-number="2.4"><h1 id="uarch-alu-arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#uarch-alu-arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
 <p>The Mach-V ALU is a streamlined execution unit derived from the reference design used in <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v">NUS CG3207</a>. It implements standard RISC-V integer arithmetic and logical operations, utilizing a <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/Shifter.v">barrel shifter</a> designed by NUS CG3207 teaching team for efficient single-cycle shift operations.</p>
 <h2 id="uarch-alu-zero-flag-optimization">Zero Flag Optimization<a class="headerlink" href="#uarch-alu-zero-flag-optimization" title="Permanent link">&para;</a></h2>
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
