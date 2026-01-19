@@ -16,7 +16,7 @@ The microarchitecture consists of two main components:
 
 ### PC Logic Unit
 
-The PC Logic Unit decides how the next PC value is formed. It uses instruction type and ALU comparison results to generate a 2-bit control signal `PCSrc[1:0]`, which selects the PC update behavior.
+The PC Logic Unit decides how the next PC value is formed. It uses instruction type and ALU comparison results to generate a 2-bit control signal `PCSrc[1:0]`, which selects the PC update behavior and thus `PCSrc[1:0]` can indicate whether a branch or jump is taken.
 
 !!! note
     As `PCSrc[1:0]` controls the next PC value and it is generated in the Mem stage, we say that our branch/jump instructions are "committed" in the Mem stage.
@@ -63,3 +63,75 @@ The PC Adder computes the next address (including the branch target or jump addr
 
 !!! info
     The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found [in Mach-V Version 2's microarchitecture diagram](./index.md/#mach-v-version-2).
+
+## 1-bit Branch Predictor
+
+To implement a 1-bit branch predictor, the design uses two structures:
+
+- Branch History Table (BHT): predicts whether a branch is taken.
+- Branch Target Buffer (BTB): predicts where the branch goes if it is taken.
+
+Both structures are accessed in the Fetch (F) stage using the current PC, and updated later when the actual branch outcome is known.
+
+### Branch History Table (BHT)
+
+The Branch History Table stores 2-bit prediction (the value of `PCSrc[1:0]`) for each indexed entry, indicating whether a branch was taken last time.
+
+![BHT Block Diagram](../assets/images/Branch-History-Table-1-bit.svg)
+///caption
+Branch History Table (1-bit) Block Diagram
+///
+
+#### Functionality
+
+- In the Fetch stage, `PCF` indexes the BHT to produce `PrPCSrcF`, which predicts whether the current instruction will take a branch.
+- In the Memory stage, if a branch instruction is resolved and found to be mispredicted, the corresponding BHT entry is updated using `PCM`.
+
+---
+
+#### Inputs
+
+- `PCF`: Index used to read the BHT and generate a prediction in the Fetch stage.
+- `PCM`: Index used to update the BHT when the actual branch outcome is known.
+- `PCSrcM`: The actual branch outcome (taken or not taken) determined in the Memory stage.
+- `WE_PrPCSrc`: Write enable signal, asserted only when a branch is mispredicted and the BHT entry must be corrected.
+
+---
+
+#### Output
+
+- `PrPCSrcF`: Predicted PCSrc value for the instruction in the Fetch stage.
+
+---
+
+!!! note
+    `PCSrc[1:0]` indicates whether the branch is taken (`1`) or not taken (`0`).
+
+### Branch Target Buffer (BTB)
+
+The Branch Target Buffer stores the target address of previously taken branches.
+
+![BTB Block Diagram](../assets/images/Branch-Target-Buffer-1-bit.svg)
+///caption
+Branch Target Buffer (1-bit) Block Diagram
+///
+
+#### Functionality
+
+- In the Fetch stage, `PCF` indexes the BTB to obtain `PrBTAF`, the predicted branch target address.
+- In the Memory stage, if a branch is mispredicted or newly encountered, the BTB entry is updated with the correct target address using `PCM`.
+
+---
+
+#### Inputs
+
+- `PCF`: Index used to read the BTB in the Fetch stage.
+- `PCM`: Index used to update the BTB entry in the Memory stage.
+- `BTAM`: The actual branch target address computed when the branch is resolved.
+- `WE_PrBTA`: Write enable signal, asserted only when the BTB needs to be updated.
+
+---
+
+#### Output
+
+- `PrBTAF`: Predicted branch target address for the instruction in the Fetch stage.
