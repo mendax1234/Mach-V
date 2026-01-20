@@ -25,17 +25,26 @@ module pipeline_D (
     input             FlushD,
     input      [31:0] InstrF,
     input      [31:0] PCF,
+    input             PrPCSrcF,
+    input      [31:0] PrBTAF,
+    output reg        PrPCSrcD,
+    output reg [31:0] PrBTAD,
     output reg [31:0] InstrD,
     output reg [31:0] PCD
+
 );
 
     always @(posedge CLK) begin
         if (RESET || FlushD) begin
             InstrD <= 32'b0;
             PCD <= 32'b0;
+            PrPCSrcD <= 1'b0;
+            PrBTAD <= 32'b0;
         end else if (~StallD) begin
             InstrD <= InstrF;
             PCD <= PCF;
+            PrPCSrcD <= PrPCSrcF;
+            PrBTAD <= PrBTAF;
         end
     end
 

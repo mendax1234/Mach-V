@@ -42,6 +42,8 @@ module pipeline_E (
     input             MCycleStartD,
     input             MCycleResultSelD,
     input             ComputeResultSelD,
+    input             PrPCSrcD,
+    input      [31:0] PrBTAD,
     output reg [ 1:0] PCSE,
     output reg        RegWriteE,
     output reg        MemtoRegE,
@@ -60,7 +62,9 @@ module pipeline_E (
     output reg [ 1:0] MCycleOpE,
     output reg        MCycleStartE,
     output reg        MCycleResultSelE,
-    output reg        ComputeResultSelE
+    output reg        ComputeResultSelE,
+    output reg        PrPCSrcE,
+    output reg [31:0] PrBTAE
 );
 
     always @(posedge CLK) begin
@@ -84,6 +88,8 @@ module pipeline_E (
             MCycleStartE <= 1'b0;
             MCycleResultSelE <= 1'b0;
             ComputeResultSelE <= 1'b0;
+            PrPCSrcE <= 1'b0;
+            PrBTAE <= 32'b0;
         end else if (~Busy) begin
             PCSE <= PCSD;
             RegWriteE <= RegWriteD;
@@ -104,6 +110,8 @@ module pipeline_E (
             MCycleStartE <= MCycleStartD;
             MCycleResultSelE <= MCycleResultSelD;
             ComputeResultSelE <= ComputeResultSelD;
+            PrPCSrcE <= PrPCSrcD;
+            PrBTAE <= PrBTAD;
         end
     end
 

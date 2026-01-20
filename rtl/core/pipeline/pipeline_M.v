@@ -36,6 +36,8 @@ module pipeline_M (
     input      [31:0] ExtImmE,
     input      [ 1:0] PCSE,
     input      [ 2:0] ALUFlagsE,
+    input             PrPCSrcE,
+    input      [31:0] PrBTAE,
     output reg        RegWriteM,
     output reg        MemtoRegM,
     output reg        MemWriteM,
@@ -48,7 +50,9 @@ module pipeline_M (
     output reg [31:0] PCM,
     output reg [31:0] ExtImmM,
     output reg [ 1:0] PCSM,
-    output reg [ 2:0] ALUFlagsM
+    output reg [ 2:0] ALUFlagsM,
+    output reg        PrPCSrcM,
+    output reg [31:0] PrBTAM
 );
 
     always @(posedge CLK) begin
@@ -66,6 +70,8 @@ module pipeline_M (
             ExtImmM <= 32'b0;
             PCSM <= 2'b0;
             ALUFlagsM <= 3'b0;
+            PrPCSrcM <= 1'b0;
+            PrBTAM <= 32'b0;
         end else if (~Busy) begin
             RegWriteM <= RegWriteE;
             MemtoRegM <= MemtoRegE;
@@ -80,6 +86,8 @@ module pipeline_M (
             ExtImmM <= ExtImmE;
             PCSM <= PCSE;
             ALUFlagsM <= ALUFlagsE;
+            PrPCSrcM <= PrPCSrcE;
+            PrBTAM <= PrBTAE;
         end
     end
 

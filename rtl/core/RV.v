@@ -45,6 +45,9 @@ module RV #(
     wire [31:0] PC_IN;  // Next PC
     wire [31:0] PC_Offset;  // PC Calculation
     reg  [31:0] PC_Base;  // PC Calculation
+    wire        PrPCSrcF;
+    wire [31:0] PrBTAF;
+    wire [31:0] PCPlus4F;
 
     // --- ID Stage (Decode) ---
     wire [31:0] PCD;
@@ -62,6 +65,8 @@ module RV #(
     wire [31:0] RD1D_Forwarded;  // Data after Decode Forwarding
     wire [31:0] RD2D_Forwarded;
     wire [31:0] ExtImmD;
+    wire        PrPCSrcD;
+    wire [31:0] PrBTAD;
     // Control Signals
     wire        RegWriteD;
     wire        MemtoRegD;
@@ -86,6 +91,8 @@ module RV #(
     wire [ 4:0] rs2E;
     wire [ 4:0] rdE;
     wire [ 2:0] Funct3E;
+    wire        PrPCSrcE;
+    wire [31:0] PrBTAE;
     // ALU / MCycle Signals
     reg  [31:0] Src_A;  // ALU Inputs
     reg  [31:0] Src_B;
@@ -131,6 +138,12 @@ module RV #(
     wire [ 1:0] PCSM;
     wire [ 2:0] ALUFlagsM;
     wire [ 1:0] PCSrcM;
+    wire        PrPCSrcM;
+    wire [31:0] PrBTAM;
+    wire        MispredPCSrcM;  // Direction Mismatch
+    wire        MispredBTAM;  // Address Mismatch
+    wire        BranchMispredictM;  // The final Flush signal
+    wire [31:0] PC_ResolvedM;  // Temp variable to hold PC_Base + PC_Offset
 
     // --- WB Stage (Writeback) ---
     wire        RegWriteW;
@@ -159,15 +172,24 @@ module RV #(
     assign WE_PC = ~Busy;  // Freeze PC if Multi-Cycle Unit is busy
 
     // PC Selection Logic
+    assign PCPlus4F = PCF + 32'd4;
+
     assign PC_Offset = (PCSrcM[0] == 1) ? ExtImmM : 32'd4;
     always @(*) begin
         case (PCSrcM)
             2'b10, 2'b11: PC_Base = RD1M;  // JALR
-            2'b01: PC_Base = PCM;  // Branch/JAL
-            default: PC_Base = PCF;  // Sequential (2'b00)
+            // 2'b01: PC_Base = PCM;  // Branch/JAL
+            default: PC_Base = PCM;  // Sequential (2'b00)
         endcase
     end
-    assign PC_IN = PC_Base + PC_Offset;
+    assign PC_ResolvedM = PC_Base + PC_Offset;
+
+    assign MispredPCSrcM = (PrPCSrcM != PCSrcM[0]);
+    assign MispredBTAM   = (PCSrcM[0] == 1'b1) && (PrBTAM != PC_ResolvedM);
+
+    assign BranchMispredictM = MispredPCSrcM | MispredBTAM;
+
+    assign PC_IN = (BranchMispredictM) ? PC_ResolvedM : (PrPCSrcF) ? PrBTAF : PCPlus4F;
 
     // --- Decode Stage Forwarding ---
     assign RD1D_Forwarded = Forward1D ? ResultW : RD1D;
@@ -253,14 +275,18 @@ module RV #(
     );
 
     pipeline_D pipelineD (
-        .CLK   (CLK),
-        .RESET (RESET),
-        .StallD(StallD),
-        .FlushD(FlushD),
-        .InstrF(InstrF),
-        .PCF   (PCF),
-        .InstrD(InstrD),
-        .PCD   (PCD)
+        .CLK     (CLK),
+        .RESET   (RESET),
+        .StallD  (StallD),
+        .FlushD  (FlushD),
+        .InstrF  (InstrF),
+        .PCF     (PCF),
+        .InstrD  (InstrD),
+        .PCD     (PCD),
+        .PrPCSrcF(PrPCSrcF),
+        .PrBTAF  (PrBTAF),
+        .PrPCSrcD(PrPCSrcD),
+        .PrBTAD  (PrBTAD)
     );
 
     Decoder Decoder1 (
@@ -323,6 +349,8 @@ module RV #(
         .MCycleStartD     (MCycleStartD),
         .MCycleResultSelD (MCycleResultSelD),
         .ComputeResultSelD(ComputeResultSelD),
+        .PrPCSrcD         (PrPCSrcD),
+        .PrBTAD           (PrBTAD),
         // Outputs
         .PCSE             (PCSE),
         .RegWriteE        (RegWriteE),
@@ -342,7 +370,9 @@ module RV #(
         .MCycleOpE        (MCycleOpE),
         .MCycleStartE     (MCycleStartE),
         .MCycleResultSelE (MCycleResultSelE),
-        .ComputeResultSelE(ComputeResultSelE)
+        .ComputeResultSelE(ComputeResultSelE),
+        .PrPCSrcE         (PrPCSrcE),
+        .PrBTAE           (PrBTAE)
     );
 
     ALU ALU1 (
@@ -392,6 +422,8 @@ module RV #(
         .ExtImmE       (ExtImmE),
         .PCSE          (PCSE),
         .ALUFlagsE     (ALUFlagsE),
+        .PrPCSrcE      (PrPCSrcE),
+        .PrBTAE        (PrBTAE),
         // Outputs
         .RegWriteM     (RegWriteM),
         .MemtoRegM     (MemtoRegM),
@@ -405,7 +437,9 @@ module RV #(
         .PCM           (PCM),
         .ExtImmM       (ExtImmM),
         .PCSM          (PCSM),
-        .ALUFlagsM     (ALUFlagsM)
+        .ALUFlagsM     (ALUFlagsM),
+        .PrPCSrcM      (PrPCSrcM),
+        .PrBTAM        (PrBTAM)
     );
 
     LoadStoreUnit LoadStoreUnit (
@@ -437,34 +471,63 @@ module RV #(
     );
 
     Hazard Hazard1 (
-        .rs1D     (rs1D),
-        .rs2D     (rs2D),
-        .rs1E     (rs1E),
-        .rs2E     (rs2E),
-        .rs2M     (rs2M),
-        .rdE      (rdE),
-        .rdM      (rdM),
-        .rdW      (rdW),
-        .RegWriteM(RegWriteM),
-        .RegWriteW(RegWriteW),
-        .MemWriteM(MemWriteM),
-        .MemtoRegW(MemtoRegW),
-        .MemtoRegE(MemtoRegE),
-        .Busy     (Busy),
-        .PCSrcM   (PCSrcM),
-        .OpcodeD  (OpcodeD),
+        .rs1D             (rs1D),
+        .rs2D             (rs2D),
+        .rs1E             (rs1E),
+        .rs2E             (rs2E),
+        .rs2M             (rs2M),
+        .rdE              (rdE),
+        .rdM              (rdM),
+        .rdW              (rdW),
+        .RegWriteM        (RegWriteM),
+        .RegWriteW        (RegWriteW),
+        .MemWriteM        (MemWriteM),
+        .MemtoRegW        (MemtoRegW),
+        .MemtoRegE        (MemtoRegE),
+        .Busy             (Busy),
+        .BranchMispredictM(BranchMispredictM),
+        .OpcodeD          (OpcodeD),
         // Outputs
-        .ForwardAE(ForwardAE),
-        .ForwardBE(ForwardBE),
-        .ForwardM (ForwardM),
-        .lwStall  (lwStall),
-        .StallF   (StallF),
-        .StallD   (StallD),
-        .FlushE   (FlushE),
-        .FlushD   (FlushD),
-        .FlushM   (FlushM),
-        .Forward1D(Forward1D),
-        .Forward2D(Forward2D)
+        .ForwardAE        (ForwardAE),
+        .ForwardBE        (ForwardBE),
+        .ForwardM         (ForwardM),
+        .lwStall          (lwStall),
+        .StallF           (StallF),
+        .StallD           (StallD),
+        .FlushE           (FlushE),
+        .FlushD           (FlushD),
+        .FlushM           (FlushM),
+        .Forward1D        (Forward1D),
+        .Forward2D        (Forward2D)
+    );
+
+    // --- Branch Prediction Units ---
+
+    BranchHistoryTable #(
+        .ENTRIES(64)
+    ) BHT (
+        .CLK       (CLK),
+        .RESET     (RESET),
+        // Fetch: Read Prediction
+        .PCF       (PCF),
+        .PrPCSrcF  (PrPCSrcF),
+        // Memory: Update/Train Predictor
+        .PCM       (PCM),
+        .WE_PrPCSrc(MispredPCSrcM),  // Need a signal: "Is the instruction in Mem a Branch?"
+        .PCSrcM    (PCSrcM)      // The actual outcome
+    );
+
+    BranchTargetBuffer #(
+        .ENTRIES   (1024),  // Increase size!
+        .INDEX_BITS(10)
+    ) BTB (
+        .CLK     (CLK),
+        .RESET   (RESET),
+        .PCF     (PCF),
+        .PrBTAF  (PrBTAF),
+        .PCM     (PCM),
+        .BTAM    (PC_ResolvedM),
+        .WE_PrBTA(MispredBTAM)
     );
 
 endmodule
