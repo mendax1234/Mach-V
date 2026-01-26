@@ -77,7 +77,7 @@ Both structures are accessed in the Fetch (F) stage using the current PC, and up
 
 The Branch History Table stores 2-bit prediction (the value of `PCSrc[1:0]`) for each indexed entry, indicating whether a branch was taken last time.
 
-![BHT Block Diagram](../assets/images/Branch-History-Table-1-bit.svg)
+![BHT Block Diagram](../../assets/images/Branch-History-Table-1-bit.svg)
 ///caption
 Branch History Table (1-bit) Block Diagram
 ///
@@ -111,7 +111,7 @@ Branch History Table (1-bit) Block Diagram
 
 The Branch Target Buffer stores the target address of previously taken branches.
 
-![BTB Block Diagram](../assets/images/Branch-Target-Buffer-1-bit.svg)
+![BTB Block Diagram](../../assets/images/Branch-Target-Buffer-1-bit.svg)
 ///caption
 Branch Target Buffer (1-bit) Block Diagram
 ///

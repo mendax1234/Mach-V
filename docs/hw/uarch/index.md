@@ -1,11 +1,11 @@
-# Microarchitecture
+# Hardware Architecture
 
 ## Performance Benchmark
 
 Here is the performance scaling of the Mach-V core running the CoreMark benchmark.
 
-![CoreMark Performance](../assets/images/mach-v-coremark-performance-light.png#only-light)
-![CoreMark Performance](../assets/images/mach-v-coremark-performance-dark.png#only-dark)
+![CoreMark Performance](../../assets/images/mach-v-coremark-performance-light.png#only-light)
+![CoreMark Performance](../../assets/images/mach-v-coremark-performance-dark.png#only-dark)
 
 ## Microarchitecture Overview
 
@@ -13,7 +13,7 @@ The microarchitecture of Mach-V has currently evolved through two distinct itera
 
 === "Mach-V Version 1"
 
-    ![Mach-V V1 Microarchitecture](../assets/images/Mach-V-V1.svg)
+    ![Mach-V V1 Microarchitecture](../../assets/images/Mach-V-V1.svg)
     ///caption
     Mach-V Microarchitecture - Version 1
     ///
@@ -26,7 +26,7 @@ The microarchitecture of Mach-V has currently evolved through two distinct itera
 
 === "Mach-V Version 2"
 
-    ![Mach-V V2 Microarchitecture](../assets/images/Mach-V-V2.svg)
+    ![Mach-V V2 Microarchitecture](../../assets/images/Mach-V-V2.svg)
     ///caption
     Mach-V Microarchitecture - Version 2
     ///

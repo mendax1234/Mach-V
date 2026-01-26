@@ -14,7 +14,7 @@ The CoreMark port for Mach-V is based on the barebones implementation. To adapt 
 
 CoreMark requires a method to measure time to calculate the performance score. In `core_portme.c`, the `barebones_clock()` function is modified to read the Mach-V `CYCLECOUNT` system counter.
 
-**Modification:** Update `hardwareCounterAddr` to point to the Mach-V [system counter](./index.md/#system-counters) address (`0xFFFF00A0`).
+**Modification:** Update `hardwareCounterAddr` to point to the Mach-V [system counter](../hw/mem/mmio-bus.md#system-counters) address (`0xFFFF00A0`).
 
 ```c
 CORETIMETYPE barebones_clock() {
@@ -34,7 +34,7 @@ CORETIMETYPE barebones_clock() {
 
 To output the benchmark results to the console, the UART transmission function must be mapped to the correct MMIO addresses.
 
-**Modification:** In `ee_printf.c`, update the pointers in `uart_send_char()` to match the Mach-V UART peripheral addresses. The relevant addresses are introduced in [System Memory Map](./index.md/#communication-uart).
+**Modification:** In `ee_printf.c`, update the pointers in `uart_send_char()` to match the Mach-V UART peripheral addresses. The relevant addresses are introduced in [System Memory Map](../hw/mem/mmio-bus.md#communication-uart).
 
 ```c
 void uart_send_char(char c) {

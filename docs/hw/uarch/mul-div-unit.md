@@ -24,7 +24,7 @@ The FSM consists of two states, encoded using a single binary bit:
 
 The following diagram illustrates the transitions and output logic. The arc labels follow the convention "`Input / Output`".
 
-![MCycle State Transition Diagram](../assets/images/MCycle.svg)
+![MCycle State Transition Diagram](../../assets/images/MCycle.svg)
 ///caption
 MCycle State Transition Diagram
 ///
@@ -364,7 +364,7 @@ DivSlice8 div_unit (
 <!-- md:plugin -->
 <!-- md:feature -->
 
-As mentioned in the [previous documentation](#native-design), if I only use the unrolling technique, it is impossible to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the AMD IP cores (Multiplier and Divider) to implement the multiply and divide unit.
+As mentioned in the [previous documentation](#custom-rtl-design), if I only use the unrolling technique, it is impossible to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the AMD IP cores (Multiplier and Divider) to implement the multiply and divide unit.
 
 ---
 
@@ -406,7 +406,7 @@ Follow the similar steps as the multiplier IP core, but configure the divider us
 
 #### Use IP Core
 
-To use the two IP cores that we have generated above, we just need to know the inputs and outputs of each IP core and then instantiate them in our `MCycle.v` to replace the multiple unit and the divide unit that we have implemented manually in the [previous section](#native-design).
+To use the two IP cores that we have generated above, we just need to know the inputs and outputs of each IP core and then instantiate them in our `MCycle.v` to replace the multiple unit and the divide unit that we have implemented manually in the [previous section](#custom-rtl-design).
 
 ```verilog
 // Multiplier IP: 32x32 Unsigned -> 64-bit Product

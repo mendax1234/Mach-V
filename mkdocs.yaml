@@ -144,13 +144,19 @@ hooks:
 nav:
   - Home: index.md
   - Microarchitecture:
-      - uarch/index.md
-      - Clock Architecture: uarch/clock.md
-      - Program Counter Unit: uarch/pc-unit.md
-      - Arithmetic & Logic Unit: uarch/alu.md
-      - Multiply & Divide Unit: uarch/mul-div-unit.md
-      - Load & Store Unit: uarch/lsu.md
-      - Hazard Handling Unit: uarch/hazard-unit.md
+      - hw/uarch/index.md
+      - Clock Architecture: hw/uarch/clock.md
+      - Program Counter Unit: hw/uarch/pc-unit.md
+      - Arithmetic & Logic Unit: hw/uarch/alu.md
+      - Multiply & Divide Unit: hw/uarch/mul-div-unit.md
+      - Load & Store Unit: hw/uarch/lsu.md
+      - Hazard Handling Unit: hw/uarch/hazard-unit.md
+      - Memory Subsystem:
+        - hw/mem/index.md
+        - Main Memory: hw/mem/main-memory.md
+        - MMIO Interface: hw/mem/mmio-bus.md
+      # - Peripherals:
+      #   - hw/peripherals/index.md
   - Simulation:
       - sim/index.md
       - Benchmark Testbench: sim/benchmark_tb.md
