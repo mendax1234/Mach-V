@@ -13,3 +13,4 @@ Followed by the convention set in [NUS CG3207](https://nus-cg3207.github.io/labs
     ```
 
     If you modify these parameters in `Wrapper.v`, you must update your linker script and stack initialization accordingly.
+    
