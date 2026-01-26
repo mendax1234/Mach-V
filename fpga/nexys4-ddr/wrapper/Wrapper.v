@@ -107,6 +107,8 @@ module Wrapper #(
     wire is_dmem = (rv_addr[31:DMEM_DEPTH] == DMEM_BASE[31:DMEM_DEPTH]);
     wire is_mmio = (rv_addr[31:8] == MMIO_BASE[31:8]);
 
+    // IROM Read
+    // This can be changed to trigger an exception instead if need be.
     assign rv_instr = (is_imem) ? imem[rv_pc[IMEM_DEPTH-1:2]] : 32'h00000013;
 
     // =========================================================================
@@ -123,6 +125,7 @@ module Wrapper #(
         end
     end
 
+    // Asychronous DMEM read
     reg [31:0] dmem_rdata;
     always @(*) begin
         dmem_rdata = is_dmem ? dmem[rv_addr[DMEM_DEPTH-1:2]] : 32'b0;

@@ -44,7 +44,7 @@ module RV #(
     wire        StallF;  // Stall Fetch
     wire [31:0] PC_IN;  // Next PC
     wire [31:0] PC_Offset;  // PC Calculation
-    reg  [31:0] PC_Base;  // PC Calculation
+    wire [31:0] PC_Base;  // PC Calculation
     wire        PrPCSrcF;
     wire [31:0] PrBTAF;
     wire [31:0] PCPlus4F;
@@ -172,23 +172,29 @@ module RV #(
     assign WE_PC = ~Busy;  // Freeze PC if Multi-Cycle Unit is busy
 
     // PC Selection Logic
+    // Sequential Logic (Fetch Stage)
+    // Default next instruction address if no prediction or branch occurs.
     assign PCPlus4F = PCF + 32'd4;
 
+    // Resolved Target Logic (Memory Stage)
+    // Calculates the ACTUAL correct address to recover to if we mispredicted.
     assign PC_Offset = (PCSrcM[0] == 1) ? ExtImmM : 32'd4;
-    always @(*) begin
-        case (PCSrcM)
-            2'b10, 2'b11: PC_Base = RD1M;  // JALR
-            // 2'b01: PC_Base = PCM;  // Branch/JAL
-            default: PC_Base = PCM;  // Sequential (2'b00)
-        endcase
-    end
+    assign PC_Base = (PCSrcM[1] == 1) ? RD1M : PCM;
     assign PC_ResolvedM = PC_Base + PC_Offset;
 
+    // Misprediction Detection (Memory Stage)
+    // Check 1: Did we guess the wrong direction? (Taken vs Not Taken)
     assign MispredPCSrcM = (PrPCSrcM != PCSrcM[0]);
-    assign MispredBTAM   = (PCSrcM[0] == 1'b1) && (PrBTAM != PC_ResolvedM);
+    // Check 2: Did we guess the wrong address? (Only matters if actually Taken)
+    assign MispredBTAM = (PCSrcM[0] == 1'b1) && (PrBTAM != PC_ResolvedM);
 
+    // Master Flush Signal: Trigger recovery if either Direction OR Address was wrong.
     assign BranchMispredictM = MispredPCSrcM | MispredBTAM;
 
+    // Final PC MUX
+    // Priority 1 (Highest): Correction from Memory (Fix Misprediction)
+    // Priority 2: Speculative Jump from Fetch (Branch Prediction)
+    // Priority 3 (Lowest): Sequential Execution (PC + 4)
     assign PC_IN = (BranchMispredictM) ? PC_ResolvedM : (PrPCSrcF) ? PrBTAF : PCPlus4F;
 
     // --- Decode Stage Forwarding ---
@@ -514,12 +520,12 @@ module RV #(
         // Memory: Update/Train Predictor
         .PCM       (PCM),
         .WE_PrPCSrc(MispredPCSrcM),  // Need a signal: "Is the instruction in Mem a Branch?"
-        .PCSrcM    (PCSrcM)      // The actual outcome
+        .PCSrcM    (PCSrcM)          // The actual outcome
     );
 
     BranchTargetBuffer #(
-        .ENTRIES   (1024),  // Increase size!
-        .INDEX_BITS(10)
+        .ENTRIES   (64),
+        .INDEX_BITS(6)
     ) BTB (
         .CLK     (CLK),
         .RESET   (RESET),

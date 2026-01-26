@@ -32,17 +32,17 @@ The PC Logic Unit decides how the next PC value is formed. It uses instruction t
 
 The logic of PC Logic can be summarized in the following table:
 
-| PCS | Instruction | Funct3 | PCSrc[1]   | PCSrc[0]     |
-|-----|-------------|--------|------------|--------------|
-| 00  | Non control | x      | 0          | 0            |
-| 01  | beq         | 000    | 0          | ALUFlags[2]  |
-| 01  | bne         | 001    | 0          | ALUFlags[2]' |
-| 01  | blt         | 100    | 0          | ALUFlags[1]  |
-| 01  | bge         | 101    | 0          | ALUFlags[1]' |
-| 01  | bltu        | 110    | 0          | ALUFlags[0]  |
-| 01  | bgeu        | 111    | 0          | ALUFlags[0]' |
-| 10  | jal         | x      | 0          | 1            |
-| 11  | jalr        | x      | 1          | 1            |
+| `PCS` | Instruction | `Funct3` | `PCSrc[1]` | `PCSrc[0]`     |
+|-------|-------------|----------|------------|----------------|
+| 00    | Non control | x        | 0          | 0              |
+| 01    | beq         | 000      | 0          | ALUFlags[2]    |
+| 01    | bne         | 001      | 0          | ALUFlags[2]'   |
+| 01    | blt         | 100      | 0          | ALUFlags[1]    |
+| 01    | bge         | 101      | 0          | ALUFlags[1]'   |
+| 01    | bltu        | 110      | 0          | ALUFlags[0]    |
+| 01    | bgeu        | 111      | 0          | ALUFlags[0]'   |
+| 10    | jal         | x        | 0          | 1              |
+| 11    | jalr        | x        | 1          | 1              |
 
 ### PC Adder
 
