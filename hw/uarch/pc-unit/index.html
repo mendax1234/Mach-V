@@ -12,31 +12,31 @@
         <meta name="author" content="Wenbo (Daniel) Zhu">
       
       
-        <link rel="canonical" href="https://mendax1234.github.io/Mach-V/uarch/alu/">
+        <link rel="canonical" href="https://mendax1234.github.io/Mach-V/hw/uarch/pc-unit/">
       
       
-        <link rel="prev" href="../pc-unit/">
+        <link rel="prev" href="../clock/">
       
       
-        <link rel="next" href="../mul-div-unit/">
+        <link rel="next" href="../alu/">
       
       
         
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Arithmetic & Logic Unit - Mach-V Docs</title>
+        <title>Program Counter Unit - Mach-V Docs</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -55,15 +55,15 @@
       
     
     
-      <link rel="stylesheet" href="../../css/print-site.css">
+      <link rel="stylesheet" href="../../../css/print-site.css">
     
-      <link rel="stylesheet" href="../../css/print-site-material.css">
+      <link rel="stylesheet" href="../../../css/print-site-material.css">
     
-      <link rel="stylesheet" href="../../css/timeago.css">
+      <link rel="stylesheet" href="../../../css/timeago.css">
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -88,7 +88,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#arithmetic-logic-unit-alu" class="md-skip">
+        <a href="#pc-logic" class="md-skip">
           Skip to content
         </a>
       
@@ -104,7 +104,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Mach-V Docs" class="md-header__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
+    <a href="../../.." title="Mach-V Docs" class="md-header__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -124,7 +124,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Arithmetic & Logic Unit
+              Program Counter Unit
             
           </span>
         </div>
@@ -239,7 +239,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -284,7 +284,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../sim/" class="md-tabs__link">
+        <a href="../../../sim/" class="md-tabs__link">
           
   
   
@@ -306,7 +306,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../sw/" class="md-tabs__link">
+        <a href="../../../sw/" class="md-tabs__link">
           
   
   
@@ -348,7 +348,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Mach-V Docs" class="md-nav__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
+    <a href="../../.." title="Mach-V Docs" class="md-nav__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -378,7 +378,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -411,6 +411,8 @@
       
         
           
+        
+      
         
       
         
@@ -514,34 +516,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../pc-unit/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Program Counter Unit
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -561,7 +535,7 @@
   <span class="md-ellipsis">
     
   
-    Arithmetic & Logic Unit
+    Program Counter Unit
   
 
     
@@ -579,7 +553,7 @@
   <span class="md-ellipsis">
     
   
-    Arithmetic & Logic Unit
+    Program Counter Unit
   
 
     
@@ -605,15 +579,92 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#zero-flag-optimization" class="md-nav__link">
+  <a href="#branch-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Zero Flag Optimization
+          Branch Resolution
         </span>
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Branch Resolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pc-logic-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          PC Logic Unit
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pc-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          PC Adder
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-bit-branch-predictor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          1-bit Branch Predictor
+        </span>
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1-bit Branch Predictor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#branch-history-table-bht" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Branch History Table (BHT)
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-target-buffer-btb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Branch Target Buffer (BTB)
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -621,6 +672,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../alu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arithmetic & Logic Unit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -710,6 +789,144 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../mem/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Subsystem
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Memory Subsystem
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mem/main-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Main Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mem/mmio-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MMIO Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -751,7 +968,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../sim/" class="md-nav__link ">
+            <a href="../../../sim/" class="md-nav__link ">
               
   
   
@@ -795,7 +1012,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sim/benchmark_tb/" class="md-nav__link">
+      <a href="../../../sim/benchmark_tb/" class="md-nav__link">
         
   
   
@@ -823,7 +1040,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sim/uart_tb/" class="md-nav__link">
+      <a href="../../../sim/uart_tb/" class="md-nav__link">
         
   
   
@@ -889,7 +1106,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../sw/" class="md-nav__link ">
+            <a href="../../../sw/" class="md-nav__link ">
               
   
   
@@ -933,7 +1150,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/benchmark/" class="md-nav__link">
+      <a href="../../../sw/benchmark/" class="md-nav__link">
         
   
   
@@ -961,7 +1178,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/uart_calculator/" class="md-nav__link">
+      <a href="../../../sw/uart_calculator/" class="md-nav__link">
         
   
   
@@ -989,7 +1206,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/resources/" class="md-nav__link">
+      <a href="../../../sw/resources/" class="md-nav__link">
         
   
   
@@ -1042,7 +1259,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../sw/changelog/" class="md-nav__link ">
+            <a href="../../../sw/changelog/" class="md-nav__link ">
               
   
   
@@ -1086,7 +1303,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../sw/changelog/conventions/" class="md-nav__link">
+      <a href="../../../sw/changelog/conventions/" class="md-nav__link">
         
   
   
@@ -1149,15 +1366,92 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#zero-flag-optimization" class="md-nav__link">
+  <a href="#branch-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Zero Flag Optimization
+          Branch Resolution
         </span>
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Branch Resolution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pc-logic-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          PC Logic Unit
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pc-adder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          PC Adder
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-bit-branch-predictor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          1-bit Branch Predictor
+        </span>
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1-bit Branch Predictor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#branch-history-table-bht" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Branch History Table (BHT)
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-target-buffer-btb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Branch Target Buffer (BTB)
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1186,7 +1480,7 @@
   
   
     <li class="md-path__item">
-      <a href="../.." class="md-path__link">
+      <a href="../../.." class="md-path__link">
         
   <span class="md-ellipsis">
     Home
@@ -1226,7 +1520,7 @@
 
 
   
-    <a href="https://github.com/mendax1234/Mach-V/edit/main/docs/uarch/alu.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/mendax1234/Mach-V/edit/main/docs/hw/uarch/pc-unit.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1234,21 +1528,230 @@
   
 
 
-<h1 id="arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
-<p>The Mach-V ALU is a streamlined execution unit derived from the reference design used in <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v">NUS CG3207</a>. It implements standard RISC-V integer arithmetic and logical operations, utilizing a <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/Shifter.v">barrel shifter</a> designed by NUS CG3207 teaching team for efficient single-cycle shift operations.</p>
-<h2 id="zero-flag-optimization">Zero Flag Optimization<a class="headerlink" href="#zero-flag-optimization" title="Permanent link">&para;</a></h2>
-<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../sw/changelog/conventions/#version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="../../sw/changelog/#2.0">2.0</a></span></span>
-<span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../sw/changelog/conventions/#feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
-<p>While the base architecture is inherited, a critical timing optimization was introduced to the <strong>Zero (Z) flag generation</strong>. In the <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v#L79">reference design</a>, the Z flag is typically derived from the final <code>ALUResult</code> (after the result multiplexer). This creates a long logic chain: <code>Adder -&gt; Result Mux -&gt; Zero Check</code>.</p>
-<p>To reduce the critical path, Mach-V computes the Z flag directly from the 33-bit adder output (<code>Sum</code>) <strong>in parallel</strong> with the result multiplexer. This decouples the flag generation from the multiplexing logic, significantly reducing propagation delay.</p>
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Critical Path Optimization: </span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// Calculate Zero flag from the intermediate Sum rather than the final ALUResult</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assign</span><span class="w"> </span><span class="n">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Sum</span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">32</span><span class="mb">&#39;b0</span><span class="p">);</span>
-</span></code></pre></div>
-<div class="admonition failure">
-<p class="admonition-title">Failure</p>
-<p>This optimization is mandatory for Mach-V to achieve timing closure at 115 MHz. Reverting to the standard post-mux Zero generation will cause setup time violations on the Vivado tool.</p>
+<h1 id="pc-logic">PC Logic<a class="headerlink" href="#pc-logic" title="Permanent link">&para;</a></h1>
+<p>This section details the implementation of the Program Counter (PC) logic, covering <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/PC_Logic.v"><code>PC_Logic.v</code></a>, <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/ProgramCounter.v"><code>ProgramCounter.v</code></a>, and the relevant multiplexing logic for the PC adder within <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/RV.v#L136-L150"><code>RV.v</code></a>.</p>
+<h2 id="branch-resolution">Branch Resolution<a class="headerlink" href="#branch-resolution" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../../sw/changelog/conventions/#version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="../../../sw/changelog/#2.0">2.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../../sw/changelog/conventions/#default" title="Default value"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a6 6 0 0 1-6-6c0-4 6-10.75 6-10.75S18 10 18 14a6 6 0 0 1-6 6"/></svg></span></a></span></span></p>
+<p>In Mach-V Version 2, branch and jump instructions are <strong>committed in the Mem stage</strong>. Moving this logic from Execute to Memory improved timing performance, allowing the design to achieve a clock frequency of <strong>115 MHz</strong>.</p>
+<p>The microarchitecture consists of two main components:</p>
+<ol>
+<li><strong>PC Logic Unit</strong>: Determines whether a branch is taken based on ALU flags and branch conditions.</li>
+<li><strong>PC Adder</strong>: Computes the next PC value based on the current PC, branch targets, and jump addresses.</li>
+</ol>
+<h3 id="pc-logic-unit">PC Logic Unit<a class="headerlink" href="#pc-logic-unit" title="Permanent link">&para;</a></h3>
+<p>The PC Logic Unit decides how the next PC value is formed. It uses instruction type and ALU comparison results to generate a 2-bit control signal <code>PCSrc[1:0]</code>, which selects the PC update behavior and thus <code>PCSrc[1:0]</code> can indicate whether a branch or jump is taken.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As <code>PCSrc[1:0]</code> controls the next PC value and it is generated in the Mem stage, we say that our branch/jump instructions are "committed" in the Mem stage.</p>
 </div>
+<ol>
+<li><code>PCS</code> (Input)<ul>
+<li>Encodes the instruction category (sequential, branch, JAL, JALR).</li>
+<li>Combined with ALU flags to decide whether a control transfer is taken.</li>
+</ul>
+</li>
+<li><code>ALUFlags[2:0] = {eq, lt, ltu}</code> (Input)<ul>
+<li>Result of comparisons performed by the ALU.</li>
+<li>Used mainly for conditional branches (e.g., BEQ, BLT, BLTU).</li>
+</ul>
+</li>
+<li><code>PCSrc[1:0]</code> (Output)<ul>
+<li>Controls how the next PC is computed.</li>
+</ul>
+</li>
+</ol>
+<p>The logic of PC Logic can be summarized in the following table:</p>
+<table>
+<thead>
+<tr>
+<th><code>PCS</code></th>
+<th>Instruction</th>
+<th><code>Funct3</code></th>
+<th><code>PCSrc[1]</code></th>
+<th><code>PCSrc[0]</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>Non control</td>
+<td>x</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>01</td>
+<td>beq</td>
+<td>000</td>
+<td>0</td>
+<td>ALUFlags[2]</td>
+</tr>
+<tr>
+<td>01</td>
+<td>bne</td>
+<td>001</td>
+<td>0</td>
+<td>ALUFlags[2]'</td>
+</tr>
+<tr>
+<td>01</td>
+<td>blt</td>
+<td>100</td>
+<td>0</td>
+<td>ALUFlags[1]</td>
+</tr>
+<tr>
+<td>01</td>
+<td>bge</td>
+<td>101</td>
+<td>0</td>
+<td>ALUFlags[1]'</td>
+</tr>
+<tr>
+<td>01</td>
+<td>bltu</td>
+<td>110</td>
+<td>0</td>
+<td>ALUFlags[0]</td>
+</tr>
+<tr>
+<td>01</td>
+<td>bgeu</td>
+<td>111</td>
+<td>0</td>
+<td>ALUFlags[0]'</td>
+</tr>
+<tr>
+<td>10</td>
+<td>jal</td>
+<td>x</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>11</td>
+<td>jalr</td>
+<td>x</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pc-adder">PC Adder<a class="headerlink" href="#pc-adder" title="Permanent link">&para;</a></h3>
+<p>The PC Adder computes the next address (including the branch target or jump address). Because the commitment happens in the Mem stage, the inputs must be sourced correctly to avoid hazards:</p>
+<ul>
+<li><code>PC_Base</code>: Selects between the current PC (<code>PCF</code>, <code>PCM</code>) or a register value (<code>RD1M</code>). Note that <code>RD1M</code> is derived from <code>RD1E_Forwarded</code> and latched into the Mem stage pipeline register.</li>
+<li><code>PC_Offset</code>: Selects between sequential increment (<code>+4</code>) or the branch offset (<code>+ExtImmM</code>).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><code>PCSrc</code></th>
+<th>Base (<code>PC_Base</code>)</th>
+<th>Offset (<code>PC_Offset</code>)</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>00</code></td>
+<td><code>PCF</code></td>
+<td><code>+4</code></td>
+<td>Sequential execution</td>
+</tr>
+<tr>
+<td><code>01</code></td>
+<td><code>PCM</code></td>
+<td><code>+ExtImm</code></td>
+<td>Taken branch or JAL</td>
+</tr>
+<tr>
+<td><code>10</code></td>
+<td><code>RD1M</code></td>
+<td><code>+4</code></td>
+<td>JALR (no immediate offset)</td>
+</tr>
+<tr>
+<td><code>11</code></td>
+<td><code>RD1M</code></td>
+<td><code>+ExtImm</code></td>
+<td>JALR with immediate</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Simply delaying the control signals is insufficient for this microarchitectural change. The <a href="../hazard-unit/">Hazard Unit</a> must also be updated to handle the new branch resolution timing correctly.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="../#mach-v-version-2">in Mach-V Version 2's microarchitecture diagram</a>.</p>
+</div>
+<h2 id="1-bit-branch-predictor">1-bit Branch Predictor<a class="headerlink" href="#1-bit-branch-predictor" title="Permanent link">&para;</a></h2>
+<p>To implement a 1-bit branch predictor, the design uses two structures:</p>
+<ul>
+<li>Branch History Table (BHT): predicts whether a branch is taken.</li>
+<li>Branch Target Buffer (BTB): predicts where the branch goes if it is taken.</li>
+</ul>
+<p>Both structures are accessed in the Fetch (F) stage using the current PC, and updated later when the actual branch outcome is known.</p>
+<h3 id="branch-history-table-bht">Branch History Table (BHT)<a class="headerlink" href="#branch-history-table-bht" title="Permanent link">&para;</a></h3>
+<p>The Branch History Table stores 2-bit prediction (the value of <code>PCSrc[1:0]</code>) for each indexed entry, indicating whether a branch was taken last time.</p>
+<figure>
+<p><img alt="BHT Block Diagram" src="../../../assets/images/Branch-History-Table-1-bit.svg" /></p>
+<figcaption>
+<p>Branch History Table (1-bit) Block Diagram</p>
+</figcaption>
+</figure>
+<h4 id="functionality">Functionality<a class="headerlink" href="#functionality" title="Permanent link">&para;</a></h4>
+<ul>
+<li>In the Fetch stage, <code>PCF</code> indexes the BHT to produce <code>PrPCSrcF</code>, which predicts whether the current instruction will take a branch.</li>
+<li>In the Memory stage, if a branch instruction is resolved and found to be mispredicted, the corresponding BHT entry is updated using <code>PCM</code>.</li>
+</ul>
+<hr />
+<h4 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>PCF</code>: Index used to read the BHT and generate a prediction in the Fetch stage.</li>
+<li><code>PCM</code>: Index used to update the BHT when the actual branch outcome is known.</li>
+<li><code>PCSrcM</code>: The actual branch outcome (taken or not taken) determined in the Memory stage.</li>
+<li><code>WE_PrPCSrc</code>: Write enable signal, asserted only when a branch is mispredicted and the BHT entry must be corrected.</li>
+</ul>
+<hr />
+<h4 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>PrPCSrcF</code>: Predicted PCSrc value for the instruction in the Fetch stage.</li>
+</ul>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>PCSrc[1:0]</code> indicates whether the branch is taken (<code>1</code>) or not taken (<code>0</code>).</p>
+</div>
+<h3 id="branch-target-buffer-btb">Branch Target Buffer (BTB)<a class="headerlink" href="#branch-target-buffer-btb" title="Permanent link">&para;</a></h3>
+<p>The Branch Target Buffer stores the target address of previously taken branches.</p>
+<figure>
+<p><img alt="BTB Block Diagram" src="../../../assets/images/Branch-Target-Buffer-1-bit.svg" /></p>
+<figcaption>
+<p>Branch Target Buffer (1-bit) Block Diagram</p>
+</figcaption>
+</figure>
+<h4 id="functionality_1">Functionality<a class="headerlink" href="#functionality_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>In the Fetch stage, <code>PCF</code> indexes the BTB to obtain <code>PrBTAF</code>, the predicted branch target address.</li>
+<li>In the Memory stage, if a branch is mispredicted or newly encountered, the BTB entry is updated with the correct target address using <code>PCM</code>.</li>
+</ul>
+<hr />
+<h4 id="inputs_1">Inputs<a class="headerlink" href="#inputs_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>PCF</code>: Index used to read the BTB in the Fetch stage.</li>
+<li><code>PCM</code>: Index used to update the BTB entry in the Memory stage.</li>
+<li><code>BTAM</code>: The actual branch target address computed when the branch is resolved.</li>
+<li><code>WE_PrBTA</code>: Write enable signal, asserted only when the BTB needs to be updated.</li>
+</ul>
+<hr />
+<h4 id="output_1">Output<a class="headerlink" href="#output_1" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>PrBTAF</code>: Predicted branch target address for the instruction in the Fetch stage.</li>
+</ul>
 
 
 
@@ -1271,7 +1774,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 6, 2026 07:39:47 UTC"><span class="timeago" datetime="2026-01-06T07:39:47+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 6, 2026 07:39:47 UTC">2026-01-06</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 26, 2026 12:23:07 UTC"><span class="timeago" datetime="2026-01-26T12:23:07+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 26, 2026 12:23:07 UTC">2026-01-26</span>
   </span>
 
     
@@ -1281,7 +1784,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 19, 2025 09:09:46 UTC"><span class="timeago" datetime="2025-12-19T09:09:46+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 19, 2025 09:09:46 UTC">2025-12-19</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 20, 2025 11:31:02 UTC"><span class="timeago" datetime="2025-12-20T11:31:02+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 20, 2025 11:31:02 UTC">2025-12-20</span>
   </span>
 
     
@@ -1341,7 +1844,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../pc-unit/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Program Counter Unit">
+          <a href="../clock/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Clock Architecture">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1351,20 +1854,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Program Counter Unit
+                Clock Architecture
               </div>
             </div>
           </a>
         
         
           
-          <a href="../mul-div-unit/" class="md-footer__link md-footer__link--next" aria-label="Next: Multiply &amp; Divide Unit">
+          <a href="../alu/" class="md-footer__link md-footer__link--next" aria-label="Next: Arithmetic &amp; Logic Unit">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Multiply & Divide Unit
+                Arithmetic & Logic Unit
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1401,18 +1904,18 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../../js/print-site.js"></script>
+        <script src="../../../js/print-site.js"></script>
       
-        <script src="../../js/timeago.min.js"></script>
+        <script src="../../../js/timeago.min.js"></script>
       
-        <script src="../../js/timeago_mkdocs_material.js"></script>
+        <script src="../../../js/timeago_mkdocs_material.js"></script>
       
-        <script src="../../javascripts/mathjax.js"></script>
+        <script src="../../../javascripts/mathjax.js"></script>
       
         <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       

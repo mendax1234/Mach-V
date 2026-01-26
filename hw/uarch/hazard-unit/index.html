@@ -12,31 +12,31 @@
         <meta name="author" content="Wenbo (Daniel) Zhu">
       
       
-        <link rel="canonical" href="https://mendax1234.github.io/Mach-V/uarch/">
+        <link rel="canonical" href="https://mendax1234.github.io/Mach-V/hw/uarch/hazard-unit/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../lsu/">
       
       
-        <link rel="next" href="clock/">
+        <link rel="next" href="../../mem/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Microarchitecture - Mach-V Docs</title>
+        <title>Hazard Handling Unit - Mach-V Docs</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -55,15 +55,15 @@
       
     
     
-      <link rel="stylesheet" href="../css/print-site.css">
+      <link rel="stylesheet" href="../../../css/print-site.css">
     
-      <link rel="stylesheet" href="../css/print-site-material.css">
+      <link rel="stylesheet" href="../../../css/print-site-material.css">
     
-      <link rel="stylesheet" href="../css/timeago.css">
+      <link rel="stylesheet" href="../../../css/timeago.css">
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -88,7 +88,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#microarchitecture" class="md-skip">
+        <a href="#hazard-handling-unit" class="md-skip">
           Skip to content
         </a>
       
@@ -104,7 +104,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Mach-V Docs" class="md-header__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
+    <a href="../../.." title="Mach-V Docs" class="md-header__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -124,7 +124,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Microarchitecture
+              Hazard Handling Unit
             
           </span>
         </div>
@@ -239,7 +239,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -262,7 +262,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -284,7 +284,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../sim/" class="md-tabs__link">
+        <a href="../../../sim/" class="md-tabs__link">
           
   
   
@@ -306,7 +306,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../sw/" class="md-tabs__link">
+        <a href="../../../sw/" class="md-tabs__link">
           
   
   
@@ -348,7 +348,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Mach-V Docs" class="md-nav__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
+    <a href="../../.." title="Mach-V Docs" class="md-nav__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -378,7 +378,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -425,6 +425,8 @@
       
         
       
+        
+      
     
     
     
@@ -445,7 +447,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -463,7 +465,7 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_2" id="__nav_2_label" tabindex="">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -489,7 +491,7 @@
   
   
     <li class="md-nav__item">
-      <a href="clock/" class="md-nav__link">
+      <a href="../clock/" class="md-nav__link">
         
   
   
@@ -517,7 +519,7 @@
   
   
     <li class="md-nav__item">
-      <a href="pc-unit/" class="md-nav__link">
+      <a href="../pc-unit/" class="md-nav__link">
         
   
   
@@ -545,7 +547,7 @@
   
   
     <li class="md-nav__item">
-      <a href="alu/" class="md-nav__link">
+      <a href="../alu/" class="md-nav__link">
         
   
   
@@ -573,7 +575,7 @@
   
   
     <li class="md-nav__item">
-      <a href="mul-div-unit/" class="md-nav__link">
+      <a href="../mul-div-unit/" class="md-nav__link">
         
   
   
@@ -601,7 +603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="lsu/" class="md-nav__link">
+      <a href="../lsu/" class="md-nav__link">
         
   
   
@@ -626,10 +628,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="hazard-unit/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hazard Handling Unit
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -645,6 +674,209 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#forwarding-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Forwarding Logic
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stall-flush-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Stall &amp; Flush Logic
+        </span>
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Stall &amp; Flush Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modifications-for-mem-stage-branching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Modifications for Mem Stage Branching
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../mem/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Subsystem
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8" id="__nav_2_8_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Memory Subsystem
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mem/main-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Main Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mem/mmio-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MMIO Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -691,7 +923,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../sim/" class="md-nav__link ">
+            <a href="../../../sim/" class="md-nav__link ">
               
   
   
@@ -735,7 +967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sim/benchmark_tb/" class="md-nav__link">
+      <a href="../../../sim/benchmark_tb/" class="md-nav__link">
         
   
   
@@ -763,7 +995,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sim/uart_tb/" class="md-nav__link">
+      <a href="../../../sim/uart_tb/" class="md-nav__link">
         
   
   
@@ -829,7 +1061,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../sw/" class="md-nav__link ">
+            <a href="../../../sw/" class="md-nav__link ">
               
   
   
@@ -873,7 +1105,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sw/benchmark/" class="md-nav__link">
+      <a href="../../../sw/benchmark/" class="md-nav__link">
         
   
   
@@ -901,7 +1133,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sw/uart_calculator/" class="md-nav__link">
+      <a href="../../../sw/uart_calculator/" class="md-nav__link">
         
   
   
@@ -929,7 +1161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sw/resources/" class="md-nav__link">
+      <a href="../../../sw/resources/" class="md-nav__link">
         
   
   
@@ -982,7 +1214,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../sw/changelog/" class="md-nav__link ">
+            <a href="../../../sw/changelog/" class="md-nav__link ">
               
   
   
@@ -1026,7 +1258,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sw/changelog/conventions/" class="md-nav__link">
+      <a href="../../../sw/changelog/conventions/" class="md-nav__link">
         
   
   
@@ -1089,11 +1321,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#performance-benchmark" class="md-nav__link">
+  <a href="#forwarding-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Performance Benchmark
+          Forwarding Logic
         </span>
       
     </span>
@@ -1102,15 +1334,34 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#microarchitecture-overview" class="md-nav__link">
+  <a href="#stall-flush-logic" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Microarchitecture Overview
+          Stall &amp; Flush Logic
         </span>
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Stall &amp; Flush Logic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modifications-for-mem-stage-branching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Modifications for Mem Stage Branching
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1139,7 +1390,7 @@
   
   
     <li class="md-path__item">
-      <a href=".." class="md-path__link">
+      <a href="../../.." class="md-path__link">
         
   <span class="md-ellipsis">
     Home
@@ -1157,7 +1408,7 @@
     
     
       <li class="md-path__item">
-        <a href="./" class="md-path__link">
+        <a href="../" class="md-path__link">
           
   <span class="md-ellipsis">
     Microarchitecture
@@ -1179,7 +1430,7 @@
 
 
   
-    <a href="https://github.com/mendax1234/Mach-V/edit/main/docs/uarch/index.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/mendax1234/Mach-V/edit/main/docs/hw/uarch/hazard-unit.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1187,45 +1438,55 @@
   
 
 
-<h1 id="microarchitecture">Microarchitecture<a class="headerlink" href="#microarchitecture" title="Permanent link">&para;</a></h1>
-<h2 id="performance-benchmark">Performance Benchmark<a class="headerlink" href="#performance-benchmark" title="Permanent link">&para;</a></h2>
-<p>Here is the performance scaling of the Mach-V core running the CoreMark benchmark.</p>
-<p><img alt="CoreMark Performance" src="../assets/images/mach-v-coremark-performance-light.png#only-light" />
-<img alt="CoreMark Performance" src="../assets/images/mach-v-coremark-performance-dark.png#only-dark" /></p>
-<h2 id="microarchitecture-overview">Microarchitecture Overview<a class="headerlink" href="#microarchitecture-overview" title="Permanent link">&para;</a></h2>
-<p>The microarchitecture of Mach-V has currently evolved through two distinct iterations:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="mach-v-version-1" name="__tabbed_1" type="radio" /><input id="mach-v-version-2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="mach-v-version-1">Mach-V Version 1</label><label for="mach-v-version-2">Mach-V Version 2</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<figure>
-<p><img alt="Mach-V V1 Microarchitecture" src="../assets/images/Mach-V-V1.svg" /></p>
-<figcaption>
-<p>Mach-V Microarchitecture - Version 1</p>
-</figcaption>
-</figure>
-<p>Mach-V Version 1 serves as the baseline implementation, featuring a classic RISC-V scalar architecture:</p>
+<h1 id="hazard-handling-unit">Hazard Handling Unit<a class="headerlink" href="#hazard-handling-unit" title="Permanent link">&para;</a></h1>
+<p>The Hazard Handling Unit manages the data and control hazards inherent in Mach-V's 5-stage pipeline architecture. Its primary responsibilities are divided into two logic blocks:</p>
 <ol>
-<li><strong>Classic 5-Stage Pipeline:</strong> Implements the standard Fetch, Decode, Execute, Memory, and Writeback stages for balanced throughput.</li>
-<li><strong>Comprehensive Hazard Management:</strong> Dedicated hardware for data forwarding and hazard detection resolves data and control hazards automatically.</li>
-<li><strong>Scalar In-Order Execution:</strong> Issues, executes, and commits instructions sequentially (single-issue) to ensure deterministic behavior and architectural simplicity.</li>
+<li><strong>Data Forwarding Logic</strong>: Resolves data hazards by bypassing results from later stages.</li>
+<li><strong>Stall &amp; Flush Logic</strong>: Resolves load-use and control hazards by stalling or clearing pipeline registers.</li>
 </ol>
-</div>
-<div class="tabbed-block">
-<figure>
-<p><img alt="Mach-V V2 Microarchitecture" src="../assets/images/Mach-V-V2.svg" /></p>
-<figcaption>
-<p>Mach-V Microarchitecture - Version 2</p>
-</figcaption>
-</figure>
-<p>Mach-V Version 2 focuses on timing optimization and hardware acceleration, introducing the following enhancements:</p>
-<ol>
-<li><strong>Enhanced Clock Frequency:</strong> Integrated Clock Wizard boosts the operating frequency to <strong>115 MHz</strong> (surpassing the 100 MHz baseline).</li>
-<li><strong>Critical Path Optimization:</strong> PC logic is relocated from the Execute (EXE) stage to the Memory (MEM) stage to relax timing constraints.</li>
-<li><strong>Hardware-Accelerated Arithmetic:</strong> Replaces native design with optimized AMD/Xilinx IP cores for high-performance integer multiplication and division.</li>
-</ol>
-</div>
-</div>
-</div>
+<h2 id="forwarding-logic">Forwarding Logic<a class="headerlink" href="#forwarding-logic" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../../sw/changelog/conventions/#version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="../../../sw/changelog/#1.0">1.0</a></span></span></p>
+<p>The stall &amp; flush logic mainly deals with the load-use hazard and control hazard. The version that Mach-V Version 1 uses also strictly follows the rules introduced in NUS CG3207 or in Harris &amp; Harris DDCA.</p>
+<p>Specific implementation details can be found in the source code <code>Hazard.v</code> and it strictly follows the datapath connections shown in the <a href="../#mach-v-version-2">microarchitecture diagram</a>.</p>
+<h2 id="stall-flush-logic">Stall &amp; Flush Logic<a class="headerlink" href="#stall-flush-logic" title="Permanent link">&para;</a></h2>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../../sw/changelog/conventions/#version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="../../../sw/changelog/#1.0">1.0</a></span></span></p>
+<p>The base implementation of the Stall &amp; Flush logic handles standard Load-Use hazards and Control hazards, also following NUS CG3207 and DDCA (Harris &amp; Harris) model.</p>
+<h3 id="modifications-for-mem-stage-branching">Modifications for Mem Stage Branching<a class="headerlink" href="#modifications-for-mem-stage-branching" title="Permanent link">&para;</a></h3>
+<p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../../sw/changelog/conventions/#version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="../../../sw/changelog/#2.0">2.0</a></span></span>
+<span class="mdx-badge"><span class="mdx-badge__icon"><a href="../../../sw/changelog/conventions/#feature" title="Optional feature"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg></span></a></span></span></p>
+<p>To support moving the PC Logic to the Memory (Mem) stage, significant modifications were required to complete the interaction between the Hazard Unit, the Stall signals, and the Multi-Cycle Unit.</p>
+<hr />
+<h4 id="priority-inversion-the-lost-jump-scenario">Priority Inversion: The "Lost Jump" Scenario<a class="headerlink" href="#priority-inversion-the-lost-jump-scenario" title="Permanent link">&para;</a></h4>
+<p><strong>The Problem</strong>: When a branch/jump instruction reaches the Mem stage and resolves to branch/jump, the instruction immediately following it (the "ghost" instruction) is already in the Execute or Decode stage. If this ghost instruction triggers a Hazard Stall (e.g., a Load-Use stall or a Multi-Cycle Busy signal), a conflict arises.</p>
+<p>In the previous design, the PC update logic prioritized <code>StallF</code> over the new PC target (<code>PC_IN</code>). Because <code>StallF</code> was high (caused by the ghost instruction), the PC retained its current value, effectively ignoring the jump request. This caused the CPU to "fall through" and execute instructions that should have been skipped.</p>
+<p><strong>The Solution</strong>: Control flow changes must be prioritized over stall signals. I modified the logic to force stall signals to <code>0</code> whenever a branch or jump is confirmed (<code>PCSrcM</code> is active). This ensures that if the processor is jumping, hazards caused by instructions in the flush shadow are ignored.</p>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Before: Stall logic only looked at hazards</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// assign StallF = lwStall | Busy;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// assign StallD = lwStall | Busy;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">// After: Force Stall to 0 if a branch (PCSrcM[0]) is happening</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assign</span><span class="w"> </span><span class="n">StallF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">lwStall</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Busy</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">PCSrcM</span><span class="p">[</span><span class="mh">0</span><span class="p">];</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assign</span><span class="w"> </span><span class="n">StallD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">lwStall</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Busy</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">PCSrcM</span><span class="p">[</span><span class="mh">0</span><span class="p">];</span>
+</span></code></pre></div>
+<hr />
+<h4 id="spurious-execution-in-muldiv-operations">Spurious Execution in Mul/Div Operations<a class="headerlink" href="#spurious-execution-in-muldiv-operations" title="Permanent link">&para;</a></h4>
+<p><strong>The Problem</strong>: When a branch/jump instruction takes a branch/jump in the Mem stage, the subsequent instruction (e.g., a <code>mul</code>) may have already advanced to the Execute stage.</p>
+<p>Although the Hazard Unit asserts <code>FlushE</code> to kill the <code>mul</code> for the next clock cycle, the MCycle Unit is combinational logic that reacts to its inputs instantly. It sees the <code>Start</code> signal immediately in the current cycle, begins the calculation, and raises the <code>Busy</code> flag. This stalls the entire processor to perform a "fake" multiplication that is about to be flushed.</p>
+<p><strong>The Solution</strong>: I modified the instantiation of the MCycle Unit in <code>RV.v</code> to logically "gate" the start signal. If the Execute stage is currently being flushed (<code>FlushE</code> is high), the <code>.Start</code> input is forced to <code>0</code>. This prevents the unit from activating on instructions that are being discarded.</p>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">MCycle</span><span class="w"> </span><span class="p">#(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="p">.</span><span class="n">width</span><span class="p">(</span><span class="mh">32</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">)</span><span class="w"> </span><span class="n">MCycle1</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="c1">// ... other ports ...</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="c1">// Before: The unit starts immediately, ignoring the flush</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="c1">// .Start   (MCycleStartE),</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="c1">// After: The unit only starts if we are NOT flushing the stage</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="p">.</span><span class="n">Start</span><span class="w">   </span><span class="p">(</span><span class="n">MCycleStartE</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">~</span><span class="n">FlushE</span><span class="p">),</span><span class="w"> </span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="p">.</span><span class="n">Busy</span><span class="w">    </span><span class="p">(</span><span class="n">Busy</span><span class="p">)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">);</span>
+</span></code></pre></div>
 
 
 
@@ -1248,7 +1509,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 20, 2025 12:09:51 UTC"><span class="timeago" datetime="2025-12-20T12:09:51+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 20, 2025 12:09:51 UTC">2025-12-20</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 6, 2026 08:41:49 UTC"><span class="timeago" datetime="2026-01-06T08:41:49+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 6, 2026 08:41:49 UTC">2026-01-06</span>
   </span>
 
     
@@ -1258,7 +1519,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 11, 2025 13:35:13 UTC"><span class="timeago" datetime="2025-12-11T13:35:13+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 11, 2025 13:35:13 UTC">2025-12-11</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 20, 2025 11:31:02 UTC"><span class="timeago" datetime="2025-12-20T11:31:02+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 20, 2025 11:31:02 UTC">2025-12-20</span>
   </span>
 
     
@@ -1318,7 +1579,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+          <a href="../lsu/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Load &amp; Store Unit">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1328,20 +1589,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Home
+                Load & Store Unit
               </div>
             </div>
           </a>
         
         
           
-          <a href="clock/" class="md-footer__link md-footer__link--next" aria-label="Next: Clock Architecture">
+          <a href="../../mem/" class="md-footer__link md-footer__link--next" aria-label="Next: Memory Subsystem">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Clock Architecture
+                Memory Subsystem
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -1378,18 +1639,18 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../js/print-site.js"></script>
+        <script src="../../../js/print-site.js"></script>
       
-        <script src="../js/timeago.min.js"></script>
+        <script src="../../../js/timeago.min.js"></script>
       
-        <script src="../js/timeago_mkdocs_material.js"></script>
+        <script src="../../../js/timeago_mkdocs_material.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../../javascripts/mathjax.js"></script>
       
         <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       

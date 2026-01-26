@@ -5,6 +5,46 @@
          <lastmod>2026-01-26</lastmod>
     </url>
     <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/mem/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/mem/main-memory/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/mem/mmio-bus/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/uarch/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/uarch/alu/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/uarch/clock/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/uarch/hazard-unit/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/uarch/lsu/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/uarch/mul-div-unit/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
+         <loc>https://mendax1234.github.io/Mach-V/hw/uarch/pc-unit/</loc>
+         <lastmod>2026-01-26</lastmod>
+    </url>
+    <url>
          <loc>https://mendax1234.github.io/Mach-V/sim/</loc>
          <lastmod>2026-01-26</lastmod>
     </url>
@@ -38,34 +78,6 @@
     </url>
     <url>
          <loc>https://mendax1234.github.io/Mach-V/sw/changelog/conventions/</loc>
-         <lastmod>2026-01-26</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/</loc>
-         <lastmod>2026-01-26</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/alu/</loc>
-         <lastmod>2026-01-26</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/clock/</loc>
-         <lastmod>2026-01-26</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/hazard-unit/</loc>
-         <lastmod>2026-01-26</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/lsu/</loc>
-         <lastmod>2026-01-26</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/mul-div-unit/</loc>
-         <lastmod>2026-01-26</lastmod>
-    </url>
-    <url>
-         <loc>https://mendax1234.github.io/Mach-V/uarch/pc-unit/</loc>
          <lastmod>2026-01-26</lastmod>
     </url>
 </urlset>

@@ -260,7 +260,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../uarch/" class="md-tabs__link">
+        <a href="../hw/uarch/" class="md-tabs__link">
           
   
   
@@ -423,6 +423,8 @@
       
         
       
+        
+      
     
     
     
@@ -440,7 +442,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../uarch/" class="md-nav__link ">
+            <a href="../hw/uarch/" class="md-nav__link ">
               
   
   
@@ -484,7 +486,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uarch/clock/" class="md-nav__link">
+      <a href="../hw/uarch/clock/" class="md-nav__link">
         
   
   
@@ -512,7 +514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uarch/pc-unit/" class="md-nav__link">
+      <a href="../hw/uarch/pc-unit/" class="md-nav__link">
         
   
   
@@ -540,7 +542,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uarch/alu/" class="md-nav__link">
+      <a href="../hw/uarch/alu/" class="md-nav__link">
         
   
   
@@ -568,7 +570,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uarch/mul-div-unit/" class="md-nav__link">
+      <a href="../hw/uarch/mul-div-unit/" class="md-nav__link">
         
   
   
@@ -596,7 +598,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uarch/lsu/" class="md-nav__link">
+      <a href="../hw/uarch/lsu/" class="md-nav__link">
         
   
   
@@ -624,7 +626,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uarch/hazard-unit/" class="md-nav__link">
+      <a href="../hw/uarch/hazard-unit/" class="md-nav__link">
         
   
   
@@ -640,6 +642,141 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../hw/mem/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory Subsystem
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Memory Subsystem
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw/mem/main-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Main Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw/mem/mmio-bus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MMIO Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1105,51 +1242,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#system-memory-map" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          System Memory Map
-        </span>
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="System Memory Map">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#main-memory" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Main Memory
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#memory-mapped-peripherals-mmio" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        <span class="md-typeset">
-          Memory-Mapped Peripherals (MMIO)
-        </span>
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#toolchain-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1287,226 +1379,6 @@
 <ul>
 <li><code>sw/coremark/</code> contains the CoreMark benchmark source code and build scripts.</li>
 </ul>
-<h2 id="system-memory-map">System Memory Map<a class="headerlink" href="#system-memory-map" title="Permanent link">&para;</a></h2>
-<p>Followed by the convention set in <a href="https://nus-cg3207.github.io/labs/rv_resources/rv_memmap/">NUS CG3207</a>, the Mach-V processor uses a memory-mapped I/O architecture. The address space is divided into Instruction Memory, Data Memory, and Peripheral (MMIO) regions.</p>
-<div class="admonition info">
-<p class="admonition-title">Configuration Source</p>
-<p>The memory capacities defined below are determined by parameters in <code>Wrapper.v</code>. For example,
-<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">localparam</span><span class="w"> </span><span class="n">IROM_DEPTH_BITS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">15</span><span class="p">;</span><span class="w">     </span><span class="c1">// for 2^15 words = 32KB</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">localparam</span><span class="w"> </span><span class="n">DMEM_DEPTH_BITS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">14</span><span class="p">;</span><span class="w">     </span><span class="c1">// for 2^14 words = 16KB</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">localparam</span><span class="w"> </span><span class="n">MMIO_DEPTH_BITS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">8</span><span class="p">;</span><span class="w">      </span><span class="c1">// for 2^8 words = 1KB</span>
-</span></code></pre></div></p>
-<p>If you modify these parameters in <code>Wrapper.v</code>, you must update your linker script and stack initialization accordingly.</p>
-</div>
-<h3 id="main-memory">Main Memory<a class="headerlink" href="#main-memory" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Address Range</th>
-<th>Name</th>
-<th>Permissions</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>0x00400000 – 0x00407FFF</code></td>
-<td>IROM (Instruction Memory)</td>
-<td>RO (Read-Only)</td>
-<td>Capacity: 8,192 words (32 KB). Based on <code>IROM_DEPTH_BITS = 15</code>.</td>
-</tr>
-<tr>
-<td><code>0x10010000 – 0x10013FFF</code></td>
-<td>DMEM (Data Memory)</td>
-<td>RW (Read-Write)</td>
-<td>Capacity: 4,096 words (16 KB). Used for storing constants and variables. Based on <code>DMEM_DEPTH_BITS = 14</code>.</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition warning">
-<p class="admonition-title">Addressing Constraints</p>
-<p>Accesses must be aligned to 4-byte boundaries.</p>
-</div>
-<h3 id="memory-mapped-peripherals-mmio">Memory-Mapped Peripherals (MMIO)<a class="headerlink" href="#memory-mapped-peripherals-mmio" title="Permanent link">&para;</a></h3>
-<p>All peripherals are mapped to the upper memory range starting at <code>0xFFFFxxxx</code>.</p>
-<hr />
-<h4 id="communication-uart">Communication (UART)<a class="headerlink" href="#communication-uart" title="Permanent link">&para;</a></h4>
-<table>
-<thead>
-<tr>
-<th>Address</th>
-<th>Register Name</th>
-<th>Perms</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>0xFFFF0000</code></td>
-<td>UART_RX_VALID</td>
-<td>RO</td>
-<td>Receive Status. Data is valid to read from <code>UART_RX</code> only when the LSB (Least Significant Bit) of this register is set to 1.</td>
-</tr>
-<tr>
-<td><code>0xFFFF0004</code></td>
-<td>UART_RX</td>
-<td>RO</td>
-<td>Receive Data. Reads input from the keyboard. Only the LSByte (lowest 8 bits) contains valid data.</td>
-</tr>
-<tr>
-<td><code>0xFFFF0008</code></td>
-<td>UART_TX_READY</td>
-<td>RO</td>
-<td>Transmit Status. Data is safe to write to <code>UART_TX</code> only when the LSB of this register is set to 1.</td>
-</tr>
-<tr>
-<td><code>0xFFFF000C</code></td>
-<td>UART_TX</td>
-<td>WO</td>
-<td>Transmit Data. Sends output to the display/console. Only the LSByte is writeable.</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h4 id="on-board-io-gpio">On-Board I/O (GPIO)<a class="headerlink" href="#on-board-io-gpio" title="Permanent link">&para;</a></h4>
-<table>
-<thead>
-<tr>
-<th>Address</th>
-<th>Register Name</th>
-<th>Perms</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>0xFFFF0060</code></td>
-<td>LED</td>
-<td>WO</td>
-<td>LED control register</td>
-</tr>
-<tr>
-<td><code>0xFFFF0064</code></td>
-<td>DIP</td>
-<td>RO</td>
-<td>DIP switch input register</td>
-</tr>
-<tr>
-<td><code>0xFFFF0068</code></td>
-<td>PB</td>
-<td>RO</td>
-<td>Push button input register</td>
-</tr>
-<tr>
-<td><code>0xFFFF0080</code></td>
-<td>SEVENSEG</td>
-<td>WO</td>
-<td>7-segment display output register</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="admonition-title">Register Details</p>
-<dl>
-<dt><code>LED -- 0xFFFF0060 (WO)</code></dt>
-<dd>
-<p>The lower <strong>8 bits</strong> are user-writeable. The upper bits are hardwired as follows:</p>
-<ul>
-<li><strong>[7:0]</strong> user writeable,</li>
-<li><strong>[8]</strong> divided clock,</li>
-<li><strong>[15:9]</strong> program counter <code>[8:2]</code>.</li>
-</ul>
-</dd>
-<dt><code>DIP -- 0xFFFF0064 (RO)</code></dt>
-<dd>
-<p>Reads the state of the <strong>16 on-board switches</strong>, covering switch range <strong>SW15–SW0</strong>.</p>
-</dd>
-<dt><code>PB -- 0xFFFF0068 (RO)</code></dt>
-<dd>
-<p>Only the lowest <strong>3 bits</strong> are valid.</p>
-<ul>
-<li><strong>[2]</strong> BTNR (Right),</li>
-<li><strong>[1]</strong> BTNC (Center),</li>
-<li><strong>[0]</strong> BTNL (Left).</li>
-</ul>
-<p>The remaining buttons are hardwired: <strong>BTND</strong> resets the system, while <strong>BTNU</strong> pauses execution.</p>
-</dd>
-<dt><code>SEVENSEG -- 0xFFFF0080 (WO)</code></dt>
-<dd>
-<p>Writes an <strong>8-digit hexadecimal number</strong> to the 7-segment display.</p>
-</dd>
-</dl>
-</div>
-<hr />
-<h4 id="sensor-display-modules">Sensor &amp; Display Modules<a class="headerlink" href="#sensor-display-modules" title="Permanent link">&para;</a></h4>
-<table>
-<thead>
-<tr>
-<th>Address</th>
-<th>Register Name</th>
-<th>Perms</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>0xFFFF0020</code></td>
-<td>OLED_COL</td>
-<td>WO</td>
-<td>Sets the OLED pixel column index (0 – 95).</td>
-</tr>
-<tr>
-<td><code>0xFFFF0024</code></td>
-<td>OLED_ROW</td>
-<td>WO</td>
-<td>Sets the OLED pixel row index (0 – 63).</td>
-</tr>
-<tr>
-<td><code>0xFFFF0028</code></td>
-<td>OLED_DATA</td>
-<td>WO</td>
-<td>Writes data to the pixel. Format depends on <code>OLED_CTRL</code>.</td>
-</tr>
-<tr>
-<td><code>0xFFFF002C</code></td>
-<td>OLED_CTRL</td>
-<td>WO</td>
-<td>Controls OLED data format and operation modes.</td>
-</tr>
-<tr>
-<td><code>0xFFFF0040</code></td>
-<td>ACCEL_DATA</td>
-<td>RO</td>
-<td>Reads accelerometer data (refer to peripherals documentation for format).</td>
-</tr>
-<tr>
-<td><code>0xFFFF0044</code></td>
-<td>ACCEL_DREADY</td>
-<td>RO</td>
-<td>Data Ready. LSB is set when a new reading is available.</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h4 id="system-counters">System Counters<a class="headerlink" href="#system-counters" title="Permanent link">&para;</a></h4>
-<table>
-<thead>
-<tr>
-<th>Address</th>
-<th>Register Name</th>
-<th>Perms</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>0xFFFF00A0</code></td>
-<td>CYCLECOUNT</td>
-<td>RO</td>
-<td>Returns the number of clock cycles elapsed since system reset.</td>
-</tr>
-</tbody>
-</table>
 <h2 id="toolchain-setup">Toolchain Setup<a class="headerlink" href="#toolchain-setup" title="Permanent link">&para;</a></h2>
 <p>I used the RISC-V GNU Toolchain to compile C code into machine code (hex files) and then load them into the Mach-V processor's IROM (<code>AA_IROM.mem</code>) and DMEM (<code>AA_DMEM.mem</code>).</p>
 <h3 id="install-toolchain">Install Toolchain<a class="headerlink" href="#install-toolchain" title="Permanent link">&para;</a></h3>
@@ -1540,7 +1412,7 @@
 \text{Initial SP} = \text{DMEM_BASE} + \text{DMEM_SIZE}
 \]</div>
 <p>For example, if your DMEM size is 7KB (the <code>sw/coremark</code> example), and the Mach-V processor's DMEM base address is <code>0x10010000</code>, then the initial stack pointer should be set to:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>li sp, 0x10011C00  # 0x10010000 + 7 * 1024
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>li sp, 0x10011C00  # 0x10010000 + 7 * 1024
 </span></code></pre></div>
 <hr />
 <h3 id="compile-and-load">Compile and Load<a class="headerlink" href="#compile-and-load" title="Permanent link">&para;</a></h3>
@@ -1572,7 +1444,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 20, 2025 11:31:02 UTC"><span class="timeago" datetime="2025-12-20T11:31:02+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 20, 2025 11:31:02 UTC">2025-12-20</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 26, 2026 12:49:26 UTC"><span class="timeago" datetime="2026-01-26T12:49:26+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 26, 2026 12:49:26 UTC">2026-01-26</span>
   </span>
 
     
