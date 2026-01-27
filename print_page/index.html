@@ -102,7 +102,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="Mach-V Docs" class="md-header__button md-logo" aria-label="Mach-V Docs" data-md-component="logo">
       
@@ -227,14 +229,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -327,7 +323,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -2700,7 +2702,7 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
                         </h1>
                     <section class="print-page" id="hw-mem" heading-number="2.3.1"><h1 id="hw-mem-memory-subsystem">Memory Subsystem<a class="headerlink" href="#hw-mem-memory-subsystem" title="Permanent link">&para;</a></h1>
 <h2 id="hw-mem-system-memory-map">System Memory Map<a class="headerlink" href="#hw-mem-system-memory-map" title="Permanent link">&para;</a></h2>
-<p>Followed by the convention set in <a href="https://nus-cg3207.github.io/labs/rv_resources/rv_memmap/">NUS CG3207</a>, the Mach-V processor uses a memory-mapped I/O architecture. The address space is divided into Instruction Memory, Data Memory, and Peripheral (MMIO) regions.</p>
+<p>Followed by the convention set in <a href="https://nus-cg3207.github.io/labs/rv_resources/rv_memmap/">NUS CG3207</a>, the Mach-V processor uses a memory-mapped I/O architecture. The address space is divided into the main memory (include the Instruction Memory and Data Memory) and Peripheral (MMIO) regions.</p>
 <div class="admonition info">
 <p class="admonition-title">Configuration Source</p>
 <p>The memory capacities defined below are determined by parameters in <code>Wrapper.v</code>. For example,
@@ -2710,6 +2712,13 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 </span></code></pre></div></p>
 <p>If you modify these parameters in <code>Wrapper.v</code>, you must update your linker script and stack initialization accordingly.</p>
 </div></section><section class="print-page" id="hw-mem-main-memory" heading-number="2.3.2"><h1 id="hw-mem-main-memory-main-memory">Main Memory<a class="headerlink" href="#hw-mem-main-memory-main-memory" title="Permanent link">&para;</a></h1>
+<h2 id="hw-mem-main-memory-memory-map">Memory Map<a class="headerlink" href="#hw-mem-main-memory-memory-map" title="Permanent link">&para;</a></h2>
+<p>The Mach-V processor's main memory consists of Instruction Memory (IROM) and Data Memory (DMEM).</p>
+<ul>
+<li>IROM starts at address <code>0x00400000</code>.</li>
+<li>DMEM starts at address <code>0x10010000</code>.</li>
+</ul>
+<p>And their memory map is as follows:</p>
 <table>
 <thead>
 <tr>
@@ -2737,7 +2746,85 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 <div class="admonition warning">
 <p class="admonition-title">Addressing Constraints</p>
 <p>Accesses must be aligned to 4-byte boundaries.</p>
-</div></section><section class="print-page" id="hw-mem-mmio-bus" heading-number="2.3.3"><h1 id="hw-mem-mmio-bus-memory-mapped-peripherals-mmio">Memory-Mapped Peripherals (MMIO)<a class="headerlink" href="#hw-mem-mmio-bus-memory-mapped-peripherals-mmio" title="Permanent link">&para;</a></h1>
+</div>
+<h2 id="hw-mem-main-memory-memory-implementation">Memory Implementation<a class="headerlink" href="#hw-mem-main-memory-memory-implementation" title="Permanent link">&para;</a></h2>
+<p>In the earlier design of the Mach-V processor (e.g., Mach-V V1 and V2), both IROM and DMEM were implemented using the distributed memory resources available in the FPGA. However, starting from Mach-V V3, we transitioned to using Block RAM (BRAM) for both IROM and DMEM to enhance performance and resource efficiency.</p>
+<h3 id="hw-mem-main-memory-block-ram">Block RAM<a class="headerlink" href="#hw-mem-main-memory-block-ram" title="Permanent link">&para;</a></h3>
+<p>In Nexys 4 DDR FPGA, there are a certain number of Block RAM (BRAM) resources available. These Block RAMs are read <strong>synchronously</strong>. The easiest way to implement a Block RAM in Verilog is to use explicitly the synchronous read style, as shown below:</p>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#hw-mem-main-memory-__codelineno-0-1"></a><span class="c1">// Single-port synchronous RAM with read-first behavior</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#hw-mem-main-memory-__codelineno-0-2"></a><span class="k">module</span><span class="w"> </span><span class="n">rams_sp_rf</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#hw-mem-main-memory-__codelineno-0-3"></a><span class="w">    </span><span class="n">clk</span><span class="p">,</span><span class="w">    </span><span class="c1">// Clock input</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#hw-mem-main-memory-__codelineno-0-4"></a><span class="w">    </span><span class="n">en</span><span class="p">,</span><span class="w">     </span><span class="c1">// Memory enable</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#hw-mem-main-memory-__codelineno-0-5"></a><span class="w">    </span><span class="n">we</span><span class="p">,</span><span class="w">     </span><span class="c1">// Write enable</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#hw-mem-main-memory-__codelineno-0-6"></a><span class="w">    </span><span class="n">addr</span><span class="p">,</span><span class="w">   </span><span class="c1">// Memory address</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#hw-mem-main-memory-__codelineno-0-7"></a><span class="w">    </span><span class="n">di</span><span class="p">,</span><span class="w">     </span><span class="c1">// Data input (write data)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#hw-mem-main-memory-__codelineno-0-8"></a><span class="w">    </span><span class="n">dout</span><span class="w">    </span><span class="c1">// Data output (read data)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#hw-mem-main-memory-__codelineno-0-9"></a><span class="p">);</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#hw-mem-main-memory-__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#hw-mem-main-memory-__codelineno-0-11"></a><span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">clk</span><span class="p">;</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#hw-mem-main-memory-__codelineno-0-12"></a><span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">we</span><span class="p">;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#hw-mem-main-memory-__codelineno-0-13"></a><span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">en</span><span class="p">;</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#hw-mem-main-memory-__codelineno-0-14"></a><span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="p">[</span><span class="mh">9</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span><span class="w">   </span><span class="c1">// 10-bit address: 1024 words</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#hw-mem-main-memory-__codelineno-0-15"></a><span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">di</span><span class="p">;</span><span class="w">    </span><span class="c1">// 16-bit data input</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#hw-mem-main-memory-__codelineno-0-16"></a><span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">dout</span><span class="p">;</span><span class="w">  </span><span class="c1">// 16-bit data output</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#hw-mem-main-memory-__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#hw-mem-main-memory-__codelineno-0-18"></a><span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">RAM</span><span class="w">  </span><span class="p">[</span><span class="mh">1023</span><span class="o">:</span><span class="mh">0</span><span class="p">];</span><span class="w"> </span><span class="c1">// 1024 × 16-bit memory array</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#hw-mem-main-memory-__codelineno-0-19"></a><span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">dout</span><span class="p">;</span><span class="w">         </span><span class="c1">// Registered read data</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#hw-mem-main-memory-__codelineno-0-20"></a>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#hw-mem-main-memory-__codelineno-0-21"></a><span class="w">    </span><span class="c1">// Synchronous read/write operation</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#hw-mem-main-memory-__codelineno-0-22"></a><span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#hw-mem-main-memory-__codelineno-0-23"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">en</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#hw-mem-main-memory-__codelineno-0-24"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">we</span><span class="p">)</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#hw-mem-main-memory-__codelineno-0-25"></a><span class="w">                </span><span class="n">RAM</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">di</span><span class="p">;</span><span class="w"> </span><span class="c1">// Write data on write enable</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#hw-mem-main-memory-__codelineno-0-26"></a><span class="w">            </span><span class="n">dout</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">RAM</span><span class="p">[</span><span class="n">addr</span><span class="p">];</span><span class="w">   </span><span class="c1">// Read data (read-first behavior)</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#hw-mem-main-memory-__codelineno-0-27"></a><span class="w">        </span><span class="k">end</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#hw-mem-main-memory-__codelineno-0-28"></a><span class="w">    </span><span class="k">end</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#hw-mem-main-memory-__codelineno-0-29"></a>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#hw-mem-main-memory-__codelineno-0-30"></a><span class="k">endmodule</span>
+</span></code></pre></div>
+<p>In this example (from the official <a href="https://docs.amd.com/r/en-US/ug901-vivado-synthesis/Single-Port-RAM-with-Read-First-VHDL">AMD documentation</a>), we implement a <strong>single-port Block RAM (Read First)</strong>.</p>
+<ul>
+<li><strong>Single Port</strong>: There is only one port for both read and write operations.</li>
+<li><strong>Read First</strong>: When a read and write operation occur simultaneously at the same address, the data read is the old data before the write.</li>
+</ul>
+<p>One important characteristic of <strong>Block RAM (BRAM)</strong> is that its <strong>read operation is synchronous</strong> and therefore incurs a <strong>one-clock-cycle latency</strong>. In a pipelined processor, this has direct implications for the <strong>instruction fetch stage</strong>.</p>
+<figure>
+<p><img alt="BRAM Explanation" src="../assets/images/BRAM-Explanation.svg" /></p>
+<figcaption>
+<p>Block RAM Read Operation Timing</p>
+</figcaption>
+</figure>
+<p>During the Fetch stage, the program counter <code>PCF</code> is presented to the instruction memory (IROM). However, if the IROM is implemented using BRAM, the memory does not produce valid read data in the same cycle. Instead, the read is initiated at the next edge clock edge (the rising edge of the second clock cycle), and the instruction word becomes available only <strong>after the next clock edge</strong>. Consequently, the fetched instruction <code>InstrF</code> is not available until the <strong>end of the following clock cycle</strong>, which corresponds to the <strong>end of the Decode stage</strong>.</p>
+<h3 id="hw-mem-main-memory-distributed-memory">Distributed Memory<a class="headerlink" href="#hw-mem-main-memory-distributed-memory" title="Permanent link">&para;</a></h3>
+<p>In contrast, distributed memory resources in the FPGA uses <strong>asynchronous reads</strong>, allowing instruction fetches to complete within the same clock cycle. The implementation of the RAM using distributed memory would look like this:</p>
+<div class="language-verilog highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#hw-mem-main-memory-__codelineno-1-1"></a><span class="c1">// Single-port asynchronous RAM</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#hw-mem-main-memory-__codelineno-1-2"></a><span class="k">module</span><span class="w"> </span><span class="n">rams_sp_async</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#hw-mem-main-memory-__codelineno-1-3"></a><span class="w">    </span><span class="n">clk</span><span class="p">,</span><span class="w">    </span><span class="c1">// Clock input</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#hw-mem-main-memory-__codelineno-1-4"></a><span class="w">    </span><span class="n">we</span><span class="p">,</span><span class="w">     </span><span class="c1">// Write enable</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#hw-mem-main-memory-__codelineno-1-5"></a><span class="w">    </span><span class="n">addr</span><span class="p">,</span><span class="w">   </span><span class="c1">// Memory address</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#hw-mem-main-memory-__codelineno-1-6"></a><span class="w">    </span><span class="n">di</span><span class="p">,</span><span class="w">     </span><span class="c1">// Data input (write data)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#hw-mem-main-memory-__codelineno-1-7"></a><span class="w">    </span><span class="n">dout</span><span class="w">    </span><span class="c1">// Data output (read data)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#hw-mem-main-memory-__codelineno-1-8"></a><span class="p">);</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#hw-mem-main-memory-__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#hw-mem-main-memory-__codelineno-1-10"></a><span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">clk</span><span class="p">;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#hw-mem-main-memory-__codelineno-1-11"></a><span class="w">    </span><span class="k">input</span><span class="w">        </span><span class="n">we</span><span class="p">;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#hw-mem-main-memory-__codelineno-1-12"></a><span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="p">[</span><span class="mh">9</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span><span class="w">   </span><span class="c1">// 10-bit address: 1024 words</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#hw-mem-main-memory-__codelineno-1-13"></a><span class="w">    </span><span class="k">input</span><span class="w">  </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">di</span><span class="p">;</span><span class="w">    </span><span class="c1">// 16-bit data input</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#hw-mem-main-memory-__codelineno-1-14"></a><span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">dout</span><span class="p">;</span><span class="w">  </span><span class="c1">// 16-bit data output</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#hw-mem-main-memory-__codelineno-1-15"></a>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#hw-mem-main-memory-__codelineno-1-16"></a><span class="w">    </span><span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">RAM</span><span class="w">  </span><span class="p">[</span><span class="mh">1023</span><span class="o">:</span><span class="mh">0</span><span class="p">];</span><span class="w"> </span><span class="c1">// 1024 × 16-bit memory array</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#hw-mem-main-memory-__codelineno-1-17"></a>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#hw-mem-main-memory-__codelineno-1-18"></a><span class="w">    </span><span class="c1">// Asynchronous read operation</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#hw-mem-main-memory-__codelineno-1-19"></a><span class="w">    </span><span class="k">assign</span><span class="w"> </span><span class="n">dout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RAM</span><span class="p">[</span><span class="n">addr</span><span class="p">];</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#hw-mem-main-memory-__codelineno-1-20"></a>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#hw-mem-main-memory-__codelineno-1-21"></a><span class="w">    </span><span class="c1">// Synchronous write operation</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#hw-mem-main-memory-__codelineno-1-22"></a><span class="w">    </span><span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#hw-mem-main-memory-__codelineno-1-23"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">we</span><span class="p">)</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#hw-mem-main-memory-__codelineno-1-24"></a><span class="w">            </span><span class="n">RAM</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">di</span><span class="p">;</span><span class="w"> </span><span class="c1">// Write data on write enable</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#hw-mem-main-memory-__codelineno-1-25"></a><span class="w">    </span><span class="k">end</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#hw-mem-main-memory-__codelineno-1-26"></a><span class="k">endmodule</span>
+</span></code></pre></div>
+<p>One disadvantage of using distributed memory is that it consumes more of the FPGA's lookup tables (LUTs) compared to Block RAM, which is a dedicated memory resource.</p></section><section class="print-page" id="hw-mem-mmio-bus" heading-number="2.3.3"><h1 id="hw-mem-mmio-bus-memory-mapped-peripherals-mmio">Memory-Mapped Peripherals (MMIO)<a class="headerlink" href="#hw-mem-mmio-bus-memory-mapped-peripherals-mmio" title="Permanent link">&para;</a></h1>
 <p>All peripherals are mapped to the upper memory range starting at <code>0xFFFFxxxx</code>.</p>
 <h2 id="hw-mem-mmio-bus-communication-uart">Communication (UART)<a class="headerlink" href="#hw-mem-mmio-bus-communication-uart" title="Permanent link">&para;</a></h2>
 <table>
@@ -3503,7 +3590,7 @@ building from source.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/Mach-V/", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "/Mach-V/", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.path", "navigation.indexes", "navigation.instant", "navigation.instant.preview", "content.code.copy", "content.action.edit", "content.tooltips", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
