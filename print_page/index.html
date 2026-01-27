@@ -2795,7 +2795,7 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 </figcaption>
 </figure>
 <p>During the Fetch stage, the program counter <code>PCF</code> is presented to the instruction memory (IROM). However, if the IROM is implemented using BRAM, the memory does not produce valid read data in the same cycle. Instead, the read is initiated at the next edge clock edge (the rising edge of the second clock cycle), and the instruction word becomes available only <strong>after the next clock edge</strong>. Consequently, the fetched instruction <code>InstrF</code> is not available until the <strong>end of the following clock cycle</strong>, which corresponds to the <strong>end of the Decode stage</strong>.</p>
-<h3 id="hw-mem-main-memory-distributed-memory">Distributed Memory<a class="headerlink" href="#hw-mem-main-memory-distributed-memory" title="Permanent link">&para;</a></h3>
+<h3 id="hw-mem-main-memory-distributed-ram">Distributed RAM<a class="headerlink" href="#hw-mem-main-memory-distributed-ram" title="Permanent link">&para;</a></h3>
 <p>In contrast, distributed memory resources in the FPGA uses <strong>asynchronous reads</strong>, allowing instruction fetches to complete within the same clock cycle. The implementation of the RAM using distributed memory would look like this:</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#hw-mem-main-memory-__codelineno-1-1"></a><span class="c1">// Single-port asynchronous RAM</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#hw-mem-main-memory-__codelineno-1-2"></a><span class="k">module</span><span class="w"> </span><span class="n">rams_sp_async</span><span class="w"> </span><span class="p">(</span>
@@ -2824,7 +2824,32 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 </span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#hw-mem-main-memory-__codelineno-1-25"></a><span class="w">    </span><span class="k">end</span>
 </span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#hw-mem-main-memory-__codelineno-1-26"></a><span class="k">endmodule</span>
 </span></code></pre></div>
-<p>One disadvantage of using distributed memory is that it consumes more of the FPGA's lookup tables (LUTs) compared to Block RAM, which is a dedicated memory resource.</p></section><section class="print-page" id="hw-mem-mmio-bus" heading-number="2.3.3"><h1 id="hw-mem-mmio-bus-memory-mapped-peripherals-mmio">Memory-Mapped Peripherals (MMIO)<a class="headerlink" href="#hw-mem-mmio-bus-memory-mapped-peripherals-mmio" title="Permanent link">&para;</a></h1>
+<p>One disadvantage of using distributed memory is that it consumes more of the FPGA's lookup tables (LUTs) compared to Block RAM, which is a dedicated memory resource.</p>
+<div class="admonition note">
+<p class="admonition-title">Distributed vs Block RAM</p>
+<p>Both types write data synchronously into the RAM. Distributed RAM and dedicated block RAM differ primarily in how they read data. See the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Distributed RAM</th>
+<th>Dedicated Block RAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Write</td>
+<td>Synchronous</td>
+<td>Synchronous</td>
+</tr>
+<tr>
+<td>Read</td>
+<td>Asynchronous</td>
+<td>Synchronous</td>
+</tr>
+</tbody>
+</table>
+</div></section><section class="print-page" id="hw-mem-mmio-bus" heading-number="2.3.3"><h1 id="hw-mem-mmio-bus-memory-mapped-peripherals-mmio">Memory-Mapped Peripherals (MMIO)<a class="headerlink" href="#hw-mem-mmio-bus-memory-mapped-peripherals-mmio" title="Permanent link">&para;</a></h1>
 <p>All peripherals are mapped to the upper memory range starting at <code>0xFFFFxxxx</code>.</p>
 <h2 id="hw-mem-mmio-bus-communication-uart">Communication (UART)<a class="headerlink" href="#hw-mem-mmio-bus-communication-uart" title="Permanent link">&para;</a></h2>
 <table>

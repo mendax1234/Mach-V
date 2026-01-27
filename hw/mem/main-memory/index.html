@@ -932,11 +932,11 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#distributed-memory" class="md-nav__link">
+  <a href="#distributed-ram" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Distributed Memory
+          Distributed RAM
         </span>
       
     </span>
@@ -1473,11 +1473,11 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#distributed-memory" class="md-nav__link">
+  <a href="#distributed-ram" class="md-nav__link">
     <span class="md-ellipsis">
       
         <span class="md-typeset">
-          Distributed Memory
+          Distributed RAM
         </span>
       
     </span>
@@ -1665,7 +1665,7 @@
 </figcaption>
 </figure>
 <p>During the Fetch stage, the program counter <code>PCF</code> is presented to the instruction memory (IROM). However, if the IROM is implemented using BRAM, the memory does not produce valid read data in the same cycle. Instead, the read is initiated at the next edge clock edge (the rising edge of the second clock cycle), and the instruction word becomes available only <strong>after the next clock edge</strong>. Consequently, the fetched instruction <code>InstrF</code> is not available until the <strong>end of the following clock cycle</strong>, which corresponds to the <strong>end of the Decode stage</strong>.</p>
-<h3 id="distributed-memory">Distributed Memory<a class="headerlink" href="#distributed-memory" title="Permanent link">&para;</a></h3>
+<h3 id="distributed-ram">Distributed RAM<a class="headerlink" href="#distributed-ram" title="Permanent link">&para;</a></h3>
 <p>In contrast, distributed memory resources in the FPGA uses <strong>asynchronous reads</strong>, allowing instruction fetches to complete within the same clock cycle. The implementation of the RAM using distributed memory would look like this:</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Single-port asynchronous RAM</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">module</span><span class="w"> </span><span class="n">rams_sp_async</span><span class="w"> </span><span class="p">(</span>
@@ -1695,6 +1695,31 @@
 </span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="k">endmodule</span>
 </span></code></pre></div>
 <p>One disadvantage of using distributed memory is that it consumes more of the FPGA's lookup tables (LUTs) compared to Block RAM, which is a dedicated memory resource.</p>
+<div class="admonition note">
+<p class="admonition-title">Distributed vs Block RAM</p>
+<p>Both types write data synchronously into the RAM. Distributed RAM and dedicated block RAM differ primarily in how they read data. See the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Distributed RAM</th>
+<th>Dedicated Block RAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Write</td>
+<td>Synchronous</td>
+<td>Synchronous</td>
+</tr>
+<tr>
+<td>Read</td>
+<td>Asynchronous</td>
+<td>Synchronous</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 
 
@@ -1717,7 +1742,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 27, 2026 12:05:58 UTC"><span class="timeago" datetime="2026-01-27T12:05:58+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 27, 2026 12:05:58 UTC">2026-01-27</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 27, 2026 13:29:45 UTC"><span class="timeago" datetime="2026-01-27T13:29:45+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 27, 2026 13:29:45 UTC">2026-01-27</span>
   </span>
 
     
