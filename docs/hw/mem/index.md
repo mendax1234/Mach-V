@@ -2,7 +2,7 @@
 
 ## System Memory Map
 
-Followed by the convention set in [NUS CG3207](https://nus-cg3207.github.io/labs/rv_resources/rv_memmap/), the Mach-V processor uses a memory-mapped I/O architecture. The address space is divided into Instruction Memory, Data Memory, and Peripheral (MMIO) regions.
+Followed by the convention set in [NUS CG3207](https://nus-cg3207.github.io/labs/rv_resources/rv_memmap/), the Mach-V processor uses a memory-mapped I/O architecture. The address space is divided into the main memory (include the Instruction Memory and Data Memory) and Peripheral (MMIO) regions.
 
 !!! info "Configuration Source"
     The memory capacities defined below are determined by parameters in `Wrapper.v`. For example,

@@ -22,6 +22,7 @@ theme:
   # 2.1 Feature Flags
   features:
     - navigation.tabs # Top-level tabs for major sections
+    - navigation.tabs.sticky # Keep tabs visible when scrolling
     - navigation.sections # Clean sidebar grouping
     - navigation.top # "Back to top" button
     - navigation.footer # Next/Previous buttons at bottom
