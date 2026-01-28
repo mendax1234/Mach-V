@@ -19,7 +19,7 @@ And their memory map is as follows:
 
 ## Memory Implementation
 
-In the earlier design of the Mach-V processor (e.g., Mach-V V1 and V2), both IROM and DMEM were implemented using the distributed memory resources available in the FPGA. However, starting from Mach-V V3, we transitioned to using Block RAM (BRAM) for both IROM and DMEM to enhance performance and resource efficiency.
+In the earlier design of the Mach-V processor (e.g., Mach-V V1 and V2), both IROM and DMEM were implemented using the distributed memory resources available in the FPGA. However, starting from Mach-V V3, I transitioned to using Block RAM (BRAM) for both IROM and DMEM to enhance performance and resource efficiency.
 
 ### Block RAM
 

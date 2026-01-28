@@ -55,6 +55,7 @@ module MachV_Top (
     // =========================================================================
     // 1. System Signals
     // =========================================================================
+    localparam SYS_FREQ_HZ = 105000000;
     wire clk_sys;
     wire clk_locked;
     wire sys_reset;
@@ -230,7 +231,7 @@ module MachV_Top (
     // UART
     UART #(
         .BAUD_RATE      (115200),
-        .CLOCK_FREQUENCY(115000000)  // CRITICAL: Matches clk_wiz_0 output
+        .CLOCK_FREQUENCY(SYS_FREQ_HZ)  // CRITICAL: Matches clk_wiz_0 output
     ) uart_inst (
         .CLOCK              (clk_sys),
         .RESET              (RESET),              // Uses Raw Reset (Matches VHDL)
@@ -246,7 +247,7 @@ module MachV_Top (
 
     // Accelerometer
     ADXL362Ctrl #(
-        .SYSCLK_FREQUENCY_HZ(115000000)  // Matches clk_wiz_0 output
+        .SYSCLK_FREQUENCY_HZ(SYS_FREQ_HZ)  // Matches clk_wiz_0 output
     ) accel_inst (
         .SYSCLK    (clk_sys),
         .RESET     (RESET),
@@ -267,7 +268,7 @@ module MachV_Top (
     assign oled_pixel_formatted = {oled_pixel_data[23:19], oled_pixel_data[15:10], oled_pixel_data[7:3]};
 
     PmodOLEDrgb_bitmap #(
-        .CLK_FREQ_HZ(115000000)  // Matches clk_wiz_0 output
+        .CLK_FREQ_HZ(SYS_FREQ_HZ)  // Matches clk_wiz_0 output
     ) oled_inst (
         .clk        (clk_sys),
         .reset      (RESET),

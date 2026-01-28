@@ -109,13 +109,27 @@ module Wrapper #(
 
     // IROM Read
     // This can be changed to trigger an exception instead if need be.
-    assign rv_instr = (is_imem) ? imem[rv_pc[IMEM_DEPTH-1:2]] : 32'h00000013;
+    reg [31:0] rv_instr_reg;
+    
+    // Assign the registered output to the processor wire
+    assign rv_instr = rv_instr_reg;
+
+    always @(negedge CLK) begin
+        if (is_imem) begin
+            // Synchronous Read: Data available on NEXT clock edge
+            rv_instr_reg <= imem[rv_pc[IMEM_DEPTH-1:2]]; 
+        end else begin
+            // Return NOP if address is invalid
+            rv_instr_reg <= 32'h00000013; 
+        end
+    end
 
     // =========================================================================
-    // Data Memory Access
+    // Data Memory Access (Synchronous Read)
     // =========================================================================
     integer i;
-    always @(posedge CLK) begin
+    reg [31:0] dmem_rdata;
+    always @(negedge CLK) begin
         if (rv_memwrite && is_dmem) begin
             for (i = 0; i < 4; i = i + 1) begin
                 if (rv_be[i]) begin
@@ -123,12 +137,7 @@ module Wrapper #(
                 end
             end
         end
-    end
-
-    // Asychronous DMEM read
-    reg [31:0] dmem_rdata;
-    always @(*) begin
-        dmem_rdata = is_dmem ? dmem[rv_addr[DMEM_DEPTH-1:2]] : 32'b0;
+        dmem_rdata <= is_dmem ? dmem[rv_addr[DMEM_DEPTH-1:2]] : 32'b0;
     end
 
     // =========================================================================
