@@ -2748,7 +2748,7 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 <p>Accesses must be aligned to 4-byte boundaries.</p>
 </div>
 <h2 id="hw-mem-main-memory-memory-implementation">Memory Implementation<a class="headerlink" href="#hw-mem-main-memory-memory-implementation" title="Permanent link">&para;</a></h2>
-<p>In the earlier design of the Mach-V processor (e.g., Mach-V V1 and V2), both IROM and DMEM were implemented using the distributed memory resources available in the FPGA. However, starting from Mach-V V3, we transitioned to using Block RAM (BRAM) for both IROM and DMEM to enhance performance and resource efficiency.</p>
+<p>In the earlier design of the Mach-V processor (e.g., Mach-V V1 and V2), both IROM and DMEM were implemented using the distributed memory resources available in the FPGA. However, starting from Mach-V V3, I transitioned to using Block RAM (BRAM) for both IROM and DMEM to enhance performance and resource efficiency.</p>
 <h3 id="hw-mem-main-memory-block-ram">Block RAM<a class="headerlink" href="#hw-mem-main-memory-block-ram" title="Permanent link">&para;</a></h3>
 <p>In Nexys 4 DDR FPGA, there are a certain number of Block RAM (BRAM) resources available. These Block RAMs are read <strong>synchronously</strong>. The easiest way to implement a Block RAM in Verilog is to use explicitly the synchronous read style, as shown below:</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#hw-mem-main-memory-__codelineno-0-1"></a><span class="c1">// Single-port synchronous RAM with read-first behavior</span>
