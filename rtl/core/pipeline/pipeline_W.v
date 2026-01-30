@@ -26,11 +26,13 @@ module pipeline_W (
     input      [31:0] ReadDataM,
     input      [31:0] ComputeResultM,
     input      [ 4:0] rdM,
+    input      [ 2:0] Funct3M,
     output reg        RegWriteW,
     output reg        MemtoRegW,
     output reg [31:0] ReadDataW,
     output reg [31:0] ComputeResultW,
-    output reg [ 4:0] rdW
+    output reg [ 4:0] rdW,
+    output reg [ 2:0] Funct3W
 );
 
     always @(posedge CLK)
@@ -40,12 +42,14 @@ module pipeline_W (
             ReadDataW <= 32'b0;
             ComputeResultW <= 32'b0;
             rdW <= 5'b0;
+            Funct3W <= 2'b0;
         end else begin  // do not stall M/W stage for MCycle
             RegWriteW <= RegWriteM;
             MemtoRegW <= MemtoRegM;
             ReadDataW <= ReadDataM;
             ComputeResultW <= ComputeResultM;
             rdW <= rdM;
+            Funct3W <= Funct3M;
         end
 
 endmodule

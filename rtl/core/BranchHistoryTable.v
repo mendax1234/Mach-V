@@ -37,6 +37,7 @@ module BranchHistoryTable #(
     always @(posedge CLK) begin
         if (RESET) begin
             // Initialize all entries to Not Taken (0)
+            // This will make the memory be inferred using FFs instead of LUTs
             for (i = 0; i < ENTRIES; i = i + 1) begin
                 bht[i] <= 1'b0;
             end

@@ -37,6 +37,7 @@ module BranchTargetBuffer #(
     always @(posedge CLK) begin
         if (RESET) begin
             // Reset all entries to 0
+            // This will make the memory be inferred using FFs instead of LUTs
             for (i = 0; i < ENTRIES; i = i + 1) begin
                 btb[i] <= 32'd0;
             end

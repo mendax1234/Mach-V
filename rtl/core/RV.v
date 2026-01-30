@@ -148,7 +148,9 @@ module RV #(
     // --- WB Stage (Writeback) ---
     wire        RegWriteW;
     wire        MemtoRegW;
-    wire [31:0] ReadDataW;  // From Memory
+    wire [ 2:0] Funct3W;  // <--- NEW: Funct3 in WB
+    wire [31:0] ReadDataW;  // Raw data from Memory
+    wire [31:0] ReadDataW_Aligned;  // <--- NEW: Processed data from LoadUnit
     wire [31:0] ComputeResultW;  // From ALU/MCycle
     wire [31:0] ResultW;  // Final Result (The one that goes to RegFile)
     wire [31:0] WD;  // Write Data Port (Alias of ResultW)
@@ -262,7 +264,7 @@ module RV #(
     assign WriteDataM_Raw = ForwardM ? ResultW : WriteDataM;
 
     // --- Writeback Stage Logic ---
-    assign ResultW = MemtoRegW ? ReadDataW : ComputeResultW;
+    assign ResultW = MemtoRegW ? ReadDataW_Aligned : ComputeResultW;
     assign WD = ResultW;  // Data to RegFile
     assign WE = RegWriteW;  // WE to RegFile
 
@@ -448,16 +450,14 @@ module RV #(
         .PrBTAM        (PrBTAM)
     );
 
-    LoadStoreUnit LoadStoreUnit (
-        .Funct3       (Funct3M),
+    StoreUnit StoreUnit (
+        .Funct3M      (Funct3M),
         .MemWriteM    (MemWriteM),
         .WriteDataM   (WriteDataM_Raw),
-        .ReadData_in  (ReadData_in),
         .ByteOffset   (ComputeResultM[1:0]),
         // Outputs
         .MemWrite_out (MemWrite_out),
-        .WriteData_out(WriteData_out),
-        .ReadDataM    (ReadDataM)
+        .WriteData_out(WriteData_out)
     );
 
     pipeline_W pipelineW (
@@ -465,15 +465,24 @@ module RV #(
         .RESET         (RESET),
         .RegWriteM     (RegWriteM),
         .MemtoRegM     (MemtoRegM),
-        .ReadDataM     (ReadDataM),
+        .ReadDataM     (ReadData_in),
         .ComputeResultM(ComputeResultM),
         .rdM           (rdM),
+        .Funct3M       (Funct3M),
         // Outputs
         .RegWriteW     (RegWriteW),
         .MemtoRegW     (MemtoRegW),
         .ReadDataW     (ReadDataW),
         .ComputeResultW(ComputeResultW),
-        .rdW           (rdW)
+        .rdW           (rdW),
+        .Funct3W       (Funct3W)
+    );
+
+    LoadUnit LoadUnit (
+        .Funct3     (Funct3W),
+        .ByteOffset (ComputeResultW[1:0]),  // Use the ALU result (address)
+        .ReadData_in(ReadDataW),            // Raw data from pipeline
+        .ReadDataW  (ReadDataW_Aligned)     // Processed output
     );
 
     Hazard Hazard1 (
@@ -510,7 +519,7 @@ module RV #(
     // --- Branch Prediction Units ---
 
     BranchHistoryTable #(
-        .ENTRIES(64)
+        .ENTRIES(256)
     ) BHT (
         .CLK       (CLK),
         .RESET     (RESET),
@@ -524,8 +533,8 @@ module RV #(
     );
 
     BranchTargetBuffer #(
-        .ENTRIES   (64),
-        .INDEX_BITS(6)
+        .ENTRIES   (256),
+        .INDEX_BITS(8)
     ) BTB (
         .CLK     (CLK),
         .RESET   (RESET),

@@ -129,6 +129,9 @@ module Wrapper #(
     // =========================================================================
     integer i;
     reg [31:0] dmem_rdata;
+    // TODO: Add a register inside the BRAM implemented here (Same for IROM)
+    // BRAM is available as a prewrite module
+    // Organize the fetch stage
     always @(negedge CLK) begin
         if (rv_memwrite && is_dmem) begin
             for (i = 0; i < 4; i = i + 1) begin
