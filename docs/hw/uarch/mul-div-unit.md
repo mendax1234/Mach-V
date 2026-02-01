@@ -66,7 +66,7 @@ Busy &= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 !!! note "Logic Synthesis vs. Manual Equations"
     While I derived the boolean equations above to analyze the underlying logic (the **Microscopic View**), I do not hard-code these equations in Verilog. I still write the high-level case statement and the synthesis tool will convert the high-level code into the optimized logic gates based on these equations.
 
-### Verilog Implementation
+### FSM Implementation
 
 The code implements this FSM using a mixed 2-block style approach to separate the combinational logic from the sequential state updates.
 
@@ -158,9 +158,9 @@ if (is_signed_op && (sign_op1 ^ sign_op2))
 Result1 <= q_temp;
 ```
 
-## Implementation Details
+## Mul & Div Unit Implementation
 
-I have tried two implementations for the `MCycle` module:
+I have tried two implementations for the multiply and divide unit in the `MCycle` module:
 
 <div class="grid cards" markdown>
 
