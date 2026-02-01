@@ -2199,7 +2199,7 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 <p class="admonition-title">Logic Synthesis vs. Manual Equations</p>
 <p>While I derived the boolean equations above to analyze the underlying logic (the <strong>Microscopic View</strong>), I do not hard-code these equations in Verilog. I still write the high-level case statement and the synthesis tool will convert the high-level code into the optimized logic gates based on these equations.</p>
 </div>
-<h3 id="hw-uarch-mul-div-unit-verilog-implementation">Verilog Implementation<a class="headerlink" href="#hw-uarch-mul-div-unit-verilog-implementation" title="Permanent link">&para;</a></h3>
+<h3 id="hw-uarch-mul-div-unit-fsm-implementation">FSM Implementation<a class="headerlink" href="#hw-uarch-mul-div-unit-fsm-implementation" title="Permanent link">&para;</a></h3>
 <p>The code implements this FSM using a mixed 2-block style approach to separate the combinational logic from the sequential state updates.</p>
 <hr />
 <h4 id="hw-uarch-mul-div-unit-combinational-block">Combinational Block<a class="headerlink" href="#hw-uarch-mul-div-unit-combinational-block" title="Permanent link">&para;</a></h4>
@@ -2288,8 +2288,8 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#hw-uarch-mul-div-unit-__codelineno-2-8"></a><span class="c1">// 3. Store (Non-Blocking: Latches the FINAL calculated value)</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#hw-uarch-mul-div-unit-__codelineno-2-9"></a><span class="n">Result1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">q_temp</span><span class="p">;</span>
 </span></code></pre></div>
-<h2 id="hw-uarch-mul-div-unit-implementation-details">Implementation Details<a class="headerlink" href="#hw-uarch-mul-div-unit-implementation-details" title="Permanent link">&para;</a></h2>
-<p>I have tried two implementations for the <code>MCycle</code> module:</p>
+<h2 id="hw-uarch-mul-div-unit-mul-div-unit-implementation">Mul &amp; Div Unit Implementation<a class="headerlink" href="#hw-uarch-mul-div-unit-mul-div-unit-implementation" title="Permanent link">&para;</a></h2>
+<p>I have tried two implementations for the multiply and divide unit in the <code>MCycle</code> module:</p>
 <div class="grid cards">
 <ul>
 <li>
