@@ -72,6 +72,16 @@ Block RAM Read Operation Timing
 
 During the Fetch stage, the program counter `PCF` is presented to the instruction memory (IROM). However, if the IROM is implemented using BRAM, the memory does not produce valid read data in the same cycle. Instead, the read is initiated at the next edge clock edge (the rising edge of the second clock cycle), and the instruction word becomes available only **after the next clock edge**. Consequently, the fetched instruction `InstrF` is not available until the **end of the following clock cycle**, which corresponds to the **end of the Decode stage**.
 
+??? note "Block RAM vs. Normal Synchronous RAM"
+    Unlike the Block RAM, in a synchronous RAM, the working principle is shown below:
+
+    ![Synchronous RAM Read Timing](../../assets/images/synchronous-ram.svg)
+    ///caption
+    Synchronous RAM Read Operation Timing
+    ///
+
+    In a normal synchronous RAM implemented using flip-flops and LUTs, the data read is available at the **next** clock edge after both the `RAM_En` is high and the address is presented to the memory. So, the one cycle delay for reading operation basically means that the data is available at the **next clock edge**.
+
 ### Distributed RAM
 
 In contrast, distributed memory resources in the FPGA uses **asynchronous reads**, allowing instruction fetches to complete within the same clock cycle. The implementation of the RAM using distributed memory would look like this:
@@ -107,7 +117,7 @@ endmodule
 
 One disadvantage of using distributed memory is that it consumes more of the FPGA's lookup tables (LUTs) compared to Block RAM, which is a dedicated memory resource.
 
-!!! note "Distributed vs Block RAM"
+??? note "Distributed vs Block RAM"
     Both types write data synchronously into the RAM. Distributed RAM and dedicated block RAM differ primarily in how they read data. See the following table.
 
     | Action | Distributed RAM | Dedicated Block RAM |
