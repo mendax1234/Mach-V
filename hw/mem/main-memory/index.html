@@ -1663,6 +1663,17 @@
 </figcaption>
 </figure>
 <p>During the Fetch stage, the program counter <code>PCF</code> is presented to the instruction memory (IROM). However, if the IROM is implemented using BRAM, the memory does not produce valid read data in the same cycle. Instead, the read is initiated at the next edge clock edge (the rising edge of the second clock cycle), and the instruction word becomes available only <strong>after the next clock edge</strong>. Consequently, the fetched instruction <code>InstrF</code> is not available until the <strong>end of the following clock cycle</strong>, which corresponds to the <strong>end of the Decode stage</strong>.</p>
+<details class="note">
+<summary>Block RAM vs. Normal Synchronous RAM</summary>
+<p>Unlike the Block RAM, in a synchronous RAM, the working principle is shown below:</p>
+<figure>
+<p><img alt="Synchronous RAM Read Timing" src="../../../assets/images/synchronous-ram.svg" /></p>
+<figcaption>
+<p>Synchronous RAM Read Operation Timing</p>
+</figcaption>
+</figure>
+<p>In a normal synchronous RAM implemented using flip-flops and LUTs, the data read is available at the <strong>next</strong> clock edge after both the <code>RAM_En</code> is high and the address is presented to the memory. So, the one cycle delay for reading operation basically means that the data is available at the <strong>next clock edge</strong>.</p>
+</details>
 <h3 id="distributed-ram">Distributed RAM<a class="headerlink" href="#distributed-ram" title="Permanent link">&para;</a></h3>
 <p>In contrast, distributed memory resources in the FPGA uses <strong>asynchronous reads</strong>, allowing instruction fetches to complete within the same clock cycle. The implementation of the RAM using distributed memory would look like this:</p>
 <div class="language-verilog highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Single-port asynchronous RAM</span>
@@ -1693,8 +1704,8 @@
 </span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="k">endmodule</span>
 </span></code></pre></div>
 <p>One disadvantage of using distributed memory is that it consumes more of the FPGA's lookup tables (LUTs) compared to Block RAM, which is a dedicated memory resource.</p>
-<div class="admonition note">
-<p class="admonition-title">Distributed vs Block RAM</p>
+<details class="note">
+<summary>Distributed vs Block RAM</summary>
 <p>Both types write data synchronously into the RAM. Distributed RAM and dedicated block RAM differ primarily in how they read data. See the following table.</p>
 <table>
 <thead>
@@ -1717,7 +1728,7 @@
 </tr>
 </tbody>
 </table>
-</div>
+</details>
 
 
 
@@ -1740,7 +1751,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 28, 2026 13:07:01 UTC"><span class="timeago" datetime="2026-01-28T13:07:01+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 28, 2026 13:07:01 UTC">2026-01-28</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="February 6, 2026 10:10:34 UTC"><span class="timeago" datetime="2026-02-06T10:10:34+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="February 6, 2026 10:10:34 UTC">2026-02-06</span>
   </span>
 
     
