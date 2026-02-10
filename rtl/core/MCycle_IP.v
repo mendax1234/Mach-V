@@ -19,20 +19,20 @@
 `timescale 1ns / 1ps
 
 module MCycle #(
-    parameter width = 32
-) (
-    input                  CLK,
-    input                  RESET,
-    input                  Start,     // Trigger
-    input      [      1:0] MCycleOp,  // 00: Mul(s), 01: Mul(u), 10: Div(s), 11: Div(u)
-    input      [width-1:0] Operand1,
-    input      [width-1:0] Operand2,
-    output reg [width-1:0] Result1,   // LSW / Quotient
-    output reg [width-1:0] Result2,   // MSW / Remainder
-    output reg             Busy       // Stall Signal
-);
+        parameter width = 32
+    ) (
+        input                  CLK,
+        input                  RESET,
+        input                  Start,     // Trigger
+        input      [      1:0] MCycleOp,  // 00: Mul(s), 01: Mul(u), 10: Div(s), 11: Div(u)
+        input      [width-1:0] Operand1,
+        input      [width-1:0] Operand2,
+        output reg [width-1:0] Result1,   // LSW / Quotient
+        output reg [width-1:0] Result2,   // MSW / Remainder
+        output reg             Busy       // Stall Signal
+    );
 
-    // ========================================================================
+    // =====================================
     // Internal Signals & Constants
     // ========================================================================
     localparam IDLE = 1'b0;
@@ -67,22 +67,22 @@ module MCycle #(
 
     // Multiplier IP: 32x32 Unsigned -> 64-bit Product
     mult_gen_0 my_multiplier (
-        .CLK(CLK),
-        .A  (abs_op1),
-        .B  (abs_op2),
-        .P  (mul_dout)
-    );
+                   .CLK(CLK),
+                   .A  (abs_op1),
+                   .B  (abs_op2),
+                   .P  (mul_dout)
+               );
 
     // Divider IP: 32/32 Unsigned -> 32 Quot, 32 Rem
     div_gen_0 my_divider (
-        .aclk                  (CLK),
-        .s_axis_divisor_tvalid (div_in_valid),
-        .s_axis_divisor_tdata  (abs_op2),
-        .s_axis_dividend_tvalid(div_in_valid),
-        .s_axis_dividend_tdata (abs_op1),
-        .m_axis_dout_tvalid    (div_out_valid),
-        .m_axis_dout_tdata     (div_dout)
-    );
+                  .aclk                  (CLK),
+                  .s_axis_divisor_tvalid (div_in_valid),
+                  .s_axis_divisor_tdata  (abs_op2),
+                  .s_axis_dividend_tvalid(div_in_valid),
+                  .s_axis_dividend_tdata (abs_op1),
+                  .m_axis_dout_tvalid    (div_out_valid),
+                  .m_axis_dout_tdata     (div_dout)
+              );
 
     // ========================================================================
     // FSM: State Transition
@@ -91,7 +91,8 @@ module MCycle #(
     always @(posedge CLK) begin
         if (RESET) begin
             state <= IDLE;
-        end else begin
+        end
+        else begin
             state <= n_state;
         end
     end
@@ -113,7 +114,8 @@ module MCycle #(
                 if (done) begin
                     n_state = IDLE;
                     Busy = 1'b0;
-                end else begin
+                end
+                else begin
                     n_state = COMPUTING;
                     Busy = 1'b1;
                 end
@@ -134,7 +136,8 @@ module MCycle #(
             done <= 1'b0;
             abs_op1 <= 0;
             abs_op2 <= 0;
-        end else begin
+        end
+        else begin
             // Default: Reset done flag every cycle (unless set below)
             done <= 1'b0;
 
@@ -153,11 +156,15 @@ module MCycle #(
                         sign_op2 = Operand2[width-1];
 
                         // Absolute Value Calculation (Pre-processing)
-                        if (is_signed_op && sign_op1) abs_op1 <= ~Operand1 + 1;
-                        else abs_op1 <= Operand1;
+                        if (is_signed_op && sign_op1)
+                            abs_op1 <= ~Operand1 + 1;
+                        else
+                            abs_op1 <= Operand1;
 
-                        if (is_signed_op && sign_op2) abs_op2 <= ~Operand2 + 1;
-                        else abs_op2 <= Operand2;
+                        if (is_signed_op && sign_op2)
+                            abs_op2 <= ~Operand2 + 1;
+                        else
+                            abs_op2 <= Operand2;
 
                         // Trigger Logic
                         if (MCycleOp[1]) begin
@@ -179,14 +186,17 @@ module MCycle #(
                             // Sign Correction (Post-processing)
                             if (is_signed_op && (sign_op1 ^ sign_op2)) begin
                                 {Result2, Result1} <= ~mul_dout + 1;
-                            end else begin
+                            end
+                            else begin
                                 {Result2, Result1} <= mul_dout;
                             end
-                        end else begin
+                        end
+                        else begin
                             count <= count + 1;
                         end
 
-                    end else begin
+                    end
+                    else begin
                         // Division Logic
                         // Wait for AXI Stream Valid signal
                         if (div_out_valid) begin
@@ -198,10 +208,12 @@ module MCycle #(
 
                             // Sign Correction (Post-processing)
                             // Quotient is negative if signs differ
-                            if (is_signed_op && (sign_op1 ^ sign_op2)) q_temp = ~q_temp + 1;
+                            if (is_signed_op && (sign_op1 ^ sign_op2))
+                                q_temp = ~q_temp + 1;
 
                             // Remainder takes the sign of the Dividend (Operand1)
-                            if (is_signed_op && sign_op1) r_temp = ~r_temp + 1;
+                            if (is_signed_op && sign_op1)
+                                r_temp = ~r_temp + 1;
 
                             Result1 <= q_temp;  // Quotient
                             Result2 <= r_temp;  // Remainder

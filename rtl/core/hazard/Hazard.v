@@ -21,34 +21,34 @@
 `timescale 1ns / 1ps
 
 module Hazard (
-    input      [4:0] rs1D,
-    input      [4:0] rs2D,
-    input      [4:0] rs1E,
-    input      [4:0] rs2E,
-    input      [4:0] rs2M,
-    input      [4:0] rdE,
-    input      [4:0] rdM,
-    input      [4:0] rdW,
-    input            RegWriteM,
-    input            RegWriteW,
-    input            MemWriteM,
-    input            MemtoRegW,
-    input            MemtoRegE,
-    input            Busy,
-    input            BranchMispredictM,
-    input      [6:0] OpcodeD,
-    output reg [1:0] ForwardAE,
-    output reg [1:0] ForwardBE,
-    output           ForwardM,
-    output           lwStall,
-    output           StallF,
-    output           StallD,
-    output           FlushE,
-    output           FlushD,
-    output           FlushM,
-    output           Forward1D,
-    output           Forward2D
-);
+        input      [4:0] rs1D,
+        input      [4:0] rs2D,
+        input      [4:0] rs1E,
+        input      [4:0] rs2E,
+        input      [4:0] rs2M,
+        input      [4:0] rdE,
+        input      [4:0] rdM,
+        input      [4:0] rdW,
+        input            RegWriteM,
+        input            RegWriteW,
+        input            MemWriteM,
+        input            MemtoRegW,
+        input            MemtoRegE,
+        input            Busy,
+        input            BranchMispredictM,
+        input      [6:0] OpcodeD,
+        output reg [1:0] ForwardAE,
+        output reg [1:0] ForwardBE,
+        output           ForwardM,
+        output           lwStall,
+        output           StallF,
+        output           StallD,
+        output           FlushE,
+        output           FlushD,
+        output           FlushM,
+        output           Forward1D,
+        output           Forward2D
+    );
 
     // ===========================================================================
     // Instruction Checks
@@ -58,17 +58,17 @@ module Hazard (
 
     // Check if instruction actually USES rs1
     assign rs1_active = (OpcodeD != 7'b1101111) &&  // JAL
-        (OpcodeD != 7'b0110111) &&  // LUI
-        (OpcodeD != 7'b0010111);  // AUIPC
+           (OpcodeD != 7'b0110111) &&  // LUI
+           (OpcodeD != 7'b0010111);  // AUIPC
 
     // Check if instruction REQUIRES rs2 for Hazard Stalling
     assign rs2_active = (OpcodeD != 7'b1101111) &&  // JAL
-        (OpcodeD != 7'b0110111) &&  // LUI
-        (OpcodeD != 7'b0010111) &&  // AUIPC
-        (OpcodeD != 7'b0000011) &&  // Load
-        (OpcodeD != 7'b0010011) &&  // DP Imm
-        (OpcodeD != 7'b1100111) &&  // JALR
-        (OpcodeD != 7'b0100011);  // Store
+           (OpcodeD != 7'b0110111) &&  // LUI
+           (OpcodeD != 7'b0010111) &&  // AUIPC
+           (OpcodeD != 7'b0000011) &&  // Load
+           (OpcodeD != 7'b0010011) &&  // DP Imm
+           (OpcodeD != 7'b1100111) &&  // JALR
+           (OpcodeD != 7'b0100011);  // Store
 
     // ===========================================================================
     // Forwarding Logic
@@ -78,9 +78,11 @@ module Hazard (
     always @(*) begin
         if ((rs1E == rdM) && RegWriteM && (rdM != 0)) begin
             ForwardAE = 2'b10;  // Forward from Memory
-        end else if ((rs1E == rdW) && RegWriteW && (rdW != 0)) begin
+        end
+        else if ((rs1E == rdW) && RegWriteW && (rdW != 0)) begin
             ForwardAE = 2'b01;  // Forward from Writeback
-        end else begin
+        end
+        else begin
             ForwardAE = 2'b00;
         end
     end
@@ -89,9 +91,11 @@ module Hazard (
     always @(*) begin
         if ((rs2E == rdM) && RegWriteM && (rdM != 0)) begin
             ForwardBE = 2'b10;  // Forward from Memory
-        end else if ((rs2E == rdW) && RegWriteW && (rdW != 0)) begin
+        end
+        else if ((rs2E == rdW) && RegWriteW && (rdW != 0)) begin
             ForwardBE = 2'b01;  // Forward from Writeback
-        end else begin
+        end
+        else begin
             ForwardBE = 2'b00;
         end
     end

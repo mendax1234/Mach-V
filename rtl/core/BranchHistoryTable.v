@@ -1,19 +1,19 @@
 module BranchHistoryTable #(
-    parameter ENTRIES    = 64,
-    parameter INDEX_BITS = 6
-) (
-    input wire CLK,
-    input wire RESET,
+        parameter ENTRIES    = 64,
+        parameter INDEX_BITS = 6
+    ) (
+        input wire CLK,
+        input wire RESET,
 
-    // FETCH STAGE (Looking up the prediction)
-    input  wire [31:0] PCF,
-    output wire        PrPCSrcF,
+        // FETCH STAGE (Looking up the prediction)
+        input  wire [31:0] PCF,
+        output wire        PrPCSrcF,
 
-    // MEMORY STAGE (Training the predictor)
-    input wire [31:0] PCM,
-    input wire        WE_PrPCSrc, // Connected to MispredPCSrcM (High only on error)
-    input wire [ 1:0] PCSrcM      // Real outcome: Taken (1) or Not Taken (0)
-);
+        // MEMORY STAGE (Training the predictor)
+        input wire [31:0] PCM,
+        input wire        WE_PrPCSrc, // Connected to MispredPCSrcM (High only on error)
+        input wire [ 1:0] PCSrcM      // Real outcome: Taken (1) or Not Taken (0)
+    );
 
     // --- Memory Array ---
     // 1-bit wide memory (Stores 0 for Not Taken, 1 for Taken)
@@ -41,7 +41,8 @@ module BranchHistoryTable #(
             for (i = 0; i < ENTRIES; i = i + 1) begin
                 bht[i] <= 1'b0;
             end
-        end else if (WE_PrPCSrc) begin
+        end
+        else if (WE_PrPCSrc) begin
             // LOGIC: Update on Mispredict Only
             // If WE_PrPCSrc is High, it means our table was WRONG.
             // We overwrite the entry with what actually happened (PCSrcM[0]).

@@ -19,10 +19,10 @@
 `timescale 1ns / 1ps
 
 module Multiplier32x8 (
-    input  [31:0] A,       // The 32-bit full operand
-    input  [ 7:0] B,       // The 8-bit slice
-    output [39:0] Product  // Result (32 + 8 = 40 bits max)
-);
+        input  [31:0] A,       // The 32-bit full operand
+        input  [ 7:0] B,       // The 8-bit slice
+        output [39:0] Product  // Result (32 + 8 = 40 bits max)
+    );
 
     // // Generate Partial Products (Shift A based on bit position of B)
     wire [39:0] pp0 = B[0] ? {8'b0, A} : 40'b0;
@@ -40,15 +40,15 @@ module Multiplier32x8 (
 endmodule
 
 module DivSlice8 #(
-    parameter width = 32
-) (
-    input      [2*width-1:0] rem_in,   // Current Remainder
-    input      [2*width-1:0] div_in,   // Current Divisor
-    input      [  width-1:0] quot_in,  // Current Quotient (LSW of buffer)
-    output reg [2*width-1:0] rem_out,  // Next Remainder
-    output reg [2*width-1:0] div_out,  // Next Divisor
-    output reg [  width-1:0] quot_out  // Next Quotient
-);
+        parameter width = 32
+    ) (
+        input      [2*width-1:0] rem_in,   // Current Remainder
+        input      [2*width-1:0] div_in,   // Current Divisor
+        input      [  width-1:0] quot_in,  // Current Quotient (LSW of buffer)
+        output reg [2*width-1:0] rem_out,  // Next Remainder
+        output reg [2*width-1:0] div_out,  // Next Divisor
+        output reg [  width-1:0] quot_out  // Next Quotient
+    );
 
     // Temporary variable for subtraction
     integer             i;
@@ -70,7 +70,8 @@ module DivSlice8 #(
                 // Result Positive: Update Remainder, Shift 1 into Quotient
                 rem_out = diff_ext[2*width-1:0];
                 quot_out = {quot_out[width-2:0], 1'b1};
-            end else begin
+            end
+            else begin
                 // Result Negative: Keep Remainder, Shift 0 into Quotient
                 quot_out = {quot_out[width-2:0], 1'b0};
             end
@@ -82,18 +83,18 @@ module DivSlice8 #(
 endmodule
 
 module MCycle #(
-    parameter width = 32
-) (
-    input                  CLK,
-    input                  RESET,
-    input                  Start,     // Trigger
-    input      [      1:0] MCycleOp,  // 00: Mul(s), 01: Mul(u), 10: Div(s), 11: Div(u)
-    input      [width-1:0] Operand1,
-    input      [width-1:0] Operand2,
-    output reg [width-1:0] Result1,   // LSW / Quotient
-    output reg [width-1:0] Result2,   // MSW / Remainder
-    output reg             Busy       // Stall Signal
-);
+        parameter width = 32
+    ) (
+        input                  CLK,
+        input                  RESET,
+        input                  Start,     // Trigger
+        input      [      1:0] MCycleOp,  // 00: Mul(s), 01: Mul(u), 10: Div(s), 11: Div(u)
+        input      [width-1:0] Operand1,
+        input      [width-1:0] Operand2,
+        output reg [width-1:0] Result1,   // LSW / Quotient
+        output reg [width-1:0] Result2,   // MSW / Remainder
+        output reg             Busy       // Stall Signal
+    );
 
     // ========================================================================
     // Internal Signals & Constants
@@ -130,19 +131,19 @@ module MCycle #(
     // ========================================================================
 
     DivSlice8 div_unit (
-        .rem_in  (rem),
-        .div_in  (div),
-        .quot_in (div_result_buf[width-1:0]),
-        .rem_out (next_rem),
-        .div_out (next_div),
-        .quot_out(next_quot)
-    );
+                  .rem_in  (rem),
+                  .div_in  (div),
+                  .quot_in (div_result_buf[width-1:0]),
+                  .rem_out (next_rem),
+                  .div_out (next_div),
+                  .quot_out(next_quot)
+              );
 
     Multiplier32x8 mul_unit (
-        .A      (abs_op1),
-        .B      (current_byte_op2),
-        .Product(partial_product_out)
-    );
+                       .A      (abs_op1),
+                       .B      (current_byte_op2),
+                       .Product(partial_product_out)
+                   );
 
     // ========================================================================
     // FSM: State Transition (Combinational)
@@ -205,10 +206,14 @@ module MCycle #(
         // --- Logic Selection ---
         // Prepare input for Multiplier Module (Select Byte based on Count)
         case (count[1:0])
-            2'b00: current_byte_op2 = abs_op2[7:0];
-            2'b01: current_byte_op2 = abs_op2[15:8];
-            2'b10: current_byte_op2 = abs_op2[23:16];
-            2'b11: current_byte_op2 = abs_op2[31:24];
+            2'b00:
+                current_byte_op2 = abs_op2[7:0];
+            2'b01:
+                current_byte_op2 = abs_op2[15:8];
+            2'b10:
+                current_byte_op2 = abs_op2[23:16];
+            2'b11:
+                current_byte_op2 = abs_op2[31:24];
         endcase
 
         // Reset done flag every cycle (will be set to 1 if finished)
@@ -225,18 +230,24 @@ module MCycle #(
                 // Start accumulating from Cycle 1 as abs_op1 and abs_op2
                 // are available from Cycle 1, so Cycle 0 does nothing
                 case (count)
-                    1: mult_acc = mult_acc + partial_product_out;
-                    2: mult_acc = mult_acc + (partial_product_out << 8);
-                    3: mult_acc = mult_acc + (partial_product_out << 16);
-                    4: mult_acc = mult_acc + (partial_product_out << 24);
+                    1:
+                        mult_acc = mult_acc + partial_product_out;
+                    2:
+                        mult_acc = mult_acc + (partial_product_out << 8);
+                    3:
+                        mult_acc = mult_acc + (partial_product_out << 16);
+                    4:
+                        mult_acc = mult_acc + (partial_product_out << 24);
                 endcase
             end
 
             if (count == 4) begin
                 done <= 1'b1;
                 // Sign Correction
-                if (~MCycleOp[0] && (Operand1[width-1] ^ Operand2[width-1])) final_product = ~mult_acc + 1;
-                else final_product = mult_acc;
+                if (~MCycleOp[0] && (Operand1[width-1] ^ Operand2[width-1]))
+                    final_product = ~mult_acc + 1;
+                else
+                    final_product = mult_acc;
             end
             count = count + 1;
         end  // --- Divide (Shift & Subtract) ---
@@ -266,7 +277,8 @@ module MCycle #(
         if (~MCycleOp[1]) begin  // Multiply Output
             Result1 <= final_product[width-1:0];
             Result2 <= final_product[2*width-1:width];
-        end else begin  // Divide Output
+        end
+        else begin  // Divide Output
             Result1 <= div_result_buf[width-1:0];  // Quotient
             Result2 <= div_result_buf[2*width-1:width];  // Remainder
         end

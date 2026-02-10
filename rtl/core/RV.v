@@ -21,18 +21,18 @@
 `timescale 1ns / 1ps
 
 module RV #(
-    parameter PC_INIT = 32'h00400000
-) (
-    input         CLK,
-    input         RESET,
-    input  [31:0] Instr,
-    input  [31:0] ReadData_in,     // Raw memory input
-    output        MemRead,
-    output [ 3:0] MemWrite_out,    // Byte enable mask
-    output [31:0] PC,
-    output [31:0] ComputeResultM,
-    output [31:0] WriteData_out    // Aligned memory write data
-);
+        parameter PC_INIT = 32'h00400000
+    ) (
+        input         CLK,
+        input         RESET,
+        input  [31:0] Instr,
+        input  [31:0] ReadData_in,     // Raw memory input
+        output        MemRead,
+        output [ 3:0] MemWrite_out,    // Byte enable mask
+        output [31:0] PC,
+        output [31:0] ComputeResultM,
+        output [31:0] WriteData_out    // Aligned memory write data
+    );
 
     // ===========================================================================
     // WIRE DECLARATIONS (By Stage)
@@ -216,35 +216,51 @@ module RV #(
     always @(*) begin
         // ALU Source A Mux
         case (ALUSrcAE)
-            2'b00: Src_A = RD1E_Forwarded;
-            2'b01: Src_A = 32'b0;  // LUI
-            2'b11: Src_A = PCE;  // AUIPC/JAL
-            default: Src_A = RD1E_Forwarded;
+            2'b00:
+                Src_A = RD1E_Forwarded;
+            2'b01:
+                Src_A = 32'b0;  // LUI
+            2'b11:
+                Src_A = PCE;  // AUIPC/JAL
+            default:
+                Src_A = RD1E_Forwarded;
         endcase
 
         // ALU Source B Mux
         case (ALUSrcBE)
-            2'b00: Src_B = RD2E_Forwarded;
-            2'b01: Src_B = 32'd4;  // JAL/JALR return
-            2'b11: Src_B = ExtImmE;  // Immediate
-            default: Src_B = RD2E_Forwarded;
+            2'b00:
+                Src_B = RD2E_Forwarded;
+            2'b01:
+                Src_B = 32'd4;  // JAL/JALR return
+            2'b11:
+                Src_B = ExtImmE;  // Immediate
+            default:
+                Src_B = RD2E_Forwarded;
         endcase
     end
 
     // Hazard Muxes (Forwarding Logic)
     always @(*) begin
         case (ForwardAE)
-            2'b00: RD1E_Forwarded = RD1E;
-            2'b01: RD1E_Forwarded = ResultW;  // Forward from WB
-            2'b10: RD1E_Forwarded = ComputeResultM;  // Forward from MEM
-            default: RD1E_Forwarded = RD1E;
+            2'b00:
+                RD1E_Forwarded = RD1E;
+            2'b01:
+                RD1E_Forwarded = ResultW;  // Forward from WB
+            2'b10:
+                RD1E_Forwarded = ComputeResultM;  // Forward from MEM
+            default:
+                RD1E_Forwarded = RD1E;
         endcase
 
         case (ForwardBE)
-            2'b00: RD2E_Forwarded = RD2E;
-            2'b01: RD2E_Forwarded = ResultW;  // Forward from WB
-            2'b10: RD2E_Forwarded = ComputeResultM;  // Forward from MEM
-            default: RD2E_Forwarded = RD2E;
+            2'b00:
+                RD2E_Forwarded = RD2E;
+            2'b01:
+                RD2E_Forwarded = ResultW;  // Forward from WB
+            2'b10:
+                RD2E_Forwarded = ComputeResultM;  // Forward from MEM
+            default:
+                RD2E_Forwarded = RD2E;
         endcase
     end
 
@@ -273,276 +289,276 @@ module RV #(
     // ===========================================================================
 
     ProgramCounter #(
-        .PC_INIT(PC_INIT)
-    ) ProgramCounter1 (
-        .CLK   (CLK),
-        .RESET (RESET),
-        .StallF(StallF),
-        .PC_IN (PC_IN),
-        .PC    (PCF)
-    );
+                       .PC_INIT(PC_INIT)
+                   ) ProgramCounter1 (
+                       .CLK   (CLK),
+                       .RESET (RESET),
+                       .StallF(StallF),
+                       .PC_IN (PC_IN),
+                       .PC    (PCF)
+                   );
 
     pipeline_D pipelineD (
-        .CLK     (CLK),
-        .RESET   (RESET),
-        .StallD  (StallD),
-        .FlushD  (FlushD),
-        .InstrF  (InstrF),
-        .PCF     (PCF),
-        .InstrD  (InstrD),
-        .PCD     (PCD),
-        .PrPCSrcF(PrPCSrcF),
-        .PrBTAF  (PrBTAF),
-        .PrPCSrcD(PrPCSrcD),
-        .PrBTAD  (PrBTAD)
-    );
+                   .CLK     (CLK),
+                   .RESET   (RESET),
+                   .StallD  (StallD),
+                   .FlushD  (FlushD),
+                   .InstrF  (InstrF),
+                   .PCF     (PCF),
+                   .InstrD  (InstrD),
+                   .PCD     (PCD),
+                   .PrPCSrcF(PrPCSrcF),
+                   .PrBTAF  (PrBTAF),
+                   .PrPCSrcD(PrPCSrcD),
+                   .PrBTAD  (PrBTAD)
+               );
 
     Decoder Decoder1 (
-        .Opcode          (OpcodeD),
-        .Funct3          (Funct3D),
-        .Funct7          (Funct7D),
-        .PCS             (PCSD),
-        .RegWrite        (RegWriteD),
-        .MemWrite        (MemWriteD),
-        .MemtoReg        (MemtoRegD),
-        .ALUSrcA         (ALUSrcAD),
-        .ALUSrcB         (ALUSrcBD),
-        .ImmSrc          (ImmSrc),
-        .ALUControl      (ALUControlD),
-        .ComputeResultSel(ComputeResultSelD),
-        .MCycleResultSel (MCycleResultSelD),
-        .MCycleStart     (MCycleStartD),
-        .MCycleOp        (MCycleOpD),
-        .SizeSel         (SizeSel)
-    );
+                .Opcode          (OpcodeD),
+                .Funct3          (Funct3D),
+                .Funct7          (Funct7D),
+                .PCS             (PCSD),
+                .RegWrite        (RegWriteD),
+                .MemWrite        (MemWriteD),
+                .MemtoReg        (MemtoRegD),
+                .ALUSrcA         (ALUSrcAD),
+                .ALUSrcB         (ALUSrcBD),
+                .ImmSrc          (ImmSrc),
+                .ALUControl      (ALUControlD),
+                .ComputeResultSel(ComputeResultSelD),
+                .MCycleResultSel (MCycleResultSelD),
+                .MCycleStart     (MCycleStartD),
+                .MCycleOp        (MCycleOpD),
+                .SizeSel         (SizeSel)
+            );
 
     Extend Extend1 (
-        .ImmSrc  (ImmSrc),
-        .InstrImm(InstrD[31:7]),
-        .ExtImm  (ExtImmD)
-    );
+               .ImmSrc  (ImmSrc),
+               .InstrImm(InstrD[31:7]),
+               .ExtImm  (ExtImmD)
+           );
 
     RegFile RegFile1 (
-        .CLK(CLK),
-        .WE (WE),
-        .rs1(rs1D),
-        .rs2(rs2D),
-        .rd (rdW),
-        .WD (WD),
-        .RD1(RD1D),
-        .RD2(RD2D)
-    );
+                .CLK(CLK),
+                .WE (WE),
+                .rs1(rs1D),
+                .rs2(rs2D),
+                .rd (rdW),
+                .WD (WD),
+                .RD1(RD1D),
+                .RD2(RD2D)
+            );
 
     pipeline_E pipelineE (
-        .CLK              (CLK),
-        .RESET            (RESET),
-        .Busy             (Busy),
-        .FlushE           (FlushE),
-        .PCSD             (PCSD),
-        .RegWriteD        (RegWriteD),
-        .MemtoRegD        (MemtoRegD),
-        .MemWriteD        (MemWriteD),
-        .ALUControlD      (ALUControlD),
-        .ALUSrcAD         (ALUSrcAD),
-        .ALUSrcBD         (ALUSrcBD),
-        .RD1D             (RD1D_Forwarded),
-        .RD2D             (RD2D_Forwarded),
-        .ExtImmD          (ExtImmD),
-        .rs1D             (rs1D),
-        .rs2D             (rs2D),
-        .rdD              (rdD),
-        .PCD              (PCD),
-        .Funct3D          (Funct3D),
-        .MCycleOpD        (MCycleOpD),
-        .MCycleStartD     (MCycleStartD),
-        .MCycleResultSelD (MCycleResultSelD),
-        .ComputeResultSelD(ComputeResultSelD),
-        .PrPCSrcD         (PrPCSrcD),
-        .PrBTAD           (PrBTAD),
-        // Outputs
-        .PCSE             (PCSE),
-        .RegWriteE        (RegWriteE),
-        .MemtoRegE        (MemtoRegE),
-        .MemWriteE        (MemWriteE),
-        .ALUControlE      (ALUControlE),
-        .ALUSrcAE         (ALUSrcAE),
-        .ALUSrcBE         (ALUSrcBE),
-        .RD1E             (RD1E),
-        .RD2E             (RD2E),
-        .ExtImmE          (ExtImmE),
-        .rs1E             (rs1E),
-        .rs2E             (rs2E),
-        .rdE              (rdE),
-        .PCE              (PCE),
-        .Funct3E          (Funct3E),
-        .MCycleOpE        (MCycleOpE),
-        .MCycleStartE     (MCycleStartE),
-        .MCycleResultSelE (MCycleResultSelE),
-        .ComputeResultSelE(ComputeResultSelE),
-        .PrPCSrcE         (PrPCSrcE),
-        .PrBTAE           (PrBTAE)
-    );
+                   .CLK              (CLK),
+                   .RESET            (RESET),
+                   .Busy             (Busy),
+                   .FlushE           (FlushE),
+                   .PCSD             (PCSD),
+                   .RegWriteD        (RegWriteD),
+                   .MemtoRegD        (MemtoRegD),
+                   .MemWriteD        (MemWriteD),
+                   .ALUControlD      (ALUControlD),
+                   .ALUSrcAD         (ALUSrcAD),
+                   .ALUSrcBD         (ALUSrcBD),
+                   .RD1D             (RD1D_Forwarded),
+                   .RD2D             (RD2D_Forwarded),
+                   .ExtImmD          (ExtImmD),
+                   .rs1D             (rs1D),
+                   .rs2D             (rs2D),
+                   .rdD              (rdD),
+                   .PCD              (PCD),
+                   .Funct3D          (Funct3D),
+                   .MCycleOpD        (MCycleOpD),
+                   .MCycleStartD     (MCycleStartD),
+                   .MCycleResultSelD (MCycleResultSelD),
+                   .ComputeResultSelD(ComputeResultSelD),
+                   .PrPCSrcD         (PrPCSrcD),
+                   .PrBTAD           (PrBTAD),
+                   // Outputs
+                   .PCSE             (PCSE),
+                   .RegWriteE        (RegWriteE),
+                   .MemtoRegE        (MemtoRegE),
+                   .MemWriteE        (MemWriteE),
+                   .ALUControlE      (ALUControlE),
+                   .ALUSrcAE         (ALUSrcAE),
+                   .ALUSrcBE         (ALUSrcBE),
+                   .RD1E             (RD1E),
+                   .RD2E             (RD2E),
+                   .ExtImmE          (ExtImmE),
+                   .rs1E             (rs1E),
+                   .rs2E             (rs2E),
+                   .rdE              (rdE),
+                   .PCE              (PCE),
+                   .Funct3E          (Funct3E),
+                   .MCycleOpE        (MCycleOpE),
+                   .MCycleStartE     (MCycleStartE),
+                   .MCycleResultSelE (MCycleResultSelE),
+                   .ComputeResultSelE(ComputeResultSelE),
+                   .PrPCSrcE         (PrPCSrcE),
+                   .PrBTAE           (PrBTAE)
+               );
 
     ALU ALU1 (
-        .Src_A     (Src_A),
-        .Src_B     (Src_B),
-        .ALUControl(ALUControlE),
-        .ALUResult (ALUResultE),
-        .ALUFlags  (ALUFlagsE)
-    );
+            .Src_A     (Src_A),
+            .Src_B     (Src_B),
+            .ALUControl(ALUControlE),
+            .ALUResult (ALUResultE),
+            .ALUFlags  (ALUFlagsE)
+        );
 
     MCycle #(
-        .width(32)
-    ) MCycle1 (
-        .CLK     (CLK),
-        .RESET   (RESET),
-        .Start   (MCycleStartE & ~FlushE),
-        .MCycleOp(MCycleOpE),
-        .Operand1(RD1E_Forwarded),
-        .Operand2(RD2E_Forwarded),
-        .Result1 (MCycleResult_1),
-        .Result2 (MCycleResult_2),
-        .Busy    (Busy)
-    );
+               .width(32)
+           ) MCycle1 (
+               .CLK     (CLK),
+               .RESET   (RESET),
+               .Start   (MCycleStartE & ~FlushE),
+               .MCycleOp(MCycleOpE),
+               .Operand1(RD1E_Forwarded),
+               .Operand2(RD2E_Forwarded),
+               .Result1 (MCycleResult_1),
+               .Result2 (MCycleResult_2),
+               .Busy    (Busy)
+           );
 
     PC_Logic PC_Logic1 (
-        .PCS     (PCSM),
-        .Funct3  (Funct3M),
-        .ALUFlags(ALUFlagsM),
-        .PCSrc   (PCSrcM)
-    );
+                 .PCS     (PCSM),
+                 .Funct3  (Funct3M),
+                 .ALUFlags(ALUFlagsM),
+                 .PCSrc   (PCSrcM)
+             );
 
     pipeline_M pipelineM (
-        .CLK           (CLK),
-        .RESET         (RESET),
-        .Busy          (Busy),
-        .FlushM        (FlushM),
-        .RegWriteE     (RegWriteE),
-        .MemtoRegE     (MemtoRegE),
-        .MemWriteE     (MemWriteE),
-        .Funct3E       (Funct3E),
-        .ComputeResultE(ComputeResultE),
-        .WriteDataE    (WriteDataE),
-        .rs2E          (rs2E),
-        .rdE           (rdE),
-        .RD1E_Forwarded(RD1E_Forwarded),
-        .PCE           (PCE),
-        .ExtImmE       (ExtImmE),
-        .PCSE          (PCSE),
-        .ALUFlagsE     (ALUFlagsE),
-        .PrPCSrcE      (PrPCSrcE),
-        .PrBTAE        (PrBTAE),
-        // Outputs
-        .RegWriteM     (RegWriteM),
-        .MemtoRegM     (MemtoRegM),
-        .MemWriteM     (MemWriteM),
-        .Funct3M       (Funct3M),
-        .ComputeResultM(ComputeResultM),
-        .WriteDataM    (WriteDataM),
-        .rs2M          (rs2M),
-        .rdM           (rdM),
-        .RD1M          (RD1M),
-        .PCM           (PCM),
-        .ExtImmM       (ExtImmM),
-        .PCSM          (PCSM),
-        .ALUFlagsM     (ALUFlagsM),
-        .PrPCSrcM      (PrPCSrcM),
-        .PrBTAM        (PrBTAM)
-    );
+                   .CLK           (CLK),
+                   .RESET         (RESET),
+                   .Busy          (Busy),
+                   .FlushM        (FlushM),
+                   .RegWriteE     (RegWriteE),
+                   .MemtoRegE     (MemtoRegE),
+                   .MemWriteE     (MemWriteE),
+                   .Funct3E       (Funct3E),
+                   .ComputeResultE(ComputeResultE),
+                   .WriteDataE    (WriteDataE),
+                   .rs2E          (rs2E),
+                   .rdE           (rdE),
+                   .RD1E_Forwarded(RD1E_Forwarded),
+                   .PCE           (PCE),
+                   .ExtImmE       (ExtImmE),
+                   .PCSE          (PCSE),
+                   .ALUFlagsE     (ALUFlagsE),
+                   .PrPCSrcE      (PrPCSrcE),
+                   .PrBTAE        (PrBTAE),
+                   // Outputs
+                   .RegWriteM     (RegWriteM),
+                   .MemtoRegM     (MemtoRegM),
+                   .MemWriteM     (MemWriteM),
+                   .Funct3M       (Funct3M),
+                   .ComputeResultM(ComputeResultM),
+                   .WriteDataM    (WriteDataM),
+                   .rs2M          (rs2M),
+                   .rdM           (rdM),
+                   .RD1M          (RD1M),
+                   .PCM           (PCM),
+                   .ExtImmM       (ExtImmM),
+                   .PCSM          (PCSM),
+                   .ALUFlagsM     (ALUFlagsM),
+                   .PrPCSrcM      (PrPCSrcM),
+                   .PrBTAM        (PrBTAM)
+               );
 
     StoreUnit StoreUnit (
-        .Funct3M      (Funct3M),
-        .MemWriteM    (MemWriteM),
-        .WriteDataM   (WriteDataM_Raw),
-        .ByteOffset   (ComputeResultM[1:0]),
-        // Outputs
-        .MemWrite_out (MemWrite_out),
-        .WriteData_out(WriteData_out)
-    );
+                  .Funct3M      (Funct3M),
+                  .MemWriteM    (MemWriteM),
+                  .WriteDataM   (WriteDataM_Raw),
+                  .ByteOffset   (ComputeResultM[1:0]),
+                  // Outputs
+                  .MemWrite_out (MemWrite_out),
+                  .WriteData_out(WriteData_out)
+              );
 
     pipeline_W pipelineW (
-        .CLK           (CLK),
-        .RESET         (RESET),
-        .RegWriteM     (RegWriteM),
-        .MemtoRegM     (MemtoRegM),
-        .ReadDataM     (ReadData_in),
-        .ComputeResultM(ComputeResultM),
-        .rdM           (rdM),
-        .Funct3M       (Funct3M),
-        // Outputs
-        .RegWriteW     (RegWriteW),
-        .MemtoRegW     (MemtoRegW),
-        .ReadDataW     (ReadDataW),
-        .ComputeResultW(ComputeResultW),
-        .rdW           (rdW),
-        .Funct3W       (Funct3W)
-    );
+                   .CLK           (CLK),
+                   .RESET         (RESET),
+                   .RegWriteM     (RegWriteM),
+                   .MemtoRegM     (MemtoRegM),
+                   .ReadDataM     (ReadData_in),
+                   .ComputeResultM(ComputeResultM),
+                   .rdM           (rdM),
+                   .Funct3M       (Funct3M),
+                   // Outputs
+                   .RegWriteW     (RegWriteW),
+                   .MemtoRegW     (MemtoRegW),
+                   .ReadDataW     (ReadDataW),
+                   .ComputeResultW(ComputeResultW),
+                   .rdW           (rdW),
+                   .Funct3W       (Funct3W)
+               );
 
     LoadUnit LoadUnit (
-        .Funct3     (Funct3W),
-        .ByteOffset (ComputeResultW[1:0]),  // Use the ALU result (address)
-        .ReadData_in(ReadDataW),            // Raw data from pipeline
-        .ReadDataW  (ReadDataW_Aligned)     // Processed output
-    );
+                 .Funct3     (Funct3W),
+                 .ByteOffset (ComputeResultW[1:0]),  // Use the ALU result (address)
+                 .ReadData_in(ReadDataW),            // Raw data from pipeline
+                 .ReadDataW  (ReadDataW_Aligned)     // Processed output
+             );
 
     Hazard Hazard1 (
-        .rs1D             (rs1D),
-        .rs2D             (rs2D),
-        .rs1E             (rs1E),
-        .rs2E             (rs2E),
-        .rs2M             (rs2M),
-        .rdE              (rdE),
-        .rdM              (rdM),
-        .rdW              (rdW),
-        .RegWriteM        (RegWriteM),
-        .RegWriteW        (RegWriteW),
-        .MemWriteM        (MemWriteM),
-        .MemtoRegW        (MemtoRegW),
-        .MemtoRegE        (MemtoRegE),
-        .Busy             (Busy),
-        .BranchMispredictM(BranchMispredictM),
-        .OpcodeD          (OpcodeD),
-        // Outputs
-        .ForwardAE        (ForwardAE),
-        .ForwardBE        (ForwardBE),
-        .ForwardM         (ForwardM),
-        .lwStall          (lwStall),
-        .StallF           (StallF),
-        .StallD           (StallD),
-        .FlushE           (FlushE),
-        .FlushD           (FlushD),
-        .FlushM           (FlushM),
-        .Forward1D        (Forward1D),
-        .Forward2D        (Forward2D)
-    );
+               .rs1D             (rs1D),
+               .rs2D             (rs2D),
+               .rs1E             (rs1E),
+               .rs2E             (rs2E),
+               .rs2M             (rs2M),
+               .rdE              (rdE),
+               .rdM              (rdM),
+               .rdW              (rdW),
+               .RegWriteM        (RegWriteM),
+               .RegWriteW        (RegWriteW),
+               .MemWriteM        (MemWriteM),
+               .MemtoRegW        (MemtoRegW),
+               .MemtoRegE        (MemtoRegE),
+               .Busy             (Busy),
+               .BranchMispredictM(BranchMispredictM),
+               .OpcodeD          (OpcodeD),
+               // Outputs
+               .ForwardAE        (ForwardAE),
+               .ForwardBE        (ForwardBE),
+               .ForwardM         (ForwardM),
+               .lwStall          (lwStall),
+               .StallF           (StallF),
+               .StallD           (StallD),
+               .FlushE           (FlushE),
+               .FlushD           (FlushD),
+               .FlushM           (FlushM),
+               .Forward1D        (Forward1D),
+               .Forward2D        (Forward2D)
+           );
 
     // --- Branch Prediction Units ---
 
     BranchHistoryTable #(
-        .ENTRIES(256)
-    ) BHT (
-        .CLK       (CLK),
-        .RESET     (RESET),
-        // Fetch: Read Prediction
-        .PCF       (PCF),
-        .PrPCSrcF  (PrPCSrcF),
-        // Memory: Update/Train Predictor
-        .PCM       (PCM),
-        .WE_PrPCSrc(MispredPCSrcM),  // Need a signal: "Is the instruction in Mem a Branch?"
-        .PCSrcM    (PCSrcM)          // The actual outcome
-    );
+                           .ENTRIES(256)
+                       ) BHT (
+                           .CLK       (CLK),
+                           .RESET     (RESET),
+                           // Fetch: Read Prediction
+                           .PCF       (PCF),
+                           .PrPCSrcF  (PrPCSrcF),
+                           // Memory: Update/Train Predictor
+                           .PCM       (PCM),
+                           .WE_PrPCSrc(MispredPCSrcM),  // Need a signal: "Is the instruction in Mem a Branch?"
+                           .PCSrcM    (PCSrcM)          // The actual outcome
+                       );
 
     BranchTargetBuffer #(
-        .ENTRIES   (256),
-        .INDEX_BITS(8)
-    ) BTB (
-        .CLK     (CLK),
-        .RESET   (RESET),
-        .PCF     (PCF),
-        .PrBTAF  (PrBTAF),
-        .PCM     (PCM),
-        .BTAM    (PC_ResolvedM),
-        .WE_PrBTA(MispredBTAM)
-    );
+                           .ENTRIES   (256),
+                           .INDEX_BITS(8)
+                       ) BTB (
+                           .CLK     (CLK),
+                           .RESET   (RESET),
+                           .PCF     (PCF),
+                           .PrBTAF  (PrBTAF),
+                           .PCM     (PCM),
+                           .BTAM    (PC_ResolvedM),
+                           .WE_PrBTA(MispredBTAM)
+                       );
 
 endmodule

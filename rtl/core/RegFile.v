@@ -20,15 +20,15 @@
 `timescale 1ns / 1ps
 
 module RegFile (
-    input             CLK,
-    input             WE,
-    input      [ 4:0] rs1,
-    input      [ 4:0] rs2,
-    input      [ 4:0] rd,
-    input      [31:0] WD,
-    output reg [31:0] RD1,
-    output reg [31:0] RD2
-);
+        input             CLK,
+        input             WE,
+        input      [ 4:0] rs1,
+        input      [ 4:0] rs2,
+        input      [ 4:0] rd,
+        input      [31:0] WD,
+        output reg [31:0] RD1,
+        output reg [31:0] RD2
+    );
 
     // declare RegBank
     reg [31:0] RegBank[0:31];
@@ -44,7 +44,8 @@ module RegFile (
 
     // write
     always @(posedge CLK) begin
-        if ((rd != 5'b00000) & (WE)) RegBank[rd] <= WD;
+        if ((rd != 5'b00000) & (WE))
+            RegBank[rd] <= WD;
     end
 
 endmodule

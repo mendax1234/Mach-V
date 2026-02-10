@@ -20,23 +20,23 @@
 `timescale 1ns / 1ps
 
 module Decoder (
-    input      [6:0] Opcode,
-    input      [2:0] Funct3,
-    input      [6:0] Funct7,
-    output reg [1:0] PCS,               // 00: Non-control, 01: Branch, 10: JAL, 11: JALR
-    output reg       RegWrite,          // Write to Register File
-    output reg       MemWrite,          // Write to Memory
-    output reg       MemtoReg,          // Load from Memory
-    output reg [1:0] ALUSrcA,           // ALU Source A Mux
-    output reg [1:0] ALUSrcB,           // ALU Source B Mux
-    output reg [2:0] ImmSrc,            // Immediate Gen Type
-    output reg [3:0] ALUControl,        // ALU Operation Control
-    output reg       ComputeResultSel,  // 0: ALU, 1: Multi-Cycle
-    output reg       MCycleResultSel,   // 0: Low/Quotient, 1: High/Remainder
-    output reg       MCycleStart,       // Start Multi-Cycle Unit
-    output reg [1:0] MCycleOp,          // Multi-Cycle Opcode
-    output reg [2:0] SizeSel            // Load/Store Size (Byte/Half/Word)
-);
+        input      [6:0] Opcode,
+        input      [2:0] Funct3,
+        input      [6:0] Funct7,
+        output reg [1:0] PCS,               // 00: Non-control, 01: Branch, 10: JAL, 11: JALR
+        output reg       RegWrite,          // Write to Register File
+        output reg       MemWrite,          // Write to Memory
+        output reg       MemtoReg,          // Load from Memory
+        output reg [1:0] ALUSrcA,           // ALU Source A Mux
+        output reg [1:0] ALUSrcB,           // ALU Source B Mux
+        output reg [2:0] ImmSrc,            // Imm
+        output reg [3:0] ALUControl,        // ALU Operation Control
+        output reg       ComputeResultSel,  // 0: ALU, 1: Multi-Cycle
+        output reg       MCycleResultSel,   // 0: Low/Quotient, 1: High/Remainder
+        output reg       MCycleStart,       // Start Multi-Cycle Unit
+        output reg [1:0] MCycleOp,          // Multi-Cycle Opcode
+        output reg [2:0] SizeSel            // Load/Store Size (Byte/Half/Word)
+    );
 
     // ========================================================================
     //                            MAIN DECODER
@@ -69,7 +69,8 @@ module Decoder (
                     ComputeResultSel = 1'b1;  // Select MCycle Result
                     MCycleStart = 1'b1;
                     ALUControl = 4'b0000;  // Don't care
-                end else begin
+                end
+                else begin
                     ComputeResultSel = 1'b0;  // Select ALU Result
                     MCycleStart = 1'b0;
                     ALUControl = {Funct3, Funct7[5]};  // Standard ALU decoding
@@ -87,7 +88,8 @@ module Decoder (
                 // Special handling for Shift Immediates (SLLI, SRLI, SRAI)
                 if (Funct3 == 3'b001 || Funct3 == 3'b101)
                     ALUControl = {Funct3, Funct7[5]};  // Funct7[5] distinguishes SRLI/SRAI
-                else ALUControl = {Funct3, 1'b0};
+                else
+                    ALUControl = {Funct3, 1'b0};
             end
 
             // ------------------------------------
@@ -181,17 +183,23 @@ module Decoder (
     // Multi-Cycle Operation Type (Signed/Unsigned, Mul/Div)
     always @(*) begin
         MCycleOp[1] = Funct3[2];  // 1=Div, 0=Mul
-        if (MCycleOp[1]) MCycleOp[0] = Funct3[0];  // Division: 0=Signed, 1=Unsigned
-        else MCycleOp[0] = Funct3[1];  // Mult: 00=Mul, 01=MulH, etc.
+        if (MCycleOp[1])
+            MCycleOp[0] = Funct3[0];  // Division: 0=Signed, 1=Unsigned
+        else
+            MCycleOp[0] = Funct3[1];  // Mult: 00=Mul, 01=MulH, etc.
     end
 
     // Multi-Cycle Result Select (High vs Low bits)
     always @(*) begin
         case (Funct3)
-            3'b000: MCycleResultSel = 1'b0;  // MUL (Low)
-            3'b100: MCycleResultSel = 1'b0;  // DIV (Quotient)
-            3'b101: MCycleResultSel = 1'b0;  // DIVU (Quotient)
-            default: MCycleResultSel = 1'b1;  // High/Remainder
+            3'b000:
+                MCycleResultSel = 1'b0;  // MUL (Low)
+            3'b100:
+                MCycleResultSel = 1'b0;  // DIV (Quotient)
+            3'b101:
+                MCycleResultSel = 1'b0;  // DIVU (Quotient)
+            default:
+                MCycleResultSel = 1'b1;  // High/Remainder
         endcase
     end
 
