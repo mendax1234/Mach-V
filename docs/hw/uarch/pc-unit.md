@@ -46,7 +46,7 @@ The logic of PC Logic can be summarized in the following table:
 
 ### PC Adder
 
-The PC Adder computes the next address (including the branch target or jump address). Because the commitment happens in the Mem stage, the inputs must be sourced correctly to avoid hazards:
+The PC Adder computes the next address (including the branch target or jump address). Because the commitment happens in the **Mem stage**, the inputs must be sourced correctly to avoid hazards:
 
 - `PC_Base`: Selects between the current PC (`PCF`, `PCM`) or a register value (`RD1M`). Note that `RD1M` is derived from `RD1E_Forwarded` and latched into the Mem stage pipeline register.
 - `PC_Offset`: Selects between sequential increment (`+4`) or the branch offset (`+ExtImmM`).
@@ -59,10 +59,7 @@ The PC Adder computes the next address (including the branch target or jump addr
 | `11`    | `RD1M`           | `+ExtImm`            | JALR with immediate        |
 
 !!! warning
-    Simply delaying the control signals is insufficient for this microarchitectural change. The [Hazard Unit](hazard-unit.md) must also be updated to handle the new branch resolution timing correctly.
-
-!!! info
-    The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found [in Mach-V Version 2's microarchitecture diagram](./index.md/#mach-v-version-2).
+    Simply delaying the control signals is insufficient for moving the PC logic from **Exe stage** to **Mem stage**. The [Hazard Unit](hazard-unit.md) must also be updated to handle the new branch resolution timing correctly.
 
 ## 1-bit Branch Predictor
 
