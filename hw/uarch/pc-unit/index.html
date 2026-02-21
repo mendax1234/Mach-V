@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
     
     
       
@@ -1809,9 +1809,36 @@
 <li>Branch History Table (BHT): predicts whether a branch is taken.</li>
 <li>Branch Target Buffer (BTB): predicts where the branch goes if it is taken.</li>
 </ul>
-<p>Both structures are accessed in the Fetch (F) stage using the current PC, and updated later when the actual branch outcome is known.</p>
+<p>The architecture of the 1-bit branch predictor is shown as follows:</p>
+<figure>
+<p><img alt="1-bit Branch Predictor Block Diagram" src="../../../assets/images/1-bit-branch-predictor-structure.svg" /></p>
+<figcaption>
+<p>1-bit Branch Predictor Block Diagram</p>
+</figcaption>
+</figure>
+<p>The first change is in the <code>PC_In</code> signal selection, I have separated it into two stages:</p>
+<ol>
+<li><strong>Speculative Execution (Fetch Stage)</strong>: The speculative next PC is chosen based on the BHT prediction.<ul>
+<li>If <code>PrPCSrcF= 1</code> (predicted taken), the speculative next PC is <code>PrBTAF</code>.</li>
+<li>Else, the speculative next PC is <code>PCPlus4F</code>.</li>
+</ul>
+</li>
+<li><strong>Resolution (Memory Stage)</strong>: The actual branch outcome is evaluated against the speculative prediction to catch and correct errors.<ul>
+<li>If the <code>BranchMispredictM == 1</code>, the next PC is corrected to <code>PC_ResolvedM</code>, which is the correct next PC based on the actual branch outcome. This is becauase a misprediction occurred due to an error in either:<ul>
+<li>Branch decision (<code>MispredPCSrcM</code>): The CPU guessed the wrong action. This ensures that the instruction was actually a branch/jump (not just a normal instruction like <code>ADD</code>) and that the Taken/Not Taken prediction was correct.</li>
+<li>Branch target (<code>MispredBTAM</code>): The CPU guessed the wrong destination. This checks if the predicted address matches the actual resolved target address.</li>
+</ul>
+</li>
+<li>Otherwise, we use the speculative next PC value from step 1.</li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Why the BHT does not care about the instruction type?</p>
+<p>The BHT's only job is to provide a fast, speculative prediction based on the instruction address during the Fetch stage, without needing to know the actual instruction type. If a non-branch instruction is incorrectly predicted as a branch, the Memory stage catches this by comparing the authoritative, decoded <code>PCSrc[0]</code> against the prediction (<code>PrPCSrcM</code>). This mismatch automatically triggers a misprediction flush (<code>BranchMispredictM = 1</code>), seamlessly correcting the PC.</p>
+</div>
 <h3 id="branch-history-table-bht">Branch History Table (BHT)<a class="headerlink" href="#branch-history-table-bht" title="Permanent link">&para;</a></h3>
-<p>The Branch History Table stores 2-bit prediction (the value of <code>PCSrc[1:0]</code>) for each indexed entry, indicating whether a branch was taken last time.</p>
+<p>The Branch History Table stores 1-bit <code>PCSrc[0]</code> for any type of instruction.</p>
 <figure>
 <p><img alt="BHT Block Diagram" src="../../../assets/images/Branch-History-Table-1-bit.svg" /></p>
 <figcaption>
@@ -1839,7 +1866,7 @@
 <hr />
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code>PCSrc[1:0]</code> indicates whether the branch is taken (<code>1</code>) or not taken (<code>0</code>).</p>
+<p><code>PCSrc[1:0]</code> indicates whether an instruction is a branch/jump instuction and it so, it also indicates whether the branch is taken (<code>1</code>) or not taken (<code>0</code>).</p>
 </div>
 <h3 id="branch-target-buffer-btb">Branch Target Buffer (BTB)<a class="headerlink" href="#branch-target-buffer-btb" title="Permanent link">&para;</a></h3>
 <p>The Branch Target Buffer stores the target address of previously taken branches.</p>
@@ -1889,7 +1916,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 26, 2026 12:23:07 UTC"><span class="timeago" datetime="2026-01-26T12:23:07+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 26, 2026 12:23:07 UTC">2026-01-26</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="February 21, 2026 10:02:57 UTC"><span class="timeago" datetime="2026-02-21T10:02:57+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="February 21, 2026 10:02:57 UTC">2026-02-21</span>
   </span>
 
     
