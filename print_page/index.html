@@ -2053,8 +2053,8 @@
 <h2 id="hw-uarch-pc-unit-1-bit-branch-predictor">1-bit Branch Predictor<a class="headerlink" href="#hw-uarch-pc-unit-1-bit-branch-predictor" title="Permanent link">&para;</a></h2>
 <p>To implement a 1-bit branch predictor, the design uses two structures:</p>
 <ul>
-<li>Branch History Table (BHT): predicts whether a branch is taken.</li>
-<li>Branch Target Buffer (BTB): predicts where the branch goes if it is taken.</li>
+<li><a href="#hw-uarch-pc-unit-branch-history-table-bht">Branch History Table (BHT)</a></li>
+<li><a href="#hw-uarch-pc-unit-branch-target-buffer-btb">Branch Target Buffer (BTB)</a></li>
 </ul>
 <p>The architecture of the 1-bit branch predictor is shown as follows:</p>
 <figure>
@@ -2063,7 +2063,7 @@
 <p>1-bit Branch Predictor Block Diagram</p>
 </figcaption>
 </figure>
-<p>The first change is in the <code>PC_In</code> signal selection, I have separated it into two stages:</p>
+<p>The main change is in the <code>PC_In</code> signal selection, I have separated it into two stages:</p>
 <ol>
 <li><strong>Speculative Execution (Fetch Stage)</strong>: The speculative next PC is chosen based on the BHT prediction.<ul>
 <li>If <code>PrPCSrcF= 1</code> (predicted taken), the speculative next PC is <code>PrBTAF</code>.</li>
