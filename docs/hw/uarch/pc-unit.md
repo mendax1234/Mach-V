@@ -68,8 +68,8 @@ The PC Adder computes the next address (including the branch target or jump addr
 
 To implement a 1-bit branch predictor, the design uses two structures:
 
-- Branch History Table (BHT): predicts whether a branch is taken.
-- Branch Target Buffer (BTB): predicts where the branch goes if it is taken.
+- [Branch History Table (BHT)](#branch-history-table-bht)
+- [Branch Target Buffer (BTB)](#branch-target-buffer-btb)
 
 The architecture of the 1-bit branch predictor is shown as follows:
 
@@ -78,7 +78,7 @@ The architecture of the 1-bit branch predictor is shown as follows:
 1-bit Branch Predictor Block Diagram
 ///
 
-The first change is in the `PC_In` signal selection, I have separated it into two stages:
+The main change is in the `PC_In` signal selection, I have separated it into two stages:
 
 1. **Speculative Execution (Fetch Stage)**: The speculative next PC is chosen based on the BHT prediction.
     - If `PrPCSrcF= 1` (predicted taken), the speculative next PC is `PrBTAF`.
