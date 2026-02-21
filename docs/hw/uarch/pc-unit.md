@@ -71,11 +71,30 @@ To implement a 1-bit branch predictor, the design uses two structures:
 - Branch History Table (BHT): predicts whether a branch is taken.
 - Branch Target Buffer (BTB): predicts where the branch goes if it is taken.
 
-Both structures are accessed in the Fetch (F) stage using the current PC, and updated later when the actual branch outcome is known.
+The architecture of the 1-bit branch predictor is shown as follows:
+
+![1-bit Branch Predictor Block Diagram](../../assets/images/1-bit-branch-predictor-structure.svg)
+///caption
+1-bit Branch Predictor Block Diagram
+///
+
+The first change is in the `PC_In` signal selection, I have separated it into two stages:
+
+1. **Speculative Execution (Fetch Stage)**: The speculative next PC is chosen based on the BHT prediction.
+    - If `PrPCSrcF= 1` (predicted taken), the speculative next PC is `PrBTAF`.
+    - Else, the speculative next PC is `PCPlus4F`.
+2. **Resolution (Memory Stage)**: The actual branch outcome is evaluated against the speculative prediction to catch and correct errors.
+    - If the `BranchMispredictM == 1`, the next PC is corrected to `PC_ResolvedM`, which is the correct next PC based on the actual branch outcome. This is becauase a misprediction occurred due to an error in either:
+        - Branch decision (`MispredPCSrcM`): The CPU guessed the wrong action. This ensures that the instruction was actually a branch/jump (not just a normal instruction like `ADD`) and that the Taken/Not Taken prediction was correct.
+        - Branch target (`MispredBTAM`): The CPU guessed the wrong destination. This checks if the predicted address matches the actual resolved target address.
+    - Otherwise, we use the speculative next PC value from step 1.
+
+!!! note "Why the BHT does not care about the instruction type?"
+    The BHT's only job is to provide a fast, speculative prediction based on the instruction address during the Fetch stage, without needing to know the actual instruction type. If a non-branch instruction is incorrectly predicted as a branch, the Memory stage catches this by comparing the authoritative, decoded `PCSrc[0]` against the prediction (`PrPCSrcM`). This mismatch automatically triggers a misprediction flush (`BranchMispredictM = 1`), seamlessly correcting the PC.
 
 ### Branch History Table (BHT)
 
-The Branch History Table stores 2-bit prediction (the value of `PCSrc[1:0]`) for each indexed entry, indicating whether a branch was taken last time.
+The Branch History Table stores 1-bit `PCSrc[0]` for any type of instruction.
 
 ![BHT Block Diagram](../../assets/images/Branch-History-Table-1-bit.svg)
 ///caption
@@ -105,7 +124,7 @@ Branch History Table (1-bit) Block Diagram
 ---
 
 !!! note
-    `PCSrc[1:0]` indicates whether the branch is taken (`1`) or not taken (`0`).
+    `PCSrc[1:0]` indicates whether an instruction is a branch/jump instuction and it so, it also indicates whether the branch is taken (`1`) or not taken (`0`).
 
 ### Branch Target Buffer (BTB)
 

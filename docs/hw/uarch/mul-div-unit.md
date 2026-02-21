@@ -127,6 +127,9 @@ The `MCycle` module is implemented as a **Finite State Machine with Datapath**. 
 
 The FSM acts as the manager. It has no knowledge of *how* the multiplication works; it simply tracks *status*. The Datapath performs the heavy lifting. It contains the "implicit state" of the operation, such as the cycle counter or the handshake status of the IP cores.
 
+!!! warning "TODO"
+    Add a diagram showing the interaction between FSM and Datapath.
+
 1. **Initialization (In IDLE):** When `Start` is detected, the datapath captures operands and performs sign analysis (2's complement conversion).
 2. **Execution (In COMPUTING):**
     - **Multiplication:** Increments a `count` register until it matches the IP latency.
