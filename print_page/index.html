@@ -2001,7 +2001,7 @@
 </tbody>
 </table>
 <h3 id="hw-uarch-pc-unit-pc-adder">PC Adder<a class="headerlink" href="#hw-uarch-pc-unit-pc-adder" title="Permanent link">&para;</a></h3>
-<p>The PC Adder computes the next address (including the branch target or jump address). Because the commitment happens in the Mem stage, the inputs must be sourced correctly to avoid hazards:</p>
+<p>The PC Adder computes the next address (including the branch target or jump address). Because the commitment happens in the <strong>Mem stage</strong>, the inputs must be sourced correctly to avoid hazards:</p>
 <ul>
 <li><code>PC_Base</code>: Selects between the current PC (<code>PCF</code>, <code>PCM</code>) or a register value (<code>RD1M</code>). Note that <code>RD1M</code> is derived from <code>RD1E_Forwarded</code> and latched into the Mem stage pipeline register.</li>
 <li><code>PC_Offset</code>: Selects between sequential increment (<code>+4</code>) or the branch offset (<code>+ExtImmM</code>).</li>
@@ -2044,11 +2044,7 @@
 </table>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Simply delaying the control signals is insufficient for this microarchitectural change. The <a href="#hw-uarch-hazard-unit">Hazard Unit</a> must also be updated to handle the new branch resolution timing correctly.</p>
-</div>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>The updated microarchitecture diagram illustrating the move of PC Logic to the Mem stage can be found <a href="#hw-uarch-mach-v-version-2">in Mach-V Version 2's microarchitecture diagram</a>.</p>
+<p>Simply delaying the control signals is insufficient for moving the PC logic from <strong>Exe stage</strong> to <strong>Mem stage</strong>. The <a href="#hw-uarch-hazard-unit">Hazard Unit</a> must also be updated to handle the new branch resolution timing correctly.</p>
 </div>
 <h2 id="hw-uarch-pc-unit-1-bit-branch-predictor">1-bit Branch Predictor<a class="headerlink" href="#hw-uarch-pc-unit-1-bit-branch-predictor" title="Permanent link">&para;</a></h2>
 <p>To implement a 1-bit branch predictor, the design uses two structures:</p>
