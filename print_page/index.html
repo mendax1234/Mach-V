@@ -509,6 +509,8 @@
       
         
       
+        
+      
     
     
     
@@ -561,6 +563,34 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hw/uarch/superscalar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Superscalar Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -1368,10 +1398,21 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hw-uarch-superscalar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2.2 Superscalar Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#hw-uarch-clock" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.2 Clock Architecture
+        2.2.3 Clock Architecture
       
     </span>
   </a>
@@ -1382,7 +1423,7 @@
   <a href="#hw-uarch-pc-unit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.3 Program Counter Unit
+        2.2.4 Program Counter Unit
       
     </span>
   </a>
@@ -1393,7 +1434,7 @@
   <a href="#hw-uarch-alu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.4 Arithmetic & Logic Unit
+        2.2.5 Arithmetic & Logic Unit
       
     </span>
   </a>
@@ -1404,7 +1445,7 @@
   <a href="#hw-uarch-mul-div-unit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.5 Multiply & Divide Unit
+        2.2.6 Multiply & Divide Unit
       
     </span>
   </a>
@@ -1415,7 +1456,7 @@
   <a href="#hw-uarch-lsu" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.6 Load & Store Unit
+        2.2.7 Load & Store Unit
       
     </span>
   </a>
@@ -1426,7 +1467,7 @@
   <a href="#hw-uarch-hazard-unit" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2.2.7 Hazard Handling Unit
+        2.2.8 Hazard Handling Unit
       
     </span>
   </a>
@@ -1735,7 +1776,23 @@
 </ol>
 </div>
 </div>
-</div></section><section class="print-page" id="hw-uarch-clock" heading-number="2.2.2"><h1 id="hw-uarch-clock-clock-architecture">Clock Architecture<a class="headerlink" href="#hw-uarch-clock-clock-architecture" title="Permanent link">&para;</a></h1>
+</div></section><section class="print-page" id="hw-uarch-superscalar" heading-number="2.2.2"><h1 id="hw-uarch-superscalar-superscalar-architecture">Superscalar Architecture<a class="headerlink" href="#hw-uarch-superscalar-superscalar-architecture" title="Permanent link">&para;</a></h1>
+<p>This section is a brief overview of fascinating but complex topics. In my <a href="https://wenbo-notes.gitbook.io/ddca-notes/lec/lec-06-advanced-processor#multiple-issue-processors">DDCA notes</a>, I have some really good examples regarding the techniques introduced here. If you want to learn more details, I highly recommend checking out those notes.</p>
+<p><strong>Pipelining</strong> exploits the potential <strong>parallelism</strong> among instructions. This parallelism is called, naturally enough, <strong>instruction-level parallelism (ILP)</strong>. There are two primary methods for increasing the potential amount of instruction-level parallelism:</p>
+<ol>
+<li><strong><a href="https://wenbo-notes.gitbook.io/ddca-notes/lec/lec-06-advanced-processor#deep-pipelining">Deep Pipelining</a></strong></li>
+<li><strong>Multiple Issue</strong>: A scheme whereby multiple instructions are launched in one clock cycle.</li>
+</ol>
+<p>There are also two main ways to implement a multiple-issue processor, with the major difference being the division of work between the compiler and the hardware:</p>
+<ol>
+<li><strong>Static Multiple Issue</strong>: An approach to implementing a multiple-issue processor where many decisions are made by the compiler before execution.</li>
+<li><strong>Dynamic Multiple Issue</strong>: An approach to implementing a multiple-issue processor where many decisions are made during execution by the processor.</li>
+</ol>
+<p>In Mach-V, instead of seeking help from the compiler, I am going to implement an <strong>in-order superscalar processor</strong>. There will be a hardware unit to handle the instruction packaging during the execution, so technically it is a <strong>dynamic multiple-issue processor</strong>.</p>
+<div class="admonition info">
+<p class="admonition-title">Use Latency</p>
+<p>Use latency is the number of clock cycles between a load instruction and an instruction that can use the result of the load without stalling the pipeline. For example, loads have a use latency of one clock cycle. In the two-issue, five-stage pipieline, the result of a load instruction cannot be used on the next clock cycle. This means that the next <em>two</em> instructions cannot use the load result without stalling.</p>
+</div></section><section class="print-page" id="hw-uarch-clock" heading-number="2.2.3"><h1 id="hw-uarch-clock-clock-architecture">Clock Architecture<a class="headerlink" href="#hw-uarch-clock-clock-architecture" title="Permanent link">&para;</a></h1>
 <p>Consistent with the synchronous design conventions established in NUS CG3207, the Mach-V processor operates within a single clock domain. All registers and sequential logic are driven by a single global clock signal to simplify timing analysis.</p>
 <h2 id="hw-uarch-clock-clock-frequency-scaling">Clock Frequency Scaling<a class="headerlink" href="#hw-uarch-clock-clock-frequency-scaling" title="Permanent link">&para;</a></h2>
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
@@ -1890,7 +1947,7 @@
 </div>
 </div>
 </div>
-</div></section><section class="print-page" id="hw-uarch-pc-unit" heading-number="2.2.3"><h1 id="hw-uarch-pc-unit-pc-logic">PC Logic<a class="headerlink" href="#hw-uarch-pc-unit-pc-logic" title="Permanent link">&para;</a></h1>
+</div></section><section class="print-page" id="hw-uarch-pc-unit" heading-number="2.2.4"><h1 id="hw-uarch-pc-unit-pc-logic">PC Logic<a class="headerlink" href="#hw-uarch-pc-unit-pc-logic" title="Permanent link">&para;</a></h1>
 <p>This section details the implementation of the Program Counter (PC) logic, covering <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/PC_Logic.v"><code>PC_Logic.v</code></a>, <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/ProgramCounter.v"><code>ProgramCounter.v</code></a>, and the relevant multiplexing logic for the PC adder within <a href="https://github.com/mendax1234/Mach-V/blob/main/rtl/core/RV.v#L136-L150"><code>RV.v</code></a>.</p>
 <h2 id="hw-uarch-pc-unit-branch-resolution">Branch Resolution<a class="headerlink" href="#hw-uarch-pc-unit-branch-resolution" title="Permanent link">&para;</a></h2>
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
@@ -2136,7 +2193,7 @@
 <h4 id="hw-uarch-pc-unit-output_1">Output<a class="headerlink" href="#hw-uarch-pc-unit-output_1" title="Permanent link">&para;</a></h4>
 <ul>
 <li><code>PrBTAF</code>: Predicted branch target address for the instruction in the Fetch stage.</li>
-</ul></section><section class="print-page" id="hw-uarch-alu" heading-number="2.2.4"><h1 id="hw-uarch-alu-arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#hw-uarch-alu-arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
+</ul></section><section class="print-page" id="hw-uarch-alu" heading-number="2.2.5"><h1 id="hw-uarch-alu-arithmetic-logic-unit-alu">Arithmetic &amp; Logic Unit (ALU)<a class="headerlink" href="#hw-uarch-alu-arithmetic-logic-unit-alu" title="Permanent link">&para;</a></h1>
 <p>The Mach-V ALU is a streamlined execution unit derived from the reference design used in <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v">NUS CG3207</a>. It implements standard RISC-V integer arithmetic and logical operations, utilizing a <a href="https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/Shifter.v">barrel shifter</a> designed by NUS CG3207 teaching team for efficient single-cycle shift operations.</p>
 <h2 id="hw-uarch-alu-zero-flag-optimization">Zero Flag Optimization<a class="headerlink" href="#hw-uarch-alu-zero-flag-optimization" title="Permanent link">&para;</a></h2>
 <p><span class="mdx-badge"><span class="mdx-badge__icon"><a href="#sw-changelog-conventions-version" title="Minimum version"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span></a></span><span class="mdx-badge__text"><a href="#sw-changelog-2.0">2.0</a></span></span>
@@ -2150,7 +2207,7 @@
 <div class="admonition failure">
 <p class="admonition-title">Failure</p>
 <p>This optimization is mandatory for Mach-V to achieve timing closure at 115 MHz. Reverting to the standard post-mux Zero generation will cause setup time violations on the Vivado tool.</p>
-</div></section><section class="print-page" id="hw-uarch-mul-div-unit" heading-number="2.2.5"><h1 id="hw-uarch-mul-div-unit-multiply-divide-unit">Multiply &amp; Divide Unit<a class="headerlink" href="#hw-uarch-mul-div-unit-multiply-divide-unit" title="Permanent link">&para;</a></h1>
+</div></section><section class="print-page" id="hw-uarch-mul-div-unit" heading-number="2.2.6"><h1 id="hw-uarch-mul-div-unit-multiply-divide-unit">Multiply &amp; Divide Unit<a class="headerlink" href="#hw-uarch-mul-div-unit-multiply-divide-unit" title="Permanent link">&para;</a></h1>
 <p>In the first two versions of the Mach-V processor, the multiply and divide unit is incorporated into one file called <code>MCycle.v</code>. The whole idea of the <code>MCycle</code> module is that, while it is doing the computation, the <code>Busy</code> signal (output) will be triggered high and this signal will be used to stall the other relevant pipeline registers so that no new instructions are fetched until the multiplication/division is complete.</p>
 <h2 id="hw-uarch-mul-div-unit-state-machine-control">State Machine Control<a class="headerlink" href="#hw-uarch-mul-div-unit-state-machine-control" title="Permanent link">&para;</a></h2>
 <p>The <code>MCycle</code> module utilizes a finite state machine (FSM) to coordinate the multi-cycle execution of multiplication and division operations. This FSM ensures the <code>Busy</code> signal is asserted correctly during operation and de-asserted only when the result is valid.</p>
@@ -2562,7 +2619,7 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 </span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#hw-uarch-mul-div-unit-__codelineno-11-16"></a><span class="w">    </span><span class="p">.</span><span class="n">m_axis_dout_tvalid</span><span class="w">    </span><span class="p">(</span><span class="n">div_out_valid</span><span class="p">),</span>
 </span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#hw-uarch-mul-div-unit-__codelineno-11-17"></a><span class="w">    </span><span class="p">.</span><span class="n">m_axis_dout_tdata</span><span class="w">     </span><span class="p">(</span><span class="n">div_dout</span><span class="p">)</span>
 </span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#hw-uarch-mul-div-unit-__codelineno-11-18"></a><span class="p">);</span>
-</span></code></pre></div></section><section class="print-page" id="hw-uarch-lsu" heading-number="2.2.6"><h1 id="hw-uarch-lsu-load-store-unit">Load &amp; Store Unit<a class="headerlink" href="#hw-uarch-lsu-load-store-unit" title="Permanent link">&para;</a></h1>
+</span></code></pre></div></section><section class="print-page" id="hw-uarch-lsu" heading-number="2.2.7"><h1 id="hw-uarch-lsu-load-store-unit">Load &amp; Store Unit<a class="headerlink" href="#hw-uarch-lsu-load-store-unit" title="Permanent link">&para;</a></h1>
 <p>Unlike the baseline design from NUS CG3207, Mach-V extends memory support beyond full-word operations. The Load Store Unit (LSU) module handles byte (<code>lb</code>/<code>lbu</code>/<code>sb</code>) and half-word (<code>lh</code>/<code>lhu</code>/<code>sh</code>) transactions, ensuring correct data alignment and sign extension.</p>
 <h2 id="hw-uarch-lsu-interface-definition">Interface Definition<a class="headerlink" href="#hw-uarch-lsu-interface-definition" title="Permanent link">&para;</a></h2>
 <p>The LSU locates in the Mem stage. It processes raw addresses and data to align them with the memory's 32-bit word boundaries.</p>
@@ -2686,7 +2743,7 @@ Busy &amp;= (\bar{S} \cdot Start) + (S \cdot \overline{done})
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#hw-uarch-lsu-__codelineno-1-12"></a><span class="k">end</span>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#hw-uarch-lsu-__codelineno-1-13"></a>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#hw-uarch-lsu-__codelineno-1-14"></a><span class="k">assign</span><span class="w"> </span><span class="n">ReadDataM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loaded_val</span><span class="p">;</span>
-</span></code></pre></div></section><section class="print-page" id="hw-uarch-hazard-unit" heading-number="2.2.7"><h1 id="hw-uarch-hazard-unit-hazard-handling-unit">Hazard Handling Unit<a class="headerlink" href="#hw-uarch-hazard-unit-hazard-handling-unit" title="Permanent link">&para;</a></h1>
+</span></code></pre></div></section><section class="print-page" id="hw-uarch-hazard-unit" heading-number="2.2.8"><h1 id="hw-uarch-hazard-unit-hazard-handling-unit">Hazard Handling Unit<a class="headerlink" href="#hw-uarch-hazard-unit-hazard-handling-unit" title="Permanent link">&para;</a></h1>
 <p>The Hazard Handling Unit manages the data and control hazards inherent in Mach-V's 5-stage pipeline architecture. Its primary responsibilities are divided into two logic blocks:</p>
 <ol>
 <li><strong>Data Forwarding Logic</strong>: Resolves data hazards by bypassing results from later stages.</li>
@@ -3544,17 +3601,19 @@ building from source.</p>
 .print-site-enumerate-headings #section-2-2 > h1:before { content: '2.2 ' }
 .print-site-enumerate-headings #hw-uarch > h1:before { content: '2.2.1 ' }
 
-.print-site-enumerate-headings #hw-uarch-clock > h1:before { content: '2.2.2 ' }
+.print-site-enumerate-headings #hw-uarch-superscalar > h1:before { content: '2.2.2 ' }
 
-.print-site-enumerate-headings #hw-uarch-pc-unit > h1:before { content: '2.2.3 ' }
+.print-site-enumerate-headings #hw-uarch-clock > h1:before { content: '2.2.3 ' }
 
-.print-site-enumerate-headings #hw-uarch-alu > h1:before { content: '2.2.4 ' }
+.print-site-enumerate-headings #hw-uarch-pc-unit > h1:before { content: '2.2.4 ' }
 
-.print-site-enumerate-headings #hw-uarch-mul-div-unit > h1:before { content: '2.2.5 ' }
+.print-site-enumerate-headings #hw-uarch-alu > h1:before { content: '2.2.5 ' }
 
-.print-site-enumerate-headings #hw-uarch-lsu > h1:before { content: '2.2.6 ' }
+.print-site-enumerate-headings #hw-uarch-mul-div-unit > h1:before { content: '2.2.6 ' }
 
-.print-site-enumerate-headings #hw-uarch-hazard-unit > h1:before { content: '2.2.7 ' }
+.print-site-enumerate-headings #hw-uarch-lsu > h1:before { content: '2.2.7 ' }
+
+.print-site-enumerate-headings #hw-uarch-hazard-unit > h1:before { content: '2.2.8 ' }
 
 .print-site-enumerate-headings #section-2-3 > h1:before { content: '2.3 ' }
 .print-site-enumerate-headings #hw-mem > h1:before { content: '2.3.1 ' }
