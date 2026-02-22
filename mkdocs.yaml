@@ -147,6 +147,7 @@ nav:
       - Overview: hw/overview.md
       - Microarchitecture:
         - hw/uarch/index.md
+        - Superscalar Architecture: hw/uarch/superscalar.md
         - Clock Architecture: hw/uarch/clock.md
         - Program Counter Unit: hw/uarch/pc-unit.md
         - Arithmetic & Logic Unit: hw/uarch/alu.md
