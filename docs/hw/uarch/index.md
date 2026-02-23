@@ -41,4 +41,3 @@ The microarchitecture of Mach-V has currently evolved through two distinct itera
 
     1. **1-bit Branch Predictor:** Implements a simple 1-bit branch predictor to improve control flow efficiency by predicting the outcome of branch instructions and achieves a 15% improvement in Coremark scores.
     2. **The usage of Block RAM:** Utilizes Block RAM for IROM and DMEM and reduces the area of the design by 50% compared to the previous version.
-    
