@@ -4,8 +4,7 @@ The Mach-V ALU is a streamlined execution unit derived from the reference design
 
 ## Zero Flag Optimization
 
-<!-- md:version 2.0 -->
-<!-- md:feature -->
+<!-- md:version 1.1 -->
 
 While the base architecture is inherited, a critical timing optimization was introduced to the **Zero (Z) flag generation**. In the [reference design](https://github.com/NUS-CG3207/labs/blob/main/docs/code_templates/Asst_02/ALU.v#L79), the Z flag is typically derived from the final `ALUResult` (after the result multiplexer). This creates a long logic chain: `Adder -> Result Mux -> Zero Check`.
 

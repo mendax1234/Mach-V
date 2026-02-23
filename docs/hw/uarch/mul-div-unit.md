@@ -188,7 +188,6 @@ I have tried two implementations for the multiply and divide unit in the `MCycle
 ### Custom RTL Design
 
 <!-- md:version 1.0 -->
-<!-- md:experimental -->
 
 This is a follow-up from [CG3207 Assignment 3](https://nus-cg3207.github.io/labs/asst_manuals/Asst_03/Asst_03/). More specifically, it is my try to finish the first bullet point in the [Task 3 of this assignment](https://nus-cg3207.github.io/labs/asst_manuals/Asst_03/Asst_03/#task-3-enhancements-5-points).
 
@@ -364,8 +363,6 @@ DivSlice8 div_unit (
 ### IP Core Integration
 
 <!-- md:version 1.0 -->
-<!-- md:plugin -->
-<!-- md:feature -->
 
 As mentioned in the [previous documentation](#custom-rtl-design), if I only use the unrolling technique, it is impossible to reach higher frequency while keeping the cycles for multiplication and division low. Therefore, I decided to use the AMD IP cores (Multiplier and Divider) to implement the multiply and divide unit.
 

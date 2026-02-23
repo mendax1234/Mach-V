@@ -4,8 +4,7 @@ This section details the implementation of the Program Counter (PC) logic, cover
 
 ## Branch Resolution
 
-<!-- md:version 2.0 -->
-<!-- md:default -->
+<!-- md:version 1.1 -->
 
 In Mach-V Version 2, branch and jump instructions are **committed in the Mem stage**. Moving this logic from Execute to Memory improved timing performance, allowing the design to achieve a clock frequency of **115 MHz**.
 
@@ -62,6 +61,8 @@ The PC Adder computes the next address (including the branch target or jump addr
     Simply delaying the control signals is insufficient for moving the PC logic from **Exe stage** to **Mem stage**. The [Hazard Unit](hazard-unit.md) must also be updated to handle the new branch resolution timing correctly.
 
 ## 1-bit Branch Predictor
+
+<!-- md:version 1.2 -->
 
 To implement a 1-bit branch predictor, the design uses two structures:
 

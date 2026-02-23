@@ -21,8 +21,7 @@ The base implementation of the Stall & Flush logic handles standard Load-Use haz
 
 ### Modifications for Mem Stage Branching
 
-<!-- md:version 2.0 -->
-<!-- md:feature -->
+<!-- md:version 1.1 -->
 
 To support moving the PC Logic to the Memory (Mem) stage, significant modifications were required to complete the interaction between the Hazard Unit, the Stall signals, and the Multi-Cycle Unit.
 

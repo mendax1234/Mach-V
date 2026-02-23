@@ -2,7 +2,14 @@
 
 ## Mach-V Processor
 
-### 2.0 <small> Dec 20, 2025 </small> { id="2.0" }
+### 1.2 <small> Feb 21, 2026 </small> { id="1.2" }
+
+**Focus:** 1-bit Branch Predictor and Block RAM optimization.
+
+- **1-bit Branch Predictor:** Implemented a simple 1-bit branch predictor to improve control flow efficiency by predicting the outcome of branch instructions, resulting in a 15% improvement in Coremark scores.
+- **Block RAM Optimization:** Utilized Block RAM for both IROM and DMEM, reducing the area of the design by 50% compared to the previous version.
+
+### 1.1 <small> Dec 20, 2025 </small> { id="1.1" }
 
 **Focus:** Timing optimization and hardware acceleration.
 

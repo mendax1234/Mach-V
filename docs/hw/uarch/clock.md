@@ -4,9 +4,7 @@ Consistent with the synchronous design conventions established in NUS CG3207, th
 
 ## Clock Frequency Scaling
 
-<!-- md:version 2.0 -->
-<!-- md:plugin -->
-<!-- md:feature -->
+<!-- md:version 1.1 -->
 
 Given that the default system clock is capped at 100 MHz and limited to coarse power-of-two division, I utilized the AMD Clocking Wizard IP core. This allows me to synthesize a precise, higher-frequency clock from the base input to maximize Mach-V's performance.
 

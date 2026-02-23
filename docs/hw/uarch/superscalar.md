@@ -19,6 +19,8 @@ Static multiple-issue processors all use the **compiler** to assist with packagi
 
 ## In-Order Superscalar Architecture
 
+<!-- md:experimental -->
+
 In Mach-V, instead of seeking help from the compiler, I am going to implement an **in-order superscalar processor**. There will be a hardware unit to handle the instruction packaging during the execution, so technically it is a **dynamic multiple-issue processor**.
 
 As this architecture is rather complex, I will explain it part-by-part.
@@ -74,6 +76,9 @@ And to understand its flow better, let's look at all the 4 possible cases:
         - Pipe 2 Mux Control: `2` (Selects NOP)
         - Hold Mux Control: `0` (Selects Instruction 1 to be held)
         - Rollback Signal: `1` (Next PC = PC+4)
+
+!!! warning "TODO"
+    Search and study how to detect the dependency between two instructions.
 
 ### Next-PC Logic
 
