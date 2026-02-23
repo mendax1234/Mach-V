@@ -591,6 +591,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Superscalar Architecture
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -607,6 +625,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#in-order-superscalar-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          In-Order Superscalar Architecture
+        </span>
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="In-Order Superscalar Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instruction-issue-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Instruction Issue Unit
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#next-pc-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Next-PC Logic
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1359,6 +1441,59 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#in-order-superscalar-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          In-Order Superscalar Architecture
+        </span>
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="In-Order Superscalar Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instruction-issue-unit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Instruction Issue Unit
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#next-pc-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <span class="md-typeset">
+          Next-PC Logic
+        </span>
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1460,11 +1595,111 @@
 <li><strong>Static Multiple Issue</strong>: An approach to implementing a multiple-issue processor where many decisions are made by the compiler before execution.</li>
 <li><strong>Dynamic Multiple Issue</strong>: An approach to implementing a multiple-issue processor where many decisions are made during execution by the processor.</li>
 </ol>
-<p>In Mach-V, instead of seeking help from the compiler, I am going to implement an <strong>in-order superscalar processor</strong>. There will be a hardware unit to handle the instruction packaging during the execution, so technically it is a <strong>dynamic multiple-issue processor</strong>.</p>
+<p>Static multiple-issue processors all use the <strong>compiler</strong> to assist with packaging instructions and handling hazards. In a static issue processor, you can think of the set of instructions issued in a given clock cycle, which is called an <strong>issue packet</strong>, as one large instruction with multiple operations. This view is more than an analogy. Since a static multiple-issue processor usually restricts what mix of instructions can be initiated in a given clock cycle, it is useful to think of the issue packet as a single instruction allowing several operations in certain predefined fields. This view also led to the original name for this approach: <strong><a href="https://wenbo-notes.gitbook.io/ddca-notes/lec/lec-06-advanced-processor#vliw-processor">Very Long Instruction Word (VLIW)</a></strong>.</p>
 <div class="admonition info">
 <p class="admonition-title">Use Latency</p>
 <p>Use latency is the number of clock cycles between a load instruction and an instruction that can use the result of the load without stalling the pipeline. For example, loads have a use latency of one clock cycle. In the two-issue, five-stage pipieline, the result of a load instruction cannot be used on the next clock cycle. This means that the next <em>two</em> instructions cannot use the load result without stalling.</p>
 </div>
+<h2 id="in-order-superscalar-architecture">In-Order Superscalar Architecture<a class="headerlink" href="#in-order-superscalar-architecture" title="Permanent link">&para;</a></h2>
+<p>In Mach-V, instead of seeking help from the compiler, I am going to implement an <strong>in-order superscalar processor</strong>. There will be a hardware unit to handle the instruction packaging during the execution, so technically it is a <strong>dynamic multiple-issue processor</strong>.</p>
+<p>As this architecture is rather complex, I will explain it part-by-part.</p>
+<h3 id="instruction-issue-unit">Instruction Issue Unit<a class="headerlink" href="#instruction-issue-unit" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>To implement the 2-way in-order superscalar architecture, the processor should be able to read two instructions simultaneously from the IROM. This is achieveable by using the Block RAM and the example is provided by <a href="https://docs.amd.com/r/en-US/ug901-vivado-synthesis/True-Dual-Port-Block-RAM-Examples">AMD</a>.</p>
+</div>
+<p>The overal architecture of the instruction issue unit (IIU) is shown below.</p>
+<figure>
+<p><img alt="Instruction Issue Unit" src="../../../assets/images/instruction-issue-unit.svg" /></p>
+<figcaption>
+<p>Instruction Issue Unit</p>
+</figcaption>
+</figure>
+<p>The IIU is implemented in the <strong>Decode</strong> stage. Whenever dependency arises between the Instruction 1 and Instruction 2, the <strong>second</strong> instruction will be stored in a hold register and a "rollback" signal will be asserted to adjust next-PC value so that the next-PC coming into the IROM will be PC+4 instead of PC+8 (We will talk more about the Next-PC Logic in detail later). The held instruction will be issued in the next clock cycle.</p>
+<p>The three multiplexers in the figure each has their own purpose:</p>
+<ul>
+<li>The Hold Mux (Top Left): Controls what gets saved into the Hold Register. Inputs are Instruction 1 (<code>0</code>), Instruction 2 (<code>1</code>), and NOP (<code>2</code>).</li>
+<li>The Pipe 1 Mux (Top Right): Controls what enters the first execution pipeline. Inputs are Instruction 1 (<code>0</code>) and Hold Instruction (<code>1</code>).</li>
+<li>The Pipe 2 Mux (Bottom Right): Controls what enters the second execution pipeline. Inputs are Instruction 1 (<code>0</code>), Instruction 2 (<code>1</code>), and NOP (<code>2</code>).</li>
+</ul>
+<p>And to understand its flow better, let's look at all the 4 possible cases:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="hold-register-is-empty" name="__tabbed_1" type="radio" /><input id="hold-register-is-full" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="hold-register-is-empty">Hold Register is Empty</label><label for="hold-register-is-full">Hold Register is Full</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>The IIU evaluates Instruction 1 and Instruction 2 directly from the IROM.</p>
+<ol>
+<li><strong>If No Dependency</strong>: Both instructions issue normally.<ul>
+<li>Pipe 1 Mux Control: <code>0</code> (Selects Instruction 1)</li>
+<li>Pipe 2 Mux Control: <code>1</code> (Selects Instruction 2)</li>
+<li>Hold Mux Control: <code>2</code> (Selects NOP, Hold Register remains empty)</li>
+<li>Rollback Signal: <code>0</code> (Next PC = PC+8)</li>
+</ul>
+</li>
+<li><strong>If Dependency Detected</strong>: Instruction 2 cannot be issued simulatenously.<ul>
+<li>Pipe 1 Mux Control: <code>0</code> (Selects Instruction 1)</li>
+<li>Pipe 2 Mux Control: <code>2</code> (Selects NOP, Pipeline 2 is stalled)</li>
+<li>Hold Mux Control: <code>1</code> (Selects Instruction 2 to be held)</li>
+<li>Rollback Signal: <code>1</code> (Next PC = PC+4)</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="tabbed-block">
+<p>In this case, the hold register already contains a <strong>valid</strong> instruction. Because the processor issues in-order , the Held Instruction <strong>must</strong> go to Pipe 1. The IIU now evaluates dependencies betwee the Held Instruction and the new Instruction 1 fetched from the IROM.</p>
+<ol>
+<li><em>If No Dependency between Hold and Instr 1</em>*: Both can be issued.<ul>
+<li>Pipe 1 Mux Control: <code>1</code> (Selects Held Instruction)</li>
+<li>Pipe 2 Mux Control: <code>0</code> (Selects Instruction 1)</li>
+<li>Hold Mux Control: <code>2</code> (Selects NOP, Hold Register is cleared)</li>
+<li>Rollback Signal: <code>0</code> (Next PC = PC+8)</li>
+</ul>
+</li>
+<li><strong>If Dependency Detected between Hold and Instr 1</strong>: Only the held instruction can be issued.<ul>
+<li>Pipe 1 Mux Control: <code>1</code> (Selects Held Instruction)</li>
+<li>Pipe 2 Mux Control: <code>2</code> (Selects NOP)</li>
+<li>Hold Mux Control: <code>0</code> (Selects Instruction 1 to be held)</li>
+<li>Rollback Signal: <code>1</code> (Next PC = PC+4)</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<h3 id="next-pc-logic">Next-PC Logic<a class="headerlink" href="#next-pc-logic" title="Permanent link">&para;</a></h3>
+<p>As the normal Next-PC Logic, this part will contain several pipeline stages and it really depends on the execution flow. The architecture for the Next-PC logic is shown below.</p>
+<figure>
+<p><img alt="Next-PC Logic" src="../../../assets/images/next-pc-logic.svg" /></p>
+<figcaption>
+<p>Next-PC Logic</p>
+</figcaption>
+</figure>
+<p>The Next-PC Logic has two paths:</p>
+<ol>
+<li>The upper path: This is to deal with the "rollback" signal from the IIU, which is already explained in the previous section.</li>
+<li>The lower path: This is to deal with the superscalar branch prediction unit.</li>
+</ol>
+<p>The structure of the BPU Issuing Unit is shown below.</p>
+<figure>
+<p><img alt="BPU Issuing Unit" src="../../../assets/images/bpu-issue.svg" /></p>
+<figcaption>
+<p>BPU Issuing Unit</p>
+</figcaption>
+</figure>
+<p>The BPU Issuing Unit is implemented in the <strong>Fetch Stage</strong> for feeding the PC value to the BPU.</p>
+<ol>
+<li>If the hold instruction is a branch, the PC value from the hold register in the <strong>Decode Stage</strong> is fed to the BPU.</li>
+<li>Otherwise, the <code>PCF</code> will be fed to the BPU as normal.</li>
+</ol>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>The spirit for having this unit is that in the in-order superscalar architecture, the starting point of the next issue packet can be either <code>PCF</code> or the PC value of the hold instruction. And one layer at the Decode stage is added so that if the hold instruction's PC enters the BPU, the hold instruction is confirmed to be a branch instruction.</p>
+</div>
+<p>Coming back to the Next-PC Logic, we have three multiplexers:</p>
+<ol>
+<li>The Rollback Mux (Top Left): Whenever the rollback signal is asserted in the Decode Stage, the next PC value will be <code>PCF+4</code>; otherwise, it will be <code>PCF+8</code>.</li>
+<li>The Prediction Mux (Middle): In the Fetch Stage, if the BPU predicts the target PC value of an instruction (<code>PrPCSrcF == 1'b1</code>), the predicted PC from the BPU (<code>PrBTAF</code>) will be loaded. Otherwise, it passes the sequential PC through.</li>
+<li>The Correction Mux (Right): If the prediction goes wrong (<code>BranchMispredictM == 1'b1</code>), then the correct PC value will be loaded from the Memory Stage (<code>PC_ResolvedM</code>). This overrides everything else fetched in the current cycle.</li>
+</ol>
 
 
 
@@ -1487,7 +1722,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="February 22, 2026 13:07:20 UTC"><span class="timeago" datetime="2026-02-22T13:07:20+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="February 22, 2026 13:07:20 UTC">2026-02-22</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="February 23, 2026 12:37:48 UTC"><span class="timeago" datetime="2026-02-23T12:37:48+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="February 23, 2026 12:37:48 UTC">2026-02-23</span>
   </span>
 
     
