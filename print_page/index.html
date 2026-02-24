@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
     
     
       
@@ -1743,7 +1743,7 @@
 <p>Mach-V Microarchitecture - Version 1.0</p>
 </figcaption>
 </figure>
-<p>Mach-V Version 1 serves as the baseline implementation, featuring a classic RISC-V scalar architecture:</p>
+<p>Mach-V Version 1.0 serves as the baseline implementation, featuring a classic RISC-V scalar architecture:</p>
 <ol>
 <li><strong>Classic 5-Stage Pipeline:</strong> Implements the standard Fetch, Decode, Execute, Memory, and Writeback stages for balanced throughput.</li>
 <li><strong>Comprehensive Hazard Management:</strong> Dedicated hardware for data forwarding and hazard detection resolves data and control hazards automatically.</li>
@@ -1757,7 +1757,7 @@
 <p>Mach-V Microarchitecture - Version 1.1</p>
 </figcaption>
 </figure>
-<p>Mach-V Version 2 focuses on timing optimization and hardware acceleration, introducing the following enhancements:</p>
+<p>Mach-V Version 1.1 focuses on timing optimization and hardware acceleration, introducing the following enhancements:</p>
 <ol>
 <li><strong>Enhanced Clock Frequency:</strong> Integrated Clock Wizard boosts the operating frequency to <strong>115 MHz</strong> (surpassing the 100 MHz baseline).</li>
 <li><strong>Critical Path Optimization:</strong> PC logic is relocated from the Execute (EXE) stage to the Memory (MEM) stage to relax timing constraints.</li>
@@ -1771,7 +1771,7 @@
 <p>Mach-V Microarchitecture - Version 1.2</p>
 </figcaption>
 </figure>
-<p>Mach-V Version 3 focuses on the 1-bit Branch Predictor, introducing the following enhancements:</p>
+<p>Mach-V Version 1.2 focuses on the 1-bit Branch Predictor, introducing the following enhancements:</p>
 <ol>
 <li><strong>1-bit Branch Predictor:</strong> Implements a simple 1-bit branch predictor to improve control flow efficiency by predicting the outcome of branch instructions and achieves a 15% improvement in Coremark scores.</li>
 <li><strong>The usage of Block RAM:</strong> Utilizes Block RAM for IROM and DMEM and reduces the area of the design by 50% compared to the previous version.</li>
