@@ -1,6 +1,6 @@
 # Superscalar Architecture
 
-This section is a brief overview of fascinating but complex topics. In my [DDCA notes](https://wenbo-notes.gitbook.io/ddca-notes/lec/lec-06-advanced-processor#multiple-issue-processors), I have some really good examples regarding the techniques introduced here. If you want to learn more details, I highly recommend checking out those notes.
+This section is a brief overview of fascinating but complex topics. In my [DDCA notes](https://wenbo-notes.gitbook.io/ddca-notes/lec/lec-06-advanced-processor#multiple-issue-processors), I have some really good examples regarding the techniques introduced here. If you want to learn more details, I highly recommend to check out those notes.
 
 **Pipelining** exploits the potential **parallelism** among instructions. This parallelism is called, naturally enough, **instruction-level parallelism (ILP)**. There are two primary methods for increasing the potential amount of instruction-level parallelism:
 
@@ -9,26 +9,24 @@ This section is a brief overview of fascinating but complex topics. In my [DDCA 
 
 There are also two main ways to implement a multiple-issue processor, with the major difference being the division of work between the compiler and the hardware:
 
-1. **Static Multiple Issue**: An approach to implementing a multiple-issue processor where many decisions are made by the compiler before execution.
-2. **Dynamic Multiple Issue**: An approach to implementing a multiple-issue processor where many decisions are made during execution by the processor.
+1. **Static Multiple Issue**: An approach to implementing a multiple-issue processor where many decisions are made by the **compiler before execution**.
+2. **Dynamic Multiple Issue**: An approach to implementing a multiple-issue processor where many decisions are made **during execution by the processor**.
 
 Static multiple-issue processors all use the **compiler** to assist with packaging instructions and handling hazards. In a static issue processor, you can think of the set of instructions issued in a given clock cycle, which is called an **issue packet**, as one large instruction with multiple operations. This view is more than an analogy. Since a static multiple-issue processor usually restricts what mix of instructions can be initiated in a given clock cycle, it is useful to think of the issue packet as a single instruction allowing several operations in certain predefined fields. This view also led to the original name for this approach: **[Very Long Instruction Word (VLIW)](https://wenbo-notes.gitbook.io/ddca-notes/lec/lec-06-advanced-processor#vliw-processor)**.
 
 !!! info "Use Latency"
-    Use latency is the number of clock cycles between a load instruction and an instruction that can use the result of the load without stalling the pipeline. For example, loads have a use latency of one clock cycle. In the two-issue, five-stage pipieline, the result of a load instruction cannot be used on the next clock cycle. This means that the next *two* instructions cannot use the load result without stalling.
+    **Use latency** is the number of clock cycles between a **load** instruction and an instruction that can use the result of the load without stalling the pipeline. For example, loads have a use latency of one clock cycle. In the two-issue, five-stage pipieline, the result of a load instruction cannot be used on the next clock cycle. This means that the next *two* instructions cannot use the load result without stalling.
 
 ## In-Order Superscalar Architecture
 
 <!-- md:experimental -->
 
-In Mach-V, instead of seeking help from the compiler, I am going to implement an **in-order superscalar processor**. There will be a hardware unit to handle the instruction packaging during the execution, so technically it is a **dynamic multiple-issue processor**.
-
-As this architecture is rather complex, I will explain it part-by-part.
+In Mach-V, instead of seeking help from the compiler, I am going to implement an **in-order superscalar processor**. There will be a hardware unit to handle the instruction packaging during the execution and some other units used for different purposes, so technically it is a **dynamic multiple-issue processor**. As this architecture is rather complex, I will explain it part-by-part.
 
 ### Instruction Issue Unit
 
 !!! warning
-    To implement the 2-way in-order superscalar architecture, the processor should be able to read two instructions simultaneously from the IROM. This is achieveable by using the Block RAM and the example is provided by [AMD](https://docs.amd.com/r/en-US/ug901-vivado-synthesis/True-Dual-Port-Block-RAM-Examples).
+    To implement the 2-way in-order superscalar architecture, the processor should be able to read two instructions simultaneously from the IROM. This is achieveable by using the [Block RAM](../mem/main-memory.md#block-ram) and the example is provided by [AMD](https://docs.amd.com/r/en-US/ug901-vivado-synthesis/True-Dual-Port-Block-RAM-Examples).
 
 The overal architecture of the instruction issue unit (IIU) is shown below.
 
@@ -37,12 +35,15 @@ The overal architecture of the instruction issue unit (IIU) is shown below.
 Instruction Issue Unit
 ///
 
-The IIU is implemented in the **Decode** stage. Whenever dependency arises between the Instruction 1 and Instruction 2, the **second** instruction will be stored in a hold register and a "rollback" signal will be asserted to adjust next-PC value so that the next-PC coming into the IROM will be PC+4 instead of PC+8 (We will talk more about the Next-PC Logic in detail later). The held instruction will be issued in the next clock cycle.
+The IIU is implemented in the **Decode** stage. Whenever dependency arises between the instructions on the Instruction 1 wire and the Instruction 2 wire, the **second** instruction will be stored in a hold register and a "rollback" signal will be asserted to adjust next-PC value so that the next-PC coming into the IROM will be PC+4 instead of PC+8 (We will talk more about the Next-PC Logic in detail later). The held instruction will be issued in the next clock cycle.
+
+!!! warning
+    The Instruction 1 and 2 represent the instructions on the Instruction 1 wire and Instruction 2 wire!
 
 The three multiplexers in the figure each has their own purpose:
 
 - The Hold Mux (Top Left): Controls what gets saved into the Hold Register. Inputs are Instruction 1 (`0`), Instruction 2 (`1`), and NOP (`2`).
-- The Pipe 1 Mux (Top Right): Controls what enters the first execution pipeline. Inputs are Instruction 1 (`0`) and Hold Instruction (`1`).
+- The Pipe 1 Mux (Top Right): Controls what enters the first execution pipeline. Inputs are Instruction 1 (`0`) and held instruction (`1`).
 - The Pipe 2 Mux (Bottom Right): Controls what enters the second execution pipeline. Inputs are Instruction 1 (`0`), Instruction 2 (`1`), and NOP (`2`).
 
 And to understand its flow better, let's look at all the 4 possible cases:
@@ -64,9 +65,9 @@ And to understand its flow better, let's look at all the 4 possible cases:
 
 === "Hold Register is Full"
 
-    In this case, the hold register already contains a **valid** instruction. Because the processor issues in-order , the Held Instruction **must** go to Pipe 1. The IIU now evaluates dependencies betwee the Held Instruction and the new Instruction 1 fetched from the IROM.
+    In this case, the hold register has already contained a **valid** instruction. Because the processor issues in-order, the Held Instruction **must** go to Pipe 1. The IIU now evaluates dependencies between the Held Instruction and the instruction on the Instruction 1 wire.
 
-    1. *If No Dependency between Hold and Instr 1**: Both can be issued.
+    1. **If No Dependency between Hold and Instr 1**: Both can be issued.
         - Pipe 1 Mux Control: `1` (Selects Held Instruction)
         - Pipe 2 Mux Control: `0` (Selects Instruction 1)
         - Hold Mux Control: `2` (Selects NOP, Hold Register is cleared)
@@ -76,6 +77,25 @@ And to understand its flow better, let's look at all the 4 possible cases:
         - Pipe 2 Mux Control: `2` (Selects NOP)
         - Hold Mux Control: `0` (Selects Instruction 1 to be held)
         - Rollback Signal: `1` (Next PC = PC+4)
+
+The behavior of superscalar instruction fecthin mechanism is illustrated in the following table assuming only the first two instructions are having dependency.
+
+| Cycle | Fetch Stage | Decode Stage |
+| ----- | ----------- | ------------ |
+| 1 | **Current Instructions**: I0, I1<br>**Next Instructions**: I2, I3<br>*rollback* = 0 | **First Instruction**: Null<br>**Second Instruction**: Null<br>**held instruction**: Null |
+| 2 | **Current Instructions**: I2, I3<br>**Next Instructions**: I3, I4<br>*rollback* = 1 | **First Instruction**: I0<br>**Second Instruction**: Null<br>**held instruction**: I1 |
+| 3 | **Current Instructions**: I3, I4<br>**Next Instructions**: I5, I6<br>*rollback* = 0 | **First Instruction**: I1<br>**Second Instruction**: I2<br>**held instruction**: Null |
+
+From this table, we can see clearly that the instructions on the Instruction 1 and Instruction 2 wires in the IIU in the Decode Stage are actually the **current instructions** in the Fetch Stage in the previous cycle. In the Decode Stage, a rollback signal will be generated **combinationally** and this immediately affects the **next instructions** in the current clock cycle.
+
+!!! tip "Debugging Tips"
+    A good way to debug the IIU is to draw a table like above manually. The procedure is as follows:
+
+    1. Assume we are in cycle 1 now, first write the **current instructions** out first.
+    2. The `Instr_1` and `Instr_2` in the Decode stage of cycle 1 should come from the **current instruction**s in the Fetch stage in the previous cycle, which is cycle 0.
+    3. The rollback signal in cycle 1 is generated based on the dependency between `Instr_1` and `Instr_2` in the Decode stage of cycle 1.
+    4. Based on this rollback signal, write the **next instructions** in the Fetch stage of cycle 1.
+    5. Move to cycle 2 and the current instructions will be just the **next instructions** in the Fetch stage of cycle 1. Repeat the same procedure.
 
 !!! warning "TODO"
     Search and study how to detect the dependency between two instructions.
@@ -103,11 +123,11 @@ BPU Issuing Unit
 
 The BPU Issuing Unit is implemented in the **Fetch Stage** for feeding the PC value to the BPU.
 
-1. If the hold instruction is a branch, the PC value from the hold register in the **Decode Stage** is fed to the BPU.
+1. If the held instruction is a branch, the PC value from the hold register in the **Decode Stage** is fed to the BPU.
 2. Otherwise, the `PCF` will be fed to the BPU as normal.
 
 !!! success
-    The spirit for having this unit is that in the in-order superscalar architecture, the starting point of the next issue packet can be either `PCF` or the PC value of the hold instruction. And one layer at the Decode stage is added so that if the hold instruction's PC enters the BPU, the hold instruction is confirmed to be a branch instruction.
+    The spirit for having this unit is that in the in-order superscalar architecture, the **next** issue packet can be either `PCF+4`, `PCF+8` or the **BTA** of the PC value of the held instruction if it is a branch or the `PCF`.
 
 Coming back to the Next-PC Logic, we have three multiplexers:
 
