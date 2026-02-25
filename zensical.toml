@@ -1,0 +1,152 @@
+# ==============================================================================
+# 1. SITE METADATA
+# ==============================================================================
+[project]
+site_name = "Mach-V Docs"
+site_description = "A high-performance RISC-V processor on FPGA. Bridging the gap between beginner-friendly education and advanced hardware architecture."
+site_author = "Wenbo (Daniel) Zhu"
+site_url = "https://mendax1234.github.io/Mach-V/"
+repo_name = "mendax1234/Mach-V"
+repo_url = "https://github.com/mendax1234/Mach-V"
+edit_uri = "edit/main/docs/"
+
+# ---- Navigation Structure ----
+nav = [
+    { "Home" = "index.md" },
+    { "Hardware Architecture" = [
+        { "Overview" = "hw/overview.md" },
+        { "Microarchitecture" = [
+            "hw/uarch/index.md",
+            { "Superscalar Architecture" = "hw/uarch/superscalar.md" },
+            { "Clock Architecture" = "hw/uarch/clock.md" },
+            { "Program Counter Unit" = "hw/uarch/pc-unit.md" },
+            { "Arithmetic & Logic Unit" = "hw/uarch/alu.md" },
+            { "Multiply & Divide Unit" = "hw/uarch/mul-div-unit.md" },
+            { "Load & Store Unit" = "hw/uarch/lsu.md" },
+            { "Hazard Handling Unit" = "hw/uarch/hazard-unit.md" },
+        ] },
+        { "Memory Subsystem" = [
+            "hw/mem/index.md",
+            { "Main Memory" = "hw/mem/main-memory.md" },
+            { "MMIO Interface" = "hw/mem/mmio-bus.md" },
+        ] },
+        # { "Peripherals" = [
+        #     "hw/peripherals/index.md"
+        # ] }
+    ] },
+    { "Simulation" = [
+        "sim/index.md",
+        { "Benchmark Testbench" = "sim/benchmark_tb.md" },
+        { "UART Testbench" = "sim/uart_tb.md" },
+    ] },
+    { "Software" = [
+        "sw/index.md",
+        { "Benchmark" = "sw/benchmark.md" },
+        { "UART Calculator" = "sw/uart_calculator.md" },
+        { "Resources" = "sw/resources.md" },
+        { "Changelog" = [
+            "sw/changelog/index.md",
+            { "Conventions" = "sw/changelog/conventions.md" },
+        ] },
+    ] },
+]
+
+# ==============================================================================
+# 2. THEME & UI CONFIGURATION
+# ==============================================================================
+[project.theme]
+language = "en"
+custom_dir = "overrides"
+# favicon = "assets/favicon.png"
+# logo = "assets/logo.png"
+
+# --- Feature Flags ---
+features = [
+    "announce.dismiss",
+    "content.code.annotate",
+    "content.code.copy",
+    "content.code.select",
+    "content.footnote.tooltips",
+    "content.tabs.link",
+    "content.tooltips",
+    "content.action.edit",
+    "navigation.tabs",
+    "navigation.footer",
+    "navigation.indexes",
+    "navigation.instant",
+    "navigation.instant.preview",
+    "navigation.path",
+    "navigation.sections",
+    "navigation.top",
+    "navigation.tracking",
+    "search.highlight",
+]
+
+# ==============================================================================
+# 3. COLOR PALETTE (System / Light / Dark)
+# ==============================================================================
+# System Preference
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+# Light Mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+# Dark Mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+# ==============================================================================
+# 4. PLUGINS, EXTENSIONS, & ASSETS
+# ==============================================================================
+# ---- Extra CSS ----
+extra_css = ["stylesheets/extra.css"]
+
+# ---- Extra JavaScript ----
+extra_javascript = [
+    "javascripts/mathjax.js",
+    "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
+]
+
+# plugins = []
+# ---- Markdown Extensions ----
+[project.markdown_extensions.abbr]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.toc]
+permalink = true
+toc_depth = 3
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+[project.markdown_extensions.pymdownx.betterem]
+smart_enable = "all"
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+emoji_index = "zensical.extensions.emoji.twemoji"
+[project.markdown_extensions.pymdownx.highlight]
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.keys]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.smartsymbols]
+[project.markdown_extensions.pymdownx.superfences]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+[project.markdown_extensions.pymdownx.tilde]
+[project.markdown_extensions.pymdownx.snippets]
+[project.markdown_extensions.pymdownx.blocks.caption]

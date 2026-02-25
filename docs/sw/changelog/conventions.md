@@ -2,6 +2,9 @@
 
 This section explains the symbols and conventions used throughout the Mach-V documentation.
 
+!!! warning
+    This page utilizes the hooks system in Zensical and this is not available yet.
+
 ## Symbols
 
 The documentation uses visual badges to denote specific hardware states, version requirements, or configuration settings. Please familiarize yourself with the following conventions:
