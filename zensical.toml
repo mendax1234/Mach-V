@@ -51,6 +51,15 @@ nav = [
     ] },
 ]
 
+# ---- Extra CSS ----
+extra_css = ["stylesheets/extra.css"]
+
+# ---- Extra JavaScript ----
+extra_javascript = [
+    "javascripts/mathjax.js",
+    "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
+]
+
 # ==============================================================================
 # 2. THEME & UI CONFIGURATION
 # ==============================================================================
@@ -106,17 +115,8 @@ toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
 
 # ==============================================================================
-# 4. PLUGINS, EXTENSIONS, & ASSETS
+# 4. PLUGINS, EXTENSIONS
 # ==============================================================================
-# ---- Extra CSS ----
-extra_css = ["stylesheets/extra.css"]
-
-# ---- Extra JavaScript ----
-extra_javascript = [
-    "javascripts/mathjax.js",
-    "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
-]
-
 # plugins = []
 # ---- Markdown Extensions ----
 [project.markdown_extensions.abbr]
