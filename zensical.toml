@@ -9,6 +9,7 @@ site_url = "https://mendax1234.github.io/Mach-V/"
 repo_name = "mendax1234/Mach-V"
 repo_url = "https://github.com/mendax1234/Mach-V"
 edit_uri = "edit/main/docs/"
+copyright = "&copy; 2025 - 2026 Wenbo Daniel Zhu."
 
 # ---- Navigation Structure ----
 nav = [
@@ -58,6 +59,7 @@ extra_css = ["stylesheets/extra.css"]
 extra_javascript = [
     "javascripts/mathjax.js",
     "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
+    "javascripts/home-theme.js",
 ]
 
 # ==============================================================================
