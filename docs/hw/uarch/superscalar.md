@@ -91,18 +91,28 @@ From this table, we can see clearly that the instructions on the Instruction 1 a
 !!! tip "Debugging Tips"
     A good way to debug the IIU is to draw a table like above manually. The procedure is as follows:
 
-    1. Assume we are in cycle 1 now, first write the **current instructions** out first.
-    2. The `Instr_1` and `Instr_2` in the Decode stage of cycle 1 should come from the **current instruction**s in the Fetch stage in the previous cycle, which is cycle 0.
-    3. The rollback signal in cycle 1 is generated based on the dependency between `Instr_1` and `Instr_2` in the Decode stage of cycle 1.
-    4. Based on this rollback signal, write the **next instructions** in the Fetch stage of cycle 1.
-    5. Move to cycle 2 and the current instructions will be just the **next instructions** in the Fetch stage of cycle 1. Repeat the same procedure.
+    1. Assume we are in cycle 2 now, first write the **current instructions** out first.
+    2. The `Instr_1` and `Instr_2` in the Decode stage of cycle 2 should come from the **current instructions** in the Fetch stage in the previous cycle, which is cycle 1.
+    3. The rollback signal in cycle 2 is generated based on the dependency between `Instr_1` and `Instr_2` in the Decode stage of cycle 2.
+    4. Based on this rollback signal, write the **next instructions** in the Fetch stage of cycle 2.
+    5. Move to cycle 3 and the current instructions will be just the **next instructions** in the Fetch stage of cycle 2. Repeat the same procedure.
 
-!!! warning "TODO"
-    Search and study how to detect the dependency between two instructions.
+#### Instruction Dependency Detection
+
+In the IIU, the following conventions are used for the instruction dependency detection:
+
+- Two instructions are issued to the pipeline only if the **second instruction** does not have any dependency on the **first instruction**. In case of dependencies, only the first instruction is issued and the second instruction is held at the Decode stage.
+- Two **memory access** instructions (load or store) or two **branch** instructions are never issued together.
+- **Load, branch, multiply/divide** instructions are issued **only** through the first pipeline. In other words, **only one** load, branch, or multiply/divide instruction can be issued a time.
+
+With these conventions, besides the change of the IROM we have mentioned at the [beginnging](#instruction-issue-unit), the rest of changes for the Mach-V microarchitecture are:
+
+1. Add two read ports and one write port to the register file.
+2. Add one more ALUs so now we have two ALUs.
 
 ### Next-PC Logic
 
-As the normal Next-PC Logic, this part will contain several pipeline stages and it really depends on the execution flow. The architecture for the Next-PC logic is shown below.
+As the normal Next-PC Logic, this part will cover several pipeline stages and which stages are covered really depends on the program execution flow. The architecture for the Next-PC logic is shown below.
 
 ![Next-PC Logic](../../assets/images/next-pc-logic.svg)
 ///caption
@@ -134,3 +144,11 @@ Coming back to the Next-PC Logic, we have three multiplexers:
 1. The Rollback Mux (Top Left): Whenever the rollback signal is asserted in the Decode Stage, the next PC value will be `PCF+4`; otherwise, it will be `PCF+8`.
 2. The Prediction Mux (Middle): In the Fetch Stage, if the BPU predicts the target PC value of an instruction (`PrPCSrcF == 1'b1`), the predicted PC from the BPU (`PrBTAF`) will be loaded. Otherwise, it passes the sequential PC through.
 3. The Correction Mux (Right): If the prediction goes wrong (`BranchMispredictM == 1'b1`), then the correct PC value will be loaded from the Memory Stage (`PC_ResolvedM`). This overrides everything else fetched in the current cycle.
+
+### Forwarding Unit
+
+The forwarding unit is implemented in the Decode, Execute and Memory stages to handle the data hazards arising from the dependencies between instructions.
+
+!!! warning
+    If instructions in both the pipelines make a hazard situation, then the data from the second pipeline taks priority, since at any stage, the instruction in the second pipeline is the latest one. For example, if two `add` instructions write to the same register, then the result from the second `add` instruction will be forwarded.
+
