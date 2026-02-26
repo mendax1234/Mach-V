@@ -5,7 +5,7 @@
 
 <style>
     /* ==========================================================================
-       1. GLOBAL LAYOUT & DYNAMIC THEME BACKGROUNDS
+       1. GLOBAL LAYOUT & FIXED PURPLE GRADIENT
        ========================================================================== */
 
     html,
@@ -17,31 +17,19 @@
         overflow-y: auto;
     }
 
-    /* --- LIGHT MODE GRADIENT (Default) --- */
-    body {
-        /* FIX 2: Disable the "rubber-band" bounce effect on iOS/Mobile.
-           This forces the scrollbar to stop firmly at the top edge. */
+    /* Force the purple gradient background regardless of system theme */
+    body,
+    body[data-md-color-scheme="slate"] {
+        /* Disable the "rubber-band" bounce effect on iOS/Mobile. */
         overscroll-behavior-y: none;
 
-        /* THE FIX: "Solid Buffer"
-           0px - 150px: Solid Primary Color (Matches the opaque header perfectly)
-           150px - End: Fades to Purple (#a63fd9)
-        */
-        background: linear-gradient(to bottom,
-                var(--md-primary-fg-color) 0%,
-                var(--md-primary-fg-color) 150px,
-                #a63fd9 100%) fixed;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
-
-    /* --- DARK MODE GRADIENT (Slate Theme) --- */
-    body[data-md-color-scheme="slate"] {
-        /* THE FIX applied to Dark Mode too */
+        /* Purple Gradient */
         background: linear-gradient(to bottom,
                 var(--md-primary-fg-color) 0%,
                 var(--md-primary-fg-color) 150px,
                 #363949 100%) fixed !important;
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 
     /* LOCK SCROLL ON DESKTOP ONLY */
@@ -57,10 +45,6 @@
        2. SEAMLESS HEADER (Opaque + Matching Color)
        ========================================================================== */
 
-    /* We set the header to the EXACT same color as the top 150px of the body.
-       Since both are solid var(--md-primary-fg-color), the seam is invisible.
-       It is opaque, so scrolling text on iPad will hide behind it properly.
-    */
     .md-header,
     .md-tabs {
         background-color: var(--md-primary-fg-color) !important;
@@ -69,7 +53,17 @@
     }
 
     /* ==========================================================================
-       3. MOBILE MENU LOGIC
+       3. HIDE THEME TOGGLE (HOME PAGE ONLY)
+       ========================================================================== */
+
+    /* Hide the auto mode / theme selection toggle */
+    form[data-md-component="palette"],
+    .md-header__option[data-md-component="palette"] {
+        display: none !important;
+    }
+
+    /* ==========================================================================
+       4. MOBILE MENU LOGIC
        ========================================================================== */
 
     /* MOBILE (< 1220px): Keep menu accessible */
@@ -101,7 +95,7 @@
     }
 
     /* ==========================================================================
-       4. HERO CONTAINER
+       5. HERO CONTAINER
        ========================================================================== */
 
     .mdx-container {
@@ -112,13 +106,11 @@
         justify-content: center;
         padding-top: 2rem;
         padding-bottom: 2rem;
-
-        /* Transparent so the Body Gradient shows through */
         background: transparent;
     }
 
     /* ==========================================================================
-       5. CONTENT STYLING
+       6. CONTENT STYLING
        ========================================================================== */
 
     .mdx-hero {
@@ -135,7 +127,7 @@
     }
 
     /* ==========================================================================
-       6. RESPONSIVE BREAKPOINTS
+       7. RESPONSIVE BREAKPOINTS
        ========================================================================== */
 
     /* MOBILE / TABLET (< 1220px) */
@@ -186,7 +178,7 @@
     }
 
     /* ==========================================================================
-       7. IMAGES & BUTTONS
+       8. IMAGES & BUTTONS
        ========================================================================== */
 
     .mdx-hero__image img {
@@ -219,38 +211,6 @@
         background-color: transparent !important;
         color: #ffffff !important;
     }
-
-    /* ==========================================================================
-       8. FIX HEADER TEXT COLOR IN LIGHT MODE (HOME PAGE ONLY)
-       ========================================================================== */
-
-    /* Force header text, icons, and title to white */
-    .md-header,
-    .md-header__button,
-    .md-header__topic,
-    .md-header__topic a,
-    .md-search__icon {
-        color: #ffffff !important;
-    }
-
-    /* Force GitHub repo text to white */
-    .md-source__repository {
-        color: #ffffff !important;
-    }
-
-    .md-source__fact {
-        color: rgba(255, 255, 255, 0.7) !important;
-    }
-
-    /* Force navigation tabs to white */
-    .md-tabs__link {
-        color: rgba(255, 255, 255, 0.7) !important;
-    }
-
-    .md-tabs__link:hover,
-    .md-tabs__link--active {
-        color: #ffffff !important;
-    }
 </style>
 
 <section class="mdx-container">
@@ -269,6 +229,80 @@
         </div>
     </div>
 </section>
+<script>
+    (function() {
+        // 1. Prevent the script from setting itself up multiple times during SPA navigation
+        if (window.__homeThemeManager) return;
+        
+        window.__homeThemeManager = {
+            // Save the user's global theme preference when they first land on the site
+            originalScheme: document.body.getAttribute('data-md-color-scheme'),
+            
+            apply: function() {
+                // We reliably know we are on the homepage if your hero container exists
+                const isHome = document.querySelector('.mdx-hero') !== null;
+                
+                if (isHome) {
+                    // Force dark mode
+                    document.body.setAttribute('data-md-color-scheme', 'slate');
+                } else {
+                    // Restore the user's original global preference for all other pages
+                    if (this.originalScheme) {
+                        document.body.setAttribute('data-md-color-scheme', this.originalScheme);
+                    } else {
+                        document.body.removeAttribute('data-md-color-scheme');
+                    }
+                }
+            }
+        };
+
+        // 2. Hijack LocalStorage temporarily to prevent Zensical from permanently saving the forced homepage theme
+        const originalSetItem = localStorage.setItem;
+        localStorage.setItem = function(key, value) {
+            const isHome = document.querySelector('.mdx-hero') !== null;
+            if (isHome && typeof value === 'string' && value.includes('slate')) {
+                return; // Block saving while on the homepage
+            }
+            originalSetItem.apply(this, arguments);
+        };
+
+        // 3. Keep track if the user genuinely changes their theme while reading the docs
+        const observer = new MutationObserver(() => {
+            const isHome = document.querySelector('.mdx-hero') !== null;
+            if (!isHome) {
+                // Update our memory of their preference if they change it on a standard page
+                window.__homeThemeManager.originalScheme = document.body.getAttribute('data-md-color-scheme');
+            }
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['data-md-color-scheme'] });
+
+        // 4. Intercept all internal SPA routing (Link clicks)
+        const patchHistory = (method) => {
+            const original = history[method];
+            history[method] = function() {
+                const result = original.apply(this, arguments);
+                // Wait 50ms for Zensical to finish swapping the HTML, then evaluate the theme
+                setTimeout(() => window.__homeThemeManager.apply(), 50);
+                return result;
+            };
+        };
+        patchHistory('pushState');
+        patchHistory('replaceState');
+
+        // 5. Intercept browser Back/Forward buttons
+        window.addEventListener('popstate', () => {
+            setTimeout(() => window.__homeThemeManager.apply(), 50);
+        });
+
+        // 6. Hook into Material/Zensical's native observable if it exists
+        if (typeof document$ !== 'undefined') {
+            document$.subscribe(() => window.__homeThemeManager.apply());
+        }
+
+        // 7. Run immediately on the first page load
+        window.__homeThemeManager.apply();
+    })();
+</script>
 {% endblock %}
 
 {% block content %}{% endblock %}
