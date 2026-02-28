@@ -105,7 +105,7 @@ In the IIU, the following conventions are used for the instruction dependency de
 - Two **memory access** instructions (load or store) or two **branch** instructions are never issued together.
 - **Load, branch, multiply/divide** instructions are issued **only** through the first pipeline. In other words, **only one** load, branch, or multiply/divide instruction can be issued a time.
 
-With these conventions, besides the change of the IROM we have mentioned at the [beginnging](#instruction-issue-unit), the rest of changes for the Mach-V microarchitecture are:
+With these conventions, besides the change of the IROM we have mentioned at the [beginning](#instruction-issue-unit), the rest of changes for the Mach-V microarchitecture are:
 
 1. Add two read ports and one write port to the register file.
 2. Add one more ALUs so now we have two ALUs.
@@ -151,4 +151,3 @@ The forwarding unit is implemented in the Decode, Execute and Memory stages to h
 
 !!! warning
     If instructions in both the pipelines make a hazard situation, then the data from the second pipeline taks priority, since at any stage, the instruction in the second pipeline is the latest one. For example, if two `add` instructions write to the same register, then the result from the second `add` instruction will be forwarded.
-
