@@ -82,7 +82,9 @@ module Wrapper #(
     reg  [31:0] dmem                                              [0:(2**(DMEM_DEPTH-2))-1];
 
     wire [31:0] rv_pc;
-    wire [31:0] rv_instr;
+    wire [31:0] rv_pc_2;
+    wire [31:0] rv_instr_1;
+    wire [31:0] rv_instr_2;
     wire [31:0] rv_addr;
     wire [31:0] rv_wdata;
     wire [ 3:0] rv_be;  // Byte Enable (From Processor)
@@ -109,19 +111,26 @@ module Wrapper #(
 
     // IROM Read
     // This can be changed to trigger an exception instead if need be.
-    reg [31:0] rv_instr_reg;
+    reg [31:0] rv_instr_reg_1;
+    reg [31:0] rv_instr_reg_2;
+
+    // Second PC Fetch
+    assign rv_pc_2 = rv_pc + 32'd4;
 
     // Assign the registered output to the processor wire
-    assign rv_instr = rv_instr_reg;
+    assign rv_instr_1 = rv_instr_reg_1;
+    assign rv_instr_2 = rv_instr_reg_2;
 
     always @(negedge CLK) begin
         if (is_imem) begin
             // Synchronous Read: Data available on NEXT clock edge
-            rv_instr_reg <= imem[rv_pc[IMEM_DEPTH-1:2]];
+            rv_instr_reg_1 <= imem[rv_pc[IMEM_DEPTH-1:2]];
+            rv_instr_reg_2 <= imem[rv_pc_2[IMEM_DEPTH-1:2]];
         end
         else begin
             // Return NOP if address is invalid
-            rv_instr_reg <= 32'h00000013;
+            rv_instr_reg_1 <= 32'h00000013;
+            rv_instr_reg_2 <= 32'h00000013;
         end
     end
 
@@ -299,7 +308,8 @@ module Wrapper #(
        ) rv_core (
            .CLK           (CLK),
            .RESET         (RESET),
-           .Instr         (rv_instr),
+           .Instr_1       (rv_instr_1),
+           .Instr_2       (rv_instr_2),
            .ReadData_in   (mem_rdata),
            .MemRead       (rv_memread),
            .MemWrite_out  (rv_be),
