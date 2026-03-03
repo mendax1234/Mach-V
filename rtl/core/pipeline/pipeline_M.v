@@ -19,76 +19,124 @@
 `timescale 1ns / 1ps
 
 module pipeline_M (
-    input             CLK,
-    input             RESET,
-    input             Busy,
-    input             FlushM,
-    input             RegWriteE,
-    input             MemtoRegE,
-    input             MemWriteE,
-    input      [31:0] ComputeResultE,
-    input      [31:0] WriteDataE,
-    input      [ 4:0] rs2E,
-    input      [ 4:0] rdE,
-    input      [ 2:0] Funct3E,
-    input      [31:0] RD1E_Forwarded,
-    input      [31:0] PCE,
-    input      [31:0] ExtImmE,
-    input      [ 1:0] PCSE,
-    input      [ 2:0] ALUFlagsE,
-    input             PrPCSrcE,
-    input      [31:0] PrBTAE,
-    output reg        RegWriteM,
-    output reg        MemtoRegM,
-    output reg        MemWriteM,
-    output reg [ 2:0] Funct3M,
-    output reg [31:0] ComputeResultM,
-    output reg [31:0] WriteDataM,
-    output reg [ 4:0] rs2M,
-    output reg [ 4:0] rdM,
-    output reg [31:0] RD1M,
-    output reg [31:0] PCM,
-    output reg [31:0] ExtImmM,
-    output reg [ 1:0] PCSM,
-    output reg [ 2:0] ALUFlagsM,
-    output reg        PrPCSrcM,
-    output reg [31:0] PrBTAM
-);
+        // --------------------
+        // Clock / Reset / Flow
+        // --------------------
+        input             CLK,
+        input             RESET,
+        input             Busy,
+        input             FlushM,
 
+        // --------------------
+        // PIPELINE 1 - EX -> MEM inputs
+        // --------------------
+        input             RegWriteE_1,
+        input             MemtoRegE_1,
+        input             MemWriteE_1,
+        input      [31:0] ComputeResultE_1,
+        input      [31:0] WriteDataE_1,
+        input      [ 4:0] rs2E_1,
+        input      [ 4:0] rdE_1,
+        input      [ 2:0] Funct3E_1,
+        input      [31:0] RD1E_Forwarded_1,
+        input      [31:0] PCE,
+        input      [31:0] ExtImmE_1,
+        input      [ 1:0] PCSE,
+        input      [ 2:0] ALUFlagsE_1,
+        input             PrPCSrcE,
+        input      [31:0] PrBTAE,
+
+        // --------------------
+        // PIPELINE 1 - MEM outputs (registered)
+        // --------------------
+        output reg        RegWriteM_1,
+        output reg        MemtoRegM_1,
+        output reg        MemWriteM_1,
+        output reg [ 2:0] Funct3M_1,
+        output reg [31:0] ComputeResultM_1,
+        output reg [31:0] WriteDataM_1,
+        output reg [ 4:0] rs2M_1,
+        output reg [ 4:0] rdM_1,
+        output reg [31:0] RD1M_1,
+        output reg [31:0] PCM,
+        output reg [31:0] ExtImmM_1,
+        output reg [ 1:0] PCSM,
+        output reg [ 2:0] ALUFlagsM_1,
+        output reg        PrPCSrcM,
+        output reg [31:0] PrBTAM,
+
+        // --------------------
+        // PIPELINE 2 - EX -> MEM inputs
+        // --------------------
+        input             RegWriteE_2,
+        input             MemWriteE_2,
+        input      [ 2:0] Funct3E_2,
+        input      [31:0] ComputeResultE_2,
+        input      [31:0] WriteDataE_2,
+        input      [ 4:0] rs2E_2,
+        input      [ 4:0] rdE_2,
+
+        // --------------------
+        // PIPELINE 2 - MEM outputs (registered)
+        // --------------------
+        output reg        RegWriteM_2,
+        output reg        MemWriteM_2,
+        output reg [ 2:0] Funct3M_2,
+        output reg [31:0] ComputeResultM_2,
+        output reg [31:0] WriteDataM_2,
+        output reg [ 4:0] rs2M_2,
+        output reg [ 4:0] rdM_2
+    );
     always @(posedge CLK) begin
         if (RESET || FlushM) begin
-            RegWriteM <= 1'b0;
-            MemtoRegM <= 1'b0;
-            MemWriteM <= 1'b0;
-            Funct3M <= 3'b0;
-            ComputeResultM <= 32'b0;
-            WriteDataM <= 32'b0;
-            rs2M <= 5'b0;
-            rdM <= 5'b0;
-            RD1M <= 32'b0;
+            RegWriteM_1 <= 1'b0;
+            MemtoRegM_1 <= 1'b0;
+            MemWriteM_1 <= 1'b0;
+            Funct3M_1 <= 3'b0;
+            ComputeResultM_1 <= 32'b0;
+            WriteDataM_1 <= 32'b0;
+            rs2M_1 <= 5'b0;
+            rdM_1 <= 5'b0;
+            RD1M_1 <= 32'b0;
             PCM <= 32'b0;
-            ExtImmM <= 32'b0;
+            ExtImmM_1 <= 32'b0;
             PCSM <= 2'b0;
-            ALUFlagsM <= 3'b0;
+            ALUFlagsM_1 <= 3'b0;
             PrPCSrcM <= 1'b0;
             PrBTAM <= 32'b0;
-        end else if (~Busy) begin
-            RegWriteM <= RegWriteE;
-            MemtoRegM <= MemtoRegE;
-            MemWriteM <= MemWriteE;
-            Funct3M <= Funct3E;
-            ComputeResultM <= ComputeResultE;
-            WriteDataM <= WriteDataE;
-            rs2M <= rs2E;
-            rdM <= rdE;
-            RD1M <= RD1E_Forwarded;
+
+            RegWriteM_2 <= 1'b0;
+            MemWriteM_2 <= 1'b0;
+            Funct3M_2 <= 3'b0;
+            ComputeResultM_2 <= 32'b0;
+            WriteDataM_2 <= 32'b0;
+            rs2M_2 <= 5'b0;
+            rdM_2 <= 5'b0;
+        end
+        else if (~Busy) begin
+            RegWriteM_1 <= RegWriteE_1;
+            MemtoRegM_1 <= MemtoRegE_1;
+            MemWriteM_1 <= MemWriteE_1;
+            Funct3M_1 <= Funct3E_1;
+            ComputeResultM_1 <= ComputeResultE_1;
+            WriteDataM_1 <= WriteDataE_1;
+            rs2M_1 <= rs2E_1;
+            rdM_1 <= rdE_1;
+            RD1M_1 <= RD1E_Forwarded_1;
             PCM <= PCE;
-            ExtImmM <= ExtImmE;
+            ExtImmM_1 <= ExtImmE_1;
             PCSM <= PCSE;
-            ALUFlagsM <= ALUFlagsE;
+            ALUFlagsM_1 <= ALUFlagsE_1;
             PrPCSrcM <= PrPCSrcE;
             PrBTAM <= PrBTAE;
+
+            RegWriteM_2 <= RegWriteE_2;
+            MemWriteM_2 <= MemWriteE_2;
+            Funct3M_2 <= Funct3E_2;
+            ComputeResultM_2 <= ComputeResultE_2;
+            WriteDataM_2 <= WriteDataE_2;
+            rs2M_2 <= rs2E_2;
+            rdM_2 <= rdE_2;
         end
     end
-
 endmodule

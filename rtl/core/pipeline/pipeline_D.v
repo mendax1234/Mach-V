@@ -19,35 +19,36 @@
 `timescale 1ns / 1ps
 
 module pipeline_D (
-    input             CLK,
-    input             RESET,
-    input             StallD,
-    input             FlushD,
-    input      [31:0] InstrF,
-    input      [31:0] PCF,
-    input             PrPCSrcF,
-    input      [31:0] PrBTAF,
-    output reg        PrPCSrcD,
-    output reg [31:0] PrBTAD,
-    output reg [31:0] InstrD,
-    output reg [31:0] PCD
+        input             CLK,
+        input             RESET,
+        input             StallD,
+        input             FlushD,
+        input      [31:0] InstrF_1,
+        input      [31:0] InstrF_2,
+        input      [31:0] PCF,
+        input             PrPCSrcF,
+        input      [31:0] PrBTAF,
 
-);
-
+        output reg        PrPCSrcD,
+        output reg [31:0] PrBTAD,
+        output reg [31:0] InstrD_1,
+        output reg [31:0] InstrD_2,
+        output reg [31:0] PCD
+    );
     always @(posedge CLK) begin
         if (RESET || FlushD) begin
-            InstrD <= 32'b0;
-            PCD <= 32'b0;
+            InstrD_1 <= 32'b0;
+            InstrD_2 <= 32'b0;
+            PCD      <= 32'b0;
             PrPCSrcD <= 1'b0;
-            PrBTAD <= 32'b0;
-        end else if (~StallD) begin
-            InstrD <= InstrF;
-            PCD <= PCF;
+            PrBTAD   <= 32'b0;
+        end
+        else if (~StallD) begin
+            InstrD_1 <= InstrF_1;
+            InstrD_2 <= InstrF_2;
+            PCD      <= PCF;
             PrPCSrcD <= PrPCSrcF;
-            PrBTAD <= PrBTAF;
+            PrBTAD   <= PrBTAF;
         end
     end
-
 endmodule
-
-
