@@ -93,7 +93,7 @@ module IIU (
     wire branch_conflict      = is_ctrl_1 && is_ctrl_2;
     wire pipe1_only_violation = is_load_2 || is_ctrl_2 || is_muldiv_2; // Force ALL jumps to Pipe 1
 
-    wire dependency = hazard_rs1 || hazard_rs2 || hazard_rd || mem_conflict || branch_conflict || pipe1_only_violation;
+    wire dependency = hazard_rs1 || hazard_rs2 || hazard_rd || mem_conflict || branch_conflict || pipe1_only_violation || is_muldiv_1;
 
     // --- Control Logic ---
     always @(*) begin
