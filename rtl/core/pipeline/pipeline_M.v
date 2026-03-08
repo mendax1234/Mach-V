@@ -26,6 +26,7 @@ module pipeline_M (
         input             RESET,
         input             Busy,
         input             FlushM,
+        input             BranchMispredictM,
 
         // --------------------
         // PIPELINE 1 - EX -> MEM inputs
@@ -79,14 +80,23 @@ module pipeline_M (
         // --------------------
         // PIPELINE 2 - MEM outputs (registered)
         // --------------------
-        output reg        RegWriteM_2,
-        output reg        MemWriteM_2,
+        output            RegWriteM_2,
+        output            MemWriteM_2,
         output reg [ 2:0] Funct3M_2,
         output reg [31:0] ComputeResultM_2,
         output reg [31:0] WriteDataM_2,
         output reg [ 4:0] rs2M_2,
         output reg [ 4:0] rdM_2
     );
+
+    // Internal registers to hold the actual latched state
+    reg RegWriteM_2_internal;
+    reg MemWriteM_2_internal;
+
+    // Combinationally squash the outputs instantly on a mispredict
+    assign RegWriteM_2 = RegWriteM_2_internal & ~BranchMispredictM;
+    assign MemWriteM_2 = MemWriteM_2_internal & ~BranchMispredictM;
+
     always @(posedge CLK) begin
         if (RESET || FlushM) begin
             RegWriteM_1 <= 1'b0;
@@ -105,8 +115,8 @@ module pipeline_M (
             PrPCSrcM <= 1'b0;
             PrBTAM <= 32'b0;
 
-            RegWriteM_2 <= 1'b0;
-            MemWriteM_2 <= 1'b0;
+            RegWriteM_2_internal <= 1'b0;
+            MemWriteM_2_internal <= 1'b0;
             Funct3M_2 <= 3'b0;
             ComputeResultM_2 <= 32'b0;
             WriteDataM_2 <= 32'b0;
@@ -130,8 +140,8 @@ module pipeline_M (
             PrPCSrcM <= PrPCSrcE;
             PrBTAM <= PrBTAE;
 
-            RegWriteM_2 <= RegWriteE_2;
-            MemWriteM_2 <= MemWriteE_2;
+            RegWriteM_2_internal <= RegWriteE_2;
+            MemWriteM_2_internal <= MemWriteE_2;
             Funct3M_2 <= Funct3E_2;
             ComputeResultM_2 <= ComputeResultE_2;
             WriteDataM_2 <= WriteDataE_2;

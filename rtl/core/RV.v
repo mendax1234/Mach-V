@@ -61,7 +61,6 @@ module RV #(
     wire        FlushD;         // Flush signal for Decode stage
     wire [31:0] InstrD_1_raw;   // Raw Instruction 1 from Pipeline D
     wire [31:0] InstrD_2_raw;   // Raw Instruction 2 from Pipeline D
-    wire [31:0] InstrD_2_Safe;
     wire [31:0] PCD_1_Issued;
     wire [31:0] PCD_2_Issued;
     wire [31:0] PCE_1;
@@ -417,11 +416,6 @@ module RV #(
         endcase
     end
 
-    wire InstrD_1_Is_Branch = (InstrD_1_raw[6:0] == 7'b1100011) ||
-         (InstrD_1_raw[6:0] == 7'b1101111) ||
-         (InstrD_1_raw[6:0] == 7'b1100111);
-    assign InstrD_2_Safe = (PrPCSrcD && InstrD_1_Is_Branch) ? 32'h00000013 : InstrD_2_raw;
-
     assign MCycleResult = (MCycleResultSelE_1) ? MCycleResult_2 : MCycleResult_1;
     assign ComputeResultE_1 = (ComputeResultSelE_1) ? MCycleResult : ALUResultE_1;
     assign ComputeResultE_2 = ALUResultE_2;
@@ -459,8 +453,9 @@ module RV #(
             .FlushD         (FlushD),
             .StallD         (StallD),
             .Instr_1_in     (InstrD_1_raw),
-            .Instr_2_in     (InstrD_2_Safe),
+            .Instr_2_in     (InstrD_2_raw),
             .PCD            (PCD),
+            .PrPCSrcD       (PrPCSrcD),
             .Instr_1_out    (InstrD_1),
             .Instr_2_out    (InstrD_2),
             .PCD_1_out      (PCD_1_Issued),
@@ -521,7 +516,15 @@ module RV #(
                 .ALUSrcA    (ALUSrcAD_2),
                 .ALUSrcB    (ALUSrcBD_2),
                 .ImmSrc     (ImmSrc_2),
-                .ALUControl (ALUControlD_2)
+                .ALUControl (ALUControlD_2),
+                // Explicitly Unconnected Outputs (Pipe 1 Only Features)
+                .PCS              (),
+                .MemtoReg         (),
+                .ComputeResultSel (),
+                .MCycleResultSel  (),
+                .MCycleStart      (),
+                .MCycleOp         (),
+                .SizeSel          ()
             );
 
     Extend Extend2 (
@@ -665,6 +668,7 @@ module RV #(
                    .RESET            (RESET),
                    .Busy             (Busy),
                    .FlushM           (FlushM),
+                   .BranchMispredictM(BranchMispredictM),
                    .RegWriteE_1      (RegWriteE_1),
                    .MemtoRegE_1      (MemtoRegE_1),
                    .MemWriteE_1      (MemWriteE_1),

@@ -8,6 +8,7 @@ module IIU (
         input  wire [31:0] Instr_1_in,
         input  wire [31:0] Instr_2_in,
         input  wire [31:0] PCD,
+        input  wire        PrPCSrcD,
 
         output reg  [31:0] Instr_1_out,
         output reg  [31:0] Instr_2_out,
@@ -20,6 +21,13 @@ module IIU (
     );
 
     localparam NOP = 32'h00000013;
+
+    // Only kill Slot 2 if the INCOMING Slot 1 is a jumping branch.
+    wire instr1_is_branch = (Instr_1_in[6:0] == 7'b1100011) ||
+         (Instr_1_in[6:0] == 7'b1101111) ||
+         (Instr_1_in[6:0] == 7'b1100111);
+    wire kill_incoming_slot2 = instr1_is_branch && PrPCSrcD;
+    wire [31:0] safe_Instr_2_in = kill_incoming_slot2 ? NOP : Instr_2_in;
 
     // Hold Register State
     reg [31:0] hold_reg    = 32'h00000013;
@@ -41,7 +49,7 @@ module IIU (
     reg [1:0] hold_sel;
 
     wire [31:0] eval_1 = hold_valid ? hold_reg : Instr_1_in;
-    wire [31:0] eval_2 = hold_valid ? Instr_1_in : Instr_2_in;
+    wire [31:0] eval_2 = hold_valid ? Instr_1_in : safe_Instr_2_in;
 
     // --- Dependency Decoding Logic ---
     wire [6:0] op_1 = eval_1[6:0];
@@ -125,7 +133,8 @@ module IIU (
         if (pipe1_sel == 2'd0) begin
             Instr_1_out = Instr_1_in;
             PCD_1_out   = PCD;
-        end else begin
+        end
+        else begin
             Instr_1_out = hold_reg;
             PCD_1_out   = hold_pc_reg;
         end
@@ -133,10 +142,12 @@ module IIU (
         if (pipe2_sel == 2'd0) begin
             Instr_2_out = Instr_1_in;
             PCD_2_out   = PCD;
-        end else if (pipe2_sel == 2'd1) begin
-            Instr_2_out = Instr_2_in;
+        end
+        else if (pipe2_sel == 2'd1) begin
+            Instr_2_out = safe_Instr_2_in;
             PCD_2_out   = PCD + 32'd4;
-        end else begin
+        end
+        else begin
             Instr_2_out = NOP;
             PCD_2_out   = PCD + 32'd4; // Default safe value
         end
@@ -156,7 +167,7 @@ module IIU (
                 hold_valid  <= 1'b1;
             end
             else if (hold_sel == 2'd1) begin
-                hold_reg    <= Instr_2_in;
+                hold_reg    <= safe_Instr_2_in;
                 hold_pc_reg <= PCD + 32'd4;
                 hold_valid  <= 1'b1;
             end
