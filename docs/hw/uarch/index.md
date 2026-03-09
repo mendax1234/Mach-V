@@ -45,3 +45,12 @@ The first major version of Mach-V focuses on implementing a baseline RISC-V proc
 
     1. **1-bit Branch Predictor:** Implements a simple 1-bit branch predictor to improve control flow efficiency by predicting the outcome of branch instructions and achieves a 15% improvement in Coremark scores.
     2. **The usage of Block RAM:** Utilizes Block RAM for IROM and DMEM and reduces the area of the design by 50% compared to the previous version.
+
+=== "Mach-V V2.0"
+
+    !!! warning
+        The block diagram for Mach-V V2.0 is still under development. The idea is to simplify the block diagram by abstracting the complex interconnects.
+
+    Mach-V Version 2.0 focuses on the in-order superscalar architecture, more specifically, the 2-issue in-order superscalar architecture. The main features of this version include:
+
+    1. **In-Order Superscalar Architecture:** Implements a 2-issue in-order superscalar architecture to allow 2 instructions to be issued and executed simultaneously, get 1.17 coremark improvement compared to the single-issue (V1.0).

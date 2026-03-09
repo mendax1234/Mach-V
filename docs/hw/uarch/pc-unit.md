@@ -87,6 +87,8 @@ The main change is in the `PC_In` signal selection, I have separated it into two
         - Branch target (`MispredBTAM`): The CPU guessed the wrong destination. This checks if the predicted address matches the actual resolved target address.
     - Otherwise, we use the speculative next PC value from step 1.
 
+Another important thing is how the `BranchMispredictM` signal affects the `Hazard.v` unit. So, what is done here is that I use `BranchMispredictM` to replace the `PCSrcM[0]` in the [non branch predictor unit](./hazard-unit.md#priority-inversion-the-lost-jump-scenario) version.
+
 !!! note "Why the BHT does not care about the instruction type?"
     The BHT's only job is to provide a fast, speculative prediction based on the instruction address during the Fetch stage, without needing to know the actual instruction type. If a non-branch instruction is incorrectly predicted as a branch, the Memory stage catches this by comparing the authoritative, decoded `PCSrc[0]` against the prediction (`PrPCSrcM`). This mismatch automatically triggers a misprediction flush (`BranchMispredictM = 1`), seamlessly correcting the PC.
 

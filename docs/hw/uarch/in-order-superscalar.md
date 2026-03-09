@@ -1,4 +1,4 @@
-# Superscalar Architecture
+# In-Order Superscalar Architecture
 
 This section is a brief overview of fascinating but complex topics. In my [DDCA notes](https://wenbo-notes.gitbook.io/ddca-notes/lec/lec-06-advanced-processor#multiple-issue-processors), I have some really good examples regarding the techniques introduced here. If you want to learn more details, I highly recommend to check out those notes.
 
@@ -17,13 +17,11 @@ Static multiple-issue processors all use the **compiler** to assist with packagi
 !!! info "Use Latency"
     **Use latency** is the number of clock cycles between a **load** instruction and an instruction that can use the result of the load without stalling the pipeline. For example, loads have a use latency of one clock cycle. In the two-issue, five-stage pipieline, the result of a load instruction cannot be used on the next clock cycle. This means that the next *two* instructions cannot use the load result without stalling.
 
-## In-Order Superscalar Architecture
-
 <!-- md:experimental -->
 
 In Mach-V, instead of seeking help from the compiler, I am going to implement an **in-order superscalar processor**. There will be a hardware unit to handle the instruction packaging during the execution and some other units used for different purposes, so technically it is a **dynamic multiple-issue processor**. As this architecture is rather complex, I will explain it part-by-part.
 
-### Instruction Issue Unit
+## Instruction Issue Unit
 
 !!! warning
     To implement the 2-way in-order superscalar architecture, the processor should be able to read two instructions simultaneously from the IROM. This is achieveable by using the [Block RAM](../mem/main-memory.md#block-ram) and the example is provided by [AMD](https://docs.amd.com/r/en-US/ug901-vivado-synthesis/True-Dual-Port-Block-RAM-Examples).
@@ -97,7 +95,7 @@ From this table, we can see clearly that the instructions on the Instruction 1 a
     4. Based on this rollback signal, write the **next instructions** in the Fetch stage of cycle 2.
     5. Move to cycle 3 and the current instructions will be just the **next instructions** in the Fetch stage of cycle 2. Repeat the same procedure.
 
-#### Instruction Dependency Detection
+### Instruction Dependency Detection
 
 In the IIU, the following conventions are used for the instruction dependency detection:
 
@@ -110,7 +108,7 @@ With these conventions, besides the change of the IROM we have mentioned at the 
 1. Add two read ports and one write port to the register file.
 2. Add one more ALUs so now we have two ALUs.
 
-### Next-PC Logic
+## Next-PC Logic
 
 As the normal Next-PC Logic, this part will cover several pipeline stages and which stages are covered really depends on the program execution flow. The architecture for the Next-PC logic is shown below.
 
@@ -145,7 +143,7 @@ Coming back to the Next-PC Logic, we have three multiplexers:
 2. The Prediction Mux (Middle): In the Fetch Stage, if the BPU predicts the target PC value of an instruction (`PrPCSrcF == 1'b1`), the predicted PC from the BPU (`PrBTAF`) will be loaded. Otherwise, it passes the sequential PC through.
 3. The Correction Mux (Right): If the prediction goes wrong (`BranchMispredictM == 1'b1`), then the correct PC value will be loaded from the Memory Stage (`PC_ResolvedM`). This overrides everything else fetched in the current cycle.
 
-### Forwarding Unit
+## Forwarding Unit
 
 The forwarding unit is implemented in the Decode, Execute and Memory stages to handle the data hazards arising from the dependencies between instructions.
 

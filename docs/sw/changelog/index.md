@@ -2,6 +2,12 @@
 
 ## Mach-V Processor
 
+### 2.0 <small> Mar 9, 2026 </small> { id="2.0" }
+
+**Focus:** In-order superscalar architecture.
+
+- **In-Order Superscalar Architecture:** Implements a 2-issue in-order superscalar architecture to allow 2 instructions to be issued and executed simultaneously, achieving a 1.17x improvement in Coremark scores compared to the single-issue (V1.0).
+
 ### 1.2 <small> Feb 21, 2026 </small> { id="1.2" }
 
 **Focus:** 1-bit Branch Predictor and Block RAM optimization.
