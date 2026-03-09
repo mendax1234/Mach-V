@@ -139,18 +139,38 @@ module Wrapper #(
     // =========================================================================
     integer i;
     reg [31:0] dmem_rdata;
+    wire [DMEM_DEPTH-3:0] dmem_addr = rv_addr[DMEM_DEPTH-1:2];
+
+    // 1. Asynchronous Read Port
+    always @(*) begin
+        if (is_dmem)
+            dmem_rdata = dmem[dmem_addr];
+        else
+            dmem_rdata = 32'b0;
+    end
+
     // TODO: Add a register inside the BRAM implemented here (Same for IROM)
     // BRAM is available as a prewrite module
     // Organize the fetch stage
-    always @(negedge CLK) begin
+    always @(posedge CLK) begin
         if (rv_memwrite && is_dmem) begin
-            for (i = 0; i < 4; i = i + 1) begin
-                if (rv_be[i]) begin
-                    dmem[rv_addr[DMEM_DEPTH-1:2]][8*i+:8] <= rv_wdata[8*i+:8];
-                end
+            if (rv_memwrite && is_dmem) begin
+                if (rv_be[0])
+                    dmem[dmem_addr][7:0]   <= rv_wdata[7:0];
+                if (rv_be[1])
+                    dmem[dmem_addr][15:8]  <= rv_wdata[15:8];
+                if (rv_be[2])
+                    dmem[dmem_addr][23:16] <= rv_wdata[23:16];
+                if (rv_be[3])
+                    dmem[dmem_addr][31:24] <= rv_wdata[31:24];
             end
+            // for (i = 0; i < 4; i = i + 1) begin
+            //     if (rv_be[i]) begin
+            //         dmem[rv_addr[DMEM_DEPTH-1:2]][8*i+:8] <= rv_wdata[8*i+:8];
+            //     end
+            // end
         end
-        dmem_rdata <= is_dmem ? dmem[rv_addr[DMEM_DEPTH-1:2]] : 32'b0;
+        // dmem_rdata <= is_dmem ? dmem[rv_addr[DMEM_DEPTH-1:2]] : 32'b0;
     end
 
     // =========================================================================
