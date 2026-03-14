@@ -55,7 +55,7 @@ module MachV_Top (
     // =========================================================================
     // 1. System Signals
     // =========================================================================
-    localparam SYS_FREQ_HZ = 100000000;
+    localparam SYS_FREQ_HZ = 70000000;
     wire clk_sys;
     wire clk_locked;
     wire sys_reset;

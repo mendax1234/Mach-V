@@ -33,7 +33,7 @@ module Shifter (
     wire [31:0] ShTemp4;
 
     assign ShTemp0 = ShIn;
-    
+
     shiftByNPowerOf2 #(0) shiftBy0PowerOf2 (
                          Sh,
                          Shamt5[0],

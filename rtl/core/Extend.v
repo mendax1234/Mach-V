@@ -41,7 +41,7 @@ module Extend (
         3'b111:
             ExtImm = {{20{InstrImm[31]}}, InstrImm[7], InstrImm[30:25], InstrImm[11:8], 1'b0};  // SB
         default:
-            ExtImm = 32'bx; // undefined
+            ExtImm = 32'bx;  // undefined
     endcase
 
 endmodule

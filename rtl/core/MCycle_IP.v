@@ -24,7 +24,7 @@ module MCycle #(
         input                  CLK,
         input                  RESET,
         input                  Start,     // Trigger
-        input      [      1:0] MCycleOp,  // 00: Mul(s), 01: Mul(u), 10: Div(s), 11: Div(u)
+        input      [     1:0]  MCycleOp,  // 00: Mul(s), 01: Mul(u), 10: Div(s), 11: Div(u)
         input      [width-1:0] Operand1,
         input      [width-1:0] Operand2,
         output reg [width-1:0] Result1,   // LSW / Quotient
@@ -32,37 +32,37 @@ module MCycle #(
         output reg             Busy       // Stall Signal
     );
 
-    // =====================================
-    // Internal Signals & Constants
     // ========================================================================
-    localparam IDLE = 1'b0;
+    // 1. Internal Signals & Constants
+    // ========================================================================
+    localparam IDLE      = 1'b0;
     localparam COMPUTING = 1'b1;
-    localparam MUL_LATENCY = 4;  // Adjust based on IP configuration
+    localparam MUL_LATENCY = 4; // Adjust based on IP configuration
 
-    reg              state = IDLE;
-    reg              n_state = IDLE;
-    reg              done;
-    reg  [      4:0] count = 0;  // Latency counter
+    reg       state = IDLE;
+    reg       n_state = IDLE;
+    reg       done;
+    reg [4:0] count = 0; // Latency counter
 
     // --- Input Processing (Sign Handling) ---
-    reg  [width-1:0] abs_op1;
-    reg  [width-1:0] abs_op2;
-    reg              sign_op1;
-    reg              sign_op2;
-    reg              is_signed_op;
+    reg [width-1:0] abs_op1;
+    reg [width-1:0] abs_op2;
+    reg             sign_op1;
+    reg             sign_op2;
+    reg             is_signed_op;
 
     // --- IP Interface Signals ---
-    wire [     63:0] mul_dout;  // Output from Multiplier IP
-    wire [     63:0] div_dout;  // Output from Divider IP {Remainder, Quotient}
-    wire             div_out_valid;  // "Done" signal from Divider
-    reg              div_in_valid;  // "Start" signal for Divider
+    wire [63:0] mul_dout;        // Output from Multiplier IP
+    wire [63:0] div_dout;        // Output from Divider IP {Remainder, Quotient}
+    wire        div_out_valid;   // "Done" signal from Divider
+    reg         div_in_valid;    // "Start" signal for Divider
 
     // --- Intermediate Results ---
-    reg  [     31:0] q_temp;
-    reg  [     31:0] r_temp;
+    reg [31:0] q_temp;
+    reg [31:0] r_temp;
 
     // ========================================================================
-    // IP Instantiations
+    // 2. IP Instantiations (From MCycle_IP.v)
     // ========================================================================
 
     // Multiplier IP: 32x32 Unsigned -> 64-bit Product
@@ -85,7 +85,7 @@ module MCycle #(
               );
 
     // ========================================================================
-    // FSM: State Transition
+    // 3. FSM: State Transition
     // ========================================================================
 
     always @(posedge CLK) begin
@@ -107,7 +107,7 @@ module MCycle #(
             IDLE: begin
                 if (Start) begin
                     n_state = COMPUTING;
-                    Busy = 1'b1;  // Become Busy immediately on Start
+                    Busy = 1'b1; // Become Busy immediately on Start
                 end
             end
             COMPUTING: begin
@@ -124,7 +124,7 @@ module MCycle #(
     end
 
     // ========================================================================
-    // Datapath & Control Logic
+    // 4. Datapath & Control Logic
     // ========================================================================
 
     always @(posedge CLK) begin
@@ -150,12 +150,12 @@ module MCycle #(
                         // --- Initialization Phase ---
                         count <= 0;
 
-                        // Sign Analysis
-                        is_signed_op = ~MCycleOp[0];  // Even Ops (00, 10) are signed
+                        // 1. Sign Analysis
+                        is_signed_op = ~MCycleOp[0]; // Even Ops (00, 10) are signed
                         sign_op1 = Operand1[width-1];
                         sign_op2 = Operand2[width-1];
 
-                        // Absolute Value Calculation (Pre-processing)
+                        // 2. Absolute Value Calculation (Pre-processing)
                         if (is_signed_op && sign_op1)
                             abs_op1 <= ~Operand1 + 1;
                         else
@@ -166,7 +166,7 @@ module MCycle #(
                         else
                             abs_op2 <= Operand2;
 
-                        // Trigger Logic
+                        // 3. Trigger Logic
                         if (MCycleOp[1]) begin
                             // Op 10/11 -> Division (Set valid high for next cycle)
                             div_in_valid <= 1'b1;
@@ -178,7 +178,9 @@ module MCycle #(
                     // --- Arithmetic Phase ---
 
                     if (~MCycleOp[1]) begin
+                        // ===========================
                         // Multiplication Logic
+                        // ===========================
                         // Wait for fixed latency of Multiplier IP
                         if (count == MUL_LATENCY) begin
                             done <= 1'b1;
@@ -197,13 +199,15 @@ module MCycle #(
 
                     end
                     else begin
+                        // ===========================
                         // Division Logic
+                        // ===========================
                         // Wait for AXI Stream Valid signal
                         if (div_out_valid) begin
                             done <= 1'b1;
 
                             // Extract outputs
-                            q_temp = div_dout[63:32];  // Quotient
+                            q_temp = div_dout[63:32]; // Quotient
                             r_temp = div_dout[31:0];  // Remainder
 
                             // Sign Correction (Post-processing)
@@ -215,8 +219,8 @@ module MCycle #(
                             if (is_signed_op && sign_op1)
                                 r_temp = ~r_temp + 1;
 
-                            Result1 <= q_temp;  // Quotient
-                            Result2 <= r_temp;  // Remainder
+                            Result1 <= q_temp; // Quotient
+                            Result2 <= r_temp; // Remainder
                         end
                     end
                 end

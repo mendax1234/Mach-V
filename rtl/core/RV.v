@@ -45,13 +45,9 @@ module RV #(
     // ---------------------------------------------------------------------------
     wire [31:0] PCF;            // Program Counter at Fetch
     wire [31:0] PC_IN;          // Next Program Counter input
-    wire [31:0] PCPlus4F;       // PC + 4 (Sequential)
     wire        StallF;         // Stall signal for Fetch stage
-    wire        WE_PC;          // Write Enable for Program Counter
     wire        PrPCSrcF;       // Predicted PC Source
     wire [31:0] PrBTAF;         // Predicted Branch Target Address
-    wire [31:0] Instr_1_Issued; // Issued Instruction 1
-    wire [31:0] Instr_2_Issued; // Issued Instruction 2
 
     // ---------------------------------------------------------------------------
     // Decode Stage (D) Signals - Common
@@ -252,57 +248,52 @@ module RV #(
     wire        ForwardM_1_W2;    // Memory forwarding Pipe 1 from W2
     wire        ForwardM_2_W1;    // Memory forwarding Pipe 2 from W1
     wire        ForwardM_2_W2;    // Memory forwarding Pipe 2 from W2
-    wire [1:0]  Forward1D_1; // Decode forwarding Pipe 1 Src 1
-    wire [1:0]  Forward2D_1; // Decode forwarding Pipe 1 Src 2
-    wire [1:0]  Forward1D_2; // Decode forwarding Pipe 2 Src 1
-    wire [1:0]  Forward2D_2; // Decode forwarding Pipe 2 Src 2
+    wire [1:0]  Forward1D_1;      // Decode forwarding Pipe 1 Src 1
+    wire [1:0]  Forward2D_1;      // Decode forwarding Pipe 1 Src 2
+    wire [1:0]  Forward1D_2;      // Decode forwarding Pipe 2 Src 1
+    wire [1:0]  Forward2D_2;      // Decode forwarding Pipe 2 Src 2
     wire        lwStall;          // Load-word stall flag
 
-    // ---------------------------------------------------------------------------
-    // Internal Logic & Flow Control Declarations
-    // ---------------------------------------------------------------------------
+    // ===========================================================================
+    // Data Path (Fetch Stage)
+    // ===========================================================================
+
+    /*-- Intermediate Variables --*/
     wire        Rollback;
     wire        Hold_Is_Branch;
     wire [31:0] Hold_PC;
-    wire [31:0] BPU_PC = (Hold_Is_Branch) ? Hold_PC : PCF;
-    wire [31:0] PC_Seq = Rollback ? (PCF + 32'd4) : (PCF + 32'd8);
-    wire [31:0] PC_Pred = PrPCSrcF ? PrBTAF : PC_Seq;
-    wire [31:0] PC_Offset = (PCSrcM[0] == 1) ? ExtImmM_1 : 32'd4;
-    wire [31:0] PC_Base = (PCSrcM[1] == 1) ? RD1M_1 : PCM;
+    wire [31:0] BPU_PC;  // This is the PC that will go into BPU
+    wire [31:0] PC_Seq;
+    wire [31:0] PC_Pred;
+    wire [31:0] PC_Offset;
+    wire [31:0] PC_Base;
 
-    // Memory Multiplexer Helpers
-    wire        Master_MemWrite = MemWriteM_1 | MemWriteM_2;
-    wire [ 2:0] Master_Funct3   = MemWriteM_1 ? Funct3M_1 : Funct3M_2;
-    wire [31:0] Master_Data     = MemWriteM_1 ? WriteDataM_Raw_1 : WriteDataM_Raw_2;
-    wire [31:0] Master_Addr     = MemWriteM_1 ? ComputeResultM_1 : (MemWriteM_2 ? ComputeResultM_2 : ComputeResultM_1);
-
-    // Forwarding logic register vars
-    reg [31:0] RD1E_Forwarded_1;
-    reg [31:0] RD2E_Forwarded_1;
-    reg [31:0] RD1E_Forwarded_2;
-    reg [31:0] RD2E_Forwarded_2;
-    reg [31:0] Src_A_1;
-    reg [31:0] Src_B_1;
-    reg [31:0] Src_A_2;
-    reg [31:0] Src_B_2;
-
-    // ===========================================================================
-    // Data Path & Logic
-    // ===========================================================================
-    assign PC = PCF;
-    assign WE_PC = ~Busy;
-
+    /*-- Next-PC Logic --*/
+    // Upper path
+    assign PC_Seq = Rollback ? (PCF + 32'd4) : (PCF + 32'd8);
+    // Lower path
+    assign BPU_PC = (Hold_Is_Branch) ? Hold_PC : PCF; // BPU Issuing logic
+    assign PC_Pred = PrPCSrcF ? PrBTAF : PC_Seq;
+    // PC adder in Mem stage
+    assign PC_Offset = (PCSrcM[0] == 1) ? ExtImmM_1 : 32'd4;
+    assign PC_Base = (PCSrcM[1] == 1) ? RD1M_1 : PCM;
     assign PC_ResolvedM = PC_Base + PC_Offset;
+    // Branch mispredict detection Logic in Mem stage
     assign MispredPCSrcM = (PrPCSrcM != PCSrcM[0]);
     assign MispredBTAM = (PCSrcM[0] == 1'b1) && (PrBTAM != PC_ResolvedM);
     assign BranchMispredictM = MispredPCSrcM | MispredBTAM;
-
-    // Combinationally squash Pipeline 2 control signals on a mispredict
-    assign RegWriteM_2 = RegWriteM_2_raw & ~BranchMispredictM;
-    assign MemWriteM_2 = MemWriteM_2_raw & ~BranchMispredictM;
-
+    // Continue of the lower path for Next-PC Logic
     assign PC_IN = BranchMispredictM ? PC_ResolvedM : PC_Pred;
 
+    // Assign the PC output from RV to the IROM
+    assign PC = PCF;
+
+    // ===========================================================================
+    // Data Path (Dec Stage)
+    // ===========================================================================
+
+    /*-- Partition Logic --*/
+    // Partition the InstrD_1/2 that will go into the decoder and reg file
     assign OpcodeD_1 = InstrD_1[6:0];
     assign rdD_1 = InstrD_1[11:7];
     assign Funct3D_1 = InstrD_1[14:12];
@@ -317,6 +308,7 @@ module RV #(
     assign rs2D_2 = InstrD_2[24:20];
     assign Funct7D_2 = InstrD_2[31:25];
 
+    /*-- W2D Forwarding Logic --*/
     assign RD1D_Forwarded_1 = (Forward1D_1 == 2'b10) ? ResultW_2 :
            (Forward1D_1 == 2'b01) ? ResultW_1 : RD1D_1;
 
@@ -329,6 +321,23 @@ module RV #(
     assign RD2D_Forwarded_2 = (Forward2D_2 == 2'b10) ? ResultW_2 :
            (Forward2D_2 == 2'b01) ? ResultW_1 : RD2D_2;
 
+    // ===========================================================================
+    // Data Path (Exe Stage)
+    // ===========================================================================
+
+    /*-- Intermediate Variables --*/
+    // W2E, M2E Forwarding logic register vars
+    reg [31:0] RD1E_Forwarded_1;
+    reg [31:0] RD2E_Forwarded_1;
+    reg [31:0] RD1E_Forwarded_2;
+    reg [31:0] RD2E_Forwarded_2;
+    // Two ALU Sources A/B
+    reg [31:0] Src_A_1;
+    reg [31:0] Src_B_1;
+    reg [31:0] Src_A_2;
+    reg [31:0] Src_B_2;
+
+    /*-- W2E, M2E Forwarding Logic --*/
     always @(*) begin
         case (ForwardAE_1)
             3'd4:
@@ -380,6 +389,7 @@ module RV #(
         endcase
     end
 
+    /*-- 2 ALUs incoming sources logic --*/
     always @(*) begin
         case (ALUSrcAE_1)
             2'b00:
@@ -423,21 +433,47 @@ module RV #(
         endcase
     end
 
+    /*-- Post ALU MCycle process Logic --*/
     assign MCycleResult = (MCycleResultSelE_1) ? MCycleResult_2 : MCycleResult_1;
     assign ComputeResultE_1 = (ComputeResultSelE_1) ? MCycleResult : ALUResultE_1;
-    assign ComputeResultE_2 = ALUResultE_2;
+    assign ComputeResultE_2 = ALUResultE_2; // mul/div can only be issued in the first pipeline
     assign WriteDataE_1 = RD2E_Forwarded_1;
-    assign WriteDataE_2 = RD2E_Forwarded_2; // <-- Pipe 2 Store Data
+    assign WriteDataE_2 = RD2E_Forwarded_2;
 
-    // --- Superscalar Memory Multiplexing ---
+    // ===========================================================================
+    // Data Path (Mem Stage)
+    // ===========================================================================
+
+    /*-- Intermediate Variables --*/
+    wire        Master_MemWrite;
+    wire [ 2:0] Master_Funct3;
+    wire [31:0] Master_Data;
+    wire [31:0] Master_Addr;
+
+    /*-- Store Unit steering logic --*/
+    assign Master_MemWrite = MemWriteM_1 | MemWriteM_2;
+    assign Master_Funct3 = MemWriteM_1 ? Funct3M_1 : Funct3M_2;
+    assign Master_Data = MemWriteM_1 ? WriteDataM_Raw_1 : WriteDataM_Raw_2;
+    assign Master_Addr = MemWriteM_1 ? ComputeResultM_1 : (MemWriteM_2 ? ComputeResultM_2 : ComputeResultM_1);
+
+    /*-- W2M Forwarding Logic --*/
     assign WriteDataM_Raw_1 = ForwardM_1_W2 ? ResultW_2 : (ForwardM_1_W1 ? ResultW_1 : WriteDataM_1);
     assign WriteDataM_Raw_2 = ForwardM_2_W2 ? ResultW_2 : (ForwardM_2_W1 ? ResultW_1 : WriteDataM_2);
 
-    // Because IIU prevents simultaneous memory instructions, we can safely MUX the single port:
+    // RV.v outputs assignments
     assign MemRead = MemtoRegM_1; // Loads are strictly Pipe 1
     assign ComputeResultM = Master_Addr; // Outputs the active address to the Wrapper
 
-    assign ResultW_1 = MemtoRegW_1 ? ReadDataW_Aligned_1 : ComputeResultW_1;
+    // Flush Pipe 2 memory control signals on a mispredict
+    assign RegWriteM_2 = RegWriteM_2_raw & ~BranchMispredictM;
+    assign MemWriteM_2 = MemWriteM_2_raw & ~BranchMispredictM;
+
+    // ===========================================================================
+    // Data Path (WriteBack Stage)
+    // ===========================================================================
+
+    /*-- Writeback stage steering logic --*/
+    assign ResultW_1 = MemtoRegW_1 ? ReadDataW_Aligned_1 : ComputeResultW_1; // Loads are strictly Pipe 1
     assign ResultW_2 = ComputeResultW_2;
 
     // ===========================================================================

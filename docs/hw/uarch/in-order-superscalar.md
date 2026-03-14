@@ -108,6 +108,8 @@ In the IIU, the following conventions are used for the instruction dependency de
 
     The same thing applies to the branch/jump instruction as well. If the branch instruction is mispredicted, the second instruction in the issue packet must be flushed.
 
+    Also if the first pipe is a jump instruction, the second pipe should always be filled with a NOP.
+
 With these conventions, besides the change of the IROM we have mentioned at the [beginning](#instruction-issue-unit), the rest of changes for the Mach-V microarchitecture are:
 
 1. Add two read ports and one write port to the register file.

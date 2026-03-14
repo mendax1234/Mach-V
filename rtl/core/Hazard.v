@@ -101,7 +101,7 @@ module Hazard (
     assign rs1_active_2 = (OpcodeD_2 != 7'b1101111) && (OpcodeD_2 != 7'b0110111) && (OpcodeD_2 != 7'b0010111);
     assign rs2_active_2 = rs1_active_2 && (OpcodeD_2 != 7'b0000011) && (OpcodeD_2 != 7'b0010011) && (OpcodeD_2 != 7'b1100111);
 
-    // --- PIPELINE 1 FORWARDING ---
+    // --- PIPELINE 1 (W2E, M2E) FORWARDING ---
     always @(*) begin
         if      ((rs1E_1 == rdM_2) && RegWriteM_2 && (rdM_2 != 0))
             ForwardAE_1 = 3'd4;
@@ -127,7 +127,7 @@ module Hazard (
             ForwardBE_1 = 3'd0;
     end
 
-    // --- PIPELINE 2 FORWARDING ---
+    // --- PIPELINE 2 (W2E, M2E) FORWARDING ---
     always @(*) begin
         if      ((rs1E_2 == rdM_2) && RegWriteM_2 && (rdM_2 != 0))
             ForwardAE_2 = 3'd4;
@@ -153,7 +153,7 @@ module Hazard (
             ForwardBE_2 = 3'd0;
     end
 
-    // --- MEMORY FORWARDING (Stores) ---
+    // --- MEMORY (W2M) FORWARDING ---
     // Pipe 1 Store checks WB2 first, then WB1
     assign ForwardM_1_W2 = MemWriteM_1 && (rs2M_1 == rdW_2) && RegWriteW_2 && (rs2M_1 != 0);
     assign ForwardM_1_W1 = MemWriteM_1 && (rs2M_1 == rdW_1) && RegWriteW_1 && (rs2M_1 != 0) && !ForwardM_1_W2;
@@ -162,7 +162,7 @@ module Hazard (
     assign ForwardM_2_W2 = MemWriteM_2 && (rs2M_2 == rdW_2) && RegWriteW_2 && (rs2M_2 != 0);
     assign ForwardM_2_W1 = MemWriteM_2 && (rs2M_2 == rdW_1) && RegWriteW_1 && (rs2M_2 != 0) && !ForwardM_2_W2;
 
-    // 2'b10 = Forward from W_2,  2'b01 = Forward from W_1,  2'b00 = No Forwarding
+    // W2D Forwarding
     assign Forward1D_1 = ((rs1D_1 != 0) && (rs1D_1 == rdW_2) && RegWriteW_2) ? 2'b10 :
            ((rs1D_1 != 0) && (rs1D_1 == rdW_1) && RegWriteW_1) ? 2'b01 : 2'b00;
 
@@ -175,6 +175,7 @@ module Hazard (
     assign Forward2D_2 = ((rs2D_2 != 0) && (rs2D_2 == rdW_2) && RegWriteW_2) ? 2'b10 :
            ((rs2D_2 != 0) && (rs2D_2 == rdW_1) && RegWriteW_1) ? 2'b01 : 2'b00;
 
+    // Load-Store Usage stalling
     assign lwStall = MemtoRegE_1 && (rdE_1 != 0) && (
                ((rs1D_1 == rdE_1) && rs1_active_1) || ((rs2D_1 == rdE_1) && rs2_active_1) ||
                ((rs1D_2 == rdE_1) && rs1_active_2) || ((rs2D_2 == rdE_1) && rs2_active_2)

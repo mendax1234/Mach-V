@@ -29,7 +29,7 @@ module Decoder (
         output reg       MemtoReg,          // Load from Memory
         output reg [1:0] ALUSrcA,           // ALU Source A Mux
         output reg [1:0] ALUSrcB,           // ALU Source B Mux
-        output reg [2:0] ImmSrc,            // Imm
+        output reg [2:0] ImmSrc,            // Immediate Gen Type
         output reg [3:0] ALUControl,        // ALU Operation Control
         output reg       ComputeResultSel,  // 0: ALU, 1: Multi-Cycle
         output reg       MCycleResultSel,   // 0: Low/Quotient, 1: High/Remainder

@@ -141,7 +141,8 @@ module Wrapper #(
     reg [31:0] dmem_rdata;
     wire [DMEM_DEPTH-3:0] dmem_addr = rv_addr[DMEM_DEPTH-1:2];
 
-    // 1. Asynchronous Read Port
+    // Asynchronous Read Port
+    // DMEM will be inferred using FFs and LUTs
     always @(*) begin
         if (is_dmem)
             dmem_rdata = dmem[dmem_addr];
