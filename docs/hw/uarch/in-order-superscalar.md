@@ -103,6 +103,11 @@ In the IIU, the following conventions are used for the instruction dependency de
 - Two **memory access** instructions (load or store) or two **branch** instructions are never issued together.
 - **Load, branch, multiply/divide** instructions are issued **only** through the first pipeline. In other words, **only one** load, branch, or multiply/divide instruction can be issued a time.
 
+!!! warning
+    In the design of IIU, only one multiply/divide instruction can exist in one issue packet. This is because if there is some other instruction issued together with the multiply/divide instruction, as the multiply/divide instruction is a multi-cycle instruction, that instruction will finish before the multiply/divide instruction. To solve this issue, in Mach-V V2.0, I just simply replace the second instruction with a NOP whenever the first instruction is a multiply/divide instruction.
+
+    The same thing applies to the branch/jump instruction as well. If the branch instruction is mispredicted, the second instruction in the issue packet must be flushed.
+
 With these conventions, besides the change of the IROM we have mentioned at the [beginning](#instruction-issue-unit), the rest of changes for the Mach-V microarchitecture are:
 
 1. Add two read ports and one write port to the register file.
