@@ -218,6 +218,8 @@ module RV #(
     wire [ 2:0] Funct3M_2;        // Funct3
     wire        RegWriteM_2;      // Register Write Enable
     wire        MemWriteM_2;      // Memory Write Enable
+    wire        RegWriteM_2_raw;  // raw RegWrite signal before taking care of the branch misprediction in the issue packet
+    wire        MemWriteM_2_raw;
 
     // ---------------------------------------------------------------------------
     // Writeback Stage (W) Signals - Pipe 1
@@ -294,6 +296,11 @@ module RV #(
     assign MispredPCSrcM = (PrPCSrcM != PCSrcM[0]);
     assign MispredBTAM = (PCSrcM[0] == 1'b1) && (PrBTAM != PC_ResolvedM);
     assign BranchMispredictM = MispredPCSrcM | MispredBTAM;
+
+    // Combinationally squash Pipeline 2 control signals on a mispredict
+    assign RegWriteM_2 = RegWriteM_2_raw & ~BranchMispredictM;
+    assign MemWriteM_2 = MemWriteM_2_raw & ~BranchMispredictM;
+
     assign PC_IN = BranchMispredictM ? PC_ResolvedM : PC_Pred;
 
     assign OpcodeD_1 = InstrD_1[6:0];
@@ -668,7 +675,6 @@ module RV #(
                    .RESET            (RESET),
                    .Busy             (Busy),
                    .FlushM           (FlushM),
-                   .BranchMispredictM(BranchMispredictM),
                    .RegWriteE_1      (RegWriteE_1),
                    .MemtoRegE_1      (MemtoRegE_1),
                    .MemWriteE_1      (MemWriteE_1),
@@ -706,8 +712,8 @@ module RV #(
                    .ALUFlagsM_1      (ALUFlagsM_1),
                    .PrPCSrcM         (PrPCSrcM),
                    .PrBTAM           (PrBTAM),
-                   .RegWriteM_2      (RegWriteM_2),
-                   .MemWriteM_2      (MemWriteM_2),
+                   .RegWriteM_2      (RegWriteM_2_raw),
+                   .MemWriteM_2      (MemWriteM_2_raw),
                    .Funct3M_2        (Funct3M_2),
                    .ComputeResultM_2 (ComputeResultM_2),
                    .WriteDataM_2     (WriteDataM_2),
