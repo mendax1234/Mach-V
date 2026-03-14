@@ -23,11 +23,15 @@ module IIU (
     localparam NOP = 32'h00000013;
 
     // Only kill Slot 2 if the INCOMING Slot 1 is a jumping branch.
-    wire instr1_is_branch = (Instr_1_in[6:0] == 7'b1100011) ||
-         (Instr_1_in[6:0] == 7'b1101111) ||
-         (Instr_1_in[6:0] == 7'b1100111);
-    wire kill_incoming_slot2 = instr1_is_branch && PrPCSrcD;
-    wire [31:0] safe_Instr_2_in = kill_incoming_slot2 ? NOP : Instr_2_in;
+    wire instr1_is_branch;
+    wire kill_incoming_slot2;
+    wire [31:0] safe_Instr_2_in;
+
+    assign instr1_is_branch = (Instr_1_in[6:0] == 7'b1100011) ||
+           (Instr_1_in[6:0] == 7'b1101111) ||
+           (Instr_1_in[6:0] == 7'b1100111);
+    assign kill_incoming_slot2 = instr1_is_branch && PrPCSrcD;
+    assign safe_Instr_2_in = kill_incoming_slot2 ? NOP : Instr_2_in;
 
     // Hold Register State
     reg [31:0] hold_reg    = 32'h00000013;
@@ -48,52 +52,90 @@ module IIU (
     reg [1:0] pipe2_sel;
     reg [1:0] hold_sel;
 
-    wire [31:0] eval_1 = hold_valid ? hold_reg : Instr_1_in;
-    wire [31:0] eval_2 = hold_valid ? Instr_1_in : safe_Instr_2_in;
+    wire [31:0] eval_1;
+    wire [31:0] eval_2;
+
+    assign eval_1 = hold_valid ? hold_reg : Instr_1_in;
+    assign eval_2 = hold_valid ? Instr_1_in : safe_Instr_2_in;
 
     // --- Dependency Decoding Logic ---
-    wire [6:0] op_1 = eval_1[6:0];
-    wire [4:0] rd_1 = eval_1[11:7];
-    wire [6:0] f7_1 = eval_1[31:25];
+    wire [6:0] op_1;
+    wire [4:0] rd_1;
+    wire [6:0] f7_1;
 
-    wire [6:0] op_2 = eval_2[6:0];
-    wire [4:0] rs1_2 = eval_2[19:15];
-    wire [4:0] rs2_2 = eval_2[24:20];
-    wire [6:0] f7_2 = eval_2[31:25];
+    wire [6:0] op_2;
+    wire [4:0] rs1_2;
+    wire [4:0] rs2_2;
+    wire [6:0] f7_2;
+
+    assign op_1 = eval_1[6:0];
+    assign rd_1 = eval_1[11:7];
+    assign f7_1 = eval_1[31:25];
+
+    assign op_2 = eval_2[6:0];
+    assign rs1_2 = eval_2[19:15];
+    assign rs2_2 = eval_2[24:20];
+    assign f7_2 = eval_2[31:25];
 
     // Instruction type flags for Eval 1
-    wire is_load_1     = (op_1 == 7'b0000011);
-    wire is_store_1    = (op_1 == 7'b0100011);
-    wire is_b_branch_1 = (op_1 == 7'b1100011); // Conditional Branch
-    wire is_j_branch_1 = (op_1 == 7'b1101111) || (op_1 == 7'b1100111); // JAL, JALR
-    wire is_ctrl_1     = is_b_branch_1 || is_j_branch_1; // ANY Control Flow
-    wire is_muldiv_1   = (op_1 == 7'b0110011) && (f7_1 == 7'b0000001);
+    wire is_load_1;
+    wire is_store_1;
+    wire is_b_branch_1;
+    wire is_j_branch_1;
+    wire is_ctrl_1;
+    wire is_muldiv_1;
+
+    assign is_load_1 = (op_1 == 7'b0000011);
+    assign is_store_1 = (op_1 == 7'b0100011);
+    assign is_b_branch_1 = (op_1 == 7'b1100011); // Conditional Branch
+    assign is_j_branch_1 = (op_1 == 7'b1101111) || (op_1 == 7'b1100111); // JAL, JALR
+    assign is_ctrl_1 = is_b_branch_1 || is_j_branch_1; // ANY Control Flow
+    assign is_muldiv_1 = (op_1 == 7'b0110011) && (f7_1 == 7'b0000001);
 
     // JAL/JALR write to RD. B-type branches do not.
-    wire writes_rd_1   = (rd_1 != 5'b0) && !is_store_1 && !is_b_branch_1;
+    wire writes_rd_1;
+    assign writes_rd_1 = (rd_1 != 5'b0) && !is_store_1 && !is_b_branch_1;
 
     // Instruction type flags for Eval 2
-    wire is_load_2     = (op_2 == 7'b0000011);
-    wire is_store_2    = (op_2 == 7'b0100011);
-    wire is_b_branch_2 = (op_2 == 7'b1100011);
-    wire is_j_branch_2 = (op_2 == 7'b1101111) || (op_2 == 7'b1100111);
-    wire is_ctrl_2     = is_b_branch_2 || is_j_branch_2;
-    wire is_muldiv_2   = (op_2 == 7'b0110011) && (f7_2 == 7'b0000001);
+    wire is_load_2;
+    wire is_store_2;
+    wire is_b_branch_2;
+    wire is_j_branch_2;
+    wire is_ctrl_2;
+    wire is_muldiv_2;
+
+    assign is_load_2 = (op_2 == 7'b0000011);
+    assign is_store_2 = (op_2 == 7'b0100011);
+    assign is_b_branch_2 = (op_2 == 7'b1100011);
+    assign is_j_branch_2 = (op_2 == 7'b1101111) || (op_2 == 7'b1100111);
+    assign is_ctrl_2 = is_b_branch_2 || is_j_branch_2;
+    assign is_muldiv_2 = (op_2 == 7'b0110011) && (f7_2 == 7'b0000001);
 
     // Check if Eval 2 reads registers
-    wire uses_rs1_2 = (op_2 == 7'b0110011) || (op_2 == 7'b0010011) || is_load_2 || is_store_2 || is_b_branch_2 || (op_2 == 7'b1100111);
-    wire uses_rs2_2 = (op_2 == 7'b0110011) || is_store_2 || is_b_branch_2;
+    wire uses_rs1_2;
+    wire uses_rs2_2;
+
+    assign uses_rs1_2 = (op_2 == 7'b0110011) || (op_2 == 7'b0010011) || is_load_2 || is_store_2 || is_b_branch_2 || (op_2 == 7'b1100111);
+    assign uses_rs2_2 = (op_2 == 7'b0110011) || is_store_2 || is_b_branch_2;
 
     // --- Collision Conditions ---
-    wire hazard_rs1 = writes_rd_1 && uses_rs1_2 && (rd_1 == rs1_2);
-    wire hazard_rs2 = writes_rd_1 && uses_rs2_2 && (rd_1 == rs2_2);
-    wire hazard_rd  = writes_rd_1 && (op_2 != 7'b1100011) && (op_2 != 7'b0100011) && (rd_1 == eval_2[11:7]); // WAW
+    wire hazard_rs1;
+    wire hazard_rs2;
+    wire hazard_rd;
+    wire mem_conflict;
+    wire branch_conflict;
+    wire pipe1_only_violation;
+    wire dependency;
 
-    wire mem_conflict         = (is_load_1 || is_store_1) && (is_load_2 || is_store_2);
-    wire branch_conflict      = is_ctrl_1 && is_ctrl_2;
-    wire pipe1_only_violation = is_load_2 || is_ctrl_2 || is_muldiv_2; // Force ALL jumps to Pipe 1
+    assign hazard_rs1 = writes_rd_1 && uses_rs1_2 && (rd_1 == rs1_2);
+    assign hazard_rs2 = writes_rd_1 && uses_rs2_2 && (rd_1 == rs2_2);
+    assign hazard_rd  = writes_rd_1 && (op_2 != 7'b1100011) && (op_2 != 7'b0100011) && (rd_1 == eval_2[11:7]); // WAW
 
-    wire dependency = hazard_rs1 || hazard_rs2 || hazard_rd || mem_conflict || branch_conflict || pipe1_only_violation || is_muldiv_1;
+    assign mem_conflict         = (is_load_1 || is_store_1) && (is_load_2 || is_store_2);
+    assign branch_conflict      = is_ctrl_1 && is_ctrl_2;
+    assign pipe1_only_violation = is_load_2 || is_ctrl_2 || is_muldiv_2; // Force ALL jumps to Pipe 1
+
+    assign dependency = hazard_rs1 || hazard_rs2 || hazard_rd || mem_conflict || branch_conflict || pipe1_only_violation || is_muldiv_1;
 
     // --- Control Logic ---
     always @(*) begin

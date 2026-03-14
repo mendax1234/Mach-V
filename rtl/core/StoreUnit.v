@@ -27,7 +27,8 @@ module StoreUnit (
     );
 
     // --- STORE PATH (Alignment & Masking) ---
-    wire [4:0] shamt = {ByteOffset, 3'b000};  // Offset * 8
+    wire [4:0] shamt;  // Offset *
+    assign shamt = {ByteOffset, 3'b000};
 
     // Align Data
     assign WriteData_out = WriteDataM << shamt;

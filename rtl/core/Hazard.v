@@ -91,10 +91,15 @@ module Hazard (
         output          FlushM   // Flush Memory
     );
 
-    wire rs1_active_1 = (OpcodeD_1 != 7'b1101111) && (OpcodeD_1 != 7'b0110111) && (OpcodeD_1 != 7'b0010111);
-    wire rs2_active_1 = rs1_active_1 && (OpcodeD_1 != 7'b0000011) && (OpcodeD_1 != 7'b0010011) && (OpcodeD_1 != 7'b1100111);
-    wire rs1_active_2 = (OpcodeD_2 != 7'b1101111) && (OpcodeD_2 != 7'b0110111) && (OpcodeD_2 != 7'b0010111);
-    wire rs2_active_2 = rs1_active_2 && (OpcodeD_2 != 7'b0000011) && (OpcodeD_2 != 7'b0010011) && (OpcodeD_2 != 7'b1100111);
+    wire rs1_active_1;
+    wire rs2_active_1;
+    wire rs1_active_2;
+    wire rs2_active_2;
+
+    assign rs1_active_1 = (OpcodeD_1 != 7'b1101111) && (OpcodeD_1 != 7'b0110111) && (OpcodeD_1 != 7'b0010111);
+    assign rs2_active_1 = rs1_active_1 && (OpcodeD_1 != 7'b0000011) && (OpcodeD_1 != 7'b0010011) && (OpcodeD_1 != 7'b1100111);
+    assign rs1_active_2 = (OpcodeD_2 != 7'b1101111) && (OpcodeD_2 != 7'b0110111) && (OpcodeD_2 != 7'b0010111);
+    assign rs2_active_2 = rs1_active_2 && (OpcodeD_2 != 7'b0000011) && (OpcodeD_2 != 7'b0010011) && (OpcodeD_2 != 7'b1100111);
 
     // --- PIPELINE 1 FORWARDING ---
     always @(*) begin

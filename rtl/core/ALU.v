@@ -31,32 +31,44 @@ module ALU (
     // ============================================================
     // Control Decode
     // ============================================================
-    wire is_sub = (ALUControl == 4'b0001) || (ALUControl == 4'b0100) || (ALUControl == 4'b0110);
+    wire is_sub;
+    assign is_sub = (ALUControl == 4'b0001) || (ALUControl == 4'b0100) || (ALUControl == 4'b0110);
 
     // ============================================================
     // Adder (shared for add / sub / compare)
     // ============================================================
-    wire [32:0] A_ext = {1'b0, Src_A};
-    wire [32:0] B_ext = is_sub ? {1'b0, ~Src_B} : {1'b0, Src_B};
-    wire [32:0] Cin = is_sub ? 33'd1 : 33'd0;
+    wire [32:0] A_ext;
+    wire [32:0] B_ext;
+    wire [32:0] Cin;
+    wire [32:0] Sum;
 
-    wire [32:0] Sum = A_ext + B_ext + Cin;
+    assign A_ext = {1'b0, Src_A};
+    assign B_ext = is_sub ? {1'b0, ~Src_B} : {1'b0, Src_B};
+    assign Cin = is_sub ? 33'd1 : 33'd0;
+    assign Sum = A_ext + B_ext + Cin;
 
     // ============================================================
     // Adder Flags
     // ============================================================
-    wire C = Sum[32];  // Carry out
-    wire N = Sum[31];  // Negative
-    wire Z = (Sum[31:0] == 32'b0);
+    wire C;  // Carry out
+    wire N;  // Negative
+    wire Z;
+    wire V;
+    wire lt;   // Signed less-than
+    wire ltu;  // Unsigned less-than
+
+    assign C = Sum[32];
+    assign N = Sum[31];
+    assign Z = (Sum[31:0] == 32'b0);
 
     // Signed overflow
-    wire V = is_sub
-         ? (Src_A[31] != Src_B[31]) && (Sum[31] != Src_A[31])
-         : (Src_A[31] == Src_B[31]) && (Sum[31] != Src_A[31]);
+    assign V = is_sub
+           ? ((Src_A[31] != Src_B[31]) && (Sum[31] != Src_A[31]))
+           : ((Src_A[31] == Src_B[31]) && (Sum[31] != Src_A[31]));
 
     // Compare flags
-    wire lt = N ^ V;  // Signed less-than
-    wire ltu = ~C;  // Unsigned less-than
+    assign lt = N ^ V;
+    assign ltu = ~C;  // Unsigned less-than
 
     assign ALUFlags = {Z, lt, ltu};
 
