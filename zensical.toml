@@ -19,6 +19,7 @@ nav = [
         { "Microarchitecture" = [
             "hw/uarch/index.md",
             { "In-Order Superscalar Architecture" = "hw/uarch/in-order-superscalar.md" },
+            { "Branch Prediction Unit" = "hw/uarch/bpu.md" },
             { "Clock Architecture" = "hw/uarch/clock.md" },
             { "Program Counter Unit" = "hw/uarch/pc-unit.md" },
             { "Arithmetic & Logic Unit" = "hw/uarch/alu.md" },
