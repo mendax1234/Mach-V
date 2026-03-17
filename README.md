@@ -1,6 +1,6 @@
 # Mach-V
 
-**Mach-V** is an open-source RISC-V processor implementation targeting the Digilent **Nexys 4 DDR** FPGA. The project aims to evolve from a standard 5-stage pipeline into a Superscalar, Out-of-Order (OoO), and Multi-core architecture.
+**Mach-V** is an open-source RISC-V processor implementation targeting the Digilent **Nexys 4 DDR** FPGA. The project aims to evolve from a standard 5-stage pipeline into a Superscalar and high-performance architecture.
 
 ## Roadmap
 
@@ -16,13 +16,12 @@ The project follows a staged evolution towards high-performance parallel process
   - Optimize Multiply/Divide logic to minimize stall cycles. (Use fast multiplier and non-restoring division)
   - Improve the Hazard Unit to prevent extra stalls.
   - Implement the Clock Wizard for customized timing.
-- [ ] **Phase 3: Advanced Architecture**
-  - Dynamic Branch Prediction (BHT/BTB)
+- [x] **Phase 3: Advanced Architecture**
+  - 1-bit Dynamic Branch Prediction (BHT/BTB)
   - Superscalar Execution (Dual-issue)
-  - Out-of-Order Execution (The broadcasting diagram on CG3207 Lec 06)
-- [ ] **Phase 4: Multicore and Multithread System**
-  - Simultaneous Multithreading (SMT)
-  - Multi-Core Implementation
+- [ ] **Phase 4: High Performance**
+  - RTL Transformations, like time interleaving and repipelining.
+  - High performance branch predictors.
 
 ## Project Structure
 
@@ -33,8 +32,6 @@ Mach-V/
 ├── rtl/              # Core CPU Logic (Platform Agnostic)
 │   ├── core/         # Pipeline stages, ALU, Hazards
 │   └── peripherals/  # UART, SPI, Timers
-├── fpga/             # FPGA Implementation
-│   └── nexys4-ddr/       # Constraints and Top-Level Wrappers for Nexys 4 DDR
 ├── sw/               # CoreMark, OLED Demo, Benchmarks
 └── sim/              # Testbenches and memory initialization files
 ```
