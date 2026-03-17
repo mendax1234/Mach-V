@@ -120,11 +120,11 @@ module RV #(
     // ---------------------------------------------------------------------------
     // wire [31:0] PCE;         // Program Counter at Execute
     wire        Busy;           // Multi-Cycle unit busy flag
-    wire        FlushE;         // Flush signal for Execute stage
 
     // ---------------------------------------------------------------------------
     // Execute Stage (E) Signals - Pipe 1
     // ---------------------------------------------------------------------------
+    wire        FlushE_1;       // Flush signal for Execute stage
     wire [31:0] RD1E_1;         // Read Data 1
     wire [31:0] RD2E_1;         // Read Data 2
     wire [31:0] ExtImmE_1;      // Extended Immediate
@@ -156,6 +156,7 @@ module RV #(
     // ---------------------------------------------------------------------------
     // Execute Stage (E) Signals - Pipe 2
     // ---------------------------------------------------------------------------
+    wire        FlushE_2;       // Flush signal for Execute stage
     wire [31:0] RD1E_2;         // Read Data 1
     wire [31:0] RD2E_2;         // Read Data 2
     wire [31:0] ExtImmE_2;      // Extended Immediate
@@ -177,7 +178,6 @@ module RV #(
     // Memory Stage (M) Signals - Common & Branches
     // ---------------------------------------------------------------------------
     wire [31:0] PCM;            // Program Counter at Memory stage
-    wire        FlushM;         // Flush signal for Memory stage
     wire [31:0] PC_ResolvedM;   // Resolved Branch PC
     wire [ 1:0] PCSM;           // PC Source Select
     wire [ 1:0] PCSrcM;         // Final PC Source
@@ -190,6 +190,7 @@ module RV #(
     // ---------------------------------------------------------------------------
     // Memory Stage (M) Signals - Pipe 1
     // ---------------------------------------------------------------------------
+    wire        FlushM_1;         // Flush signal for Memory stage
     wire [31:0] ComputeResultM_1; // Computed Address/Result
     wire [31:0] WriteDataM_1;     // Data to Write
     wire [31:0] RD1M_1;           // Read Data 1 forwarded
@@ -206,6 +207,7 @@ module RV #(
     // ---------------------------------------------------------------------------
     // Memory Stage (M) Signals - Pipe 2
     // ---------------------------------------------------------------------------
+    wire        FlushM_2;         // Flush signal for Memory stage
     wire [31:0] ComputeResultM_2; // Computed Address/Result
     wire [31:0] WriteDataM_2;     // Data to Write
     wire [31:0] WriteDataM_Raw_2; // Unmultiplexed Write Data
@@ -464,7 +466,9 @@ module RV #(
     assign MemRead = MemtoRegM_1; // Loads are strictly Pipe 1
     assign ComputeResultM = Master_Addr; // Outputs the active address to the Wrapper
 
-    // Flush Pipe 2 memory control signals on a mispredict
+    // Flush Pipe 2 memory control signals immediately on a mispredict
+    // This cannot be integrated into the FlushM because that is synchronous
+    // It is too late to flush if we use FlushM
     assign RegWriteM_2 = RegWriteM_2_raw & ~BranchMispredictM;
     assign MemWriteM_2 = MemWriteM_2_raw & ~BranchMispredictM;
 
@@ -594,80 +598,89 @@ module RV #(
                 .RD2_2 (RD2D_2)
             );
 
-    pipeline_E pipelineE (
-                   .CLK               (CLK),
-                   .RESET             (RESET),
-                   .Busy              (Busy),
-                   .FlushE            (FlushE),
-                   .PCSD              (PCSD_1),
-                   .RegWriteD_1       (RegWriteD_1),
-                   .MemtoRegD_1       (MemtoRegD_1),
-                   .MemWriteD_1       (MemWriteD_1),
-                   .ALUControlD_1     (ALUControlD_1),
-                   .ALUSrcAD_1        (ALUSrcAD_1),
-                   .ALUSrcBD_1        (ALUSrcBD_1),
-                   .RD1D_1            (RD1D_Forwarded_1),
-                   .RD2D_1            (RD2D_Forwarded_1),
-                   .ExtImmD_1         (ExtImmD_1),
-                   .rs1D_1            (rs1D_1),
-                   .rs2D_1            (rs2D_1),
-                   .rdD_1             (rdD_1),
-                   .PCD_1             (PCD_1_Issued),
-                   .Funct3D_1         (Funct3D_1),
-                   .MCycleOpD         (MCycleOpD_1),
-                   .MCycleStartD      (MCycleStartD_1),
-                   .MCycleResultSelD  (MCycleResultSelD_1),
-                   .ComputeResultSelD (ComputeResultSelD_1),
-                   .PrPCSrcD          (PrPCSrcD),
-                   .PrBTAD            (PrBTAD),
-                   .RegWriteD_2       (RegWriteD_2),
-                   .MemWriteD_2       (MemWriteD_2),
-                   .Funct3D_2         (Funct3D_2),
-                   .ALUControlD_2     (ALUControlD_2),
-                   .ALUSrcAD_2        (ALUSrcAD_2),
-                   .ALUSrcBD_2        (ALUSrcBD_2),
-                   .RD1D_2            (RD1D_Forwarded_2),
-                   .RD2D_2            (RD2D_Forwarded_2),
-                   .ExtImmD_2         (ExtImmD_2),
-                   .rs1D_2            (rs1D_2),
-                   .rs2D_2            (rs2D_2),
-                   .rdD_2             (rdD_2),
-                   .PCD_2             (PCD_2_Issued),
-                   .PCSE              (PCSE),
-                   .RegWriteE_1       (RegWriteE_1),
-                   .MemtoRegE_1       (MemtoRegE_1),
-                   .MemWriteE_1       (MemWriteE_1),
-                   .ALUControlE_1     (ALUControlE_1),
-                   .ALUSrcAE_1        (ALUSrcAE_1),
-                   .ALUSrcBE_1        (ALUSrcBE_1),
-                   .RD1E_1            (RD1E_1),
-                   .RD2E_1            (RD2E_1),
-                   .ExtImmE_1         (ExtImmE_1),
-                   .rs1E_1            (rs1E_1),
-                   .rs2E_1            (rs2E_1),
-                   .rdE_1             (rdE_1),
-                   .PCE_1             (PCE_1),
-                   .Funct3E_1         (Funct3E_1),
-                   .MCycleOpE         (MCycleOpE),
-                   .MCycleStartE      (MCycleStartE),
-                   .MCycleResultSelE  (MCycleResultSelE_1),
-                   .ComputeResultSelE (ComputeResultSelE_1),
-                   .PrPCSrcE          (PrPCSrcE),
-                   .PrBTAE            (PrBTAE),
-                   .RegWriteE_2       (RegWriteE_2),
-                   .MemWriteE_2       (MemWriteE_2),
-                   .Funct3E_2         (Funct3E_2),
-                   .ALUControlE_2     (ALUControlE_2),
-                   .ALUSrcAE_2        (ALUSrcAE_2),
-                   .ALUSrcBE_2        (ALUSrcBE_2),
-                   .RD1E_2            (RD1E_2),
-                   .RD2E_2            (RD2E_2),
-                   .ExtImmE_2         (ExtImmE_2),
-                   .rs1E_2            (rs1E_2),
-                   .rs2E_2            (rs2E_2),
-                   .rdE_2             (rdE_2),
-                   .PCE_2             (PCE_2)
-               );
+    pipeline_E_1 pipelineE_1 (
+                     .CLK               (CLK),
+                     .RESET             (RESET),
+                     .Busy              (Busy),
+                     .FlushE            (FlushE_1),
+                     .PCSD              (PCSD_1),
+                     .RegWriteD_1       (RegWriteD_1),
+                     .MemtoRegD_1       (MemtoRegD_1),
+                     .MemWriteD_1       (MemWriteD_1),
+                     .ALUControlD_1     (ALUControlD_1),
+                     .ALUSrcAD_1        (ALUSrcAD_1),
+                     .ALUSrcBD_1        (ALUSrcBD_1),
+                     .RD1D_1            (RD1D_Forwarded_1),
+                     .RD2D_1            (RD2D_Forwarded_1),
+                     .ExtImmD_1         (ExtImmD_1),
+                     .rs1D_1            (rs1D_1),
+                     .rs2D_1            (rs2D_1),
+                     .rdD_1             (rdD_1),
+                     .PCD_1             (PCD_1_Issued),
+                     .Funct3D_1         (Funct3D_1),
+                     .MCycleOpD         (MCycleOpD_1),
+                     .MCycleStartD      (MCycleStartD_1),
+                     .MCycleResultSelD  (MCycleResultSelD_1),
+                     .ComputeResultSelD (ComputeResultSelD_1),
+                     .PrPCSrcD          (PrPCSrcD),
+                     .PrBTAD            (PrBTAD),
+
+                     .PCSE              (PCSE),
+                     .RegWriteE_1       (RegWriteE_1),
+                     .MemtoRegE_1       (MemtoRegE_1),
+                     .MemWriteE_1       (MemWriteE_1),
+                     .ALUControlE_1     (ALUControlE_1),
+                     .ALUSrcAE_1        (ALUSrcAE_1),
+                     .ALUSrcBE_1        (ALUSrcBE_1),
+                     .RD1E_1            (RD1E_1),
+                     .RD2E_1            (RD2E_1),
+                     .ExtImmE_1         (ExtImmE_1),
+                     .rs1E_1            (rs1E_1),
+                     .rs2E_1            (rs2E_1),
+                     .rdE_1             (rdE_1),
+                     .PCE_1             (PCE_1),
+                     .Funct3E_1         (Funct3E_1),
+                     .MCycleOpE         (MCycleOpE),
+                     .MCycleStartE      (MCycleStartE),
+                     .MCycleResultSelE  (MCycleResultSelE_1),
+                     .ComputeResultSelE (ComputeResultSelE_1),
+                     .PrPCSrcE          (PrPCSrcE),
+                     .PrBTAE            (PrBTAE)
+                 );
+
+    pipeline_E_2 pipelineE_2(
+                     .CLK           	(CLK            ),
+                     .RESET         	(RESET          ),
+                     .Busy          	(Busy           ),
+                     .FlushE        	(FlushE_2       ),
+                     .RegWriteD_2       (RegWriteD_2),
+                     .MemWriteD_2       (MemWriteD_2),
+                     .Funct3D_2         (Funct3D_2),
+                     .ALUControlD_2     (ALUControlD_2),
+                     .ALUSrcAD_2        (ALUSrcAD_2),
+                     .ALUSrcBD_2        (ALUSrcBD_2),
+                     .RD1D_2            (RD1D_Forwarded_2),
+                     .RD2D_2            (RD2D_Forwarded_2),
+                     .ExtImmD_2         (ExtImmD_2),
+                     .rs1D_2            (rs1D_2),
+                     .rs2D_2            (rs2D_2),
+                     .rdD_2             (rdD_2),
+
+                     .PCD_2             (PCD_2_Issued),
+                     .RegWriteE_2       (RegWriteE_2),
+                     .MemWriteE_2       (MemWriteE_2),
+                     .Funct3E_2         (Funct3E_2),
+                     .ALUControlE_2     (ALUControlE_2),
+                     .ALUSrcAE_2        (ALUSrcAE_2),
+                     .ALUSrcBE_2        (ALUSrcBE_2),
+                     .RD1E_2            (RD1E_2),
+                     .RD2E_2            (RD2E_2),
+                     .ExtImmE_2         (ExtImmE_2),
+                     .rs1E_2            (rs1E_2),
+                     .rs2E_2            (rs2E_2),
+                     .rdE_2             (rdE_2),
+                     .PCE_2             (PCE_2)
+                 );
 
     ALU ALU1 (
             .Src_A      (Src_A_1),
@@ -690,7 +703,7 @@ module RV #(
            ) MCycle1 (
                .CLK      (CLK),
                .RESET    (RESET),
-               .Start    (MCycleStartE & ~FlushE),
+               .Start    (MCycleStartE & ~FlushE_1),
                .MCycleOp (MCycleOpE),
                .Operand1 (RD1E_Forwarded_1),
                .Operand2 (RD2E_Forwarded_1),
@@ -706,56 +719,64 @@ module RV #(
                  .PCSrc    (PCSrcM)
              );
 
-    pipeline_M pipelineM (
-                   .CLK              (CLK),
-                   .RESET            (RESET),
-                   .Busy             (Busy),
-                   .FlushM           (FlushM),
-                   .RegWriteE_1      (RegWriteE_1),
-                   .MemtoRegE_1      (MemtoRegE_1),
-                   .MemWriteE_1      (MemWriteE_1),
-                   .ComputeResultE_1 (ComputeResultE_1),
-                   .WriteDataE_1     (WriteDataE_1),
-                   .rs2E_1           (rs2E_1),
-                   .rdE_1            (rdE_1),
-                   .Funct3E_1        (Funct3E_1),
-                   .RD1E_Forwarded_1 (RD1E_Forwarded_1),
-                   .PCE              (PCE_1),
-                   .ExtImmE_1        (ExtImmE_1),
-                   .PCSE             (PCSE),
-                   .ALUFlagsE_1      (ALUFlagsE_1),
-                   .PrPCSrcE         (PrPCSrcE),
-                   .PrBTAE           (PrBTAE),
-                   .RegWriteE_2      (RegWriteE_2),
-                   .MemWriteE_2      (MemWriteE_2),
-                   .Funct3E_2        (Funct3E_2),
-                   .ComputeResultE_2 (ComputeResultE_2),
-                   .WriteDataE_2     (WriteDataE_2),
-                   .rs2E_2           (rs2E_2),
-                   .rdE_2            (rdE_2),
-                   .RegWriteM_1      (RegWriteM_1),
-                   .MemtoRegM_1      (MemtoRegM_1),
-                   .MemWriteM_1      (MemWriteM_1),
-                   .Funct3M_1        (Funct3M_1),
-                   .ComputeResultM_1 (ComputeResultM_1),
-                   .WriteDataM_1     (WriteDataM_1),
-                   .rs2M_1           (rs2M_1),
-                   .rdM_1            (rdM_1),
-                   .RD1M_1           (RD1M_1),
-                   .PCM              (PCM),
-                   .ExtImmM_1        (ExtImmM_1),
-                   .PCSM             (PCSM),
-                   .ALUFlagsM_1      (ALUFlagsM_1),
-                   .PrPCSrcM         (PrPCSrcM),
-                   .PrBTAM           (PrBTAM),
-                   .RegWriteM_2      (RegWriteM_2_raw),
-                   .MemWriteM_2      (MemWriteM_2_raw),
-                   .Funct3M_2        (Funct3M_2),
-                   .ComputeResultM_2 (ComputeResultM_2),
-                   .WriteDataM_2     (WriteDataM_2),
-                   .rs2M_2           (rs2M_2),
-                   .rdM_2            (rdM_2)
-               );
+    pipeline_M_1 pipelineM_1 (
+                     .CLK              (CLK),
+                     .RESET            (RESET),
+                     .Busy             (Busy),
+                     .FlushM           (FlushM_1),
+                     .RegWriteE_1      (RegWriteE_1),
+                     .MemtoRegE_1      (MemtoRegE_1),
+                     .MemWriteE_1      (MemWriteE_1),
+                     .ComputeResultE_1 (ComputeResultE_1),
+                     .WriteDataE_1     (WriteDataE_1),
+                     .rs2E_1           (rs2E_1),
+                     .rdE_1            (rdE_1),
+                     .Funct3E_1        (Funct3E_1),
+                     .RD1E_Forwarded_1 (RD1E_Forwarded_1),
+                     .PCE              (PCE_1),
+                     .ExtImmE_1        (ExtImmE_1),
+                     .PCSE             (PCSE),
+                     .ALUFlagsE_1      (ALUFlagsE_1),
+                     .PrPCSrcE         (PrPCSrcE),
+                     .PrBTAE           (PrBTAE),
+                     .RegWriteM_1      (RegWriteM_1),
+                     .MemtoRegM_1      (MemtoRegM_1),
+                     .MemWriteM_1      (MemWriteM_1),
+                     .Funct3M_1        (Funct3M_1),
+                     .ComputeResultM_1 (ComputeResultM_1),
+                     .WriteDataM_1     (WriteDataM_1),
+                     .rs2M_1           (rs2M_1),
+                     .rdM_1            (rdM_1),
+                     .RD1M_1           (RD1M_1),
+                     .PCM              (PCM),
+                     .ExtImmM_1        (ExtImmM_1),
+                     .PCSM             (PCSM),
+                     .ALUFlagsM_1      (ALUFlagsM_1),
+                     .PrPCSrcM         (PrPCSrcM),
+                     .PrBTAM           (PrBTAM)
+                 );
+
+    pipeline_M_2 pipelineM_2(
+                     .CLK              	(CLK               ),
+                     .RESET            	(RESET             ),
+                     .Busy             	(Busy              ),
+                     .FlushM           	(FlushM_2          ),
+                     .RegWriteE_2      	(RegWriteE_2       ),
+                     .MemWriteE_2      	(MemWriteE_2       ),
+                     .Funct3E_2        	(Funct3E_2         ),
+                     .ComputeResultE_2 	(ComputeResultE_2  ),
+                     .WriteDataE_2     	(WriteDataE_2      ),
+                     .rs2E_2           	(rs2E_2            ),
+                     .rdE_2            	(rdE_2             ),
+                     .RegWriteM_2      	(RegWriteM_2_raw   ),
+                     .MemWriteM_2      	(MemWriteM_2_raw   ),
+                     .Funct3M_2        	(Funct3M_2         ),
+                     .ComputeResultM_2 	(ComputeResultM_2  ),
+                     .WriteDataM_2     	(WriteDataM_2      ),
+                     .rs2M_2           	(rs2M_2            ),
+                     .rdM_2            	(rdM_2             )
+                 );
+
 
     StoreUnit StoreUnit (
                   .Funct3M       (Master_Funct3),
@@ -766,28 +787,33 @@ module RV #(
                   .WriteData_out (WriteData_out)
               );
 
-    pipeline_W pipelineW (
-                   .CLK              (CLK),
-                   .RESET            (RESET),
-                   .RegWriteM_1      (RegWriteM_1),
-                   .MemtoRegM_1      (MemtoRegM_1),
-                   .ReadDataM_1      (ReadData_in),
-                   .ComputeResultM_1 (ComputeResultM_1),
-                   .rdM_1            (rdM_1),
-                   .Funct3M_1        (Funct3M_1),
-                   .RegWriteM_2      (RegWriteM_2),
-                   .ComputeResultM_2 (ComputeResultM_2),
-                   .rdM_2            (rdM_2),
-                   .RegWriteW_1      (RegWriteW_1),
-                   .MemtoRegW_1      (MemtoRegW_1),
-                   .ReadDataW_1      (ReadDataW_1),
-                   .ComputeResultW_1 (ComputeResultW_1),
-                   .rdW_1            (rdW_1),
-                   .Funct3W_1        (Funct3W_1),
-                   .RegWriteW_2      (RegWriteW_2),
-                   .ComputeResultW_2 (ComputeResultW_2),
-                   .rdW_2            (rdW_2)
-               );
+    pipeline_W_1 pipelineW_1 (
+                     .CLK              (CLK),
+                     .RESET            (RESET),
+                     .RegWriteM_1      (RegWriteM_1),
+                     .MemtoRegM_1      (MemtoRegM_1),
+                     .ReadDataM_1      (ReadData_in),
+                     .ComputeResultM_1 (ComputeResultM_1),
+                     .rdM_1            (rdM_1),
+                     .Funct3M_1        (Funct3M_1),
+                     .RegWriteW_1      (RegWriteW_1),
+                     .MemtoRegW_1      (MemtoRegW_1),
+                     .ReadDataW_1      (ReadDataW_1),
+                     .ComputeResultW_1 (ComputeResultW_1),
+                     .rdW_1            (rdW_1),
+                     .Funct3W_1        (Funct3W_1)
+                 );
+
+    pipeline_W_2 pipelineW_2 (
+                     .CLK              (CLK),
+                     .RESET            (RESET),
+                     .RegWriteM_2      (RegWriteM_2),
+                     .ComputeResultM_2 (ComputeResultM_2),
+                     .rdM_2            (rdM_2),
+                     .RegWriteW_2      (RegWriteW_2),
+                     .ComputeResultW_2 (ComputeResultW_2),
+                     .rdW_2            (rdW_2)
+                 );
 
     LoadUnit LoadUnit (
                  .Funct3      (Funct3W_1),
@@ -801,6 +827,7 @@ module RV #(
                .rs2D_1            (rs2D_1),
                .rs1D_2            (rs1D_2),
                .rs2D_2            (rs2D_2),
+               .PrPCSrcD          (PrPCSrcD),
                .OpcodeD_1         (OpcodeD_1),
                .OpcodeD_2         (OpcodeD_2),
                .rs1E_1            (rs1E_1),
@@ -841,9 +868,11 @@ module RV #(
                .lwStall           (lwStall),
                .StallF            (StallF),
                .StallD            (StallD),
-               .FlushE            (FlushE),
+               .FlushE_1          (FlushE_1),
+               .FlushE_2          (FlushE_2),
                .FlushD            (FlushD),
-               .FlushM            (FlushM)
+               .FlushM_1          (FlushM_1),
+               .FlushM_2          (FlushM_2)
            );
 
     BranchHistoryTable #(

@@ -26,6 +26,7 @@ module Hazard (
         input  [4:0] rs2D_1,    // Pipe 1 rs2 (Decode)
         input  [4:0] rs1D_2,    // Pipe 2 rs1 (Decode)
         input  [4:0] rs2D_2,    // Pipe 2 rs2 (Decode)
+        input        PrPCSrcD,  // Branch predicted taken in D stage
 
         // Decode-stage opcodes
         input  [6:0] OpcodeD_1, // Pipe 1 opcode (Decode)
@@ -86,9 +87,11 @@ module Hazard (
         output          lwStall, // Load-use stall
         output          StallF,  // Stall Fetch
         output          StallD,  // Stall Decode
-        output          FlushE,  // Flush Execute
         output          FlushD,  // Flush Decode
-        output          FlushM   // Flush Memory
+        output          FlushE_1,  // Flush Execute pipeline 1
+        output          FlushE_2, // Flush Execute pipeline 2
+        output          FlushM_1,   // Flush Memory pipeline 1
+        output          FlushM_2  // Flush Memory pipeline 2
     );
 
     wire rs1_active_1;
@@ -181,9 +184,20 @@ module Hazard (
                ((rs1D_2 == rdE_1) && rs1_active_2) || ((rs2D_2 == rdE_1) && rs2_active_2)
            );
 
+    // Control hazard with jump and taken branch
+    wire is_jump_D1;
+    wire is_branch_taken_D1;
+    wire kill_slot2_D;
+
+    assign is_jump_D1 = (OpcodeD_1 == 7'b1101111) || (OpcodeD_1 == 7'b1100111);
+    assign is_branch_taken_D1 = (OpcodeD_1 == 7'b1100011) && PrPCSrcD;
+    assign kill_slot2_D = is_jump_D1 || is_branch_taken_D1;
+
     assign StallF = (lwStall | Busy) & ~BranchMispredictM;
     assign StallD = (lwStall | Busy) & ~BranchMispredictM;
-    assign FlushE = lwStall | BranchMispredictM;
     assign FlushD = BranchMispredictM;
-    assign FlushM = BranchMispredictM;
+    assign FlushE_1 = lwStall | BranchMispredictM;
+    assign FlushE_2 = lwStall | BranchMispredictM | kill_slot2_D;
+    assign FlushM_1 = BranchMispredictM;
+    assign FlushM_2 = BranchMispredictM;
 endmodule

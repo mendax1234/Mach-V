@@ -4,7 +4,7 @@
 -- Engineer:      Zhu Wenbo
 -- 
 -- Create Date:   2026-01-06
--- Module Name:   pipeline_W
+-- Module Name:   pipeline_W_1
 -- Project Name:  Mach-V
 -- Description:   MEM/WB Pipeline Register. 
 --                Latches memory read data and ALU results from the Memory stage 
@@ -18,7 +18,7 @@
 
 `timescale 1ns / 1ps
 
-module pipeline_W (
+module pipeline_W_1 (
         input             CLK,
         input             RESET,
 
@@ -35,16 +35,7 @@ module pipeline_W (
         output reg [31:0] ReadDataW_1,
         output reg [31:0] ComputeResultW_1,
         output reg [ 4:0] rdW_1,
-        output reg [ 2:0] Funct3W_1,
-
-        // --- PIPELINE 2 ---
-        input             RegWriteM_2,
-        input      [31:0] ComputeResultM_2,
-        input      [ 4:0] rdM_2,
-
-        output reg        RegWriteW_2,
-        output reg [31:0] ComputeResultW_2,
-        output reg [ 4:0] rdW_2
+        output reg [ 2:0] Funct3W_1
     );
     always @(posedge CLK) begin
         if (RESET) begin
@@ -54,10 +45,6 @@ module pipeline_W (
             ComputeResultW_1 <= 32'b0;
             rdW_1 <= 5'b0;
             Funct3W_1 <= 3'b0;
-
-            RegWriteW_2 <= 1'b0;
-            ComputeResultW_2 <= 32'b0;
-            rdW_2 <= 5'b0;
         end
         else begin
             RegWriteW_1 <= RegWriteM_1;
@@ -66,10 +53,6 @@ module pipeline_W (
             ComputeResultW_1 <= ComputeResultM_1;
             rdW_1 <= rdM_1;
             Funct3W_1 <= Funct3M_1;
-
-            RegWriteW_2 <= RegWriteM_2;
-            ComputeResultW_2 <= ComputeResultM_2;
-            rdW_2 <= rdM_2;
         end
     end
 endmodule

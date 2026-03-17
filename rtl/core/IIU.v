@@ -1,3 +1,19 @@
+/*
+----------------------------------------------------------------------------------
+-- Company:       National University of Singapore
+-- Engineer:      Zhu Wenbo
+-- 
+-- Create Date:   2026-03-17
+-- Module Name:   pipeline_W_w
+-- Project Name:  Mach-V
+-- Description:   Instruction Issuing Unit.
+--                Handles instruction dispatching to the two pipelines,
+--                ensuring correct ordering and dependency resolution.
+-- 
+-- License:       MIT License
+----------------------------------------------------------------------------------
+*/
+
 `timescale 1ns / 1ps
 
 module IIU (
@@ -22,16 +38,16 @@ module IIU (
 
     localparam NOP = 32'h00000013;
 
-    // Only kill Slot 2 if the INCOMING Slot 1 is a jumping branch.
-    wire instr1_is_branch;
-    wire kill_incoming_slot2;
-    wire [31:0] safe_Instr_2_in;
+    // // Only kill Slot 2 if the INCOMING Slot 1 is a jumping branch.
+    // wire instr1_is_branch;
+    // wire kill_incoming_slot2;
+    // wire [31:0] safe_Instr_2_in;
 
-    assign instr1_is_branch = (Instr_1_in[6:0] == 7'b1100011) ||
-           (Instr_1_in[6:0] == 7'b1101111) ||
-           (Instr_1_in[6:0] == 7'b1100111);
-    assign kill_incoming_slot2 = instr1_is_branch && PrPCSrcD;
-    assign safe_Instr_2_in = kill_incoming_slot2 ? NOP : Instr_2_in;
+    // assign instr1_is_branch = (Instr_1_in[6:0] == 7'b1100011) ||
+    //        (Instr_1_in[6:0] == 7'b1101111) ||
+    //        (Instr_1_in[6:0] == 7'b1100111);
+    // assign kill_incoming_slot2 = instr1_is_branch && PrPCSrcD;
+    // assign safe_Instr_2_in = kill_incoming_slot2 ? NOP : Instr_2_in;
 
     // Hold Register State
     reg [31:0] hold_reg    = 32'h00000013;
@@ -56,7 +72,7 @@ module IIU (
     wire [31:0] eval_2;
 
     assign eval_1 = hold_valid ? hold_reg : Instr_1_in;
-    assign eval_2 = hold_valid ? Instr_1_in : safe_Instr_2_in;
+    assign eval_2 = hold_valid ? Instr_1_in : Instr_2_in;
 
     // --- Dependency Decoding Logic ---
     wire [6:0] op_1;
@@ -126,6 +142,7 @@ module IIU (
     wire branch_conflict;
     wire pipe1_only_violation;
     wire dependency;
+    wire slot1_kills_slot2;
 
     assign hazard_rs1 = writes_rd_1 && uses_rs1_2 && (rd_1 == rs1_2);
     assign hazard_rs2 = writes_rd_1 && uses_rs2_2 && (rd_1 == rs2_2);
@@ -135,7 +152,10 @@ module IIU (
     assign branch_conflict      = is_ctrl_1 && is_ctrl_2;
     assign pipe1_only_violation = is_load_2 || is_ctrl_2 || is_muldiv_2; // Force ALL jumps to Pipe 1
 
-    assign dependency = hazard_rs1 || hazard_rs2 || hazard_rd || mem_conflict || branch_conflict || pipe1_only_violation || is_muldiv_1;
+    // Detect if Slot 1 is going to cause a flush in the Hazard unit
+    assign slot1_kills_slot2 = is_j_branch_1 || (is_b_branch_1 && PrPCSrcD);
+
+    assign dependency = (hazard_rs1 || hazard_rs2 || hazard_rd || mem_conflict || branch_conflict || pipe1_only_violation || is_muldiv_1) && ~slot1_kills_slot2;
 
     // --- Control Logic ---
     always @(*) begin
@@ -186,7 +206,7 @@ module IIU (
             PCD_2_out   = PCD;
         end
         else if (pipe2_sel == 2'd1) begin
-            Instr_2_out = safe_Instr_2_in;
+            Instr_2_out = Instr_2_in;
             PCD_2_out   = PCD + 32'd4;
         end
         else begin
@@ -209,7 +229,7 @@ module IIU (
                 hold_valid  <= 1'b1;
             end
             else if (hold_sel == 2'd1) begin
-                hold_reg    <= safe_Instr_2_in;
+                hold_reg    <= Instr_2_in;
                 hold_pc_reg <= PCD + 32'd4;
                 hold_valid  <= 1'b1;
             end
