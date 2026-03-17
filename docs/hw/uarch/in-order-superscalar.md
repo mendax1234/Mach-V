@@ -110,6 +110,8 @@ In the IIU, the following conventions are used for the instruction dependency de
 
     Also if the first pipe is a jump instruction, the second pipe should always be filled with a NOP.
 
+    In the current design, to deal with the control hazard, a combinational logic is needed in `RV.v` to flush the pipeline 2!
+
 With these conventions, besides the change of the IROM we have mentioned at the [beginning](#instruction-issue-unit), the rest of changes for the Mach-V microarchitecture are:
 
 1. Add two read ports and one write port to the register file.
