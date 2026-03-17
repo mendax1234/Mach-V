@@ -20,8 +20,9 @@ The project follows a staged evolution towards high-performance parallel process
   - 1-bit Dynamic Branch Prediction (BHT/BTB)
   - Superscalar Execution (Dual-issue)
 - [ ] **Phase 4: High Performance**
-  - RTL Transformations, like time interleaving and repipelining.
+  - RTL Transformations: time interleaving for multithreading and repipelining for frequency boost.
   - High performance branch predictors.
+  - Simplify the Dual-Issue unit to increase the ILP.
 
 ## Project Structure
 
