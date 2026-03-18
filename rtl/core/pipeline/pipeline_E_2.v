@@ -22,7 +22,7 @@ module pipeline_E_2 (
         // --------------------
         input             CLK,
         input             RESET,
-        input             Busy,
+        input             StallE,
         input             FlushE,
 
         // --------------------
@@ -75,7 +75,7 @@ module pipeline_E_2 (
             rs2E_2 <= 5'b0;
             rdE_2 <= 5'b0;
         end
-        else if (~Busy) begin
+        else if (~StallE) begin
             RegWriteE_2 <= RegWriteD_2;
             MemWriteE_2 <= MemWriteD_2;
             Funct3E_2 <= Funct3D_2;

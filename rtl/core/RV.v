@@ -124,7 +124,8 @@ module RV #(
     // ---------------------------------------------------------------------------
     // Execute Stage (E) Signals - Pipe 1
     // ---------------------------------------------------------------------------
-    wire        FlushE_1;       // Flush signal for Execute stage
+    wire        StallE_1;       // Stall signal for Execute stage pipeline 1
+    wire        FlushE_1;       // Flush signal for Execute stage pipeline 1
     wire [31:0] RD1E_1;         // Read Data 1
     wire [31:0] RD2E_1;         // Read Data 2
     wire [31:0] ExtImmE_1;      // Extended Immediate
@@ -156,7 +157,8 @@ module RV #(
     // ---------------------------------------------------------------------------
     // Execute Stage (E) Signals - Pipe 2
     // ---------------------------------------------------------------------------
-    wire        FlushE_2;       // Flush signal for Execute stage
+    wire        StallE_2;       // Stall signal for Execute stage pipeline 2
+    wire        FlushE_2;       // Flush signal for Execute stage pipeline 2
     wire [31:0] RD1E_2;         // Read Data 1
     wire [31:0] RD2E_2;         // Read Data 2
     wire [31:0] ExtImmE_2;      // Extended Immediate
@@ -190,7 +192,8 @@ module RV #(
     // ---------------------------------------------------------------------------
     // Memory Stage (M) Signals - Pipe 1
     // ---------------------------------------------------------------------------
-    wire        FlushM_1;         // Flush signal for Memory stage
+    wire        StallM_1;         // Stall signal for Memory stage pipeline 1
+    wire        FlushM_1;         // Flush signal for Memory stage pipeline 1
     wire [31:0] ComputeResultM_1; // Computed Address/Result
     wire [31:0] WriteDataM_1;     // Data to Write
     wire [31:0] RD1M_1;           // Read Data 1 forwarded
@@ -207,7 +210,8 @@ module RV #(
     // ---------------------------------------------------------------------------
     // Memory Stage (M) Signals - Pipe 2
     // ---------------------------------------------------------------------------
-    wire        FlushM_2;         // Flush signal for Memory stage
+    wire        StallM_2;         // Stall signal for Memory stage pipeline 2
+    wire        FlushM_2;         // Flush signal for Memory stage pipeline 2
     wire [31:0] ComputeResultM_2; // Computed Address/Result
     wire [31:0] WriteDataM_2;     // Data to Write
     wire [31:0] WriteDataM_Raw_2; // Unmultiplexed Write Data
@@ -601,7 +605,7 @@ module RV #(
     pipeline_E_1 pipelineE_1 (
                      .CLK               (CLK),
                      .RESET             (RESET),
-                     .Busy              (Busy),
+                     .StallE            (StallE_1),
                      .FlushE            (FlushE_1),
                      .PCSD              (PCSD_1),
                      .RegWriteD_1       (RegWriteD_1),
@@ -651,7 +655,7 @@ module RV #(
     pipeline_E_2 pipelineE_2(
                      .CLK           	(CLK            ),
                      .RESET         	(RESET          ),
-                     .Busy          	(Busy           ),
+                     .StallE          	(StallE_2       ),
                      .FlushE        	(FlushE_2       ),
                      .RegWriteD_2       (RegWriteD_2),
                      .MemWriteD_2       (MemWriteD_2),
@@ -722,7 +726,7 @@ module RV #(
     pipeline_M_1 pipelineM_1 (
                      .CLK              (CLK),
                      .RESET            (RESET),
-                     .Busy             (Busy),
+                     .StallM           (StallM_1),
                      .FlushM           (FlushM_1),
                      .RegWriteE_1      (RegWriteE_1),
                      .MemtoRegE_1      (MemtoRegE_1),
@@ -759,7 +763,7 @@ module RV #(
     pipeline_M_2 pipelineM_2(
                      .CLK              	(CLK               ),
                      .RESET            	(RESET             ),
-                     .Busy             	(Busy              ),
+                     .StallM          	(StallM_2              ),
                      .FlushM           	(FlushM_2          ),
                      .RegWriteE_2      	(RegWriteE_2       ),
                      .MemWriteE_2      	(MemWriteE_2       ),
@@ -868,9 +872,13 @@ module RV #(
                .lwStall           (lwStall),
                .StallF            (StallF),
                .StallD            (StallD),
+               .StallE_1          (StallE_1),
+               .StallE_2          (StallE_2),
                .FlushE_1          (FlushE_1),
                .FlushE_2          (FlushE_2),
                .FlushD            (FlushD),
+               .StallM_1          (StallM_1),
+               .StallM_2          (StallM_2),
                .FlushM_1          (FlushM_1),
                .FlushM_2          (FlushM_2)
            );

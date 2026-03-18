@@ -88,8 +88,12 @@ module Hazard (
         output          StallF,  // Stall Fetch
         output          StallD,  // Stall Decode
         output          FlushD,  // Flush Decode
+        output          StallE_1, // Stall Execute pipeline 1
+        output          StallE_2, // Stall Execute pipeline 2
         output          FlushE_1,  // Flush Execute pipeline 1
         output          FlushE_2, // Flush Execute pipeline 2
+        output          StallM_1, // Stall Memory pipeline 1
+        output          StallM_2, // Stall Memory pipelnie 2
         output          FlushM_1,   // Flush Memory pipeline 1
         output          FlushM_2  // Flush Memory pipeline 2
     );
@@ -196,8 +200,12 @@ module Hazard (
     assign StallF = (lwStall | Busy) & ~BranchMispredictM;
     assign StallD = (lwStall | Busy) & ~BranchMispredictM;
     assign FlushD = BranchMispredictM;
+    assign StallE_1 = Busy;
+    assign StallE_2 = Busy;
     assign FlushE_1 = lwStall | BranchMispredictM;
     assign FlushE_2 = lwStall | BranchMispredictM | kill_slot2_D;
+    assign StallM_1 = Busy;
+    assign StallM_2 = Busy;
     assign FlushM_1 = BranchMispredictM;
     assign FlushM_2 = BranchMispredictM;
 endmodule

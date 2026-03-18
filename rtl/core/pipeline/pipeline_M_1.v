@@ -24,7 +24,7 @@ module pipeline_M_1 (
         // --------------------
         input             CLK,
         input             RESET,
-        input             Busy,
+        input             StallM,
         input             FlushM,
 
         // --------------------
@@ -84,7 +84,7 @@ module pipeline_M_1 (
             PrPCSrcM <= 1'b0;
             PrBTAM <= 32'b0;
         end
-        else if (~Busy) begin
+        else if (~StallM) begin
             RegWriteM_1 <= RegWriteE_1;
             MemtoRegM_1 <= MemtoRegE_1;
             MemWriteM_1 <= MemWriteE_1;
